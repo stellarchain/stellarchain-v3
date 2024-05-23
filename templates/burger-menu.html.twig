@@ -1,0 +1,260 @@
+<!-- Burger Menu -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom d-block d-lg-none">
+    <div class="container-fluid">
+        <!-- App Switcher -->
+        <div class="dropdown">
+            <!-- Logo  -->
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#mobileAppSelector">
+                <div class="d-flex align-items-center rounded-1">
+                    <div class="bg-primary bg-opacity-10 d-flex rounded" style="height: 48px; width: 48px;">
+                        <i class="bi bi-person-bounding-box align-self-center fs-4 text-primary rounded-circle mx-auto"></i>
+                    </div>
+                    <div class="small ms-3">
+                        <b class="h5 text-primary fw-bold">Admin</b>
+                        <p class="small text-muted text-uppercase fw-bold mb-0">Certified Partner <i class="bi bi-patch-check-fill text-primary"></i></p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- App Switcher Modal -->
+            <div class="modal" id="mobileAppSelector" tabindex="-1" aria-labelledby="appSelectorLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header bg-light px-1 py-2">
+                            <div class="input-group bg-light border-0 align-self-center">
+                                <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control bg-light border-0 border-end-0" placeholder="Search App...">
+                            </div>
+                        </div>
+
+                        <div class="modal-body p-0" style="max-height: 300px;">
+
+                            <span class="bg-white d-flex sticky-top text-dark fw-bold text-uppercase px-3 py-2" style="font-size: 12px;">App List</span>
+
+                            <div class="list-group list-group-flush">
+
+                                <!-- Account -->
+                                <a href="https://account.auth.co" class="list-group-item list-group-item-action border-0 d-flex align-items-center" style="min-width: 15rem;">
+                                    <div class="bg-primary bg-opacity-10 border border-primary d-flex rounded" style="height: 44px; width: 44px;">
+                                        <i class="bi bi-person-badge align-self-center fs-4 text-primary rounded-circle mx-auto"></i>
+                                    </div>
+                                    <div class="flex-grow-1 small ms-3">
+                                        <span class="d-block fw-bold mb-0">Account</span>
+                                        <span class="d-block text-muted small">Manage you account and organisations</span>
+                                    </div>
+                                </a>
+
+                                <!-- Admin -->
+                                <a href="https://admin.auth.co" class="list-group-item list-group-item-action border-0 d-flex align-items-center" style="min-width: 15rem;">
+                                    <div class="bg-secondary bg-opacity-10 border border-secondary d-flex rounded" style="height: 44px; width: 44px;">
+                                        <i class="bi bi-person-bounding-box align-self-center fs-4 text-secondary rounded-circle mx-auto"></i>
+                                    </div>
+                                    <div class="flex-grow-1 small ms-3">
+                                        <span class="d-block fw-bold mb-0">Admin</span>
+                                        <span class="d-block text-muted small">Where we hang out to discuss the weather</span>
+                                    </div>
+                                </a>
+
+                                <!-- CRM -->
+                                <a href="https://crm.auth.co" class="list-group-item list-group-item-action border-0 d-flex align-items-center" style="min-width: 15rem;">
+                                    <div class="bg-primary bg-opacity-10 border border-primary d-flex rounded" style="height: 44px; width: 44px;">
+                                        <i class="bi bi-person-rolodex align-self-center fs-4 text-primary rounded-circle mx-auto"></i>
+                                    </div>
+                                    <div class="flex-grow-1 small ms-3">
+                                        <span class="d-block fw-bold mb-0">CRM</span>
+                                        <span class="d-block text-muted small">Customer Relationship Management System</span>
+                                    </div>
+                                </a>
+
+                                <!-- Partners Portal -->
+                                <a href="https://partners.auth.co" class="list-group-item list-group-item-action border-0 d-flex align-item-center" style="min-width: 15rem;">
+                                    <div class="bg-warning bg-opacity-10 border border-warning d-flex rounded" style="height: 44px; width: 44px;">
+                                        <i class="bi bi-shop align-self-center fs-4 text-warning rounded-circle mx-auto"></i>
+                                    </div>
+                                    <div class="flex-grow-1 small ms-3">
+                                        <span class="d-block fw-bold mb-0 ">Partners Portal</span>
+                                        <span class="d-block text-muted small">View Pricing, Get quotes, Place Orders</span>
+                                    </div>
+                                </a>
+
+                                <!-- Inventory -->
+                                <a href="https://inventory.auth.co" class="list-group-item list-group-item-action border-0 d-flex align-items-center" style="min-width: 15rem;">
+                                    <div class="bg-primary border border-primary bg-opacity-10 d-flex rounded" style="height: 44px; width: 44px;">
+                                        <i class="bi bi-journal-check align-self-center fs-4 text-primary rounded-circle mx-auto"></i>
+                                    </div>
+                                    <div class="flex-grow-1 small ms-3">
+                                        <span class="d-block fw-bold mb-0 lh-1">Inventory</span>
+                                        <span class="d-block text-muted small">Where, What, How Many Devices</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer bg-light justify-content-center small py-2">
+                            <a href="#" class="text-decoration-none">App Library</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Burger Menu Button -->
+        <div class="navbar-toggler border-0" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </div>
+
+        <!-- Nav Links -->
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav" style="height: 90vh;">
+
+                <!-- Organisation Dropdown -->
+                <li class="nav-item dropdown mt-4">
+                    <div class="form-select bg-light link-dark mb-1" style="height: 38px;" data-bs-toggle="dropdown" aria-expanded="false"></div>
+
+                    <!-- Dropdown -->
+                    <ul class="dropdown-menu bg-white border position-absolute overflow-scroll rounded p-2 w-100" style="max-height: 350px;">
+                        <!-- SearchBar -->
+                        <div class="input-group input-group-sm sticky-top">
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-search"></i>
+                            </span>
+
+                            <input class="form-control border border-start-0" type="text" placeholder="Search Organisation">
+                        </div>
+
+                        <!-- Organisation List -->
+                        <ul class="list-group list-group-flush small">
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">SUMEET TEST 2</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">SUMEET TEST</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">TEST CUSTOMER 5 LTD</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">PROGRESS RAIL SERVICES UK LTD - HQ</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">HEALTH AND BEYOND LIMITED</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">SUMEET CUSTOMER TEST</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">ABBEY MULTI ACADEMY TRUST</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">GOODWATER LIMITED</li>
+                            </a>
+
+                            <a href="#" class="text-decoration-none small">
+                                <li class="list-group-item border-0 hover rounded">REMOTE TECH LTD</li>
+                            </a>
+                        </ul>
+                    </ul>
+                </li>
+
+                <!-- List Item - Overview -->
+                <li class="nav-item mt-2">
+                    <a href="/" class="nav-link list-group-item-action d-flex align-items-center rounded-1 px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-speedometer me-2"></i>
+                        <p class="mb-0">Overview</p>
+                    </a>
+                </li>
+
+                <!-- List Item - Organisation -->
+                <li class="nav-item mt-2">
+                    <a href="/organisations.html" class="nav-link list-group-item-action rounded-1 d-flex align-items-center px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-buildings-fill me-2"></i>
+                        <p class="mb-0">Organisations</p>
+                        <span class="badge bg-white text-dark border ms-auto fw-bold align-self-center p-1" style="width: 48px;">16</span>
+                    </a>
+                </li>
+
+                <!-- List Item - Workspaces -->
+                <li class="nav-item mt-2">
+                    <a href="/workspaces.html" class="nav-link list-group-item-action rounded-1 d-flex align-items-center px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-pin-map-fill me-2"></i>
+                        <p class="mb-0">Workspaces</p>
+                        <span class="badge bg-white text-dark border ms-auto fw-bold align-self-center p-1" style="width: 48px;">16</span>
+                    </a>
+                </li>
+
+                <!-- List Item - Users -->
+                <li class="nav-item mt-2">
+                    <a href="/users.html" class="nav-link list-group-item-action d-flex align-items-center rounded-1 px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-people-fill me-2"></i>
+                        <p class="mb-0">Users</p>
+                    </a>
+                </li>
+
+                <!-- List Item - Services -->
+                <li class="nav-item mt-2">
+                    <a href="/services.html" class="nav-link list-group-item-action d-flex align-items-center rounded-1 px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-grid-fill me-2"></i>
+                        <p class="mb-0">Services</p>
+                    </a>
+                </li>
+
+                <!-- List Item - Activity -->
+                <li class="nav-item mt-2">
+                    <a href="/activity.html" class="nav-link list-group-item-action d-flex align-items-center rounded-1 px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-calendar2-week me-2"></i>
+                        <p class="mb-0">Activity</p>
+                    </a>
+                </li>
+
+                <!-- List Item - Notifications -->
+                <li class="nav-item mt-2">
+                    <a href="/notifications.html" class="nav-link list-group-item-action rounded-1 d-flex align-items-center px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-bell me-2"></i>
+                        <p class="mb-0">Notifications</p>
+                        <span class="badge bg-white text-dark border ms-auto fw-bold align-self-center p-1" style="width: 48px;">3</span>
+                    </a>
+                </li>
+
+                <!-- List Item - Documentation -->
+                <li class="nav-item mt-auto">
+                    <a href="/documenattion" class="nav-link list-group-item-action d-flex align-items-center rounded-1 px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-book-half me-2"></i>
+                        <p class="mb-0">Documentation</p>
+                    </a>
+                </li>
+
+                <!-- List Item - Support -->
+                <li class="nav-item mt-2">
+                    <a href="/support" class="nav-link list-group-item-action d-flex align-items-center rounded-1 px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-life-preserver me-2"></i>
+                        <p class="mb-0">Support</p>
+                    </a>
+                </li>
+
+                <!-- List Item - Admin User -->
+                <li class="nav-item bg-primary bg-opacity-10 d-flex my-2 text-primary">
+                    <a href="/me.html" class="nav-link list-group-item-action d-flex align-items-center rounded-1 px-3" aria-current="page" style="height: 44px;">
+                        <i class="bi bi-person-circle me-2"></i>
+                        <p class="mb-0">Admin User</p>
+                    </a>
+
+                    <a href="/login.html" class="nav-link d-flex align-items-center justify-content-center border rounded list-group-item-action rounded-3 px-3" style="height: 44px; width: 44px;">
+                        <i class="bi bi-power"></i>
+                    </a>
+                </li>
+
+                <div class="text-center small mb-2">
+                    <p class="text-muted border-top small mb-0" style="padding-top: 12px;">© 2024 REMOTE TECH LTD</p>
+                </div>
+
+            </ul>
+        </div>
+    </div>
+</nav>
