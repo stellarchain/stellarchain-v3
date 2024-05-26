@@ -20,7 +20,6 @@ services:
     volumes:
       - caddy_data:/data
       - caddy_config:/config
-      - ./resolv.conf:/etc/resolv.conf
     ports:
       # HTTP
       - target: 80
