@@ -11,7 +11,11 @@ use Twig\Environment;
  {
      #[Route('/', name: 'homepage')]
     public function index(Environment $twig): Response
-     {
-        return new Response($twig->render('index.html.twig'));
+    {
+         if ($this->isGranted('IS_GUEST', $this->getUser())) {
+            return new Response($twig->render('index.html.twig'));
+         } else {
+            return $this->redirectToRoute('app_dashboard'); // Replace with your desired route
+         }
      }
  }

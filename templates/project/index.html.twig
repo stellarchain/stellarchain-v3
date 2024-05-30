@@ -21,8 +21,8 @@
 <div class="container-fluid container-xl px-3 px-lg-5 py-2">
     <div class="row g-2">
         <div class="col-md-9">
-            {% for post in posts %}
-                {{include("dashboard/post.html.twig", {post})}}
+            {% for project in projects %}
+                {{include("project/project.html.twig", {project})}}
             {% endfor %}
         </div>
         <div class="col-md-3">

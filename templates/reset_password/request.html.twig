@@ -3,20 +3,44 @@
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address, and we will send you a
-                link to reset your password.
-            </small>
+    <div class="container vh-100 align-items-center d-flex">
+    <div class="w-100">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+                <div class="d-flex mb-2">
+                <!-- Icon -->
+                  <a href="/" class="mx-auto flex-shrink-0 bg-primary bg-opacity-10 rounded-3 d-flex" style="height: 60px; width: 60px;">
+                      <i class="bi bi-person-badge fs-2 rounded align-self-center mx-auto text-primary"></i>
+                  </a>
+                </div>
+                <div class="d-flex flex-column text-center mb-4">
+                   <p class="text-center fs-4 fw-semibold w-100 mb-2">Reset your password</p>
+                   <p class="small text-muted mb-2">
+                            Enter your email address, and we will send you a
+                            link to reset your password.
+                    </p>
+                </div>
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+                {{ form_start(requestForm) }}
+                    <div class="form-floating mb-2 w-100">
+                        <input
+                            name="{{ field_name(requestForm.email) }}"
+                            value="{{ field_value(requestForm.email) }}"
+                            placeholder="{{ field_label(requestForm.email) }}"
+                            class="form-control"
+                            type="text"
+                        >
+                        <label for="email" class="form-label required">Email</label>
+                        <div class="form-error">
+                            {{ form_errors(requestForm.email) }}
+                        </div>
+                    </div>
+                    <div class="mb-3"><button type="submit" id="submit" name="submit" class="btn-lg btn-primary w-100 btn">Send password reset email</button></div>
+                {{ form_end(requestForm) }}
+            </div>
         </div>
-
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+    </div>
 {% endblock %}
