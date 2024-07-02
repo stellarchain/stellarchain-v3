@@ -5,10 +5,10 @@
 {% block body %}
 
 <!-- Header -->
-<div class="bg-white border-bottom sticky-top p-3 pt-md-3 px-lg-5 w-100">
+<div class="bg-body border-bottom sticky-top p-3 pt-md-3 px-lg-5 w-100">
     <div class="div">
-        <span class="d-block d-lg-none fw-bold">Welcome to Stellar Community Fund</span>
-        <span class="d-none d-lg-block fs-5 fw-bold">Welcome to Stellar Community Fund</span>
+        <span class="d-block d-lg-none fw-bold">Dashboard</span>
+        <span class="d-none d-lg-block fs-5 fw-bold">Dashboard</span>
     </div>
 
     <!-- Navigation -->
@@ -21,9 +21,28 @@
 <div class="container-fluid container-xl px-3 px-lg-5 py-2">
     <div class="row g-2">
         <div class="col-md-9">
+            {% block post_form %}
+                {{ form_start(form) }}
+                        <div class="form-floating mb-2 w-100">
+                            <input
+                                name="{{ field_name(form.body) }}"
+                                value="{{ field_value(form.body) }}"
+                                placeholder="{{ field_label(form.body) }}"
+                                class="form-control"
+                                type="text"
+                            >
+                            <label for="username" class="form-label required">Whats on your mind?</label>
+                            <div class="form-error">
+                                {{ form_errors(form.body) }}
+                            </div>
+                        </div>
+                {{ form_end(form) }}
+            {% endblock %}
+            <div id="posts" {{ turbo_stream_listen('posts') }}>
             {% for post in posts %}
-                {{include("dashboard/post.html.twig", {post})}}
+                {{include("dashboard/post.html.twig", {post, chart})}}
             {% endfor %}
+            </div>
         </div>
         <div class="col-md-3">
             {{include('right-sidebar.html.twig')}}
@@ -31,4 +50,19 @@
     </div>
 
 </div>
+{% endblock %}
+
+{% block create %}
+<turbo-stream action="replace" targets="form[name=create_new_post_form]">
+    <template>
+        {{ block('post_form') }}
+    </template>
+</turbo-stream>
+<turbo-stream action="prepend" target="posts">
+    <template>
+        <div id="{{ 'post_' ~ id }}">
+            #{{ id }} created {{id}}
+        </div>
+    </template>
+</turbo-stream>
 {% endblock %}

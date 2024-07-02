@@ -1,0 +1,35 @@
+<div{{ attributes }}>
+    <div class="card-header px-0 border-0 pb-0">
+        <div class="d-flex align-items-center border-0 px-3 py-1">
+            <div class="flex-grow-1 d-flex flex-column lh-1">
+                <span class="fw-bold mb-1" href="#">Interesting Projects</span>
+                <div class="small">
+                    <span class="text-muted small mb-0">Based on community likes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-group mb-2 list-group-flush">
+        {% for project in this.projects %}
+        <div class="list-group-item list-group-item-action d-flex align-items-center py-1 border-0">
+            <a class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary" style="height: 36px; width: 36px;">
+                    <span class="align-self-center mx-auto fs-6 fw-bold">SC</span>
+                </div>
+            </a>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <a class="text-decoration-none fw-bold mb-1" href="/projects/stellarchain">{{project.name}}</a>
+                <div class="small text-secondary">
+                    <a class="text-decoration-none text-secondary small mb-0" href="/projects/stellarchain">
+                        @{{project.user.username}}
+                        <i class="bi bi-patch-check-fill text-primary ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Verified Project"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="small align-self-center">
+                <a class="badge bg-primary bg-opacity-25 text-primary text-decoration-none" href="#">Follow</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

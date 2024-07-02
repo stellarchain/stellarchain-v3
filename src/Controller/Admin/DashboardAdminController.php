@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Coin;
 use App\Entity\Post;
 use App\Entity\Project;
-use App\Entity\ProjectLike;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -44,8 +44,8 @@ class DashboardAdminController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Wall Posts', 'fas fa-list', Post::class);
+        yield MenuItem::linkToCrud('Coins', 'fas fa-list', Coin::class);
         yield MenuItem::linkToCrud('Projects', 'fas fa-list', Project::class);
-        yield MenuItem::linkToCrud('Projects Likes', 'fas fa-list', ProjectLike::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class)->setPermission('ROLE_ADMIN');
     }
 }

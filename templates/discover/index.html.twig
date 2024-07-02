@@ -1,0 +1,217 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discover{% endblock %}
+
+{% block body %}
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+
+    <div class="mt-4">
+        <div class="d-flex align-items-center small py-2">
+            <div class="flex-grow-1">
+                <span class="ps-0 mb-2 fs-1 fw-bold">Discover Stellar</span>
+            </div>
+            <!--<div class="flex-shrink-0 text-end">
+			        <b>Tuesday</b>
+			        <p class="small text-secondary mb-0">11th June 2024</p>
+			    </div>-->
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Stellar Essentials</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Must have projects for you</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/projects" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+
+    {% for i in 0..2 %}
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">StellarChain</b>
+                <div class="small text-secondary">
+                    <span class="small">Stellar Blockchain Explorer</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Staff Favorite"><i
+                        class="bi bi-star-fill text-warning align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Stellar Community Fund Winner"><i
+                        class="bi text-info  bi-award-fill align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Popular Projects</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Projects that other users found useful</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/projects" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+    <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
+        {% for i in 0..9 %}
+        <div class="list-group me-2">
+            <a class="list-group-item list-group-item-action p-2" href="#" style="min-width: 275px;">
+                <img src="/assets/example.png" class="img-fluid pb-3" style="max-height: 168px;">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 text-decoration-none" href="#">
+                        <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                            style="height: 36px; width: 36px;">
+                            <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                        <b class="mb-1">StellarChain</b>
+                        <div class="small text-secondary">
+                            <span class="small">Stellar Blockchain Explorer</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex">
+                        <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="Verified Project"><i
+                                class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Future Events</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Whats important things are coming soon</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/events" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+
+    {% for i in 0..9 %}
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="d-flex flex-column align-items-center justify-content-center rounded bg-primary bg-opacity-10 text-primary lh-1"
+                    style="height: 36px; width: 36px;">
+                    <div class="fs-6 fw-bold">15</div>
+                    <div class="small"><span class="small">Oct</span></div>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">Meridian 2024</b>
+                <div class="small text-secondary">
+                    <span class="small">London, United Kingdom</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Add to calendar"><i
+                        class="bi bi-calendar-plus-fill align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Communities</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">People with the similar interests as you</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/communities" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+    <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
+        {% for i in 0..9 %}
+        <div class="list-group me-2">
+            <a class="list-group-item list-group-item-action px-1 py-3 text-center" href="#" style="min-width: 180px;">
+                <div class="bg-primary bg-opacity-25 border border-primary rounded d-flex mx-auto mt-2 mb-2"
+                    style="height: 48px; width: 48px;">
+                    <i class="bi bi-people rounded-circle align-self-center mx-auto text-primary"
+                        style="font-size:24px;"></i>
+                </div>
+                <div class="small">
+                    <p class="lh-1 mb-1 fw-bold">StellarChain</p>
+                    <p class="small text-secondary mb-0">Stellar Blockchain Explorer</p>
+                    <p class="small text-secondary mb-0"><b>234</b> members &middot; <b>535</b> posts</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Stellar Jobs</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Projects that need your help</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/jobs" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+
+    {% for i in 0..9 %}
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <i class="bi bi-briefcase rounded-circle align-self-center mx-auto fw-bold"></i>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">PHP Backend Developer</b>
+                <div class="small text-secondary">
+                    <span class="small">$70k - $150k &middot; @stellarchain</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-primary d-flex px-1 py-0 rounded hover small fw-bolder align-self-center">NEW</span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="United Kingdom"><span class="fi fi-gb"></span></span>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+
+    <div class="py-4">
+        <span>&nbsp;</span>
+    </div>
+
+    <div class="mt-0 d-block d-sm-none">
+        <span>&nbsp;</span>
+    </div>
+</div>
+{% endblock %}

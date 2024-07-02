@@ -55,22 +55,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $projects;
 
     /**
-     * @var Collection<int, ProjectLike>
-     */
-    #[ORM\OneToMany(targetEntity: ProjectLike::class, mappedBy: 'user_id')]
-    private Collection $projectLikes;
-
-    /**
      * @var Collection<int, Post>
      */
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user_id')]
     private Collection $posts;
 
+    /**
+     * @var Collection<int, Like>
+     */
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user_id')]
+    private Collection $likes;
+
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user_id')]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
-        $this->projectLikes = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -227,14 +234,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, ProjectLike>
-     */
-    public function getProjectLikes(): Collection
-    {
-        return $this->projectLikes;
-    }
-
-    /**
      * @return Collection<int, Post>
      */
     public function getPosts(): Collection
@@ -263,4 +262,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUserId() === $this) {
+                $comment->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

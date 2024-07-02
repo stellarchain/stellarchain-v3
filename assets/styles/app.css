@@ -1,3 +1,16 @@
-body {
-    background-color: skyblue;
+.sm-chart {
+    width: 100px !important;
+    height: 35px !important;
 }
+
+.ts-dropdown, .ts-control, .ts-control input {
+    color: #FFF !important;
+}
+
+:root {
+    --bs-list-group-action-hover-color: #0d6efd;
+}
+
+canvas#race{position:relative; z-index:1;}
+
+

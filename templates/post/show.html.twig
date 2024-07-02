@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Post{% endblock %}
+
+{% set content_title = post.title %}
+{% block body %}
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+    {% include 'content-header.html.twig' with {'right_block': false} %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <div class="card card-body">
+                {{post.body}}
+            </div>
+
+            <div class="container my-5">
+
+
+                <div class="mb-4">
+                    {{ form_start(newCommentForm) }}
+                    <div class="form-floating mb-2 w-100">
+                        {{ form_widget(newCommentForm.content, {'attr': {'class': 'form-control'}}) }}
+                        <label for="content" class="form-label required">Leave a comment</label>
+                        <div class="form-error">
+                            {{ form_errors(newCommentForm.content) }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    {{ form_end(newCommentForm) }}
+                </div>
+
+                <div id="commentsList">
+
+                    {% for comment in post.comments %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{comment.user.username}}</h5>
+                            <p class="card-text">{{comment.content}}</p>
+                            <button class="btn btn-link btn-sm reply-button">Reply</button>
+
+                            <!-- Reply Form -->
+                            <div class="reply-form d-none">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="replyText" class="form-label">Reply</label>
+                                        <textarea class="form-control" rows="2" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                </form>
+                            </div>
+
+                            {% for reply in comment.replies %}
+                            <div class="mt-3">
+                                <div class="card mb-2 ms-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{reply.user.username}}</h6>
+                                        <p class="card-text">{{reply.content}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

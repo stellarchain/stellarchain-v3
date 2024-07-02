@@ -1,6 +1,6 @@
 {# Learn how to use Turbo Streams: https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-<turbo-stream action="append" target="posts">
+<turbo-stream action="prepend" target="posts">
     <template>
         <div id="{{ 'post_' ~ id }}">
             #{{ id }} created
@@ -8,7 +8,6 @@
     </template>
 </turbo-stream>
 {% endblock %}
-
 {% block update %}
 <turbo-stream action="update" target="post_{{ id }}">
     <template>

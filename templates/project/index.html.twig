@@ -1,34 +1,271 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Projects{% endblock %}
 
 {% block body %}
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
 
-<!-- Header -->
-<div class="bg-white border-bottom sticky-top p-3 pt-md-3 px-lg-5 w-100">
-    <div class="div">
-        <span class="d-block d-lg-none fw-bold">Welcome to Stellar Community Fund</span>
-        <span class="d-none d-lg-block fs-5 fw-bold">Welcome to Stellar Community Fund</span>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="nav mt-3 mt-lg-2 flex-nowrap overflow-auto">
-      <a href="#" class="nav-link tab-link active ps-0 text-nowrap pt-0 pb-1">For you</a>
-      <a href="#" class="nav-link tab-link text-nowrap text-muted pt-0 pb-1">Following</a>
-    </nav>
-</div>
-
-<div class="container-fluid container-xl px-3 px-lg-5 py-2">
-    <div class="row g-2">
-        <div class="col-md-9">
-            {% for project in projects %}
-                {{include("project/project.html.twig", {project})}}
-            {% endfor %}
+    <div class="mt-4">
+        <div class="d-flex align-items-center small py-2">
+            <div class="flex-grow-1">
+                <span class="ps-0 mb-2 fs-1 fw-bold">Projects</span>
+            </div>
         </div>
-        <div class="col-md-3">
-            {{include('right-sidebar.html.twig')}}
+    </div>
+    <div class="card border-primary mb-2">
+        <div class="card-body rounded py-2 ">
+            <div class="d-flex gap-3 align-items-center">
+                <i class="bi bi-award text-primary fs-2"></i>
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="fw-bold mb-0">Building on Stellar?</p>
+                    <p class="small mb-0">Get $50-100k to build your idea!</p>
+                </div>
+                <a class="btn btn-primary ms-auto" href="/projects" role="button">Join Now</a>
+            </div>
         </div>
     </div>
 
+    <div class="bg-black sticky-top pb-2">
+        <div class="py-1 px-2 menu border rounded">
+            <ul class="nav nav-pills nav-justified ">
+                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder active" aria-current="page"
+                        href="/projects">Discover</a></li>
+                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="/projects/timeline">Timeline</a>
+                </li>
+                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="/projects/list">List</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Stellar Essentials</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Must have projects for you</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/projects" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">StellarChain</b>
+                <div class="small text-secondary">
+                    <span class="small">Stellar Blockchain Explorer</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Staff Favorite"><i
+                        class="bi bi-star-fill text-warning align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Stellar Community Fund Winner"><i
+                        class="bi text-info  bi-award-fill align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">StellarChain</b>
+                <div class="small text-secondary">
+                    <span class="small">Stellar Blockchain Explorer</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Staff Favorite"><i
+                        class="bi bi-star-fill text-warning align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Stellar Community Fund Winner"><i
+                        class="bi text-info  bi-award-fill align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">StellarChain</b>
+                <div class="small text-secondary">
+                    <span class="small">Stellar Blockchain Explorer</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Staff Favorite"><i
+                        class="bi bi-star-fill text-warning align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Stellar Community Fund Winner"><i
+                        class="bi text-info  bi-award-fill align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Popular Projects</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Projects that other users found useful</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/projects" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+    <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
+        {% for project in projects %}
+            {{include("project/parts/project_card.html.twig", {project})}}
+        {% endfor %}
+    </div>
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Stellar Essentials</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Must have projects for you</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/projects" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">StellarChain</b>
+                <div class="small text-secondary">
+                    <span class="small">Stellar Blockchain Explorer</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Staff Favorite"><i
+                        class="bi bi-star-fill text-warning align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Stellar Community Fund Winner"><i
+                        class="bi text-info  bi-award-fill align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">StellarChain</b>
+                <div class="small text-secondary">
+                    <span class="small">Stellar Blockchain Explorer</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Staff Favorite"><i
+                        class="bi bi-star-fill text-warning align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Stellar Community Fund Winner"><i
+                        class="bi text-info  bi-award-fill align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+    <div class="list-group mb-2">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">StellarChain</b>
+                <div class="small text-secondary">
+                    <span class="small">Stellar Blockchain Explorer</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Staff Favorite"><i
+                        class="bi bi-star-fill text-warning align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Stellar Community Fund Winner"><i
+                        class="bi text-info  bi-award-fill align-self-center"></i></span>
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </a>
+    </div>
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Popular Projects</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Projects that other users found useful</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/projects" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+    <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
+        {% for project in projects %}
+            {{include("project/parts/project_card.html.twig", {project})}}
+        {% endfor %}
+    </div>
+
+
+    <div class="py-4">
+        <span>&nbsp;</span>
+    </div>
+
+    <div class="mt-0 d-block d-sm-none">
+        <span>&nbsp;</span>
+    </div>
 </div>
 {% endblock %}

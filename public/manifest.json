@@ -1,0 +1,12 @@
+{
+  "short_name": "StellarChain",
+  "name": "StellarChain",
+  "id": "/",
+  "start_url": "/",
+  "background_color": "#000000",
+  "display_override": ["window-control-overlay", "minimal-ui"],
+  "display": "fullscreen",
+  "scope": "/",
+  "theme_color": "#000000",
+  "description": ""
+}

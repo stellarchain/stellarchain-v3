@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% set content_title = 'Stellar Today' %}
+
+{% block body %}
+<div class="row g-2">
+    <div class="col-lg-8 col-xl-9 col-12">
+        {% include 'content-header.html.twig' with {'right_block': true} %}
+        <div class="py-1 px-2 menu sticky-top border rounded mb-2">
+            <ul class="nav nav-pills nav-justified" role="tablist" id="pills-tab">
+                <li class="nav-item py-0" role="presentation">
+                    <a class="nav-link py-1 tabs fw-bolder active" id="pills-hot-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-hot" aria-controls="pills-hot" aria-selected="true" role="tab" href="#">
+                        <i class="bi bi-lightning-fill me-2"></i>
+                        Hot
+                    </a>
+                </li>
+
+                <li class="nav-item py-0" role="presentation">
+                    <a class="nav-link py-1 tabs fw-bolder" id="pills-new-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-new" aria-controls="pills-new" aria-selected="true" role="tab" href="#">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        New
+                    </a>
+                </li>
+
+                <li class="nav-item py-0" role="presentation">
+                    <a class="nav-link py-1 tabs fw-bolder" id="pills-top-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-top" aria-controls="pills-top" aria-selected="true" role="tab" href="#">
+                        <i class="bi bi-arrow-up-circle-fill me-2"></i>
+                        Top
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row g-2">
+    <div class="col-lg-8 col-xl-9 col-12 vh-100 overflow-y-scroll overflow-x-hidden d-flex flex-column hide-scrollbar">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-hot" role="tabpanel" aria-labelledby="pills-hot-tab">
+                {{ component('posts-component', { type: 'hot'}) }}
+            </div>
+
+            <div class="tab-pane fade" id="pills-new" role="tabpanel" aria-labelledby="pills-new-tab">
+                New
+            </div>
+
+            <div class="tab-pane fade" id="pills-top" role="tabpanel" aria-labelledby="pills-top-tab">
+                Top
+            </div>
+        </div>
+
+        <div class="py-5 mb-4">
+            <span>&nbsp;</span>
+        </div>
+        <div class="mt-5 d-block d-sm-none">
+            <span>&nbsp;</span>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-xl-3 d-none d-lg-block vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+        <div class="card mb-2">
+            {{ include("/dashboard/market-information.html.twig") }}
+        </div>
+
+        <div class="card mb-2">
+            {{ component('interesting-projects') }}
+        </div>
+
+        <div class="card mb-2">
+            {{ component('popular-tags') }}
+        </div>
+
+        <div class="card mb-2">
+            {{ component('users-to-follow') }}
+        </div>
+
+        <div class="py-5 mb-4">
+            <span>&nbsp;</span>
+        </div>
+    </div>
+</div>
+
+<div class="mb-5 pb-2">
+    &nbsp;
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+    const eventSource = new EventSource("{{ mercure('stellar-real-time-data')|escape('js') }}");
+    eventSource.onmessage = event => {
+        const data = JSON.parse(event.data);
+        const stats = data;
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                const stat = data[key];
+                const element = document.querySelector(`[data-stat="${key}"]`);
+                if (element) {
+                    if (key === 'rank') {
+                        element.innerHTML = stat.value;
+                    } else if (key === 'circulating_supply') {
+                        element.innerHTML = `XLM ${stat.value}`;
+                    } else if (key === 'market_cap_dominance') {
+                        element.innerHTML = `${stat.value}%`;
+                    } else if (key === 'price_usd') {
+                        element.innerHTML = `$${stat.value}`;
+                    } else {
+                        element.innerHTML = `$${stat.value}`;
+                    }
+
+                    const prevValue = parseFloat(stat.prev_value.replace(/,/g, ''));
+                    const currentValue = parseFloat(stat.value.replace(/,/g, ''));
+                    const change = prevValue != null ? (currentValue - prevValue) : 0;
+                    const percentageChange = prevValue != null && prevValue != 0 ? ((change / prevValue) * 100).toFixed(2) : 0;
+                    const caretDirection = change < 0 ? 'down' : 'up';
+                    const color = change < 0 ? 'danger' : 'success';
+                    const displayChange = key === 'rank' ? percentageChange.replace('-', '') : percentageChange;
+
+                    const badge = element.closest('.list-group-item').querySelector('.badge');
+                    if (badge) {
+                        badge.classList.remove('text-success', 'text-danger', 'bg-success', 'bg-danger');
+                        badge.classList.add(`text-${color}`, `bg-${color}`);
+                        badge.innerHTML = `<i class="bi bi-caret-${caretDirection}-fill"></i> ${displayChange}%`;
+                    }
+                }
+            }
+        };
+    }
+</script>
+{% endblock %}

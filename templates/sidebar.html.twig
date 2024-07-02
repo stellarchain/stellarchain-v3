@@ -1,113 +1,185 @@
- <!-- Sidebar Navigation -->
-<div class="bg-white border-end d-none d-lg-flex flex-column flex-shrink-0 vh-100" style="width: 280px;">
-
-    <a href="/" class="text-decoration-none">
-        <div class="p-4">
-            <img src="/assets/img/logo_black.svg" class="img-fluid" style="max-height:48px;">
+<!-- Sidebar Navigation -->
+<div class="border-end d-none d-lg-flex flex-column flex-shrink-0 vh-100 menu" style="width: 280px;" id="nav">
+    <a href="{{path('app_dashboard')}}" class="text-decoration-none">
+        <div class="p-2">
+            <div class="d-flex align-items-center hover rounded-1 p-2">
+                <div class="bg-primary bg-opacity-10 d-flex rounded" style="height: 48px; width: 48px;">
+                    <i class="bi bi-search align-self-center fs-4 text-primary rounded-circle mx-auto"></i>
+                </div>
+                <div class="flex-grow-1 small ms-3">
+                    <b class="h5 text-primary fw-bold">StellarChain</b>
+                    <p class="small text-muted text-uppercase fw-bold mb-0">Blockchain Explorer</p>
+                </div>
+            </div>
         </div>
     </a>
 
     <div class="text-nowrap px-3 mb-3">
         <div class="input-group">
-            <span class="input-group-text border-end-0 bg-white" id="basic-addon1"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control border-start-0" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1">
+            <span class="input-group-text border-end-0" id="basic-addon1"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="Search" aria-label="Search"
+                aria-describedby="basic-addon1"
+                {{ stimulus_controller(
+                    'symfony/ux-autocomplete/autocomplete',
+                    {
+                        url: path('ux_entity_autocomplete', { alias: 'search' })
+                    },
+                )}}>
         </div>
     </div>
 
     <div class="overflow-auto">
         <ul class="nav flex-column px-3">
             <li class="nav-item">
-                <a href="/" class="nav-link list-group-item-action bg-primary bg-opacity-10 rounded-1 d-flex align-items-center text-primary">
-                    <i class="bi bi-house-fill me-2"></i>
-                    <p class="mb-0">Home</p>
+                <a href="{{path('app_dashboard')}}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                        {% if app.request.get('_route') == 'app_dashboard' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                    ">
+                    <i class="bi bi-collection me-2"></i>
+                    <p class="mb-0">Today</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/popular" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                    <i class="bi bi-lightning-fill me-2"></i>
-                    <p class="mb-0">Popular</p>
+                <a href="{{path('app_discover')}}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                        {% if app.request.get('_route') == 'app_discover' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                    ">
+                    <i class="bi bi-compass me-2"></i>
+                    <p class="mb-0">Discover</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/latest" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                    <i class="bi bi-clock me-2"></i>
-                    <p class="mb-0">Latest</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/featured" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                    <i class="bi bi-star-fill me-2 text-warning"></i>
-                    <p class="mb-0">Featured</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/projects" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
+                <a href="{{path('app_projects')}}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                        {% if app.request.get('_route') == 'app_projects' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                    ">
                     <i class="bi bi-list-ul me-2"></i>
                     <p class="mb-0">Projects</p>
-                    <span class="badge bg-white text-dark border ms-auto fw-bold align-self-center p-1" style="width: 48px;">23</span>
+                    <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
+                        style="width: 48px;">{{counts.projects}}</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/communities" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                    <i class="bi bi-people-fill me-2"></i>
+                <a href="{{ path('app_communities') }}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                    {% if app.request.get('_route') == 'app_communities' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                ">
+                    <i class="bi bi-people me-2"></i>
                     <p class="mb-0">Communities</p>
-                    <span class="badge bg-white text-dark border ms-auto fw-bold align-self-center p-1" style="width: 48px;">23</span>
+                    <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
+                        style="width: 48px;">23</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/events" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                    <i class="bi bi-bookmark-star-fill me-2"></i>
-                    <p class="mb-0">Events</p>
-                    <span class="badge bg-white text-dark border ms-auto fw-bold align-self-center p-1" style="width: 48px;">23</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/jobs" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                    <i class="bi bi-briefcase-fill me-2"></i>
+                <a href="{{ path('app_jobs') }}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                    {% if app.request.get('_route') == 'app_jobs' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                ">
+                    <i class="bi bi-briefcase me-2"></i>
                     <p class="mb-0">Jobs</p>
-                    <span class="badge bg-white text-dark border ms-auto fw-bold align-self-center p-1" style="width: 48px;">23</span>
+                    <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
+                        style="width: 48px;">23</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/statistics" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                    <i class="bi bi-bar-chart-fill me-2"></i>
+                <a href="{{ path('app_events') }}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                    {% if app.request.get('_route') == 'app_events' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                ">
+                    <i class="bi bi-bookmark-star me-2"></i>
+                    <p class="mb-0">Events</p>
+                    <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
+                        style="width: 48px;">23</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('app_markets') }}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                    {% if app.request.get('_route') == 'app_markets' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                ">
+                    <i class="bi bi-graph-up-arrow me-2"></i>
+                    <p class="mb-0">Markets</p>
+                    <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
+                        style="width: 48px;">23</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href=" {{path('app_community_fund')}} " class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                    {% if app.request.get('_route') == 'app_community_fund' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                ">
+                    <i class="bi bi-award me-2"></i>
+                    <p class="mb-0">Community Fund</p>
+                    <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
+                        style="width: 48px;">23</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://stellarchain.io" target="_blank"
+                    class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover">
+                    <i class="bi bi-search me-2"></i>
+                    <p class="mb-0">Explorer</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{path('app_statistics')}}"
+                    class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                    {% if app.request.get('_route') == 'app_statistics' %} bg-primary bg-opacity-25 text-primary {% endif %}">
+                    <i class="bi bi-bar-chart me-2"></i>
                     <p class="mb-0">Statistics</p>
                 </a>
             </li>
         </ul>
     </div>
-    <ul class="nav flex-column mt-auto mb-0 px-3 pt-3">
+
+    <ul class="nav flex-column mt-auto mb-0 px-3 pt-3" {{stimulus_controller('settings')}}>
         <li class="nav-item">
-            <a href="#" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                <i class="bi bi-file-earmark-text me-2"></i>
-                <p class="mb-0">Rules</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
+            <a class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center"
+                {{stimulus_action('settings', 'showModal' , 'click' )}}>
                 <i class="bi bi-emoji-smile me-2"></i>
                 <p class="mb-0">Feedback</p>
             </a>
+
+            <div class="modal fade" {{stimulus_target('settings', 'modal' ) }}>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Modal body text goes here.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button {{stimulus_action('settings', 'closeModal' , 'click' )}}
+                                class="btn btn-secondary">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center">
-                <i class="bi bi-life-preserver me-2"></i>
-                <p class="mb-0">Support</p>
+            <a href="#" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center pe-1">
+                <i class="bi bi-front me-2"></i>
+                <p class="mb-0">Dark Mode</p>
+                <div class="form-check form-switch ms-auto align-self-center p-1">
+                    <input class="form-check-input p-0 m-0" type="checkbox" id="darkModeSwitch" checked
+                        {{stimulus_target('settings', 'darkModeSwitch' ) }} {{stimulus_action('settings', 'toggle'
+                        , 'click' )}}>
+                </div>
             </a>
         </li>
         <li class="nav-item hover rounded-1 d-flex justify-content-between">
             {% if app.user %}
-                <a href="/account" class="nav-link link-dark "><i class="bi bi-person-circle me-2"></i>{{ app.user.firstName }} {{ app.user.lastName }}</a>
-                <a href="{{path('app_logout')}}" class="float-end mt-2 link-dark"><i class="bi bi-power me-2"></i></a>
+            <a href="/account" class="nav-link"><i class="bi bi-person-circle me-2"></i>
+                {{ app.user.firstName}} {{ app.user.lastName }}
+            </a>
+            <a href="{{path('app_logout')}}" class="float-end mt-2">
+                <i class="bi bi-power me-2"></i>
+            </a>
             {% endif %}
             {% if not app.user %}
-                <a href="/login" class="nav-link link-dark "><i class="bi bi-person-circle me-2"></i>Login</a>
+            <a href="/login" class="nav-link"><i class="bi bi-person-circle me-2"></i>Login</a>
             {% endif %}
         </li>
     </ul>
 
-    <!-- Footer -->
     <div class="text-center small mt-3 px-3 pb-3">
-        <p class="border-top text-muted small mb-0" style="padding-top: 12px;">&copy; <?=date("Y")?> StellarChain.io</p>
+        <p class="border-top text-muted small mb-0" style="padding-top: 12px;">&copy;
+            <?=date("Y")?> StellarChain.io
+        </p>
     </div>
 </div>

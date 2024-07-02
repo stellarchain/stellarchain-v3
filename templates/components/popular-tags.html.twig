@@ -1,0 +1,25 @@
+<div{{ attributes }}>
+    <div class="card-header px-0 border-0 pb-0">
+        <div class="d-flex align-items-center border-0 px-3 py-1">
+            <div class="flex-grow-1 d-flex flex-column lh-1">
+                <span class="fw-bold mb-1" href="#">Popular Tags</span>
+                <div class="small">
+                    <span class="text-muted small mb-0">Updated every 5m</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-group mb-2 list-group-flush">
+        {% for i in 0..2 %}
+        <a class="list-group-item list-group-item-action d-flex align-items-center py-1 border-0 hover rounded-0"
+            href="/tags/stellar">
+            <div class="flex-grow-1 d-flex flex-column lh-1 small">
+                <b class="mb-1">#stellar</b>
+                <div class="small text-secondary">
+                    <span class="small mb-0">2{{i}} posts</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>

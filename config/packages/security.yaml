@@ -20,6 +20,10 @@ security:
                 login_path: app_login
                 check_path: app_login
                 default_target_path: app_dashboard 
+                always_use_default_target_path: false
+                failure_path: app_login
+                failure_forward: false
+                use_referer: true
                 enable_csrf: true
             logout:
                 path: app_logout

@@ -1,0 +1,29 @@
+<div class="list-group me-2">
+    <a class="list-group-item list-group-item-action p-2" href="{{ path('app_project_show', {slug: project.project.slug}) }}" style="min-width: 275px;">
+        <img src="{{vich_uploader_asset(project.project)}}"  class="img-fluid pb-3" style="max-height: 168px;">
+        <div class="d-flex align-items-center">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">
+                        {{app.user.firstName|first}}
+                        {{app.user.lastName|first}}
+                    </span>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">{{project.project.name}}</b>
+                <div class="small text-secondary">
+                    {{ project.project.createdAt| time_diff}}
+                    <span class="small">{{project.project.description}} {{project.likes}} </span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
+            </div>
+        </div>
+    </a>
+</div>
+

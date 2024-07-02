@@ -1,0 +1,13 @@
+<div class="mt-4">
+    <div class="d-flex align-items-center small py-2">
+        <div class="flex-grow-1">
+            <span class="ps-0 mb-2 fs-1 fw-bold">{{ content_title }}</span>
+        </div>
+        {% if right_block is defined and right_block  %}
+        <div class="flex-shrink-0 text-end">
+            <b>{{ 'now' | date("l")}}</b>
+            <p class="small text-secondary mb-0">$0.1153 &middot;11th June</p>
+        </div>
+        {% endif %}
+    </div>
+</div>

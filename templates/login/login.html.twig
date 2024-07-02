@@ -16,8 +16,20 @@
                     <div class="d-flex flex-column text-center mb-4">
                        <p class="text-center fs-4 fw-semibold w-100 mb-2">Login to your Account</p>
                        <p class="small text-muted mb-2">Enter your details to access all Stellar Community Fund services</p>
+                         <div class="p-5" style="font-size: 1.3em;">
+                                {% set strings = [
+                                'I ❤️ StellarChain!',
+                            ] %}
+                            <span
+                                data-controller="symfony--ux-typed"
+                                data-symfony--ux-typed-loop-value="true"
+                                data-symfony--ux-typed-show-cursor-value="true"
+                                data-symfony--ux-typed-cursor-char-value="✨"
+                                data-symfony--ux-typed-strings-value="{{ strings|json_encode|e('html_attr') }}"
+                            ></span>
+                        </div>
                     </div>
-                    <form method="post">
+                    <form method="post" >
                         {% if error %}
                             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                         {% endif %}
@@ -32,7 +44,8 @@
                             <label for="username" class="form-label required">Email Address / Username</label>
                         </div>
                         <div class="form-floating mb-2 w-100">
-                            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Password" required>
+                        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Password" required
+                            {{ stimulus_controller('symfony/ux-toggle-password/toggle-password')}}>
                             <label for="password" class="form-label required">Password</label>
                         </div>
                         <input type="hidden" name="_csrf_token"
@@ -47,7 +60,7 @@
                         <span class=" mt-2 mb-3 float-end">
                             <a href="{{path('app_forgot_password_request')}}" class="text-decoration-none">Forgot password?</a>
                         </span>
-                        <div class="mb-3"><button type="submit" id="submit" name="submit" class="btn-lg btn-primary w-100 btn">Login</button></div>
+                    <div class="mb-3"><button type="submit" id="submit" name="submit" class="btn-lg btn-primary w-100 btn">Login</button></div>
                     </form>
                     <div class="text-center">
                         <a class="text-decoration-none" href="{{path('app_register')}}"> Create new account </a>
@@ -69,7 +82,7 @@
                       </ul>
                     </div>
                     <div class="mt-1 text-center small">
-                       <p class="small text-muted opacity-50">Copyright © 2024 Stellar Community Fund</p>
+                    <p class="small text-muted opacity-50">Copyright © {{ "now"|date("Y") }} StellarChain Community</p>
                     </div>
                 </div>
             </div>

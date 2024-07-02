@@ -38,7 +38,7 @@ class Project
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user_id = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Gedmo\Slug(fields: ['name'])]
@@ -47,19 +47,18 @@ class Project
     #[Vich\UploadableField(mapping: 'projects', fileNameProperty: 'image.name', size: 'image.size')]
     private ?File $imageFile = null;
 
+
     #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private ?EmbeddedFile $image = null;
 
-    /**
-     * @var Collection<int, ProjectLike>
-     */
-    #[ORM\OneToMany(targetEntity: ProjectLike::class, mappedBy: 'project')]
-    private Collection $projectLikes;
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "project")]
+    private $comments;
 
     public function __construct()
     {
         $this->image = new EmbeddedFile();
-        $this->projectLikes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,14 +135,14 @@ class Project
         }
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): static
+    public function setUser(?User $user_id): static
     {
-        $this->user_id = $user_id;
+        $this->user = $user_id;
 
         return $this;
     }
@@ -167,8 +166,6 @@ class Project
         $this->imageFile = $imageFile;
 
         if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
             $this->updated_at = new \DateTimeImmutable();
         }
     }
@@ -188,30 +185,27 @@ class Project
         return $this->image;
     }
 
-    /**
-     * @return Collection<int, ProjectLike>
-     */
-    public function getProjectLikes(): Collection
+    public function getComments(): Collection
     {
-        return $this->projectLikes;
+        return $this->comments;
     }
 
-    public function addProjectLike(ProjectLike $projectLike): static
+    public function addComment(Comment $comment): self
     {
-        if (!$this->projectLikes->contains($projectLike)) {
-            $this->projectLikes->add($projectLike);
-            $projectLike->setProject($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setProject($this);
         }
 
         return $this;
     }
 
-    public function removeProjectLike(ProjectLike $projectLike): static
+    public function removeComment(Comment $comment): self
     {
-        if ($this->projectLikes->removeElement($projectLike)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($projectLike->getProject() === $this) {
-                $projectLike->setProject(null);
+            if ($comment->getProject() === $this) {
+                $comment->setProject(null);
             }
         }
 

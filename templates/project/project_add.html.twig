@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block sidebar %}
+    {{include('sidebar.html.twig')}}
+    {{include('burger-menu.html.twig')}}
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid container-xl px-3 px-lg-5 py-2">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+            <div class="d-flex mb-2">
+              <a href="/" class="mx-auto flex-shrink-0 bg-primary bg-opacity-10 rounded-3 d-flex" style="height: 60px; width: 60px;">
+                  <i class="bi bi-person-badge fs-2 rounded align-self-center mx-auto text-primary"></i>
+              </a>
+            </div>
+            <div class="d-flex flex-column text-center mb-4">
+               <p class="text-center fs-4 fw-semibold w-100 mb-2">Submit project</p>
+               <p class="small text-muted mb-2">
+                    Describe your project
+                </p>
+            </div>
+            {{ form_start(projectForm) }}
+                {{ form_row(projectForm.name) }}
+                {{ form_errors(projectForm.name) }}
+                {{ form_widget(projectForm.imageFile) }}
+                {{ form_row(projectForm.description) }}
+                {{ form_row(projectForm.budget) }}
+                <div class="mb-3"><button type="submit" id="submit" name="submit" class="btn-lg btn-primary w-100 btn">Submit project</button></div>
+            {{ form_end(projectForm) }}
+    </div>
+</div>
+
+{% endblock %}

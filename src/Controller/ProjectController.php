@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Service\LikeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,6 +13,12 @@ use App\Form\ProjectFormType;
 
 class ProjectController extends AbstractController
 {
+    private $likeService;
+
+    public function __construct(LikeService $likeService)
+    {
+        $this->likeService = $likeService;
+    }
 
     #[Route('/projects', name: 'app_projects')]
     public function projects(EntityManagerInterface $entityManager): Response
@@ -19,9 +26,17 @@ class ProjectController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
         $projects = $entityManager->getRepository(Project::class)->findBy([], ['id' => 'DESC']);
+        $projectsWithLikes = [];
+
+        foreach ($projects as $project) {
+            $projectsWithLikes[] = [
+                'project' => $project,
+                'likes' => $this->likeService->countLikesForProject($project->getId()),
+            ];
+        }
 
         return $this->render('project/index.html.twig', [
-            'projects' => $projects
+            'projects' => $projectsWithLikes
         ]);
     }
 
@@ -72,20 +87,21 @@ class ProjectController extends AbstractController
         ]);
         $form->handleRequest($request);
 
+        $response = new Response(null, 200);
         if ($form->isSubmitted() && $form->isValid()) {
             $project->updateTimestamps();
             $project->setUserId($this->getUser());
             $entityManager->persist($project);
             $entityManager->flush();
-
+            $response = new Response(null, 422);
         }
-        $response = new Response(null, $form->isSubmitted() ? 422 : 200);
-        return $this->render('project/project_form.html.twig', [
+
+        return $this->render('project/project_add.html.twig', [
             'projectForm' => $form,
         ], $response);
     }
 
-    #[Route('/projects/{slug}', name: 'app_project')]
+    #[Route('/projects/{slug}', name: 'app_project_show')]
     public function project(EntityManagerInterface $entityManager, string $slug): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
