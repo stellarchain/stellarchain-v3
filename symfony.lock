@@ -185,6 +185,18 @@
             "ref": "98a27687305d236709390ff01d7a6a9818735b97"
         }
     },
+    "symfony/monolog-bundle": {
+        "version": "3.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.7",
+            "ref": "aff23899c4440dd995907613c1dd709b6f59503f"
+        },
+        "files": [
+            "config/packages/monolog.yaml"
+        ]
+    },
     "symfony/notifier": {
         "version": "7.0",
         "recipe": {
