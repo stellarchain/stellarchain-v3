@@ -35,7 +35,7 @@ services:
         published: ${HTTP3_PORT:-443}
         protocol: udp
 
-  php-worker:
+  worker:
     build:
       context: .
       target: frankenphp_dev

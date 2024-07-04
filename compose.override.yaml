@@ -20,7 +20,7 @@ services:
       - host.docker.internal:host-gateway
     tty: true
 
-  php-worker:
+  worker:
     volumes:
       - ./:/app
 

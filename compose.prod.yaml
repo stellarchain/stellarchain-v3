@@ -9,7 +9,7 @@ services:
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
 
-  php-worker-async:
+  worker:
     build:
       context: .
       target: frankenphp_prod
