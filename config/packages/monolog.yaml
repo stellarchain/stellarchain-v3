@@ -10,6 +10,13 @@ when@dev:
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 channels: ["!event"]
+
+            file:
+                type: stream
+                path: /var/log/prod.log
+                level: debug
+                formatter: monolog.formatter.json
+
             # uncomment to get logging in your browser
             # you may have to allow bigger header sizes in your Web server configuration
             #firephp:
@@ -49,6 +56,11 @@ when@prod:
             nested:
                 type: stream
                 path: php://stderr
+                level: debug
+                formatter: monolog.formatter.json
+            file:
+                type: stream
+                path: /var/log/prod.log
                 level: debug
                 formatter: monolog.formatter.json
             console:
