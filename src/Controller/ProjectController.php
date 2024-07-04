@@ -90,7 +90,7 @@ class ProjectController extends AbstractController
         $response = new Response(null, 200);
         if ($form->isSubmitted() && $form->isValid()) {
             $project->updateTimestamps();
-            $project->setUserId($this->getUser());
+            $project->setUser($this->getUser());
             $entityManager->persist($project);
             $entityManager->flush();
             $response = new Response(null, 422);
