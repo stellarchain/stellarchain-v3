@@ -21,6 +21,7 @@ services:
     volumes:
       - caddy_data:/data
       - caddy_config:/config
+      - data_uploads:/app/public/uploads
     ports:
       # HTTP
       - target: 80
