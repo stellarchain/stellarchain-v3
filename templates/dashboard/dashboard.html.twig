@@ -114,10 +114,10 @@
                         element.innerHTML = `$${stat.value}`;
                     }
 
-                    const prevValue = parseFloat(stat.prev_value.replace(/,/g, ''));
-                    const currentValue = parseFloat(stat.value.replace(/,/g, ''));
+                    const prevValue = stat.prev_value;
+                    const currentValue = stat.value;
                     const change = prevValue != null ? (currentValue - prevValue) : 0;
-                    const percentageChange = prevValue != null && prevValue != 0 ? ((change / prevValue) * 100).toFixed(2) : 0;
+                    const percentageChange = prevValue != null && prevValue != 0 ? ((change / prevValue) * 100).toFixed(4) : 0;
                     const caretDirection = change < 0 ? 'down' : 'up';
                     const color = change < 0 ? 'danger' : 'success';
                     const displayChange = key === 'rank' ? percentageChange.replace('-', '') : percentageChange;
