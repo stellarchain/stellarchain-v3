@@ -20,6 +20,10 @@ services:
       - host.docker.internal:host-gateway
     tty: true
 
+  php-worker:
+    volumes:
+      - ./:/app
+
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
 
