@@ -16,7 +16,6 @@ class CommentFormType extends AbstractType
         $builder
             ->add('content', TextareaType::class, [
                 'required' => false,
-                'attr' => ['class' => 'tinymce'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a comment',

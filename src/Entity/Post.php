@@ -35,7 +35,7 @@ class Post
     private ?int $type_post_id = null;
 
     #[ORM\ManyToOne(targetEntity: Project::class)]
-    #[ORM\JoinColumn(name:"type_post_id", referencedColumnName:"id")]
+    #[ORM\JoinColumn(name: "type_post_id", referencedColumnName: "id")]
     private $project;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
@@ -195,7 +195,12 @@ class Post
 
     public function getComments(): Collection
     {
-        return $this->comments;
+        $iterator = $this->comments->getIterator();
+        $iterator->uasort(function ($first, $second) {
+            return $second->getCreatedAt() <=> $first->getCreatedAt();
+        });
+
+        return new ArrayCollection(iterator_to_array($iterator));
     }
 
     public function addComment(Comment $comment): self

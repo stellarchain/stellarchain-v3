@@ -11,10 +11,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\UX\Turbo\TurboBundle;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 
 class PostController extends AbstractController
 {
-    #[Route('/post/new', name: 'app_post_new')]
+    #[Route('/posts/new', name: 'app_post_new')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
@@ -25,22 +28,21 @@ class PostController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        $response = new Response(null, 200);
         if ($form->isSubmitted() && $form->isValid()) {
             $post->updateTimestamps();
             $post->setUser($this->getUser());
             $entityManager->persist($post);
             $entityManager->flush();
-            $response = new Response(null, 422);
+
         }
 
         return $this->render('post/new.html.twig', [
             'newPostForm' => $form,
-        ], $response);
+        ]);
     }
 
-    #[Route('/post/{slug}', name: 'app_post_show')]
-    public function index(Request $request, string $slug, EntityManagerInterface $entityManager): Response
+    #[Route('/posts/{slug}', name: 'app_post_show')]
+    public function index(Request $request, string $slug, EntityManagerInterface $entityManager, HubInterface $hub): Response
     {
         $post = $entityManager->getRepository(Post::class)->findOneBy(['slug' => $slug]);
         if (!$post) {
@@ -51,9 +53,10 @@ class PostController extends AbstractController
         $form = $this->createForm(CommentFormType::class, $comment, [
             'action' => $this->generateUrl('app_post_show', ['slug' => $post->getSlug()]),
         ]);
+        $emptyForm = clone $form;
+
         $form->handleRequest($request);
 
-        $response = new Response(null, 200);
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->updateTimestamps();
 
@@ -64,12 +67,21 @@ class PostController extends AbstractController
 
             $entityManager->persist($comment);
             $entityManager->flush();
-            $response = new Response(null, 200);
+
+            $hub->publish(new Update(
+                'comments-list-'.$post->getId(),
+                $this->renderBlock('post/show.html.twig', 'new_comment', ['id' => $comment->getId(), 'content' => $comment->getContent(), 'username' => $comment->getUser()->getUsername()])
+            ));
+
+            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+                return $this->renderBlock('post/show.html.twig', 'create_comment', ['id' => $comment->getId(), 'content' => $comment->getContent(), 'username' => $comment->getUser()->getUsername(), 'newCommentForm' => $emptyForm]);
+            }
         }
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
             'newCommentForm' => $form
-        ], $response);
+        ]);
     }
 }

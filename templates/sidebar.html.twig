@@ -156,9 +156,14 @@
                 <i class="bi bi-front me-2"></i>
                 <p class="mb-0">Dark Mode</p>
                 <div class="form-check form-switch ms-auto align-self-center p-1">
-                    <input class="form-check-input p-0 m-0" type="checkbox" id="darkModeSwitch" checked
-                        {{stimulus_target('settings', 'darkModeSwitch' ) }} {{stimulus_action('settings', 'toggle'
-                        , 'click' )}}>
+                    <input
+                        class="form-check-input p-0 m-0"
+                        type="checkbox"
+                        id="darkModeSwitch"
+                        checked
+                        {{stimulus_target('settings', 'darkModeSwitch' ) }}
+                        {{stimulus_action('settings', 'toggle', 'click' )}}
+                    >
                 </div>
             </a>
         </li>

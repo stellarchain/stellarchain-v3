@@ -4,12 +4,20 @@
     {% endif %}
 
     {% for post in this.posts %}
-    <div class="list-group mb-2" id="item--{{ page }}-{{ loop.index }}" data-live-ignore {{ stimulus_controller('post') }}>
+    <div class="list-group mb-2" id="item--{{ page }}-{{ loop.index }}" data-live-ignore {{ stimulus_controller('like') }}>
         <div class="list-group-item list-group-item-action d-flex align-items-center p-2">
             <a class="flex-shrink-0 text-decoration-none" href="#">
-                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
-                    style="height: 36px; width: 36px;">
-                    <span class="rounded-circle align-self-center mx-auto fw-bold"> {{ post.post.rank }} </span>
+                <div
+                    class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;"
+                    data-bs-toggle="tooltip"
+                    type="button"
+                    data-bs-placement="top"
+                    data-bs-title="Rank"
+                >
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">
+                        {{ post.post.rank }}
+                    </span>
                 </div>
             </a>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
@@ -18,12 +26,16 @@
                     {{ post.post.title }}
                 </a>
                 <div class="small text-secondary fw-bold">
-                    <span class="small"
+
+                    <span
+                        class="small"
                         role="button"
-                        {{ stimulus_action('post', 'like', 'click', {id: post.post.id, type: 'post'} )}}>
+                        {{ stimulus_action('like', 'like', 'click', {id: post.post.id, type: 'post'} )}}
+                    >
                         <i class="bi bi-heart small"></i>
-                        <span {{ stimulus_target('post', 'totalLikes' ) }}> {{post.likes}} </span>
+                        <span {{ stimulus_target('like', 'totalLikes' ) }}> {{post.likes}} </span>
                     </span>
+
                     <span class="small ms-1"><i class="bi bi-chat small"></i> 0</span>
                     <a class="text-decoration-none small ms-1 text-secondary"
                        href="{{ path('app_account_show', {'username': post.post.user.username }) }}">
@@ -37,7 +49,7 @@
                 data-bs-toggle="tooltip"
                 type="button"
                 data-bs-placement="top"
-                data-bs-title="Tooltip on top"
+                data-bs-title="Verified"
             >
                 <i class="bi bi-patch-check-fill text-primary align-self-center"></i>
                 <span class="small align-self-center"></span>

@@ -20,6 +20,9 @@ final class PostsComponent
     use DefaultActionTrait;
 
     #[LiveProp]
+    public string $type = 'hot';
+
+    #[LiveProp]
     public int $page = 1;
 
     private const PER_PAGE = 20;
@@ -35,6 +38,13 @@ final class PostsComponent
     }
 
     #[LiveAction]
+    public function changeType(string $type): void
+    {
+        $this->type = $type;
+        $this->page = 1;
+    }
+
+    #[LiveAction]
     public function more(): void
     {
         ++$this->page;
@@ -42,6 +52,7 @@ final class PostsComponent
 
     public function hasMore(): bool
     {
+        //$criteria = $this->buildCriteria();
         $totalPosts = $this->postRepository->count([]);
         return $totalPosts > ($this->page * self::PER_PAGE);
     }
@@ -57,8 +68,9 @@ final class PostsComponent
      */
     public function getPosts(): array
     {
+        $criteria = $this->buildCriteria();
         $offset = ($this->page - 1) * self::PER_PAGE;
-        $posts = $this->postRepository->findBy([], ['rank' => 'ASC'], self::PER_PAGE, $offset);
+        $posts = $this->postRepository->findBy([], $criteria, self::PER_PAGE, $offset);
         $postsWithLikes = [];
         foreach ($posts as $post) {
             $postsWithLikes[] = [
@@ -67,5 +79,22 @@ final class PostsComponent
             ];
         }
         return $postsWithLikes;
+    }
+
+    /**
+     * @return array|array<string,string>
+     */
+    private function buildCriteria(): array
+    {
+        switch ($this->type) {
+            case 'hot':
+                return [];
+            case 'new':
+                return ['created_at' => 'DESC'];
+            case 'top':
+                return ['rank' => 'DESC'];
+            default:
+                return [];
+        }
     }
 }
