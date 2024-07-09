@@ -1,5 +1,6 @@
 import './bootstrap.js';
 import './styles/app.css';
+
 document.addEventListener("turbo:before-prefetch", (event) => {
   event.preventDefault()
 })
@@ -26,4 +27,20 @@ document.addEventListener('chartjs:init', function (event) {
 });
 
 
-console.log('aaa')
+export function showToastAuth() {
+  const toastLiveAuth = document.getElementById('liveToastAuth');
+  if (toastLiveAuth) {
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveAuth);
+    toastBootstrap.show();
+  } else {
+    console.error('Toast element #liveToastAuth not found.');
+  }
+}
+
+document.addEventListener('turbo:before-fetch-response', function (event) {
+  var response = event.detail.fetchResponse;
+  if (response.statusCode === 401) {
+    showToastAuth();
+  }
+});
+

@@ -9,9 +9,10 @@
     <div class="col-lg-8 col-xl-9 col-12">
         {% include 'content-header.html.twig' with {'right_block': true} %}
         <div class="py-1 px-2 menu sticky-top border rounded mb-2">
-            <ul class="nav nav-pills nav-justified" role="tablist" id="pills-tab">
+            <ul class="nav nav-pills nav-justified" role="tablist" id="pills-tab"  data-controller="tab">
                 <li class="nav-item py-0" role="presentation">
                     <a class="nav-link py-1 tabs fw-bolder active" id="pills-hot-tab" data-bs-toggle="pill"
+                        href="#hot"
                         data-bs-target="#pills-hot" aria-controls="pills-hot" aria-selected="true" role="tab" href="#">
                         <i class="bi bi-lightning-fill me-2"></i>
                         Hot
@@ -20,6 +21,7 @@
 
                 <li class="nav-item py-0" role="presentation">
                     <a class="nav-link py-1 tabs fw-bolder" id="pills-new-tab" data-bs-toggle="pill"
+                        href="#new"
                         data-bs-target="#pills-new" aria-controls="pills-new" aria-selected="true" role="tab" href="#">
                         <i class="bi bi-check-circle-fill me-2"></i>
                         New
@@ -28,6 +30,7 @@
 
                 <li class="nav-item py-0" role="presentation">
                     <a class="nav-link py-1 tabs fw-bolder" id="pills-top-tab" data-bs-toggle="pill"
+                        href="#top"
                         data-bs-target="#pills-top" aria-controls="pills-top" aria-selected="true" role="tab" href="#">
                         <i class="bi bi-arrow-up-circle-fill me-2"></i>
                         Top
@@ -65,7 +68,7 @@
 
     <div class="col-lg-4 col-xl-3 d-none d-lg-block vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
         <div class="card mb-2">
-            {{ include("/dashboard/market-information.html.twig") }}
+            {{ component("market-information") }}
         </div>
 
         <div class="card mb-2">
@@ -89,48 +92,4 @@
 <div class="mb-5 pb-2">
     &nbsp;
 </div>
-{% endblock %}
-
-{% block scripts %}
-    <script type="text/javascript">
-    const eventSource = new EventSource("{{ mercure('stellar-real-time-data')|escape('js') }}");
-    eventSource.onmessage = event => {
-        const data = JSON.parse(event.data);
-        const stats = data;
-        for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                const stat = data[key];
-                const element = document.querySelector(`[data-stat="${key}"]`);
-                if (element) {
-                    if (key === 'rank') {
-                        element.innerHTML = stat.value;
-                    } else if (key === 'circulating_supply') {
-                        element.innerHTML = `XLM ${stat.value}`;
-                    } else if (key === 'market_cap_dominance') {
-                        element.innerHTML = `${stat.value}%`;
-                    } else if (key === 'price_usd') {
-                        element.innerHTML = `$${stat.value}`;
-                    } else {
-                        element.innerHTML = `$${stat.value}`;
-                    }
-
-                    const prevValue = stat.prev_value;
-                    const currentValue = stat.value;
-                    const change = prevValue != null ? (currentValue - prevValue) : 0;
-                    const percentageChange = prevValue != null && prevValue != 0 ? ((change / prevValue) * 100).toFixed(4) : 0;
-                    const caretDirection = change < 0 ? 'down' : 'up';
-                    const color = change < 0 ? 'danger' : 'success';
-                    const displayChange = key === 'rank' ? percentageChange.replace('-', '') : percentageChange;
-
-                    const badge = element.closest('.list-group-item').querySelector('.badge');
-                    if (badge) {
-                        badge.classList.remove('text-success', 'text-danger', 'bg-success', 'bg-danger');
-                        badge.classList.add(`text-${color}`, `bg-${color}`);
-                        badge.innerHTML = `<i class="bi bi-caret-${caretDirection}-fill"></i> ${displayChange}%`;
-                    }
-                }
-            }
-        };
-    }
-</script>
 {% endblock %}

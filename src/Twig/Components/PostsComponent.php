@@ -5,6 +5,7 @@ namespace App\Twig\Components;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use App\Service\LikeService;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -19,7 +20,7 @@ final class PostsComponent
     use ComponentToolsTrait;
     use DefaultActionTrait;
 
-    #[LiveProp]
+    #[LiveProp(writable: true, url: true)]
     public string $type = 'hot';
 
     #[LiveProp]
@@ -30,11 +31,13 @@ final class PostsComponent
     private $postRepository;
 
     private $likeService;
+    private $security;
 
-    public function __construct(PostRepository $postRepository, LikeService $likeService)
+    public function __construct(PostRepository $postRepository, LikeService $likeService, Security $security)
     {
         $this->postRepository = $postRepository;
         $this->likeService = $likeService;
+        $this->security = $security;
     }
 
     #[LiveAction]
@@ -72,10 +75,16 @@ final class PostsComponent
         $offset = ($this->page - 1) * self::PER_PAGE;
         $posts = $this->postRepository->findBy([], $criteria, self::PER_PAGE, $offset);
         $postsWithLikes = [];
+        $user = $this->security->getUser();
         foreach ($posts as $post) {
+            $isLiked = false;
+            if ($user) {
+                $isLiked = $this->likeService->isLikedByUser($post->getId(), 'post', $user);
+            }
             $postsWithLikes[] = [
                 'post' => $post,
                 'likes' => $this->likeService->countLikesForPost($post->getId()),
+                'liked' => $isLiked,
             ];
         }
         return $postsWithLikes;

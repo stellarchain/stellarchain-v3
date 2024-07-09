@@ -51,25 +51,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Project>
      */
-    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'user')]
     private Collection $projects;
 
     /**
      * @var Collection<int, Post>
      */
-    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user')]
     private Collection $posts;
 
     /**
      * @var Collection<int, Like>
      */
-    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user')]
     private Collection $likes;
 
     /**
      * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
     private Collection $comments;
 
     public function __construct()
@@ -215,7 +215,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->projects->contains($project)) {
             $this->projects->add($project);
-            $project->setUserId($this);
+            $project->setUser($this);
         }
 
         return $this;
@@ -225,8 +225,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->projects->removeElement($project)) {
             // set the owning side to null (unless already changed)
-            if ($project->getUserId() === $this) {
-                $project->setUserId(null);
+            if ($project->getUser() === $this) {
+                $project->setUser(null);
             }
         }
 
@@ -245,7 +245,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->posts->contains($post)) {
             $this->posts->add($post);
-            $post->setUserId($this);
+            $post->setUser($this);
         }
 
         return $this;
@@ -255,8 +255,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($post->getUserId() === $this) {
-                $post->setUserId(null);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
             }
         }
 
@@ -275,7 +275,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
-            $comment->setUserId($this);
+            $comment->setUser($this);
         }
 
         return $this;
@@ -284,13 +284,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeComment(Comment $comment): static
     {
         if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getUserId() === $this) {
-                $comment->setUserId(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 
         return $this;
     }
-
 }

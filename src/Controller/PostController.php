@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\UX\Turbo\TurboBundle;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 
 class PostController extends AbstractController
 {
@@ -34,6 +32,7 @@ class PostController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
+            return $this->redirectToRoute('app_post_show', ['slug' => $post->getSlug()]);
         }
 
         return $this->render('post/new.html.twig', [
@@ -41,17 +40,26 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/posts/{slug}', name: 'app_post_show')]
-    public function index(Request $request, string $slug, EntityManagerInterface $entityManager, HubInterface $hub): Response
+    #[Route('/l/{id}', name: 'app_post_show', methods: ['GET'])]
+    public function index(Post $post): Response
     {
-        $post = $entityManager->getRepository(Post::class)->findOneBy(['slug' => $slug]);
-        if (!$post) {
-            throw $this->createNotFoundException('The post does not exist');
-        }
+        $form = $this->createForm(CommentFormType::class, new Comment(), [
+            'action' => $this->generateUrl('app_post_comment', ['id' => $post->getId()]),
+            'method' => 'POST',
+        ]);
 
+        return $this->render('post/show.html.twig', [
+            'post' => $post,
+            'newCommentForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/l/{id}', name: 'app_post_comment', methods: ['POST'])]
+    public function comment(Request $request, EntityManagerInterface $entityManager, Post $post): Response
+    {
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment, [
-            'action' => $this->generateUrl('app_post_show', ['slug' => $post->getSlug()]),
+            'action' => $this->generateUrl('app_post_comment', ['id' => $post->getId()]),
         ]);
         $emptyForm = clone $form;
 
@@ -68,20 +76,23 @@ class PostController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            $hub->publish(new Update(
-                'comments-list-'.$post->getId(),
-                $this->renderBlock('post/show.html.twig', 'new_comment', ['id' => $comment->getId(), 'content' => $comment->getContent(), 'username' => $comment->getUser()->getUsername()])
-            ));
-
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-                return $this->renderBlock('post/show.html.twig', 'create_comment', ['id' => $comment->getId(), 'content' => $comment->getContent(), 'username' => $comment->getUser()->getUsername(), 'newCommentForm' => $emptyForm]);
+                return $this->renderBlock(
+                    'post/show.html.twig',
+                    'create_comment',
+                    [
+                        'id' => $comment->getId(),
+                        'content' => $comment->getContent(),
+                        'username' => $comment->getUser()->getUsername(),
+                        'newCommentForm' => $emptyForm
+                    ]);
             }
         }
 
-        return $this->render('post/show.html.twig', [
-            'post' => $post,
-            'newCommentForm' => $form
-        ]);
+        return $this->json([
+            'message' => 'Invalid form submission',
+            'errors' => $form->getErrors(true),
+        ], Response::HTTP_BAD_REQUEST);
     }
 }

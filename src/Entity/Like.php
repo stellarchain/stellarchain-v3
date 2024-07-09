@@ -61,9 +61,9 @@ class Like
         return $this->user;
     }
 
-    public function setUser(?User $user_id): static
+    public function setUser(?User $user): static
     {
-        $this->user = $user_id;
+        $this->user = $user;
 
         return $this;
     }

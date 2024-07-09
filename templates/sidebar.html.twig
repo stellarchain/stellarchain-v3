@@ -1,6 +1,6 @@
 <!-- Sidebar Navigation -->
 <div class="border-end d-none d-lg-flex flex-column flex-shrink-0 vh-100 menu" style="width: 280px;" id="nav">
-    <a href="{{path('app_dashboard')}}" class="text-decoration-none">
+    <a href="{{path('app_home')}}" class="text-decoration-none">
         <div class="p-2">
             <div class="d-flex align-items-center hover rounded-1 p-2">
                 <div class="bg-primary bg-opacity-10 d-flex rounded" style="height: 48px; width: 48px;">
@@ -22,7 +22,7 @@
                 {{ stimulus_controller(
                     'symfony/ux-autocomplete/autocomplete',
                     {
-                        url: path('ux_entity_autocomplete', { alias: 'search' })
+                        url: path('ux_entity_autocomplete', { alias: 'search', preview: 1 })
                     },
                 )}}>
         </div>
@@ -31,8 +31,8 @@
     <div class="overflow-auto">
         <ul class="nav flex-column px-3">
             <li class="nav-item">
-                <a href="{{path('app_dashboard')}}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                        {% if app.request.get('_route') == 'app_dashboard' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                <a href="{{path('app_home')}}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                        {% if app.request.get('_route') == 'app_home' %} bg-primary bg-opacity-25 text-primary {% endif %}
                     ">
                     <i class="bi bi-collection me-2"></i>
                     <p class="mb-0">Today</p>

@@ -21,7 +21,8 @@ class CommentFormType extends AbstractType
                         'message' => 'Please enter a comment',
                     ]),
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

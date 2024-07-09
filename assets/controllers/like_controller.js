@@ -1,27 +1,31 @@
 import {Controller} from '@hotwired/stimulus';
+import api from '../api.js';
 
 export default class extends Controller {
-  static targets = ['totalLikes'];
+  static targets = ['totalLikes', 'heartIcon'];
 
-  async like({params: {id, type}}) {
+  async like({currentTarget, params: {id, liked, type}}) {
     try {
-      const response = await fetch(`/like`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const method = liked ? 'DELETE' : 'POST';
+      const response = await api({
+        method: method,
+        url: '/like',
+        data: {
+          entityId: id,
+          entityType: type,
         },
-        body: JSON.stringify({entity_id: id, entity_type: type}),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const {totalLikes} = await response.json();
+      const {totalLikes, liked: newLiked} = await response;
       this.totalLikesTarget.textContent = totalLikes;
+      this.heartIconTargets.forEach(icon => {
+        icon.classList.toggle('bi-heart-fill', newLiked);
+        icon.classList.toggle('bi-heart', !newLiked);
+      });
+
+      currentTarget.dataset.likeLikedParam = newLiked ? 'true' : 'false'
     } catch (error) {
-        console.error('Error liking post:', error);
+      console.error('Error liking post:', error);
     }
   }
-
 }

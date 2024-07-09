@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[Broadcast()]
 class Post
@@ -52,7 +53,6 @@ class Post
     #[ORM\Column(nullable: true)]
     private ?int $rank = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
     private $comments;
 
@@ -193,6 +193,9 @@ class Post
         return $this;
     }
 
+    /**
+     * @return Collection|Comment[]
+     */
     public function getComments(): Collection
     {
         $iterator = $this->comments->getIterator();

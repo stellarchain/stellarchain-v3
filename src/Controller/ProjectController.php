@@ -23,8 +23,6 @@ class ProjectController extends AbstractController
     #[Route('/projects', name: 'app_projects')]
     public function projects(EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
         $projects = $entityManager->getRepository(Project::class)->findBy([], ['id' => 'DESC']);
         $projectsWithLikes = [];
 
@@ -76,7 +74,7 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/projects/add', name: 'app_project_add')]
+    #[Route('/projects/new', name: 'app_project_add')]
     public function add_project(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');

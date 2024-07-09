@@ -3,15 +3,15 @@
         {% if project.project.image.name %}
             <img src="{{vich_uploader_asset(project.project)}}"  class="img-fluid pb-3" style="max-height: 168px;">
         {% else %}
-            <img src="assets-custom/placeholder.webp"  class="img-fluid pb-3" style="max-height: 168px;">
+            <img src="/assets-custom/placeholder.webp"  class="img-fluid pb-3" style="max-height: 168px;">
         {% endif %}
         <div class="d-flex align-items-center">
             <div class="flex-shrink-0 text-decoration-none" href="#">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
                     <span class="rounded-circle align-self-center mx-auto fw-bold">
-                        {{app.user.firstName|first}}
-                        {{app.user.lastName|first}}
+                        {{project.project.user.firstName|first}}
+                        {{project.project.user.lastName|first}}
                     </span>
                 </div>
             </div>

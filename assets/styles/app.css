@@ -13,4 +13,18 @@
 
 canvas#race{position:relative; z-index:1;}
 
+.post-rank {
+    display: block; /* Ensure the rank is block level */
+}
 
+.like-heart {
+    display: none; /* Hide heart icon by default */
+}
+
+.rounded-circle:hover .like-heart {
+    display: inline-block; /* Show heart icon on hover */
+}
+
+.rounded-circle:hover .post-rank {
+    display: none; /* Hide rank on hover */
+}

@@ -36,7 +36,7 @@ class Project
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'projects')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -47,11 +47,9 @@ class Project
     #[Vich\UploadableField(mapping: 'projects', fileNameProperty: 'image.name', size: 'image.size')]
     private ?File $imageFile = null;
 
-
     #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private ?EmbeddedFile $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "project")]
     private $comments;
 

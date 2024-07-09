@@ -33,15 +33,15 @@ class Comment
     #[ORM\Column]
     private ?int $comment_type_id = null;
 
-    #[ORM\ManyToOne(targetEntity: Project::class)]
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(name: "comment_type_id", referencedColumnName: "id")]
     private $project;
 
-    #[ORM\ManyToOne(targetEntity: Post::class)]
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(name: "comment_type_id", referencedColumnName: "id")]
     private $post;
 
-    #[ORM\ManyToOne(targetEntity: Comment::class)]
+    #[ORM\ManyToOne(targetEntity: Comment::class, inversedBy: 'replies')]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: true)]
     private $parent;
 
