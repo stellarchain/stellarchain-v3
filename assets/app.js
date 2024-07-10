@@ -58,3 +58,18 @@ document.addEventListener('turbo:before-fetch-response', function (event) {
   }
 });
 
+
+document.addEventListener('turbo:before-stream-render', function (event) {
+  var streamElement = event.detail.newStream
+  if (streamElement.action == 'append') {
+    let commentId = streamElement.getAttribute('comment')
+    setTimeout(() => {
+      const idElement = 'comment_' + commentId;
+      const divElement = document.getElementById( idElement );
+      if (divElement) {
+        divElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100)
+  }
+});
+

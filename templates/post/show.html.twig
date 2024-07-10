@@ -46,14 +46,19 @@
     </template>
 </turbo-stream>
 
-<turbo-stream action="prepend" target="comments-list">
+<turbo-stream action="prepend" target="comments-list" >
     <template>
         {{ comment_template.render_comment(comment) }}
     <template>
 </turbo-stream>
 {% else %}
+<turbo-stream action="replace" targets="form[name=comment_form]">
+    <template>
+        {% include 'blocks/comment_form_block.html.twig' with { 'form': comment_form } %}
+    </template>
+</turbo-stream>
 
-<turbo-stream action="append" target="{{ 'replies-' ~ parent_id }}">
+<turbo-stream action="append" target="{{ 'replies-' ~ parent_id }}" comment="{{comment.comment.id}}">
     <template>
         {{ comment_template.render_comment(comment) }}
     <template>

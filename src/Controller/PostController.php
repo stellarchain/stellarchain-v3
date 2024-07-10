@@ -9,7 +9,6 @@ use App\Form\PostFormType;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,11 +16,6 @@ use Symfony\UX\Turbo\TurboBundle;
 
 class PostController extends AbstractController
 {
-
-    public function __construct(FormFactoryInterface $formFactory)
-    {
-    }
-
     #[Route('/l/{id}', name: 'app_post_show', methods: ['GET'])]
     public function index(Post $post, CommentRepository $commentRepository): Response
     {
@@ -82,6 +76,10 @@ class PostController extends AbstractController
                     'action' => $this->generateUrl('app_post_comment', ['id' => $comment->getPost()->getId()]),
                     'parent' => $comment->getId()
                 ])->createView();
+
+                $emptyForm->setData([
+                    'parent' => $comment->getId()
+                ]);
 
                 return $this->renderBlock(
                     'post/show.html.twig',
