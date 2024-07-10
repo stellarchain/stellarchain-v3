@@ -11,8 +11,10 @@
                     style="height: 36px; width: 36px;">
                     <span class="rounded-circle align-self-center mx-auto fw-bold">
                         <span class="post-rank">{{ post.post.rank }}</span>
-                        <i  {{ stimulus_target('like', 'heartIcon' ) }} class="bi bi-heart{{ post.liked ? '-fill' : '' }} small like-heart"
-                            role="button" aria-label="Like post"
+                        <i  {{ stimulus_target('like', 'heartIcon' ) }}
+                            class="bi bi-heart{{ post.liked ? '-fill' : '' }} small like-heart"
+                            role="button"
+                            aria-label="Like post"
                             data-like-liked-param="{{ post.liked ? 'true' : 'false' }}"
                             {{ stimulus_action('like', 'like' , 'click' , { id: post.post.id, type: 'post'}) }}>
                         </i>
@@ -30,7 +32,7 @@
                         <span {{ stimulus_target('like', 'totalLikes' ) }}> {{post.likes}} </span>
                     </span>
 
-                    <span class="small ms-1"><i class="bi bi-chat small"></i> 0</span>
+                    <span class="small ms-1"><i class="bi bi-chat small"></i> {{post.post.comments.count()}}</span>
                     <a class="text-decoration-none small ms-1 text-secondary"
                         href="{{ path('app_account_show', {'username': post.post.user.username }) }}">
                         @{{post.post.user.username}}

@@ -28,3 +28,65 @@ canvas#race{position:relative; z-index:1;}
 .rounded-circle:hover .post-rank {
     display: none; /* Hide rank on hover */
 }
+
+.replies {
+    border-left: 1px solid red;
+}
+/* Comment Card */
+.comment-card {
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #1e1e1e;
+}
+
+/* Comment Header */
+.comment-header {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #bbb;
+}
+
+.comment-header a {
+    text-decoration: none;
+    color: #bb86fc;
+    margin-right: 5px;
+}
+
+/* Comment Content */
+.comment-content {
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
+
+/* Reply Form */
+.reply-form {
+    margin-top: 10px;
+}
+
+/* Replies */
+.replies {
+    margin-top: 10px;
+    padding-left: 15px; /* Indent replies */
+    border-left: 1px solid #333;
+}
+
+/* Buttons */
+.btn-link {
+    color: #bb86fc;
+    padding: 0;
+    border: none;
+}
+
+.btn-link:hover {
+    color: #ffffff;
+}
+
+.btn-link:focus {
+    box-shadow: none;
+}
+
+.reply-button {
+    margin-right: 10px;
+}

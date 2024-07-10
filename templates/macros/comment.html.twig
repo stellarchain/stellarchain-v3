@@ -1,0 +1,36 @@
+{% macro render_comment(comment_data, root_comment, prev_comment_id, next_comment_id) %}
+    {% set comment = comment_data.comment %}
+    <div class="comment-card mb-3" id="{{ 'comment_' ~ comment.id }}" {{ stimulus_controller('comment') }}>
+        <div class="card-body">
+            <div class="comment-header">
+                <i class="bi bi-heart"></i> {{ comment.user.username }}
+                {% if comment.parent %}
+                    <a class="btn btn-link btn-sm" href="{{ '#comment_' ~ comment.parent.id }}">parent</a> |
+                    {% if root_comment and root_comment.comment.id %}
+                        <a class="btn btn-link btn-sm reply-button" href="{{ '#comment_' ~ root_comment.comment.id }}">root</a>
+                    {% endif %}
+                {% endif %}
+                {% if prev_comment_id %}
+                    <a class="btn btn-link btn-sm" href="{{ '#comment_' ~ prev_comment_id }}">previous</a> |
+                {% endif %}
+                {% if next_comment_id %}
+                    <a class="btn btn-link btn-sm" href="{{ '#comment_' ~ next_comment_id }}">next</a>
+                {% endif %}
+            </div>
+            <div class="comment-content">{{ comment.content }}</div>
+            <button class="btn btn-link btn-sm reply-button" {{ stimulus_action('comment', 'toggle') }}>reply</button>
+            <div class="reply-form d-none" id="{{ 'reply-form-' ~ comment.id }}" {{ stimulus_target('comment', 'reply') }}>
+                {% include 'blocks/comment_form_block.html.twig' with { 'form': comment_data.reply_form } %}
+            </div>
+            <div class="replies mt-3 ms-3" id="{{ 'replies-' ~ comment.id }}">
+                {% if comment.replies is not empty %}
+                    {% for reply_index, reply_data in comment_data.replies %}
+                        {% set reply_prev_id = (reply_index > 0) ? comment_data.replies[reply_index - 1].comment.id : null %}
+                        {% set reply_next_id = (reply_index + 1 < comment_data.replies|length) ? comment_data.replies[reply_index + 1].comment.id : null %}
+                        {{ _self.render_comment(reply_data, root_comment, reply_prev_id, reply_next_id) }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}

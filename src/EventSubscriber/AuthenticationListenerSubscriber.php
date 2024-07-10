@@ -27,7 +27,6 @@ class AuthenticationListenerSubscriber implements EventSubscriberInterface
         }
 
         if ($this->isRouteSecured($route)) {
-            // Check if the user is authenticated
             $user = $this->security->getUser();
             if (!$user) {
                 $event->setController(function() {

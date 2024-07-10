@@ -2,7 +2,12 @@ import {Controller} from '@hotwired/stimulus';
 import api from '../api.js';
 
 export default class extends Controller {
-  static targets = ['totalLikes', 'heartIcon'];
+  static targets = ['reply'];
+
+  toggle(event) {
+    event.preventDefault();
+    this.replyTarget.classList.toggle("d-none");
+  }
 
   async like({currentTarget, params: {id, liked, type}}) {
     try {

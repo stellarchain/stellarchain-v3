@@ -3,6 +3,9 @@
 {% block title %}{{post.title}}{% endblock %}
 
 {% set content_title = post.title %}
+
+{% import 'macros/comment.html.twig' as comment_template %}
+
 {% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
@@ -12,51 +15,19 @@
                 {{post.body}}
             </div>
             <div class="container my-5">
-                <div class="mb-4">
-                    {% block new_comment_form %}
-                        {{ form_start(newCommentForm) }}
-                            <div class="form-floating mb-2 w-100">
-                                {{ form_widget(newCommentForm.content, {'attr': {'placeholder': 'Leave a comment', 'style': 'height: 100px'}}) }}
-                                <label for="comment_form_content">Leave a comment</label>
-                                <div class="form-error">
-                                    {{ form_errors(newCommentForm.content) }}
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Submit</button>
-                        {{ form_end(newCommentForm) }}
+                <div class="mb-4" id="post-form-content">
+                    {% block comment_form_block %}
+                       {% include 'blocks/comment_form_block.html.twig' with { 'form': comment_form } %}
                     {% endblock %}
                 </div>
 
                 <div id="comments-list" {{ turbo_stream_listen('comments-list-' ~ post.id) }}>
-                    {% for comment in post.comments %}
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">{{comment.user.username}}</h5>
-                                <p class="card-text">{{comment.content}}</p>
-
-                                <div class="reply-form d-none">
-                                    <button class="btn btn-link btn-sm reply-button">Reply</button>
-                                    <form>
-                                        <div class="mb-3">
-                                            <label for="replyText" class="form-label">Reply</label>
-                                            <textarea class="form-control" rows="2" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                                    </form>
-                                </div>
-
-                                {% for reply in comment.replies %}
-                                    <div class="mt-3">
-                                        <div class="card mb-2 ms-3">
-                                            <div class="card-body">
-                                                <h6 class="card-title">{{reply.user.username}}</h6>
-                                                <p class="card-text">{{reply.content}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                    {% set prev_comment_id = null %}
+                    {% for index, comment_data in comments %}
+                        {% set next_comment_id = (index + 1 < comments|length) ? comments[index + 1].comment.id : null %}
+                        {% set root_comment = comment_data.comment.parent is null ? comment_data : root_comment ?? comment_data %}
+                        {{ comment_template.render_comment(comment_data, root_comment, prev_comment_id, next_comment_id) }}
+                        {% set prev_comment_id = comment_data.comment.id %}
                     {% endfor %}
                 </div>
             </div>
@@ -65,26 +36,28 @@
 </div>
 {% endblock %}
 
-{% block new_comment %}
-    <turbo-stream action="prepend" target="comments-list">
-        <template>
-            <div id="{{ 'comment_' ~ id }}" class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{{username}}</h5>
-                    <p class="card-text">{{content}}</p>
-                </div>
-            </div>
-        </template>
-    </turbo-stream>
-{% endblock %}
-
 {% block create_comment %}
-    <turbo-stream action="replace" targets="form[name=comment_form]">
-        <template>
-            {{ block('new_comment_form') }}
-        </template>
-    </turbo-stream>
+{% import 'macros/comment.html.twig' as comment_template %}
 
-    {{ block('new_comment') }}
+{% if parent_id is null %}
+<turbo-stream action="replace" targets="form[name=comment_form]">
+    <template>
+        {{block('comment_form_block')}}
+    </template>
+</turbo-stream>
+
+<turbo-stream action="prepend" target="comments-list">
+    <template>
+        {{ comment_template.render_comment(comment) }}
+    <template>
+</turbo-stream>
+{% else %}
+
+<turbo-stream action="append" target="{{ 'replies-' ~ parent_id }}">
+    <template>
+        {{ comment_template.render_comment(comment) }}
+    <template>
+</turbo-stream>
+{% endif %}
+
 {% endblock %}
-
