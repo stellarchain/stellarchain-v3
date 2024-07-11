@@ -39,7 +39,6 @@
 {% block create_comment %}
 {% import 'macros/comment.html.twig' as comment_template %}
 
-{% if parent_id is null %}
 <turbo-stream action="replace" targets="form[name=comment_form]">
     <template>
         {{block('comment_form_block')}}
@@ -51,18 +50,16 @@
         {{ comment_template.render_comment(comment) }}
     <template>
 </turbo-stream>
-{% else %}
-<turbo-stream action="replace" targets="form[name=comment_form]">
-    <template>
-        {% include 'blocks/comment_form_block.html.twig' with { 'form': comment_form } %}
-    </template>
-</turbo-stream>
+
+{% endblock %}
+
+{% block update_comment %}
+{% import 'macros/comment.html.twig' as comment_template %}
 
 <turbo-stream action="append" target="{{ 'replies-' ~ parent_id }}" comment="{{comment.comment.id}}">
     <template>
         {{ comment_template.render_comment(comment) }}
     <template>
 </turbo-stream>
-{% endif %}
 
 {% endblock %}

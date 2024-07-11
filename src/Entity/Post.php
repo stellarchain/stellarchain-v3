@@ -51,7 +51,7 @@ class Post
     private ?string $title = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $rank = null;
+    private ?float $rank = null;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
     private $comments;
@@ -181,12 +181,12 @@ class Post
         return $this;
     }
 
-    public function getRank(): ?int
+    public function getRank(): ?float
     {
         return $this->rank;
     }
 
-    public function setRank(?int $rank): static
+    public function setRank(?float $rank): static
     {
         $this->rank = $rank;
 
