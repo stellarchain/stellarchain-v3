@@ -10,6 +10,7 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
+#[Vich\Uploadable]
 class Event
 {
     #[ORM\Id]
@@ -32,7 +33,7 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?Location $location = null;
 
-    #[Vich\UploadableField(mapping: 'projects', fileNameProperty: 'image.name', size: 'image.size')]
+    #[Vich\UploadableField(mapping: 'events', fileNameProperty: 'image.name', size: 'image.size')]
     private ?File $imageFile = null;
 
     #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
@@ -47,6 +48,7 @@ class Event
     public function __construct()
     {
         $this->image = new EmbeddedFile();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -169,5 +171,20 @@ class Event
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTime();
+        }
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updated_at = new \DateTime();
     }
 }

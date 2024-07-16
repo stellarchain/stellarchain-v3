@@ -30,7 +30,8 @@ class ProjectCrudController extends AbstractCrudController
             TextField::new('name'),
             AssociationField::new('user')->autocomplete(),
             MoneyField::new('budget')->setCurrency('USD'),
-            TextEditorField::new('description'),
+            TextField::new('description'),
+            TextEditorField::new('content'),
             DateTimeField::new('created_at')->onlyOnIndex(),
             DateTimeField::new('updated_at')->onlyOnIndex(),
         ];

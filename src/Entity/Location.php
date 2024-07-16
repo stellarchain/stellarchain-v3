@@ -42,6 +42,11 @@ class Location
         $this->events = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->name. ' ('. $this->continent . ')';
+    }
+
     public function getId(): ?int
     {
         return $this->id;

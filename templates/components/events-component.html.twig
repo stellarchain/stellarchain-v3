@@ -1,0 +1,103 @@
+<div{{ attributes.defaults(stimulus_controller('appear')) }}>
+
+    <div class="swiper" {{stimulus_controller('events')}}>
+      <div class="swiper-wrapper">
+        {% for event in this.events %}
+            <div class="list-group swiper-slide">
+                <a class="list-group-item list-group-item-action p-2" href="#" style="width: 275px; height: 168;">
+                    <div class="d-flex">
+                        <div class="position-absolute top-0 start-0 mt-3 ms-3">
+                            <div class="d-flex flex-column align-items-center justify-content-center rounded bg-primary text-primary lh-1 small bg-opacity-25 "
+                                style="height: 36px; width: 36px;">
+                                <div class="small"><span class="small text-uppercase">{{event.startDate|date('M')}}</span></div>
+                                <div class="fs-5">{{event.startDate|date('d')}}</div>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 mb-5 me-4">
+                            <div class="mb-1"><i class="bi bi-patch-check-fill text-primary ms-1 fs-5"></i></div>
+                        </div>
+
+                        <div class="position-absolute bottom-0 start-0 mb-5 ms-3">
+                            <span
+                                class="badge align-self-center text-primary bg-primary small mb-2 bg-opacity-25 ">Conference</span>
+                        </div>
+                        {% if event.image.name %}
+                            <img src="{{vich_uploader_asset(event)}}"  class="img-fluid mb-2 rounded" style="max-height: 150px;margin: 0 auto">
+                        {% else %}
+                            <img src="/assets-custom/event.png" class="img-fluid mb-2 rounded">
+                        {% endif %}
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                            <b class="mb-1">{{event.name}}</b>
+                            <div class="small text-secondary">
+                                <span class="small">{{event.location.name}}</span>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 me-2 d-flex">
+                            <span class="text-dark d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                                data-bs-placement="top" data-bs-title="Add to calendar"><i
+                                    class="bi bi-calendar-plus-fill align-self-center"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+      <div class="swiper-pagination"></div>
+
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+
+    <div class="d-flex align-items-center border-0 py-2">
+        <div class="flex-grow-1 d-flex flex-column lh-1">
+            <span class="fw-bold mb-1">Future Events</span>
+            <div class="small">
+                <span class="text-secondary small mb-0">Whats important things are coming soon</span>
+            </div>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="/events" class="text-decoration-none small">See All</a>
+        </div>
+    </div>
+    {% if page > 1 %}
+    <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
+    {% endif %}
+
+    {% for event in this.events %}
+    <div class="list-group mb-2" id="item--{{ page }}-{{ loop.index }}" data-live-ignore>
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="d-flex flex-column align-items-center justify-content-center rounded bg-primary bg-opacity-10 text-primary lh-1"
+                    style="height: 36px; width: 36px;">
+                    <div class="fs-6 fw-bold">{{event.startDate|date('d')}}</div>
+                    <div class="small"><span class="small">{{event.startDate|date('M')}}</span></div>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                <b class="mb-1">{{event.name}}</b>
+                <div class="small text-secondary">
+                    <span class="small">{{event.location.name}}</span>
+                </div>
+            </div>
+            <div class="flex-shrink-0 me-2 d-flex">
+                <span class="text-dark d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-title="Add to calendar">
+                    <i class="bi bi-calendar-plus-fill align-self-center"></i>
+                </span>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+
+    {% if this.hasMore %}
+    {% for i in 1..per_page %}
+    <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
+        data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
+        <span class="events_loader" style="--delay: {{ (loop.index + 1) / per_page }};"></span>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>

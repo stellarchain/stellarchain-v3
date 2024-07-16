@@ -125,7 +125,7 @@ class PostController extends AbstractController
     public function replyComment(Request $request, EntityManagerInterface $entityManager, CommentRepository $commentRepository, Comment $comment): Response
     {
         $reply = new Comment();
-        $form = $this->createReplyForm($comment->getId(), $comment->getPost()->getId());
+        $form = $this->commentService->createReplyForm($comment->getId(), $comment->getPost()->getId());
         $form->handleRequest($request);
         $reply = $form->getData();
 

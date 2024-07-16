@@ -69,4 +69,13 @@ return [
     'axios' => [
         'version' => '1.7.2',
     ],
+    'swiper/bundle' => [
+        'version' => '11.1.5',
+    ],
+    'swiper/css/bundle' => [
+        'version' => '11.1.5',
+    ],
+    'swiper/modules' => [
+        'version' => '11.1.5',
+    ],
 ];
