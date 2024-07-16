@@ -3,6 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Coin;
+use App\Entity\Comment;
+use App\Entity\Community;
+use App\Entity\Event;
+use App\Entity\Job;
+use App\Entity\JobCategory;
+use App\Entity\Location;
 use App\Entity\Post;
 use App\Entity\Project;
 use App\Entity\User;
@@ -18,20 +24,6 @@ class DashboardAdminController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        /* return $this->render('admin/index.html.twig'); */
-
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         return $this->redirect($adminUrlGenerator->setController(PostCrudController::class)->generateUrl());
     }
@@ -39,15 +31,20 @@ class DashboardAdminController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Stellar Community Admin');
+            ->setTitle('StellarChain Admin');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Wall Posts', 'fas fa-list', Post::class);
+        yield MenuItem::linkToCrud('Posts', 'fas fa-list', Post::class);
         yield MenuItem::linkToCrud('Coins', 'fas fa-list', Coin::class);
         yield MenuItem::linkToCrud('Projects', 'fas fa-list', Project::class);
+        yield MenuItem::linkToCrud('Comments', 'fas fa-list', Comment::class);
+        yield MenuItem::linkToCrud('Community', 'fas fa-list', Community::class);
+        yield MenuItem::linkToCrud('Events', 'fas fa-list', Event::class);
+        yield MenuItem::linkToCrud('Jobs', 'fas fa-list', Job::class);
+        yield MenuItem::linkToCrud('Job categories', 'fas fa-list', JobCategory::class);
+        yield MenuItem::linkToCrud('Locations', 'fas fa-list', Location::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class)->setPermission('ROLE_ADMIN');
     }
 

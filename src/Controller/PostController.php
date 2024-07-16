@@ -7,11 +7,9 @@ use App\Entity\Post;
 use App\Form\CommentFormType;
 use App\Form\PostFormType;
 use App\Repository\CommentRepository;
+use App\Service\CommentService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,9 +17,11 @@ use Symfony\UX\Turbo\TurboBundle;
 
 class PostController extends AbstractController
 {
+    private $commentService;
 
-    public function __construct(private FormFactoryInterface $formFactory)
+    public function __construct(CommentService $commentService)
     {
+        $this->commentService = $commentService;
     }
 
     #[Route('/l/new', name: 'app_post_new')]
@@ -50,28 +50,24 @@ class PostController extends AbstractController
     }
 
     #[Route('/l/{id}', name: 'app_post_show', methods: ['GET'])]
-    public function index(Post $post, CommentRepository $commentRepository): Response
+    public function show(Post $post, CommentRepository $commentRepository): Response
     {
-        $comments = $commentRepository->findBy(
-            ['post' => $post, 'parent' => null],
-            ['created_at' => 'DESC']
-        );
-
-        $commentForm =  $this->createForm(
-            CommentFormType::class,
-            new Comment(),
+        $commentForm = $this->createForm(CommentFormType::class, new Comment(),
             [
                 'action' => $this->generateUrl('app_post_comment', ['id' => $post->getId()]),
                 'method' => 'POST',
             ]
-        )->createView();
+        );
 
-        $preparedComments = $this->prepareCommentsWithForms($comments, $post->getId());
+        $commentsWithForms = $this->commentService->commentsWithForms($commentRepository->findBy(
+            ['post' => $post, 'parent' => null],
+            ['created_at' => 'DESC']
+        ), $post->getId());
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
-            'comments' => $preparedComments,
-            'comment_form' => $commentForm
+            'comments' => $commentsWithForms,
+            'comment_form' => $commentForm->createView()
         ]);
     }
 
@@ -96,18 +92,17 @@ class PostController extends AbstractController
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-                $replyForm = $this->createReplyForm($comment->getId(), $comment->getPost()->getId());
+
+                $replyForm = $this->commentService->createReplyForm($comment->getId(), $comment->getPost()->getId());
                 $replyForm->setData(['parent' => $comment->getId()]);
 
-                return $this->renderBlock(
-                    'post/show.html.twig',
-                    'create_comment',
+                return $this->renderBlock('post/show.html.twig', 'create_comment',
                     [
                         'comment_form' => $emptyForm,
                         'comment' => [
                             'comment' => $comment,
                             'reply_form' => $replyForm->createView(),
-                            'replies' => $this->prepareCommentsWithForms($comment->getReplies()->toArray(), $comment->getPost()->getId()),
+                            'replies' => $this->commentService->commentsWithForms($comment->getReplies()->toArray(), $comment->getPost()->getId()),
                         ]
                     ]
                 );
@@ -122,7 +117,7 @@ class PostController extends AbstractController
         return $this->render('post/show.html.twig', [
             'post' => $post,
             'comment_form' => $form,
-            'comments' => $this->prepareCommentsWithForms($comments, $post->getId()),
+            'comments' => $this->commentService->commentsWithForms($comments, $post->getId()),
         ]);
     }
 
@@ -150,7 +145,7 @@ class PostController extends AbstractController
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-                $replyForm = $this->createReplyForm($reply->getId(), $comment->getPost()->getId());
+                $replyForm = $this->commentService->createReplyForm($reply->getId(), $comment->getPost()->getId());
 
                 return $this->renderBlock(
                     'post/show.html.twig',
@@ -159,7 +154,7 @@ class PostController extends AbstractController
                         'comment' => [
                             'comment' => $reply,
                             'reply_form' => $replyForm->createView(),
-                            'replies' => $this->prepareCommentsWithForms($reply->getReplies()->toArray(), $comment->getPost()->getId()),
+                            'replies' => $this->commentService->commentsWithForms($reply->getReplies()->toArray(), $comment->getPost()->getId()),
                         ],
                         'parent_id' => $comment->getId(),
                         'comment_form' => $form
@@ -177,38 +172,8 @@ class PostController extends AbstractController
         return $this->render('post/show.html.twig', [
             'post' => $comment->getPost(),
             'comment_form' => $commentForm,
-            'comments' => $this->prepareCommentsWithForms($comments, $comment->getPost()->getId()),
+            'comments' => $this->commentService->commentsWithForms($comments, $comment->getPost()->getId()),
         ]);
     }
 
-    /**
-     * @param array<int,mixed> $comments
-     * @return array<int,mixed>
-     */
-    private function prepareCommentsWithForms(array $comments, int $postId): array
-    {
-        $preparedComments = [];
-        foreach ($comments as $comment) {
-            $replyForm = $this->createReplyForm($comment->getId(), $postId)->createView();
-            $preparedComments[] = [
-                'comment' => $comment,
-                'reply_form' => $replyForm,
-                'replies' => $this->prepareCommentsWithForms($comment->getReplies()->toArray(), $postId),
-            ];
-        }
-        return $preparedComments;
-    }
-
-    private function createReplyForm(int $commentId, int $postId): FormInterface
-    {
-        return $this->formFactory->createNamed(
-            'reply_form',
-            CommentFormType::class,
-            new Comment(),
-            [
-                'action' => $this->generateUrl('app_comment_reply', ['id' => $commentId]),
-                'parent' => $commentId
-            ]
-        );
-    }
 }

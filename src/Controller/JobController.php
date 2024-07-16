@@ -15,4 +15,12 @@ class JobController extends AbstractController
             'controller_name' => 'JobController',
         ]);
     }
+
+    #[Route('/jobs/new', name: 'app_new_job')]
+    public function new(): Response
+    {
+        return $this->render('job/new.html.twig', [
+            'controller_name' => 'JobController',
+        ]);
+    }
 }

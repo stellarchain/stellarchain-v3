@@ -56,6 +56,7 @@ class Project
     public function __construct()
     {
         $this->image = new EmbeddedFile();
+        $this->created_at = new \DateTimeImmutable();
         $this->comments = new ArrayCollection();
     }
 
@@ -98,6 +99,21 @@ class Project
         $this->budget = $budget;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTime();
+        }
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updated_at = new \DateTime();
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -150,7 +166,7 @@ class Project
         return $this->slug;
     }
 
-/**
+    /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter

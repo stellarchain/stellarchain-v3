@@ -1,5 +1,6 @@
 {# blocks/comment_form_block.html.twig #}
 
+{% if form is defined %}
 {{ form_start(form) }}
     <div class="form-floating mb-2 w-100">
         {{ form_widget(form.content, {'attr': {'placeholder': 'Leave a comment', 'style': 'height: 100px'}}) }}
@@ -10,3 +11,4 @@
     </div>
     <button type="submit" class="btn btn-primary w-100">Submit</button>
 {{ form_end(form) }}
+{% endif %}

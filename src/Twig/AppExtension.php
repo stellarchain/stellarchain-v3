@@ -21,6 +21,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFilter('price', [$this, 'formatPrice']),
             new TwigFilter('format_large_number', [$this, 'formatLargeNumber']),
+            new TwigFilter('unicode_decode', [$this, 'unicodeDecode']),
         ];
     }
 
@@ -47,5 +48,10 @@ class AppExtension extends AbstractExtension
     public function formatLargeNumber($number)
     {
          return $this->numberFormatter->formatLargeNumber($number);
+    }
+
+    public function unicodeDecode($string)
+    {
+        return json_decode('"' . $string . '"');
     }
 }
