@@ -56,6 +56,7 @@ class ProjectCrudController extends AbstractCrudController
     {
         return $filters
             ->add('round')
+            ->add('award_type')
             ->add('budget')
             ->add('type')
             ->add('status');

@@ -112,7 +112,7 @@ class SCFUpdateProjectsCommand extends Command
         }
 
         $awardType = null;
-        $type = null;
+        $type = 'Empty';
         $budget = 0;
 
         foreach ($additionalContentLabels as $key => $label) {
