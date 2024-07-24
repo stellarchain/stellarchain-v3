@@ -2,10 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Config\AwardType;
+use App\Config\ProjectStatus;
 use App\Entity\Project;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -31,17 +35,29 @@ class ProjectCrudController extends AbstractCrudController
             ImageField::new('imageFile')->onlyOnIndex(),
             TextField::new('name'),
             BooleanField::new('essential'),
+            ChoiceField::new('award_type')->setChoices(AwardType::cases())->onlyOnIndex(),
+            ChoiceField::new('status')->setChoices(ProjectStatus::cases())->onlyOnIndex(),
             AssociationField::new('user')->autocomplete()->onlyOnForms(),
+            AssociationField::new('type')->autocomplete(),
             AssociationField::new('round')->autocomplete()->onlyOnIndex(),
             AssociationField::new('round_phase')->autocomplete()->onlyOnForms(),
             MoneyField::new('budget')->setCurrency('USD')->setStoredAsCents(false)->setNumDecimals(0),
             TextField::new('description')->onlyOnForms(),
             TextEditorField::new('content')->onlyOnForms(),
             TextField::new('scf_url')->onlyOnForms(),
-            IntegerField::new('score'),
+            IntegerField::new('score')->onlyOnDetail(),
 
-            DateTimeField::new('created_at')->onlyOnIndex(),
+            DateTimeField::new('created_at')->onlyOnDetail(),
             DateTimeField::new('updated_at')->onlyOnIndex(),
         ];
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('round')
+            ->add('budget')
+            ->add('type')
+            ->add('status');
     }
 }

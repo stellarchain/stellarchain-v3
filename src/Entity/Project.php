@@ -79,6 +79,15 @@ class Project
     #[ORM\Column(nullable: true)]
     private ?bool $essential = false;
 
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    private ?ProjectCategory $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    private ?ProjectType $type = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $award_type = null;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
@@ -345,6 +354,42 @@ class Project
     public function setEssential(?bool $essential): static
     {
         $this->essential = $essential;
+
+        return $this;
+    }
+
+    public function getCategory(): ?ProjectCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?ProjectCategory $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getType(): ?ProjectType
+    {
+        return $this->type;
+    }
+
+    public function setType(?ProjectType $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getAwardType(): ?int
+    {
+        return $this->award_type;
+    }
+
+    public function setAwardType(?int $award_type): static
+    {
+        $this->award_type = $award_type;
 
         return $this;
     }

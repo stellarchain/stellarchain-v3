@@ -11,6 +11,8 @@ use App\Entity\JobCategory;
 use App\Entity\Location;
 use App\Entity\Post;
 use App\Entity\Project;
+use App\Entity\ProjectCategory;
+use App\Entity\ProjectType;
 use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
 use App\Entity\User;
@@ -42,6 +44,8 @@ class DashboardAdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Comments', 'fas fa-list', Comment::class);
         yield MenuItem::subMenu('SCF Projects', 'fas fa-list')->setSubItems([
             MenuItem::linkToCrud('Projects', 'fas fa-list', Project::class),
+            MenuItem::linkToCrud('Project Categories', 'fas fa-list', ProjectCategory::class),
+            MenuItem::linkToCrud('Project Types', 'fas fa-list', ProjectType::class),
             MenuItem::linkToCrud('SCF Rounds', 'fas fa-list', Round::class),
             MenuItem::linkToCrud('SCF Rounds Phases', 'fas fa-list', RoundPhase::class),
         ]);

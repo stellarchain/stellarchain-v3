@@ -60,7 +60,6 @@ class Round
         $this->totalProjectCount = 0;
     }
 
-
     public function __toString(): string
     {
         return $this->name;

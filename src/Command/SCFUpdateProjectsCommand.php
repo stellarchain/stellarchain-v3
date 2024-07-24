@@ -2,13 +2,16 @@
 
 namespace App\Command;
 
+use App\Config\AwardType;
 use App\Config\ProjectStatus;
 use App\Entity\Project;
+use App\Entity\ProjectType;
 use DateTimeZone;
 use DateTimeImmutable;
 use App\Integrations\StellarCommunityFund\GetRoundProjects;
 use App\Integrations\StellarCommunityFund\SCFConnector;
 use App\Repository\ProjectRepository;
+use App\Repository\ProjectTypeRepository;
 use App\Repository\RoundPhaseRepository;
 use App\Repository\RoundRepository;
 use App\Repository\UserRepository;
@@ -31,6 +34,7 @@ class SCFUpdateProjectsCommand extends Command
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ProjectRepository $projectRepository,
+        private ProjectTypeRepository $projectTypeRepository,
         private RoundRepository $roundRepository,
         private RoundPhaseRepository $roundPhaseRepository,
         private UserRepository $userRepository
@@ -64,7 +68,7 @@ class SCFUpdateProjectsCommand extends Command
                 }
             }
 
-            $io->success('Phase synced.'. $round->getName());
+            $io->success('Phase synced.' . $round->getName());
         }
 
         return Command::SUCCESS;
@@ -94,52 +98,68 @@ class SCFUpdateProjectsCommand extends Command
     {
 
         $additionalContentLabels = [];
-        $budget = 0;
-
         foreach ($projectData['additionalContent'] as $additionalContent) {
             if ($additionalContent['formElement']) {
                 $key = $additionalContent['formElement']['label'];
-                if (!$additionalContent['formElementOption']) {
-                    $additionalContentLabels[$key]['value'] = $additionalContent['content'];
-                    if (strpos($key, 'Budget') !== false) {
-                        $budget = $additionalContent['content'];
-                    }
-                }
 
-                if ($additionalContent['formElementOption']) {
-                    $additionalContentLabels[$additionalContent['formElement']['label']]['value'] = $additionalContent['formElementOption']['label'];
-                }
+            }
+            if (!$additionalContent['formElementOption']) {
+                $additionalContentLabels[$key] = $additionalContent['content'];
+            }
+            if ($additionalContent['formElementOption']) {
+                $additionalContentLabels[$additionalContent['formElement']['label']] = $additionalContent['formElementOption']['label'];
             }
         }
 
-        try {
-            $status = constant("App\Config\ProjectStatus::" . $projectData['status']['processStep']);
-        } catch (\Error $e) {
-            $status = ProjectStatus::active;
+        $awardType = null;
+        $type = null;
+        $budget = 0;
+
+        foreach ($additionalContentLabels as $key => $label) {
+            if (strpos($key, 'Budget') !== false) {
+                $budget = $label;
+            }
+            if (strpos($key, 'Product Type') !== false || strpos($key, 'Project Type') !== false) {
+                $type = $label;
+            }
+
+            if (strpos($key, 'Award Type') !== false) {
+                $awardType = $label;
+            }
+        }
+
+        $statusEnum = ProjectStatus::fromString($projectData['status']['processStep']);
+        $awardEnum = AwardType::fromString($awardType);
+
+        $projectType = $this->projectTypeRepository->findOneBy(['name' => $type]);
+        if (!$projectType) {
+            $projectType = new ProjectType();
+            $projectType->setName($type);
+            $this->entityManager->persist($projectType);
+            $this->entityManager->flush();
         }
 
         $round = $this->roundRepository->findOneBy(['original_id' => $projectData['projectId']]);
         $roundPhase = $this->roundPhaseRepository->findOneBy(['original_id' => $projectData['phaseId']]);
         $user = $this->userRepository->findOneBy(['id' => 1]);
-
         $project = $this->projectRepository->findOneBy(['original_id' => $projectData['id']]);
         if (!$project) {
             $project = new Project();
         }
-
         $project->setName($projectData['title'])
             ->setOriginalId($projectData['id'])
             ->setUser($user)
             ->setContent($projectData['content'])
             ->setBudget($budget)
             ->setRound($round)
+            ->setType($projectType)
+            ->setAwardType($awardEnum->value)
             ->setRoundPhase($roundPhase)
-            ->setStatus($status->value)
+            ->setStatus($statusEnum->value)
             ->setScfUrl($projectData['relativeUrl'])
             ->setScore($projectData['score'])
             ->setCreatedAt($this->arrayToDateTimeImmutable($projectData['created']))
             ->setUpdatedAt($this->arrayToDateTimeImmutable($projectData['updated']));
-
 
         $imageFile = null;
         foreach ($projectData['media'] as $media) {
@@ -174,5 +194,12 @@ class SCFUpdateProjectsCommand extends Command
             return new DateTimeImmutable($date, $timezone);
         }
         return null;
+    }
+
+    function normalizeString(string $input): string
+    {
+        $lowercaseString = strtolower($input);
+        $normalizedString = str_replace(' ', '-', $lowercaseString);
+        return $normalizedString;
     }
 }

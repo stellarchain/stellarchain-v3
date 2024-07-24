@@ -44,7 +44,6 @@ class RoundRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
 
-            // Clear and set limited projects
             $round->getProjects()->clear();
             foreach ($projects as $project) {
                 $round->getProjects()->add($project);

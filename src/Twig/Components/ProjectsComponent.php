@@ -2,7 +2,11 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\ProjectCategory;
+use App\Repository\ProjectCategoryRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\ProjectTypeRepository;
+use App\Repository\RoundRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -24,14 +28,15 @@ final class ProjectsComponent
 
     private const PER_PAGE = 20;
 
-    private $projectRepository;
 
-    private $security;
-
-    public function __construct(ProjectRepository $projectRepository, Security $security)
+    public function __construct(
+        private ProjectRepository $projectRepository,
+        private Security $security,
+        private RoundRepository $roundRepository,
+        private ProjectCategoryRepository $projectCategoryRepository,
+        private ProjectTypeRepository $projectTypeRepository
+    )
     {
-        $this->projectRepository = $projectRepository;
-        $this->security = $security;
     }
 
     #[LiveAction]
@@ -60,6 +65,31 @@ final class ProjectsComponent
         $offset = ($this->page - 1) * self::PER_PAGE;
         $communities = $this->projectRepository->findBy([], [], self::PER_PAGE, $offset);
         return $communities;
+    }
+
+    /**
+     * @return array<int, Round>
+     */
+    public function getRounds(): array
+    {
+        return $this->roundRepository->findBy([], []);
+    }
+
+    /**
+     * @return array<int, ProjectCategory>
+     */
+    public function getCategories(): array
+    {
+        return $this->projectCategoryRepository->findBy([], []);
+    }
+
+
+    /**
+     * @return array<int, ProjectCategory>
+     */
+    public function getProjectTypes(): array
+    {
+        return $this->projectTypeRepository->findBy([], []);
     }
 
 }

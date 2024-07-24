@@ -53,10 +53,9 @@ class RoundPhase
         $this->projects = new ArrayCollection();
     }
 
-
     public function __toString(): string
     {
-        return $this->name;
+        return $this->name . '(' . $this->round->getName() . ')';
     }
 
     public function getId(): ?int
