@@ -16,28 +16,41 @@ class RoundRepository extends ServiceEntityRepository
         parent::__construct($registry, Round::class);
     }
 
-    //    /**
-    //     * @return Round[] Returns an array of Round objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findAllRoundsWithLimitedProjects(int $maxProjects = 30): mixed
+    {
+        $rounds = $this->createQueryBuilder('r')
+            ->getQuery()
+            ->getResult();
 
-    //    public function findOneBySomeField($value): ?Round
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        $em = $this->getEntityManager();
+
+        foreach ($rounds as $round) {
+            $totalProjects = $em->createQueryBuilder()
+                ->select('COUNT(p.id)')
+                ->from('App\Entity\Project', 'p')
+                ->where('p.round = :round')
+                ->setParameter('round', $round)
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $round->setTotalProjectCount((int) $totalProjects);
+
+            $projects = $em->createQueryBuilder()
+                ->select('p')
+                ->from('App\Entity\Project', 'p')
+                ->where('p.round = :round')
+                ->setParameter('round', $round)
+                ->setMaxResults($maxProjects)
+                ->getQuery()
+                ->getResult();
+
+            // Clear and set limited projects
+            $round->getProjects()->clear();
+            foreach ($projects as $project) {
+                $round->getProjects()->add($project);
+            }
+        }
+
+        return $rounds;
+    }
 }

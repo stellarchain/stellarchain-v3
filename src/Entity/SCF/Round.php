@@ -57,6 +57,7 @@ class Round
     {
         $this->roundPhases = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->totalProjectCount = 0;
     }
 
 
@@ -163,6 +164,17 @@ class Round
     {
         $this->original_id = $original_id;
 
+        return $this;
+    }
+
+    public function getTotalProjectCount(): int
+    {
+        return $this->totalProjectCount;
+    }
+
+    public function setTotalProjectCount(int $count): self
+    {
+        $this->totalProjectCount = $count;
         return $this;
     }
 

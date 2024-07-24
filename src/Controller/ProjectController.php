@@ -16,7 +16,7 @@ class ProjectController extends AbstractController
     #[Route('/projects', name: 'app_projects')]
     public function projects(EntityManagerInterface $entityManager): Response
     {
-        $projects = $entityManager->getRepository(Project::class)->findBy([], ['id' => 'DESC']);
+        $projects = $entityManager->getRepository(Project::class)->findBy(['essential' => true], ['id' => 'DESC']);
         return $this->render('project/index.html.twig', [
             'projects' => $projects
         ]);
@@ -27,7 +27,7 @@ class ProjectController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
-        $roundsData = $roundRepository->findAll();
+        $roundsData = $roundRepository->findAllRoundsWithLimitedProjects(15);
 
         return $this->render('project/timeline.html.twig', [
             'rounds' => $roundsData

@@ -1,8 +1,104 @@
 <div{{ attributes.defaults(stimulus_controller('appear')) }}>
+    <div class="row g-2 mb-3">
+        <div class="col-6 col-sm-3">
+            <select class="form-select bg-white" aria-label="Default select example">
+                <option value="any">🔍 Any Category</option>
+                <option value="protocols">💰 Financial Protocols</option>
+                <option value="applications">📱 End-User Applications</option>
+                <option value="learn">🤓 Services for understanding what is happening on chain</option>
+                <option value="services">🤖 Services that make the chain more functional</option>
+                <option value="tools">☕️ Tools for organizing and governing projects and products</option>
+                <option value="security">🔑 Security Services &amp; Tooling</option>
+                <option value="education">👨&zwj;🏫 Education &amp; Community</option>
+                <option value="other">👋 Other Developer Tooling</option>
+            </select>
+        </div>
+        <div class="col-6 col-sm-3">
+            <select class="form-select bg-white" aria-label="Default select example">
+                <option value="any">📋 Any Type</option>
+                <option>AMM</option>
+                <option>AMM &amp; Swap Functionality</option>
+                <option>Block Explorer</option>
+                <option>Bridge</option>
+                <option>Collateralized Stablecoin</option>
+                <option>DAO Tool</option>
+                <option>Data Tool</option>
+                <option>DEX</option>
+                <option>Educational Content</option>
+                <option>Educational Programs</option>
+                <option>End-User Application</option>
+                <option>End-User Applications</option>
+                <option>Formal Verification Tool</option>
+                <option>Gaming</option>
+                <option>Governance Solution</option>
+                <option>IDE</option>
+                <option>Identity</option>
+                <option>Indexing Service</option>
+                <option>Lending &amp; Borrowing</option>
+                <option>Marketplace</option>
+                <option>NFTs</option>
+                <option>On-chain Reporting &amp; Data Exploration</option>
+                <option>Oracle</option>
+                <option>Other Developer Tooling</option>
+                <option>Other Financial Protocol</option>
+                <option>Other Security</option>
+                <option>Payments</option>
+                <option>RPC &amp; Node Infrastructure</option>
+                <option>SDK</option>
+                <option>Soroban Enabled Wallet</option>
+                <option>Static Analysis Tool</option>
+                <option>Stellar Wallet</option>
+                <option>Testing Tool</option>
+                <option>Wallet</option>
+            </select>
+        </div>
+        <div class="col-6 col-sm-3">
+            <select class="form-select bg-white" aria-label="Default select example">
+                <option>🏅 All SCF Rounds</option>
+                <option>🏅 Round #28</option>
+                <option>🏅 Round #27</option>
+                <option>🏅 Round #26</option>
+                <option>🏅 Round #25</option>
+                <option>🏅 Round #24</option>
+                <option>🏅 Round #23</option>
+                <option>🏅 Round #22</option>
+                <option>🏅 Round #21</option>
+                <option>🏅 Round #20</option>
+                <option>🏅 Round #19</option>
+                <option>🏅 Round #18</option>
+                <option>🏅 Round #17</option>
+                <option>🏅 Round #16</option>
+                <option>🏅 Round #15</option>
+                <option>🏅 Round #14</option>
+                <option>🏅 Round #13</option>
+                <option>🏅 Round #12</option>
+                <option>🏅 Round #11</option>
+                <option>🏅 Round #10</option>
+                <option>🏅 Round #9</option>
+                <option>🏅 Round #8</option>
+                <option>🏅 Round #7</option>
+                <option>🏅 Round #6</option>
+                <option>🏅 Round #5</option>
+                <option>🏅 Round #4</option>
+                <option>🏅 Round #3</option>
+                <option>🏅 Round #2</option>
+                <option>🏅 Round #1</option>
+            </select>
+        </div>
+        <div class="col-6 col-sm-3">
+            <select class="form-select bg-white">
+                <option selected="" value="default">🦴 Sort by</option>
+                <option value="date">🆕 Latest project</option>
+                <option value="salary">💵 Highest awarded</option>
+                <option value="views">👀 Most viewed</option>
+                <option value="applied">✅ Most applications</option>
+                <option value="hot">🔥 Hottest</option>
+            </select>
+        </div>
+    </div>
     {% if page > 1 %}
-        <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
+    <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
     {% endif %}
-
     {% for project in this.projects %}
     <div id="item--{{ page }}-{{ loop.index }}" data-live-ignore>
         {{include("project/parts/project-item.html.twig", {project})}}
@@ -10,10 +106,10 @@
     {% endfor %}
     {% if this.hasMore %}
     {% for i in 1..per_page %}
-        <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
-            data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
-            <span class="ProductGrid_loader" style="--delay: {{ (loop.index + 1) / per_page }};"></span>
-        </div>
+    <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
+        data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
+        <span class="ProductGrid_loader" style="--delay: {{ (loop.index + 1) / per_page }};"></span>
+    </div>
     {% endfor %}
     {% endif %}
 </div>

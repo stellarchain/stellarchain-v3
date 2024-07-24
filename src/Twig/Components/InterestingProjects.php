@@ -23,6 +23,6 @@ final class InterestingProjects
      */
     public function getProjects(): array
     {
-        return $this->projectRepository->findBy([], ['created_at' => 'DESC']);
+        return $this->projectRepository->findBy([], ['created_at' => 'DESC'], 5);
     }
 }

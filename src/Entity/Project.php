@@ -35,12 +35,6 @@ class Project
     #[ORM\Column]
     private ?int $budget = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -75,6 +69,15 @@ class Project
 
     #[ORM\Column(nullable: true)]
     private ?int $original_id = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updated_at = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $essential = false;
 
     public function __construct()
     {
@@ -330,6 +333,18 @@ class Project
     public function setOriginalId(?int $original_id): static
     {
         $this->original_id = $original_id;
+
+        return $this;
+    }
+
+    public function isEssential(): ?bool
+    {
+        return $this->essential;
+    }
+
+    public function setEssential(?bool $essential): static
+    {
+        $this->essential = $essential;
 
         return $this;
     }
