@@ -52,6 +52,12 @@ class Comment
     public function __construct()
     {
         $this->replies = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+    }
+
+    public function __toString(): string
+    {
+        return substr($this->content, 0, 10);
     }
 
     public function getId(): ?int
@@ -105,6 +111,14 @@ class Comment
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTime();
+        }
     }
 
     public function updateTimestamps(): void

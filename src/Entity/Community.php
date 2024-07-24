@@ -26,6 +26,11 @@ class Community
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $description = null;
 
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,14 @@ class Community
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTime();
+        }
     }
 
     public function getUser(): ?User
