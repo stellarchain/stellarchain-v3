@@ -51,10 +51,13 @@ class Post
     private ?string $title = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $rank = null;
+    private ?float $rank = 0.0;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
     private $comments;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $views = null;
 
     public function __construct()
     {
@@ -225,5 +228,33 @@ class Post
         }
 
         return $this;
+    }
+
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    public function setViews(?int $views): static
+    {
+        $this->views = $views;
+
+        return $this;
+    }
+
+    public function incrementViews(): self
+    {
+        $this->views++;
+
+        return $this;
+    }
+
+    public function getTotalRepliesCount(): int
+    {
+        $totalReplies = 0;
+        foreach ($this->comments as $comment) {
+            $totalReplies += $comment->getRepliesCount();
+        }
+        return $totalReplies;
     }
 }

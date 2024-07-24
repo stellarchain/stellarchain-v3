@@ -2,957 +2,140 @@
 
 {% block title %}My Account!{% endblock %}
 
-{% block sidebar %}
-    {{include('sidebar.html.twig')}}
-    {{include('burger-menu.html.twig')}}
-{% endblock %}
 {% block body %}
-<div class="d-flex flex-column overflow-auto h-100 w-100" >
-    <!-- HEADER -->
-    <div class="bg-body border-bottom p-3 pt-md-3 px-lg-5 w-100">
+<div class="vh-100 overflow-y-scroll overflow-x-hidden d-flex flex-column hide-scrollbar">
+		<div class="mt-4">
+			<div class="d-flex align-items-center small py-2">
+			    <div class="flex-grow-1">
+					<span class="ps-0 mb-2 fs-1 fw-bold">Account</span>
+			    </div>
+			</div>
+		</div>
+		<div class="row g-2">
+			<div class="col-md-6 mx-auto py-2">
+				<div class="text-center mb-2">
+					<div class="bg-primary bg-opacity-25 border border-primary  rounded d-flex mx-auto my-2" style="height: 80px; width: 80px;">
+	                    <i class="bi bi-person-circle rounded-circle align-self-center mx-auto text-primary" style="font-size:48px;"></i>
+	                </div>
+					<p class="mb-0"><b class="text-uppercase">Profile</b></p>
+					<p class="small"><span class="text-secondary">This is your profile page</span></p>
+				</div>
 
-        <div class="row">
-            <div class="col-6 col-lg-5 col-xl-7">
-                <!-- Breadcrumb -->
+				<div class="list-group mb-2">
+					<a href="#" class="list-group-item list-group-item-action bg-darker">
+						<div class="d-flex align-items-center">
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-gear-wide-connected fs-3 text-primary"></i>
+						    </div>
+						    <div class="flex-grow-1 ms-3 small">
+						        <b>Settings</b>
+						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						    </div>
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-chevron-right text-secondary"></i>
+						    </div>
+						</div>
+					</a>
+				</div>
+				<div class="list-group mb-2">
+					<a href="#" class="list-group-item list-group-item-action bg-darker">
+						<div class="d-flex align-items-center">
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-question-circle fs-3 text-primary"></i>
+						    </div>
+						    <div class="flex-grow-1 ms-3 small">
+						        <b>Frequently Asked Questions</b>
+						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						    </div>
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-chevron-right text-secondary"></i>
+						    </div>
+						</div>
+					</a>
+				</div>
+				<div class="list-group mb-2">
+					<a href="#" class="list-group-item list-group-item-action bg-darker">
+						<div class="d-flex align-items-center">
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-file-text fs-3 text-primary"></i>
+						    </div>
+						    <div class="flex-grow-1 ms-3 small">
+						        <b>Terms and Conditions</b>
+						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						    </div>
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-chevron-right text-secondary"></i>
+						    </div>
+						</div>
+					</a>
+				</div>
+				<div class="list-group mb-2">
+					<a href="#" class="list-group-item list-group-item-action bg-darker">
+						<div class="d-flex align-items-center">
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-file-earmark-lock fs-3 text-primary"></i>
+						    </div>
+						    <div class="flex-grow-1 ms-3 small">
+						        <b>Privacy Policy</b>
+						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						    </div>
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-chevron-right text-secondary"></i>
+						    </div>
+						</div>
+					</a>
+				</div>
+				<div class="list-group mb-2">
+					<a href="#" class="list-group-item list-group-item-action bg-darker">
+						<div class="d-flex align-items-center">
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-life-preserver fs-3 text-primary"></i>
+						    </div>
+						    <div class="flex-grow-1 ms-3 small">
+						        <b>Support</b>
+						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						    </div>
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-chevron-right text-secondary"></i>
+						    </div>
+						</div>
+					</a>
+				</div>
+				<div class="list-group mb-2">
+					<a href="#" class="list-group-item list-group-item-action bg-darker">
+						<div class="d-flex align-items-center">
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-front fs-3 text-primary"></i>
+						    </div>
+						    <div class="flex-grow-1 ms-3 small">
+						        <b>Dark Mode</b>
+						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						    </div>
+						    <div class="flex-shrink-0 form-check form-select-lg form-switch p-0 align-self-center d-flex">
+						        <input class="form-check-input align-self-center p-0 m-0" type="checkbox" id="darkModeSwitch2" checked="">
+						    </div>
+						</div>
+					</a>
+				</div>
+				<div class="list-group mb-2">
+					<a href="#" class="list-group-item list-group-item-action bg-darker">
+						<div class="d-flex align-items-center">
+						    <div class="flex-shrink-0">
+						        <i class="bi bi-power fs-3 text-danger"></i>
+						    </div>
+						    <div class="flex-grow-1 ms-3 small">
+						        <b>Log out</b>
+						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						    </div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
 
-                <nav aria-label="breadcrumb" class="small">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item">
-                            <a href="#" class="d-none d-lg-block text-decoration-none">Account</a>
-                            <a href="#" class="d-block d-lg-none text-decoration-none small">Account</a>
-                        </li>
-                    </ol>
-                </nav>
-                <div data-controller="account-name">
-                    <span data-id="user-names" class="d-block d-lg-none fw-bold text-nowrap">Florin Mangu</span>
-                    <span data-id="user-names" class="d-none d-lg-block fs-5 fw-bold">
-                        {{app.user.firstName}}
-                        {{app.user.lastName}}
-                    </span>
-                </div>
-            </div>
-            <div id="top-right-filters" class="col-6 col-lg-7 col-xl-5">
-            </div>
+
+        <div class="py-5">
+            <span>&nbsp;</span>
         </div>
-
-        <!-- MAIN FILTERS -->
-        <turbo-frame id="tabs-nav" data-controller="tabs-nav">
-            <!-- Navigation -->
-            <nav class="nav mt-3 mt-lg-2 flex-nowrap overflow-auto">
-                <a type="button" data-href="/profile-information" id="overview"
-                    class="nav-link tab-link text-nowrap ps-0 pt-0 pb-1 active"
-                    data-turbo-frame="tabs-content">Overview</a>
-                <a type="button" data-href="/sessions" id="sessions"
-                    class="nav-link tab-link text-nowrap pt-0 pb-1 text-muted"
-                    data-turbo-frame="tabs-content">Sessions</a>
-                <a type="button" data-href="/user-activity" id="activity"
-                    class="nav-link tab-link text-nowrap pt-0 pb-1 text-muted"
-                    data-turbo-frame="tabs-content">Activity</a>
-                <a type="button" data-href="/user-services" id="services"
-                    class="nav-link tab-link text-nowrap pt-0 pb-1 text-muted"
-                    data-turbo-frame="tabs-content">Services</a>
-            </nav>
-
-        </turbo-frame>
-    </div>
-
-    <!-- CONTENT -->
-    <div class="d-flex flex-column h-100 w-100 overflow-auto">
-        <turbo-frame class="d-flex flex-column h-100 w-100 " id="tabs-content" data-controller="tabs-content">
-            <turbo-frame id="tabs-content">
-                <div class="content container-fluid container-xl px-3 px-lg-5 w-100 h-100" id="information">
-                    <div class="row py-3">
-                        <div class="col-12">
-                            <div class="list-group">
-                                <!-- Avatar Card -->
-                                <div class="bg-body border rounded p-2">
-                                    <div class="d-flex align-items-center w-100">
-
-                                        <!-- Contact -->
-                                        <div data-controller="modal-form">
-                                            <a type="button" data-action="modal-form#openModal"
-                                                class="bg-secondary bg-opacity-10 rounded hover-secondary d-flex flex-shrink-0 text-secondary overflow-hidden"
-                                                data-bs-toogle="tooltip" data-bs-title="Add Photo"
-                                                style="height: 56px; width: 56px;">
-                                                <img class=""
-                                                    src="https://account.ams3.cdn.digitaloceanspaces.com/dev/avatars/ccd0820a4a2e6fe4d04ff73dadf924a2.jpg"
-                                                    alt="Resource Not Found">
-                                            </a>
-                                            <div class="modal modal-sm fade" aria-hidden="true"
-                                                data-modal-form-target="modal">
-                                                <div
-                                                    class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                    <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                        data-turbo="true">
-                                                        <div class="modal-header border-bottom-0 px-3">
-                                                            <h5 class="modal-title fw-bold">Upload Avatar</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-
-                                                        <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                            <turbo-frame src="/user/avatar" id="uploadAvatar"
-                                                                loading="lazy">
-                                                                <!-- loading placeholder start -->
-                                                                <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                    style="white-space: normal !important;">
-                                                                    <div class="mb-3">
-                                                                        <label for="form_firstName"
-                                                                            class="placeholder  form-label required">First
-                                                                            name</label>
-                                                                        <div class="placeholder p-3 w-100"></div>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="form_firstName"
-                                                                            class="placeholder  form-label required">First
-                                                                            name</label>
-                                                                        <div class="placeholder p-3 w-100"></div>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="form_firstName"
-                                                                            class="placeholder  form-label required">First
-                                                                            name</label>
-                                                                        <div class="placeholder p-3 w-100"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- loading placeholder end -->
-                                                            </turbo-frame>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="ms-3">
-                                            <p class="d-none d-lg-block h5 fw-bold">{{app.user.username}}</p>
-                                            <p class="d-block d-lg-none h6 fw-bold">Developer</p>
-                                            <p class="text-muted small mt-1 mb-0">{{app.user.firstName}}
-                                                {{app.user.lastName}}</p>
-                                        </div>
-
-                                        <div class="ms-auto" data-controller="modal-form">
-                                            <a type="button" class="d-none d-lg-block text-decoration-none ms-auto"
-                                                data-action="modal-form#openModal">Change</a>
-                                            <a type="button"
-                                                class="d-block d-lg-none text-decoration-none small ms-auto"
-                                                data-action="modal-form#openModal">Change</a>
-                                            <div class="modal modal-sm fade" aria-hidden="true"
-                                                data-modal-form-target="modal">
-                                                <div
-                                                    class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                    <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                        data-turbo="true">
-                                                        <div class="modal-header border-bottom-0 px-3">
-                                                            <h5 class="modal-title fw-bold">Edit information</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-
-                                                        <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                            <turbo-frame src="/user/info" id="editUser" loading="lazy">
-                                                                <!-- loading placeholder start -->
-                                                                <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                    style="white-space: normal !important;">
-                                                                    <div class="mb-3">
-                                                                        <label for="form_firstName"
-                                                                            class="placeholder  form-label required">First
-                                                                            name</label>
-                                                                        <div class="placeholder p-3 w-100"></div>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="form_firstName"
-                                                                            class="placeholder  form-label required">First
-                                                                            name</label>
-                                                                        <div class="placeholder p-3 w-100"></div>
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="form_firstName"
-                                                                            class="placeholder  form-label required">First
-                                                                            name</label>
-                                                                        <div class="placeholder p-3 w-100"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- loading placeholder end -->
-                                                            </turbo-frame>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="mt-3">
-                                    <p class="h6">Contact</p>
-                                    <div class="list-group mt-2 p-0">
-                                        <!-- Phone Number -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-telephone-fill rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Phone number <i
-                                                            class="bi bi-dot"></i> <span class="text-primary">07463
-                                                            277523</span></span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Change your phone number.</span>
-                                                    </p>
-                                                </div>
-
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <a type="button" class="d-none d-lg-block text-decoration-none me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-decoration-none small me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold">Edit Phone Number
-                                                                    </h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/user/phone" id="editPhone"
-                                                                        loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Security -->
-                                <div class="mt-3">
-                                    <p class="h6">Security</p>
-                                    <!-- List -->
-                                    <div class="list-group mt-2 p-0">
-                                        <!-- Username -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-person-fill rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Username <i
-                                                            class="bi bi-dot"></i> <span
-                                                            class="text-primary">{{app.user.username}}</span></span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Change your username for an easy
-                                                            Sign in.</span>
-                                                    </p>
-                                                </div>
-
-                                                <!-- Change Button -->
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <a type="button" class="d-none d-lg-block text-decoration-none me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-decoration-none small me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold">Change Username</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/user/username" id="editUsername"
-                                                                        loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Email -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-envelope-at-fill rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Email <i
-                                                            class="bi bi-dot"></i> <span
-                                                            class="text-primary">{{app.user.email}}</span></span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">You will receive an email to the
-                                                            old and new addresses. Both require confirmation for the
-                                                            change to take effect.</span>
-                                                    </p>
-                                                </div>
-
-                                                <!-- Change Button -->
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <a type="button" class="d-none d-lg-block text-decoration-none me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-decoration-none small me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold">Change Email</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/user/email" id="editEmail"
-                                                                        loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <!-- Password -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-lock-fill rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Password</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">For a stronger password, use a
-                                                            combination of at least 8 uppercase and lowercase letters,
-                                                            numbers, and special characters.</span>
-                                                    </p>
-                                                </div>
-
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <a type="button" class="d-none d-lg-block text-decoration-none me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-decoration-none small me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold">Change Password</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/user/change-password"
-                                                                        id="changePassword" loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <!-- Two Factor Authentication -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2 ">
-                                                <!-- Icon -->
-                                                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-shield-lock-fill rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <a class="text-decoration-none">
-                                                        <span class="fw-bold small">Two-Factor
-                                                            Authentation</span>
-                                                        <p class="small text-muted mb-0 font-monospace">
-                                                            <span class="small text-muted">Add an aditional layer of
-                                                                security to your account by requiring more than just a
-                                                                password.</span>
-                                                        </p>
-                                                    </a>
-                                                </div>
-
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <!-- Change Button -->
-                                                    <a type="button" class="d-none d-lg-block text-decoration-none me-1"
-                                                        data-action="modal-form#openModal">Enable</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-decoration-none small me-1"
-                                                        data-action="modal-form#openModal">Enable</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold">Activate 2FA</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/authentication/2fa/enable"
-                                                                        id="activate-2fa" loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Recovery Codes -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2 bg-opacity-25">
-                                                <!-- Icon -->
-                                                <div class="flex-shrink-0 bg-opacity-10 bg-primary text-primary rounded d-flex "
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-key-fill rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Recovery Code</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Use recovery codes to access your
-                                                            account in case you lose your device and cannot receive
-                                                            two-factor authentication codes.</span>
-                                                    </p>
-                                                </div>
-
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <!-- Change Button -->
-                                                    <a type="button"
-                                                        class="d-none d-lg-block text-decoration-none me-1 text-muted">Generate</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-decoration-none small me-1 text-muted">Generate</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold"> Backup Codes for
-                                                                        2FA</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/authentication/2fa/backup-codes"
-                                                                        id="backup-2fa" loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Google Sign-in -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="flex-shrink-0 bg-opacity-10 rounded d-flex bg-primary text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-google rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Google Sign In</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Sign in using your Google
-                                                            Account, without needing to enter your password.</span>
-                                                    </p>
-                                                </div>
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <a type="button"
-                                                        class="d-none d-lg-block text-danger text-decoration-none me-1"
-                                                        data-action="modal-form#openModal">Unlink</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-danger text-decoration-none small me-1"
-                                                        data-action="modal-form#openModal">Unlink</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold">Unlink Google Id
-                                                                    </h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/user/unlink-google-id"
-                                                                        id="unlinkGoogleId" loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Notification -->
-                                <div class="mt-3">
-
-                                    <p class="h6">Notification</p>
-
-                                    <!-- List -->
-                                    <div class="list-group p-0 mt-2">
-
-                                        <!-- Service Notification -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2 bg-opacity-25">
-                                                <!-- Icon -->
-                                                <div class="flex-shrink-0 bg-opacity-10 rounded d-flex"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-app-indicator rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Service Notification</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Customise the notifications you
-                                                            receive from our services.</span>
-                                                    </p>
-                                                </div>
-
-                                                <!-- Change Button -->
-                                                <a href="javascript:void(0)"
-                                                    class="d-none d-lg-block text-muted text-decoration-none me-1">Change</a>
-                                                <a href="javascript:void(0)"
-                                                    class="d-block d-lg-none text-muted text-decoration-none small me-1">Change</a>
-
-                                            </div>
-                                        </div>
-
-                                        <!-- Timezone -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="flex-shrink-0 bg-opacity-10 rounded d-flex bg-primary text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-globe rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Timezone</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Europe/London (UTC +1:00)</span>
-                                                    </p>
-                                                </div>
-                                                <div class="ms-auto" data-controller="modal-form">
-                                                    <a type="button" class="d-none d-lg-block text-decoration-none me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <a type="button"
-                                                        class="d-block d-lg-none text-decoration-none small me-1"
-                                                        data-action="modal-form#openModal">Change</a>
-                                                    <div class="modal modal-sm fade" aria-hidden="true"
-                                                        data-modal-form-target="modal">
-                                                        <div
-                                                            class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
-                                                            <div class="modal-content rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0"
-                                                                data-turbo="true">
-                                                                <div class="modal-header border-bottom-0 px-3">
-                                                                    <h5 class="modal-title fw-bold">Change timezone</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex flex-column gap-3 pt-0">
-                                                                    <turbo-frame src="/user/timezone" id="editTimezone"
-                                                                        loading="lazy">
-                                                                        <!-- loading placeholder start -->
-                                                                        <div class="placeholder-glow d-flex flex-column w-100 text-start"
-                                                                            style="white-space: normal !important;">
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="form_firstName"
-                                                                                    class="placeholder  form-label required">First
-                                                                                    name</label>
-                                                                                <div class="placeholder p-3 w-100">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- loading placeholder end -->
-                                                                    </turbo-frame>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <!-- Marketing -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2 bg-opacity-25">
-                                                <!-- Icon -->
-                                                <div class="flex-shrink-0 bg-opacity-10 rounded d-flex text-primary bg-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-shield-lock-fill rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Marketing</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Opt-in to, or opt-out of,
-                                                            marketing emails. These will be provided by us or by
-                                                            carefully selected partners.</span>
-                                                    </p>
-                                                </div>
-
-                                                <!-- Toggle Button -->
-                                                <div class="form-check form-switch" data-controller="profile-privacy"
-                                                    data-profile-privacy-ajax-path-value="/user/privacy">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        name="marketingPrivacy" checked="">
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Privacy -->
-                                <div class="mt-3">
-
-                                    <p class="h6">Privacy</p>
-
-                                    <!-- List -->
-                                    <div class="list-group p-0 mt-2">
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="flex-shrink-0 bg-opacity-10 rounded d-flex bg-primary text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-phone rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Phone Number</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Show / Hide your phone number
-                                                            from profile page.</span>
-                                                    </p>
-                                                </div>
-
-                                                <!-- Change Button -->
-                                                <div class="form-check form-switch" data-controller="profile-privacy"
-                                                    data-profile-privacy-ajax-path-value="/user/privacy">
-                                                    <input class="form-check-input" name="phonePrivacy" type="checkbox"
-                                                        role="switch" checked="">
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <!-- Email Address - Privacy -->
-                                        <div class="list-group-item p-0">
-                                            <div class="d-flex align-items-center p-2">
-                                                <!-- Icon -->
-                                                <div class="flex-shrink-0 bg-opacity-10 rounded d-flex bg-primary text-primary"
-                                                    style="height: 45px; width: 45px;">
-                                                    <i
-                                                        class="bi bi-globe rounded-circle align-self-center mx-auto fs-4"></i>
-                                                </div>
-                                                <!-- Data -->
-                                                <div class="flex-grow-1 ms-3">
-                                                    <span class="fw-bold small">Email Address</span>
-                                                    <p class="small text-muted mb-0 font-monospace">
-                                                        <span class="small text-muted">Show / Hide your email address
-                                                            from profile page.</span>
-                                                    </p>
-                                                </div>
-                                                <!-- Change Button -->
-                                                <div class="form-check form-switch" data-controller="profile-privacy"
-                                                    data-profile-privacy-ajax-path-value="/user/privacy">
-                                                    <input class="form-check-input" name="emailPrivacy" type="checkbox"
-                                                        role="switch" id="flexSwitchCheckChecked" checked="">
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </turbo-frame>
-
-        </turbo-frame>
-    </div>
-</div>
+	</div>
 {% endblock %}

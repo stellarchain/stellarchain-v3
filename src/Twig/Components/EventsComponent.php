@@ -3,7 +3,6 @@
 namespace App\Twig\Components;
 
 use App\Entity\Community;
-use App\Repository\CommunityRepository;
 use App\Repository\EventRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;

@@ -1,0 +1,36 @@
+<div class="card mb-2">
+    <img class="card-img-top"
+        src="https://dashboard.communityfund.stellar.org/api/v4/media/{{round.image}}/thumbnail/strategy/crop/width/1920/height/600"
+        alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">{{round.name}} - {{round.startDate|date('Y-m-d H:i:s') }} / {{ round.endDate|date('Y-m-d
+            H:i:s')}}</h5>
+
+
+            <div class="card-text">{{round.description | raw}}</div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="round-{{round.id}}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse-{{round.id}}" aria-expanded="false"
+                        aria-controls="collapse-{{round.id}}">
+                        Phases
+                    </button>
+                </h2>
+                <div id="collapse-{{round.id}}" class="accordion-collapse collapse" aria-labelledby="round-{{round.id}}"
+                    data-bs-parent="#rounds-accordion">
+                    <div class="accordion-body">
+                        <ul>
+                            {% for phase in round.roundPhases %}
+                            <li>
+                                <strong>Round name: {{phase.name}} | {{phase.startDate|date('Y-m-d H:i:s')}} / {{
+                                    round.endDate|date('Y-m-d H:i:s') }}</strong> <br />
+                                {{phase.description | raw}} <br />
+                                <br />
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

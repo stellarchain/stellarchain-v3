@@ -75,13 +75,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Community>
      */
-    #[ORM\OneToMany(targetEntity: Community::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Community::class, mappedBy: 'user')]
     private Collection $communities;
 
     /**
      * @var Collection<int, Job>
      */
-    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'user')]
     private Collection $jobs;
 
     public function __construct()

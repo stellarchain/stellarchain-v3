@@ -8,6 +8,7 @@ use App\Form\CommentFormType;
 use App\Form\PostFormType;
 use App\Repository\CommentRepository;
 use App\Service\CommentService;
+use App\Service\RankingService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +19,12 @@ use Symfony\UX\Turbo\TurboBundle;
 class PostController extends AbstractController
 {
     private $commentService;
+    private $rankingService;
 
-    public function __construct(CommentService $commentService)
+    public function __construct(CommentService $commentService, RankingService $rankingService)
     {
         $this->commentService = $commentService;
+        $this->rankingService = $rankingService;
     }
 
     #[Route('/l/new', name: 'app_post_new')]
@@ -59,10 +62,14 @@ class PostController extends AbstractController
             ]
         );
 
+        $post->incrementViews();
+
         $commentsWithForms = $this->commentService->commentsWithForms($commentRepository->findBy(
             ['post' => $post, 'parent' => null],
             ['created_at' => 'DESC']
         ), $post->getId());
+
+        $this->rankingService->updateRank($post);
 
         return $this->render('post/show.html.twig', [
             'post' => $post,

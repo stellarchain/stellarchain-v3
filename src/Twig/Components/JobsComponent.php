@@ -2,7 +2,11 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\Location;
+use App\Repository\JobCategoryRepository;
 use App\Repository\JobRepository;
+use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -19,27 +23,32 @@ final class JobsComponent
     use DefaultActionTrait;
 
     #[LiveProp(writable: true, url: true)]
-    public string $type = 'worldwide';
+    public string $location = 'worldwide';
 
-    #[LiveProp]
+    #[LiveProp(writable: true, url: true)]
+    public int $salary = 0;
+
+    #[LiveProp(writable: true, url: true)]
+    public string $sort = 'date';
+
+    #[LiveProp(writable: true, url: true)]
+    public int $category = 0;
+
+    #[LiveProp(writable: true)]
     public int $page = 1;
 
     private const PER_PAGE = 10;
 
-    private $jobRepository;
-
-    private $security;
-
-    public function __construct(JobRepository $jobRepository, Security $security)
-    {
-        $this->jobRepository = $jobRepository;
-        $this->security = $security;
-    }
+    public function __construct(
+        private JobRepository $jobRepository,
+        private JobCategoryRepository $jobCategoryRepository,
+        private LocationRepository $locationRepository,
+        private Security $security
+    ){}
 
     #[LiveAction]
-    public function changeType(string $type): void
+    public function resetPage(): void
     {
-        $this->type = $type;
         $this->page = 1;
     }
 
@@ -51,8 +60,8 @@ final class JobsComponent
 
     public function hasMore(): bool
     {
-        //$criteria = $this->buildCriteria();
-        $totalJobs = $this->jobRepository->count([]);
+        $criteria = $this->buildFilterCriteria();
+        $totalJobs = $this->jobRepository->countByCriteria($criteria);
         return $totalJobs > ($this->page * self::PER_PAGE);
     }
 
@@ -63,29 +72,79 @@ final class JobsComponent
     }
 
     /**
-     * @return array<int, Community>
+     * @return array<int, Job>
      */
     public function getJobs(): array
     {
         $offset = ($this->page - 1) * self::PER_PAGE;
-        $communities = $this->jobRepository->findBy([], [], self::PER_PAGE, $offset);
-        return $communities;
+        $criteria = $this->buildFilterCriteria();
+
+        $orderBy = $this->buildSortCriteria();
+
+        return $this->jobRepository->findJobs($criteria, $orderBy, $offset, self::PER_PAGE);
     }
 
     /**
-     * @return array|array<string,string>
+     * @return array<int, JobCategory>
      */
-    private function buildCriteria(): array
+    public function getJobCategories(): array
     {
-        switch ($this->type) {
+        return $this->jobCategoryRepository->findAll();
+    }
+
+    /**
+     * @return array<int, Location>
+     */
+    public function getLocations(): array
+    {
+        return $this->locationRepository->findAll();
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    private function buildSortCriteria(): array
+    {
+        switch ($this->sort) {
+            case 'date':
+                return ['created_at' => 'DESC'];
+            case 'salary':
+                return ['salary' => 'DESC'];
+            case 'views':
+                return [];
+            case 'applied':
+                return ['applied' => 'DESC'];
             case 'hot':
                 return [];
-            case 'new':
-                return ['created_at' => 'DESC'];
-            case 'top':
-                return ['rank' => 'DESC'];
+            case 'benefits':
+                return [];
             default:
                 return [];
         }
+    }
+
+    private function buildFilterCriteria(): Criteria
+    {
+        $criteria = Criteria::create();
+
+        if ($this->location !== 'worldwide') {
+            $location = $this->locationRepository->find($this->location);
+            if ($location) {
+                $criteria->andWhere(Criteria::expr()->eq('location', $location));
+            }
+        }
+
+        if ($this->salary > 0) {
+            $criteria->andWhere(Criteria::expr()->gte('salary', $this->salary * 10000));
+        }
+
+        if ($this->category > 0) {
+            $category = $this->jobCategoryRepository->find($this->category);
+            if ($category) {
+                $criteria->andWhere(Criteria::expr()->eq('category', $category));
+            }
+        }
+
+        return $criteria;
     }
 }

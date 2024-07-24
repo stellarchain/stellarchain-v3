@@ -85,3 +85,7 @@ canvas#race{position:relative; z-index:1;}
 .reply-button {
     margin-right: 10px;
 }
+
+.show-password-input {
+    top: 20px !important;
+}

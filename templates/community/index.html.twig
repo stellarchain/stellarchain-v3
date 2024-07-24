@@ -17,20 +17,20 @@
                 <li class="nav-item py-0">
                     <a class="nav-link py-1 tabs fw-bolder active"
                         aria-current="page"
-                        href="/communities">
+                        href="{{path('app_communities')}}">
                         Followers
                     </a>
                 </li>
-                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="#">Posts</a></li>
-                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="#">Oldest</a></li>
-                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="#">Newest</a></li>
+                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="{{path('app_communities_posts')}}">Posts</a></li>
+                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="{{path('app_communities_oldest')}}">Oldest</a></li>
+                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="{{path('app_communities_newest')}}">Newest</a></li>
             </ul>
         </div>
     </div>
 </div>
 <div class="row g-2">
     <div class="col-lg-8 col-xl-9 col-12 vh-100 overflow-y-scroll overflow-x-hidden d-flex flex-column hide-scrollbar">
-        {{ component('communities-component', { type: 'hot'}) }}
+        {{ component('communities-component') }}
         <div class="py-5 mb-4">
             <span>&nbsp;</span>
         </div>

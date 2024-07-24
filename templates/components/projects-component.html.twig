@@ -1,0 +1,19 @@
+<div{{ attributes.defaults(stimulus_controller('appear')) }}>
+    {% if page > 1 %}
+        <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
+    {% endif %}
+
+    {% for project in this.projects %}
+    <div id="item--{{ page }}-{{ loop.index }}" data-live-ignore>
+        {{include("project/parts/project-item.html.twig", {project})}}
+    </div>
+    {% endfor %}
+    {% if this.hasMore %}
+    {% for i in 1..per_page %}
+        <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
+            data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
+            <span class="ProductGrid_loader" style="--delay: {{ (loop.index + 1) / per_page }};"></span>
+        </div>
+    {% endfor %}
+    {% endif %}
+</div>

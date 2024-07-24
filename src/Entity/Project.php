@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\SCF\Round;
+use App\Entity\SCF\RoundPhase;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -56,10 +58,29 @@ class Project
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "project")]
     private $comments;
 
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    private ?Round $round = null;
+
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    private ?RoundPhase $round_phase = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $status = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $scf_url = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $score = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $original_id = null;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
         $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
         $this->comments = new ArrayCollection();
     }
 
@@ -108,7 +129,7 @@ class Project
     public function setCreatedAtValue(): void
     {
         if ($this->created_at === null) {
-            $this->created_at = new \DateTime();
+            $this->created_at = new \DateTimeImmutable();
         }
     }
 
@@ -116,7 +137,7 @@ class Project
     #[ORM\PreUpdate]
     public function setUpdatedAtValue(): void
     {
-        $this->updated_at = new \DateTime();
+        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -237,6 +258,78 @@ class Project
     public function setContent(string $content): static
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getRound(): ?Round
+    {
+        return $this->round;
+    }
+
+    public function setRound(?Round $round): static
+    {
+        $this->round = $round;
+
+        return $this;
+    }
+
+    public function getRoundPhase(): ?RoundPhase
+    {
+        return $this->round_phase;
+    }
+
+    public function setRoundPhase(?RoundPhase $round_phase): static
+    {
+        $this->round_phase = $round_phase;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?int $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getScfUrl(): ?string
+    {
+        return $this->scf_url;
+    }
+
+    public function setScfUrl(?string $scf_url): static
+    {
+        $this->scf_url = $scf_url;
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(?int $score): static
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    public function getOriginalId(): ?int
+    {
+        return $this->original_id;
+    }
+
+    public function setOriginalId(?int $original_id): static
+    {
+        $this->original_id = $original_id;
 
         return $this;
     }

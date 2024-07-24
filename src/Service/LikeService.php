@@ -5,17 +5,27 @@ namespace App\Service;
 use App\Entity\Like;
 use App\Entity\User;
 use App\Repository\LikeRepository;
+use App\Repository\PostRepository;
+use App\Service\RankingService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class LikeService
 {
     private $likeRepository;
     private $entityManager;
+    private $postRankingService;
+    private $postRepository;
 
-    public function __construct(LikeRepository $likeRepository, EntityManagerInterface $entityManager)
+    public function __construct(
+        LikeRepository $likeRepository,
+        EntityManagerInterface $entityManager,
+        PostRepository $postRepository,
+        RankingService $rankingService)
     {
         $this->likeRepository = $likeRepository;
         $this->entityManager = $entityManager;
+        $this->postRepository = $postRepository;
+        $this->postRankingService = $rankingService;
     }
 
     public function countLikesForProject(int $projectId): int
@@ -63,6 +73,11 @@ class LikeService
 
             $this->entityManager->persist($like);
             $this->entityManager->flush();
+
+            if ($entityType == 'post'){
+                $post = $this->postRepository->findOneBy(['id' => $entityId]);
+                $this->postRankingService->updateRank($post);
+            }
         }
     }
 

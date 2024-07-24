@@ -38,6 +38,12 @@ class Job
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -125,5 +131,13 @@ class Job
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTime();
+        }
     }
 }

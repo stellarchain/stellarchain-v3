@@ -3,75 +3,42 @@
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Service\LikeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ProjectFormType;
+use App\Repository\RoundRepository;
 
 class ProjectController extends AbstractController
 {
-    private $likeService;
-
-    public function __construct(LikeService $likeService)
-    {
-        $this->likeService = $likeService;
-    }
-
     #[Route('/projects', name: 'app_projects')]
     public function projects(EntityManagerInterface $entityManager): Response
     {
         $projects = $entityManager->getRepository(Project::class)->findBy([], ['id' => 'DESC']);
-        $projectsWithLikes = [];
-
-        foreach ($projects as $project) {
-            $projectsWithLikes[] = [
-                'project' => $project,
-                'likes' => $this->likeService->countLikesForProject($project->getId()),
-            ];
-        }
-
-        return $this->render('project/index.html.twig', [
-            'projects' => $projectsWithLikes
-        ]);
-    }
-
-    #[Route('/popular', name: 'app_popular')]
-    public function popular(EntityManagerInterface $entityManager): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
-        $projects = $entityManager->getRepository(Project::class)->findProjectsWithLikes();
-
         return $this->render('project/index.html.twig', [
             'projects' => $projects
         ]);
     }
 
-    #[Route('/latest', name: 'app_latest')]
-    public function latest(EntityManagerInterface $entityManager): Response
+    #[Route('/projects/timeline', name: 'app_projects_timeline')]
+    public function timeline(RoundRepository $roundRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
-        $projects = $entityManager->getRepository(Project::class)->findProjectsWithLikes();
+        $roundsData = $roundRepository->findAll();
 
-        return $this->render('project/index.html.twig', [
-            'projects' => $projects
+        return $this->render('project/timeline.html.twig', [
+            'rounds' => $roundsData
         ]);
     }
 
-    #[Route('/featured', name: 'app_featured')]
-    public function featured(EntityManagerInterface $entityManager): Response
+    #[Route('/projects/list', name: 'app_projects_list')]
+    public function list(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
-        $projects = $entityManager->getRepository(Project::class)->findProjectsWithLikes();
-
-        return $this->render('project/index.html.twig', [
-            'projects' => $projects
-        ]);
+        return $this->render('project/list.html.twig');
     }
 
     #[Route('/projects/new', name: 'app_project_add')]
@@ -99,15 +66,10 @@ class ProjectController extends AbstractController
         ], $response);
     }
 
-    #[Route('/projects/{slug}', name: 'app_project_show')]
-    public function project(EntityManagerInterface $entityManager, string $slug): Response
+    #[Route('/projects/{id}', name: 'app_project_show')]
+    public function project(Project $project): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
-        $project = $entityManager->getRepository(Project::class)->findOneBy(
-            ['slug' => $slug], // Filter by slug
-            ['created_at' => 'DESC'] // Sort by creation date descending
-        );
 
         return $this->render('project/project.html.twig', [
             'project' => $project

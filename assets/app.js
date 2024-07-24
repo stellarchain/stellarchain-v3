@@ -5,15 +5,6 @@ document.addEventListener("turbo:before-prefetch", (event) => {
   event.preventDefault()
 })
 
-function isSavingData() {
-  return navigator.connection?.saveData
-}
-
-function hasSlowInternet() {
-  return navigator.connection?.effectiveType === "slow-2g" ||
-    navigator.connection?.effectiveType === "2g"
-}
-
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 

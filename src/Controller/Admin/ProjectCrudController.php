@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -28,10 +29,15 @@ class ProjectCrudController extends AbstractCrudController
             Field::new('imageFile')->setFormType(VichImageType::class)->onlyOnForms(),
             ImageField::new('imageFile')->onlyOnIndex(),
             TextField::new('name'),
-            AssociationField::new('user')->autocomplete(),
-            MoneyField::new('budget')->setCurrency('USD'),
+            AssociationField::new('user')->autocomplete()->onlyOnForms(),
+            AssociationField::new('round')->autocomplete()->onlyOnForms(),
+            AssociationField::new('round_phase')->autocomplete()->onlyOnForms(),
+            MoneyField::new('budget')->setCurrency('USD')->setStoredAsCents(false)->setNumDecimals(0),
             TextField::new('description'),
             TextEditorField::new('content'),
+            TextField::new('scf_url')->onlyOnForms(),
+            IntegerField::new('score'),
+
             DateTimeField::new('created_at')->onlyOnIndex(),
             DateTimeField::new('updated_at')->onlyOnIndex(),
         ];

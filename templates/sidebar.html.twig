@@ -48,7 +48,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{path('app_projects')}}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                        {% if app.request.get('_route') == 'app_projects' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                        {% if app.request.get('_route') in ['app_projects', 'app_project_add', 'app_project_show', 'app_projects_list', 'app_projects_timeline'] %} %} bg-primary bg-opacity-25 text-primary {% endif %}
                     ">
                     <i class="bi bi-list-ul me-2"></i>
                     <p class="mb-0">Projects</p>
@@ -151,25 +151,9 @@
                 </div>
             </div>
         </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center pe-1">
-                <i class="bi bi-front me-2"></i>
-                <p class="mb-0">Dark Mode</p>
-                <div class="form-check form-switch ms-auto align-self-center p-1">
-                    <input
-                        class="form-check-input p-0 m-0"
-                        type="checkbox"
-                        id="darkModeSwitch"
-                        checked
-                        {{stimulus_target('settings', 'darkModeSwitch' ) }}
-                        {{stimulus_action('settings', 'toggle', 'click' )}}
-                    >
-                </div>
-            </a>
-        </li>
         <li class="nav-item hover rounded-1 d-flex justify-content-between">
             {% if app.user %}
-            <a href="/account" class="nav-link"><i class="bi bi-person-circle me-2"></i>
+            <a href="{{path('app_account_show', {username: app.user.username})}}" class="nav-link"><i class="bi bi-person-circle me-2"></i>
                 {{ app.user.firstName}} {{ app.user.lastName }}
             </a>
             <a href="{{path('app_logout')}}" class="float-end mt-2">
@@ -177,7 +161,7 @@
             </a>
             {% endif %}
             {% if not app.user %}
-            <a href="/login" class="nav-link"><i class="bi bi-person-circle me-2"></i>Login</a>
+            <a href="{{path('app_login')}}" class="nav-link"><i class="bi bi-person-circle me-2"></i>Login</a>
             {% endif %}
         </li>
     </ul>

@@ -5,37 +5,7 @@
 {% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
 
-    <div class="mt-4">
-        <div class="d-flex align-items-center small py-2">
-            <div class="flex-grow-1">
-                <span class="ps-0 mb-2 fs-1 fw-bold">Projects</span>
-            </div>
-        </div>
-    </div>
-    <div class="card border-primary mb-2">
-        <div class="card-body rounded py-2 ">
-            <div class="d-flex gap-3 align-items-center">
-                <i class="bi bi-award text-primary fs-2"></i>
-                <div class="d-flex flex-column justify-content-center">
-                    <p class="fw-bold mb-0">Building on Stellar?</p>
-                    <p class="small mb-0">Get $50-100k to build your idea!</p>
-                </div>
-                <a class="btn btn-primary ms-auto" href="/projects" role="button">Join Now</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-black sticky-top pb-2">
-        <div class="py-1 px-2 menu border rounded">
-            <ul class="nav nav-pills nav-justified ">
-                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder active" aria-current="page"
-                        href="/projects">Discover</a></li>
-                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="/projects/timeline">Timeline</a>
-                </li>
-                <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder" href="/projects/list">List</a></li>
-            </ul>
-        </div>
-    </div>
+    {% include 'project/header-projects.html.twig' %}
 
     <div class="d-flex align-items-center border-0 py-2">
         <div class="flex-grow-1 d-flex flex-column lh-1">
@@ -45,7 +15,7 @@
             </div>
         </div>
         <div class="flex-shrink-0">
-            <a href="/projects/list" class="text-decoration-none small">See All</a>
+            <a href="{{path('app_projects_list')}}" class="text-decoration-none small">See All</a>
         </div>
     </div>
 
@@ -61,55 +31,27 @@
             </div>
         </div>
         <div class="flex-shrink-0">
-            <a href="/projects" class="text-decoration-none small">See All</a>
+            <a href="{{path('app_projects_list')}}" class="text-decoration-none small">See All</a>
         </div>
     </div>
     <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
-        {% for project in projects %}
-            {{include("project/parts/project-card.html.twig", {project})}}
-        {% endfor %}
-    </div>
-
-    <div class="d-flex align-items-center border-0 py-2">
-        <div class="flex-grow-1 d-flex flex-column lh-1">
-            <span class="fw-bold mb-1">Stellar Essentials</span>
-            <div class="small">
-                <span class="text-secondary small mb-0">Must have projects for you</span>
+        <div class="swiper" {{stimulus_controller('project')}}>
+            <div class="swiper-wrapper">
+                {% for project in projects %}
+                    {{include("project/parts/project-card.html.twig", {project})}}
+                {% endfor %}
             </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
-        <div class="flex-shrink-0">
-            <a href="/projects" class="text-decoration-none small">See All</a>
-        </div>
-    </div>
 
-    {% for project in projects %}
-        {{include("project/parts/project-item.html.twig", {project})}}
-    {% endfor %}
-
-    <div class="d-flex align-items-center border-0 py-2">
-        <div class="flex-grow-1 d-flex flex-column lh-1">
-            <span class="fw-bold mb-1">Popular Projects</span>
-            <div class="small">
-                <span class="text-secondary small mb-0">Projects that other users found useful</span>
-            </div>
+        <div class="py-4">
+            <span>&nbsp;</span>
         </div>
-        <div class="flex-shrink-0">
-            <a href="/projects" class="text-decoration-none small">See All</a>
+
+        <div class="mt-0 d-block d-sm-none">
+            <span>&nbsp;</span>
         </div>
     </div>
-    <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
-        {% for project in projects %}
-            {{include("project/parts/project-card.html.twig", {project})}}
-        {% endfor %}
-    </div>
-
-
-    <div class="py-4">
-        <span>&nbsp;</span>
-    </div>
-
-    <div class="mt-0 d-block d-sm-none">
-        <span>&nbsp;</span>
-    </div>
-</div>
-{% endblock %}
+    {% endblock %}

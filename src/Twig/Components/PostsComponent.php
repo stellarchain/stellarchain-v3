@@ -8,6 +8,7 @@ use App\Service\LikeService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -41,7 +42,7 @@ final class PostsComponent
     }
 
     #[LiveAction]
-    public function changeType(string $type): void
+    public function changeType(#[LiveArg] string $type): void
     {
         $this->type = $type;
         $this->page = 1;
@@ -83,7 +84,7 @@ final class PostsComponent
             }
             $postsWithLikes[] = [
                 'post' => $post,
-                'likes' => $this->likeService->countLikesForPost($post->getId()),
+                'likes' => $this->postRepository->getLikesCount($post),
                 'liked' => $isLiked,
             ];
         }

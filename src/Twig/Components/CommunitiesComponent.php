@@ -19,7 +19,7 @@ final class CommunitiesComponent
     use ComponentToolsTrait;
     use DefaultActionTrait;
 
-    #[LiveProp(writable: true, url: true)]
+    #[LiveProp(writable: true)]
     public string $type = 'hot';
 
     #[LiveProp]

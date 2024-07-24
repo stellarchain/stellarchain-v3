@@ -24,6 +24,15 @@ class JobCategory
     #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'category')]
     private Collection $jobs;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $icon = null;
+
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
@@ -72,6 +81,18 @@ class JobCategory
                 $job->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
 
         return $this;
     }

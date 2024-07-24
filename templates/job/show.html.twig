@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Jobs{% endblock %}
+
+{% block body %}
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+    <div class="mt-4">
+        <div class="d-flex align-items-center small py-2">
+            <div class="flex-grow-1">
+                <span class="ps-0 mb-2 fs-1 fw-bold">{{job.title}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="py-4">
+        <span>&nbsp;</span>
+    </div>
+
+    <div class="mt-0 d-block d-sm-none">
+        <span>&nbsp;</span>
+    </div>
+</div>
+{% endblock %}

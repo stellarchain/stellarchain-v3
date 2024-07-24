@@ -44,8 +44,8 @@
                             <label for="username" class="form-label required">Email Address / Username</label>
                         </div>
                         <div class="form-floating mb-2 w-100">
-                        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Password" required
-                            {{ stimulus_controller('symfony/ux-toggle-password/toggle-password')}}>
+                            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Password" required
+                            {{ stimulus_controller('symfony/ux-toggle-password/toggle-password', { buttonClasses: ['toggle-password-button', 'show-password-input']}) }}>
                             <label for="password" class="form-label required">Password</label>
                         </div>
                         <input type="hidden" name="_csrf_token"

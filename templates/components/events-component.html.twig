@@ -1,15 +1,16 @@
 <div{{ attributes.defaults(stimulus_controller('appear')) }}>
 
     <div class="swiper" {{stimulus_controller('events')}}>
-      <div class="swiper-wrapper">
-        {% for event in this.events %}
+        <div class="swiper-wrapper">
+            {% for event in this.events %}
             <div class="list-group swiper-slide">
-                <a class="list-group-item list-group-item-action p-2" href="#" style="width: 275px; height: 168;">
+                <a class="list-group-item list-group-item-action p-2" href="{{path('app_show_events', {id: event.id})}}" style="width: 275px; height: 220px">
                     <div class="d-flex">
                         <div class="position-absolute top-0 start-0 mt-3 ms-3">
                             <div class="d-flex flex-column align-items-center justify-content-center rounded bg-primary text-primary lh-1 small bg-opacity-25 "
                                 style="height: 36px; width: 36px;">
-                                <div class="small"><span class="small text-uppercase">{{event.startDate|date('M')}}</span></div>
+                                <div class="small"><span
+                                        class="small text-uppercase">{{event.startDate|date('M')}}</span></div>
                                 <div class="fs-5">{{event.startDate|date('d')}}</div>
                             </div>
                         </div>
@@ -22,9 +23,10 @@
                                 class="badge align-self-center text-primary bg-primary small mb-2 bg-opacity-25 ">Conference</span>
                         </div>
                         {% if event.image.name %}
-                            <img src="{{vich_uploader_asset(event)}}"  class="img-fluid mb-2 rounded" style="max-height: 150px;margin: 0 auto">
+                        <img src="{{vich_uploader_asset(event)}}" class="img-fluid mb-2 rounded"
+                            style="max-height: 150px;margin: 0 auto">
                         {% else %}
-                            <img src="/assets-custom/event.png" class="img-fluid mb-2 rounded">
+                        <img src="/assets-custom/event.png" class="img-fluid mb-2 rounded">
                         {% endif %}
                     </div>
                     <div class="d-flex align-items-center">
@@ -42,13 +44,12 @@
                     </div>
                 </a>
             </div>
-        {% endfor %}
-    </div>
-      <div class="swiper-pagination"></div>
+            {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
 
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-scrollbar"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
 
     <div class="d-flex align-items-center border-0 py-2">
@@ -68,8 +69,8 @@
 
     {% for event in this.events %}
     <div class="list-group mb-2" id="item--{{ page }}-{{ loop.index }}" data-live-ignore>
-        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
-            <div class="flex-shrink-0 text-decoration-none" href="#">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="{{path('app_show_events', {id: event.id})}}">
+            <div class="flex-shrink-0 text-decoration-none">
                 <div class="d-flex flex-column align-items-center justify-content-center rounded bg-primary bg-opacity-10 text-primary lh-1"
                     style="height: 36px; width: 36px;">
                     <div class="fs-6 fw-bold">{{event.startDate|date('d')}}</div>
@@ -100,4 +101,4 @@
     </div>
     {% endfor %}
     {% endif %}
-</div>
+    </div>

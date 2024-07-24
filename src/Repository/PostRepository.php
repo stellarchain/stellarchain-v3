@@ -12,9 +12,12 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $likeRepository;
+
+    public function __construct(ManagerRegistry $registry, LikeRepository $likeRepository)
     {
         parent::__construct($registry, Post::class);
+        $this->likeRepository = $likeRepository;
     }
     /**
      * Fetch all posts with associated entities
@@ -41,19 +44,20 @@ class PostRepository extends ServiceEntityRepository
     {
 
         $query = $this->createQueryBuilder('a')
-
             ->orderBy('a.created_at', 'DESC')
-
             ->getQuery();
 
         $paginator = new Paginator($query);
 
         $paginator->getQuery()
-
             ->setFirstResult($postsPerPage * ($page - 1))
-
             ->setMaxResults($postsPerPage);
 
         return $paginator;
+    }
+
+    public function getLikesCount(Post $post): int
+    {
+        return $this->likeRepository->countLikes($this->getClassMetadata()->getTableName(), $post->getId());
     }
 }

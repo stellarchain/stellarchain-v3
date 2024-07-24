@@ -171,6 +171,15 @@ class Comment
         return $this->replies;
     }
 
+    public function getRepliesCount(): int
+    {
+        $totalReplies = 0;
+        foreach ($this->replies as $reply) {
+            $totalReplies += $reply->getRepliesCount(); // Recursively count replies
+        }
+        return $totalReplies;
+    }
+
     public function addReply(Comment $reply): self
     {
         if (!$this->replies->contains($reply)) {

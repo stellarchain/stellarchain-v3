@@ -7,7 +7,7 @@ export default class extends Controller {
     const htmlElement = document.documentElement;
     const currentTheme = localStorage.getItem('bsTheme') || 'dark';
     htmlElement.setAttribute('data-bs-theme', currentTheme);
-    this.darkModeSwitchTarget.checked = currentTheme === 'dark';
+    //this.darkModeSwitchTarget.checked = currentTheme === 'dark';
     this.modalSettings = new bootstrap.Modal(this.modalTarget, {
       keyboard: false
     })
