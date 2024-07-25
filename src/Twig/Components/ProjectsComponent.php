@@ -138,6 +138,8 @@ final class ProjectsComponent
                 return ['name' => 'ASC'];
             case 'date':
                 return ['created_at' => 'DESC'];
+            case 'award':
+                return ['award_type' => 'DESC'];
             case 'budget':
                 return ['budget' => 'DESC'];
             default:

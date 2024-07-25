@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Config\AwardType;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -22,6 +23,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('price', [$this, 'formatPrice']),
             new TwigFilter('format_large_number', [$this, 'formatLargeNumber']),
             new TwigFilter('unicode_decode', [$this, 'unicodeDecode']),
+            new TwigFilter('award_label', [$this, 'getAwardLabel']),
         ];
     }
 
@@ -53,5 +55,10 @@ class AppExtension extends AbstractExtension
     public function unicodeDecode($string)
     {
         return json_decode('"' . $string . '"');
+    }
+
+    public function getAwardLabel(?AwardType $awardType): string
+    {
+        return $awardType ? $awardType->label() : 'Not Assigned';
     }
 }

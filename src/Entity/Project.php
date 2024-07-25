@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Config\AwardType;
 use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
 use App\Repository\ProjectRepository;
@@ -385,6 +386,11 @@ class Project
     public function getAwardType(): ?int
     {
         return $this->award_type;
+    }
+
+    public function getAwardTypeEnum(): ?AwardType
+    {
+        return $this->award_type !== null ? AwardType::from($this->award_type) : null;
     }
 
     public function setAwardType(?int $award_type): static

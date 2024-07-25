@@ -12,6 +12,7 @@
             {% set next_comment_id = (index + 1 < comments|length) ? comments[index + 1].comment.id : null %} {% set
                 root_comment=comment_data.comment.parent is null ? comment_data : root_comment ?? comment_data %} {{
                 comment_template.render_comment(comment_data, root_comment, prev_comment_id, next_comment_id) }} {% set
-                prev_comment_id=comment_data.comment.id %} {% endfor %} </div>
+                prev_comment_id=comment_data.comment.id %} {% endfor %}
         </div>
     </div>
+</div>

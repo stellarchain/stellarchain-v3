@@ -25,10 +25,7 @@ class ProjectController extends AbstractController
     #[Route('/projects/timeline', name: 'app_projects_timeline')]
     public function timeline(RoundRepository $roundRepository): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
         $roundsData = $roundRepository->findAllRoundsWithLimitedProjects(15);
-
         return $this->render('project/timeline.html.twig', [
             'rounds' => $roundsData
         ]);
@@ -37,7 +34,6 @@ class ProjectController extends AbstractController
     #[Route('/projects/list', name: 'app_projects_list')]
     public function list(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         return $this->render('project/list.html.twig');
     }
 
@@ -69,8 +65,6 @@ class ProjectController extends AbstractController
     #[Route('/projects/{id}', name: 'app_project_show')]
     public function project(Project $project): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
         return $this->render('project/project.html.twig', [
             'project' => $project
         ]);

@@ -11,12 +11,14 @@
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <div class="card card-body">
-                {{project.description}}
-            </div>
+            {% if project.description %}
+                <div class="card card-body mb-2">
+                    {{project.description}}
+                </div>
+            {% endif %}
 
             <div class="card card-body">
-                {{project.content}}
+                {{project.content | raw}}
             </div>
             <div class="container my-5">
                 <div class="mb-4" id="post-form-content">
