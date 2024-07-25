@@ -16,7 +16,7 @@
                 <a href="{{path('app_show_communities', {id: community.id})}}" class="text-reset link-underline link-underline-opacity-0">
                     <b class="mb-1">{{community.name}}</b>
                     <div class="small text-secondary">
-                        <span class="small">{{community.description}}</span>
+                        <span class="small">{{community.description | raw}}</span>
                     </div>
                 </a>
             </div>
