@@ -9,7 +9,7 @@
         <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
             <b class="mb-1">{{project.name}}</b>
             <div class="small text-secondary">
-                <span class="small">{{project.description | slice(0, 150) }}</span>
+                <span class="small">{{project.type.name}} | ${{project.budget | number_format}} | {{project.round.name}}</span>
             </div>
         </div>
         <div class="flex-shrink-0 me-2 d-flex">
