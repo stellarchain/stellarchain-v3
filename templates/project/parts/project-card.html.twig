@@ -1,24 +1,29 @@
 <div class="list-group swiper-slide">
     <a class="list-group-item list-group-item-action p-2" href="{{path('app_project_show', {id: project.id})}}"
-        style="width: 275px; height: 227px;">
-        <div class="d-flex">
-            {% if project.image.name %}
-            <img src="{{vich_uploader_asset(project)}}" class="img-fluid mb-2 rounded"
-                style="max-height: 150px;margin: 0 auto">
-            {% else %}
-            <img src="/assets-custom/event.png" class="img-fluid mb-2 rounded">
-            {% endif %}
-        </div>
-        <div class="d-flex align-items-center">
+        style="min-width: 275px;">
+        {% if project.image.name %}
+            <img src="{{vich_uploader_asset(project)}}" class="img-fluid pb-3 rounded project-img">
+        {% else %}
+            <img src="/assets-custom/event.png" class="img-fluid pb-3 rounded project-img">
+        {% endif %}
+
+        <div class="d-flex align-items-center" style="height:45px;">
+            <div class="flex-shrink-0 text-decoration-none" href="#">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">SC</span>
+                </div>
+            </div>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
                 <b class="mb-1">{{project.name}}</b>
                 <div class="small text-secondary">
-                    <span class="small">{{project.description | slice(0, 80) }}</span>
+                    <div class="small ellipsed-content">{{project.content | replace({'<br>': '', '<br/>': '', '<br />': '', '&nbsp;': ' '}) | raw}}</div>
                 </div>
             </div>
-            <div class="flex-shrink-0 me-2 d-flex">
-                <span class="text-dark d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip" data-bs-placement="top"
-                    data-bs-title="Add to calendar"><i class="bi bi-calendar-plus-fill align-self-center"></i></span>
+            <div class="flex-shrink-0 d-flex">
+                <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Verified Project"><i
+                        class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
             </div>
         </div>
     </a>

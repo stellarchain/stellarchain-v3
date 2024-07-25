@@ -89,3 +89,25 @@ canvas#race{position:relative; z-index:1;}
 .show-password-input {
     top: 20px !important;
 }
+
+.ellipsed-content {
+  width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ellipsed-content * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ellipsed-content p {
+    margin-bottom: 0px;
+}
+
+.project-img {
+    height: 165px;
+    width: 100%
+}
