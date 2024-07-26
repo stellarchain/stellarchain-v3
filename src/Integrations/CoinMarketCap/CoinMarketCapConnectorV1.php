@@ -23,7 +23,7 @@ class CoinMarketCapConnectorV1 extends Connector
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'X-CMC_PRO_API_KEY' => '67437685-fee7-4e0e-85c1-e5266bc67090'
+            'X-CMC_PRO_API_KEY' => '173fbe8d-15b6-4d7f-a8c0-505e026fb603'
         ];
     }
 
