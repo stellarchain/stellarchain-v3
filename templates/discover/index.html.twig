@@ -25,11 +25,11 @@
             </div>
         </div>
         <div class="flex-shrink-0">
-            <a href="/projects" class="text-decoration-none small">See All</a>
+            <a href="{{path('app_projects_list')}}" class="text-decoration-none small">See All</a>
         </div>
     </div>
 
-    {% for i in 0..2 %}
+    {% for project in projects %}
     <div class="list-group mb-2">
         <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
             <div class="flex-shrink-0 text-decoration-none" href="#">
@@ -39,9 +39,9 @@
                 </div>
             </div>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                <b class="mb-1">StellarChain</b>
+                <b class="mb-1">{{project.name}}</b>
                 <div class="small text-secondary">
-                    <span class="small">Stellar Blockchain Explorer</span>
+                    <span class="small">{{project.content | raw}}</span>
                 </div>
             </div>
             <div class="flex-shrink-0 me-2 d-flex">
@@ -67,11 +67,11 @@
             </div>
         </div>
         <div class="flex-shrink-0">
-            <a href="/projects" class="text-decoration-none small">See All</a>
+            <a href="{{path('app_projects_list')}}" class="text-decoration-none small">See All</a>
         </div>
     </div>
     <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
-        {% for i in 0..9 %}
+        {% for project in projects %}
         <div class="list-group me-2">
             <a class="list-group-item list-group-item-action p-2" href="#" style="min-width: 275px;">
                 <img src="/assets-custom/example.png" class="img-fluid pb-3" style="max-height: 168px;">
@@ -83,9 +83,9 @@
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                        <b class="mb-1">StellarChain</b>
+                        <b class="mb-1">{{project.name}}</b>
                         <div class="small text-secondary">
-                            <span class="small">Stellar Blockchain Explorer</span>
+                            <span class="small">{{project.content | raw}}</span>
                         </div>
                     </div>
                     <div class="flex-shrink-0 d-flex">
@@ -107,11 +107,11 @@
             </div>
         </div>
         <div class="flex-shrink-0">
-            <a href="/events" class="text-decoration-none small">See All</a>
+            <a href="{{path('app_events')}}" class="text-decoration-none small">See All</a>
         </div>
     </div>
 
-    {% for i in 0..9 %}
+    {% for event in events %}
     <div class="list-group mb-2">
         <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
             <div class="flex-shrink-0 text-decoration-none" href="#">
@@ -122,9 +122,9 @@
                 </div>
             </div>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                <b class="mb-1">Meridian 2024</b>
+                <b class="mb-1">{{event.name}}</b>
                 <div class="small text-secondary">
-                    <span class="small">London, United Kingdom</span>
+                    <span class="small">{{event.location}}</span>
                 </div>
             </div>
             <div class="flex-shrink-0 me-2 d-flex">
@@ -144,11 +144,11 @@
             </div>
         </div>
         <div class="flex-shrink-0">
-            <a href="/communities" class="text-decoration-none small">See All</a>
+            <a href="{{path('app_communities')}}" class="text-decoration-none small">See All</a>
         </div>
     </div>
     <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
-        {% for i in 0..9 %}
+        {% for community in communities %}
         <div class="list-group me-2">
             <a class="list-group-item list-group-item-action px-1 py-3 text-center" href="#" style="min-width: 180px;">
                 <div class="bg-primary bg-opacity-25 border border-primary rounded d-flex mx-auto mt-2 mb-2"
@@ -157,8 +157,8 @@
                         style="font-size:24px;"></i>
                 </div>
                 <div class="small">
-                    <p class="lh-1 mb-1 fw-bold">StellarChain</p>
-                    <p class="small text-secondary mb-0">Stellar Blockchain Explorer</p>
+                    <p class="lh-1 mb-1 fw-bold">{{community.name}}</p>
+                    <p class="small text-secondary mb-0">{{community.description}}</p>
                     <p class="small text-secondary mb-0"><b>234</b> members &middot; <b>535</b> posts</p>
                 </div>
             </a>
@@ -175,11 +175,11 @@
             </div>
         </div>
         <div class="flex-shrink-0">
-            <a href="/jobs" class="text-decoration-none small">See All</a>
+            <a href="{{path('app_jobs')}}" class="text-decoration-none small">See All</a>
         </div>
     </div>
 
-    {% for i in 0..9 %}
+    {% for job in jobs %}
     <div class="list-group mb-2">
         <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
             <div class="flex-shrink-0 text-decoration-none" href="#">
@@ -189,9 +189,9 @@
                 </div>
             </div>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                <b class="mb-1">PHP Backend Developer</b>
+                <b class="mb-1">{{job.title}}</b>
                 <div class="small text-secondary">
-                    <span class="small">$70k - $150k &middot; @stellarchain</span>
+                    <span class="small">${{job.salary}} &middot; @{{job.user.username}}</span>
                 </div>
             </div>
             <div class="flex-shrink-0 me-2 d-flex">

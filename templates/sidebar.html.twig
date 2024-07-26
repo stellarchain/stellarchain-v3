@@ -14,17 +14,10 @@
         </div>
     </a>
 
-    <div class="text-nowrap px-3 mb-3">
+    <div class="text-nowrap px-3 mb-3" style="position: relative;">
         <div class="input-group">
             <span class="input-group-text border-end-0" id="basic-addon1"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control border-start-0" placeholder="Search" aria-label="Search"
-                aria-describedby="basic-addon1"
-                {{ stimulus_controller(
-                    'symfony/ux-autocomplete/autocomplete',
-                    {
-                        url: path('ux_entity_autocomplete', { alias: 'search', preview: 1 })
-                    },
-                )}}>
+            <input type="text" class="form-control border-start-0" placeholder="Search" aria-label="Search">
         </div>
     </div>
 
@@ -153,7 +146,8 @@
         </li>
         <li class="nav-item hover rounded-1 d-flex justify-content-between">
             {% if app.user %}
-            <a href="{{path('app_account_show', {username: app.user.username})}}" class="nav-link"><i class="bi bi-person-circle me-2"></i>
+            <a href="{{path('app_account_show', {username: app.user.username})}}" class="nav-link"><i
+                    class="bi bi-person-circle me-2"></i>
                 {{ app.user.firstName}} {{ app.user.lastName }}
             </a>
             <a href="{{path('app_logout')}}" class="float-end mt-2">

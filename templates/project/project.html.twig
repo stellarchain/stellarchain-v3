@@ -11,19 +11,27 @@
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            {% if project.description %}
-                <div class="card card-body mb-2">
-                    {{project.description}}
-                </div>
-            {% endif %}
-
-            <div class="card card-body">
+            <div class="card card-body mb-2">
                 {{project.content | raw}}
             </div>
+
+            {% if project.image.name %}
+            <img src="{{vich_uploader_asset(project)}}" class="img-fluid rounded mb-1">
+            {% else %}
+            <img src="/assets-custom/event.png" class="img-fluid rounded mb-1">
+            {% endif %}
+
+            {% for briefSection in project.projectBriefs %}
+            <div class="card card-body mb-2">
+                <strong>{{briefSection.label | raw}} </strong>
+                {{briefSection.description | raw}}
+                {{briefSection.content | raw}} <br />
+            </div>
+            {% endfor %}
             <div class="container my-5">
                 <div class="mb-4" id="post-form-content">
                     {% block comment_form_block %}
-                       {% include 'blocks/comment_form_block.html.twig' %}
+                    {% include 'blocks/comment_form_block.html.twig' %}
                     {% endblock %}
                 </div>
 
@@ -45,10 +53,10 @@
     </template>
 </turbo-stream>
 
-<turbo-stream action="prepend" target="comments-list" >
+<turbo-stream action="prepend" target="comments-list">
     <template>
         {{ comment_template.render_comment(comment) }}
-    <template>
+        <template>
 </turbo-stream>
 
 {% endblock %}
@@ -59,7 +67,7 @@
 <turbo-stream action="append" target="{{ 'replies-' ~ parent_id }}" comment="{{comment.comment.id}}">
     <template>
         {{ comment_template.render_comment(comment) }}
-    <template>
+        <template>
 </turbo-stream>
 
 {% endblock %}

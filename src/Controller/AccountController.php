@@ -8,9 +8,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AccountController extends AbstractController
 {
-    #[Route('/account/{username}', name: 'app_account_show')]
+
+    #[Route('/account', name: 'app_account')]
     public function index(): Response
     {
+        return $this->render('account/index.html.twig', [
+            'controller_name' => 'AccountController',
+        ]);
+    }
+
+    #[Route('/profile/{username}', name: 'app_account_show')]
+    public function profile(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
         ]);

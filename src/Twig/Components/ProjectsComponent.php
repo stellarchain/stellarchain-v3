@@ -37,6 +37,9 @@ final class ProjectsComponent
     public int $round = 0;
 
     #[LiveProp(writable: true, url: true)]
+    public int $award = 0;
+
+    #[LiveProp(writable: true, url: true)]
     public int $category = 1;
 
     public function __construct(
@@ -126,6 +129,10 @@ final class ProjectsComponent
             $criteria['round'] = $this->round;
         }
 
+        if ($this->award > 0) {
+            $criteria['award_type'] = $this->award;
+        }
+
         return $criteria;
     }
     /**
@@ -138,8 +145,6 @@ final class ProjectsComponent
                 return ['name' => 'ASC'];
             case 'date':
                 return ['created_at' => 'DESC'];
-            case 'award':
-                return ['award_type' => 'DESC'];
             case 'budget':
                 return ['budget' => 'DESC'];
             default:

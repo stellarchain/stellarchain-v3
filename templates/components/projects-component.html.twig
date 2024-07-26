@@ -1,6 +1,6 @@
 <div{{ attributes.defaults(stimulus_controller('projects')|stimulus_controller('appear')) }}>
     <div class="row g-2 mb-3">
-        <div class="col-6 col-sm-3">
+        <div class="col-3 col-sm-3">
             <select class="form-select bg-white" data-model="category">
                 <option value="0">🔍 Any Category</option>
                 {% for category in this.categories %}
@@ -8,7 +8,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="col-6 col-sm-3">
+        <div class="col-3 col-sm-3">
             <select class="form-select bg-white" data-model="type"
                 data-action="live#action"
                 data-live-action-param="resetPage"
@@ -19,7 +19,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="col-6 col-sm-3">
+        <div class="col-2 col-sm-2">
             <select class="form-select bg-white" data-model="round"
                 data-action="live#action"
                 data-live-action-param="resetPage"
@@ -30,14 +30,25 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="col-6 col-sm-3">
+
+        <div class="col-2 col-sm-2">
+            <select class="form-select bg-white" data-model="award"
+                data-action="live#action"
+                data-live-action-param="resetPage"
+            >
+                <option value="0">🦴 Award</option>
+                <option value="1">Activation Award</option>
+                <option value="2">Community Award</option>
+            </select>
+        </div>
+
+        <div class="col-2 col-sm-2">
             <select class="form-select bg-white" data-model="sort"
                 data-action="live#action"
                 data-live-action-param="resetPage"
             >
                 <option selected="" value="default">🦴 Sort by</option>
                 <option value="date">🆕 Latest projects</option>
-                <option value="award">🆕 Award Type</option>
                 <option value="budget">💵 Highest awarded</option>
                 <option value="views">👀 Most viewed</option>
                 <option value="hot">🔥 Hottest</option>
@@ -45,7 +56,7 @@
         </div>
     </div>
     {% if page > 1 %}
-    <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
+    <div id="item--{{ page - 1 }}-{{ per_page }}"></div>
     {% endif %}
 
     <div data-projects-target="projectsList">

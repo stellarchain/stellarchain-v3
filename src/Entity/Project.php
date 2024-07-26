@@ -89,12 +89,19 @@ class Project
     #[ORM\Column(nullable: true)]
     private ?int $award_type = null;
 
+    /**
+     * @var Collection<int, ProjectBrief>
+     */
+    #[ORM\OneToMany(targetEntity: ProjectBrief::class, mappedBy: 'project')]
+    private Collection $projectBriefs;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
         $this->comments = new ArrayCollection();
+        $this->projectBriefs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -396,6 +403,36 @@ class Project
     public function setAwardType(?int $award_type): static
     {
         $this->award_type = $award_type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProjectBrief>
+     */
+    public function getProjectBriefs(): Collection
+    {
+        return $this->projectBriefs;
+    }
+
+    public function addProjectBrief(ProjectBrief $projectBrief): static
+    {
+        if (!$this->projectBriefs->contains($projectBrief)) {
+            $this->projectBriefs->add($projectBrief);
+            $projectBrief->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectBrief(ProjectBrief $projectBrief): static
+    {
+        if ($this->projectBriefs->removeElement($projectBrief)) {
+            // set the owning side to null (unless already changed)
+            if ($projectBrief->getProject() === $this) {
+                $projectBrief->setProject(null);
+            }
+        }
 
         return $this;
     }

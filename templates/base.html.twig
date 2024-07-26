@@ -43,30 +43,28 @@
     </div>
 
     <div class="container d-block d-lg-none">
-        <nav class="navbar navbar-expand fixed-bottom pb-4 pt-2 menu bg-dark bg-gradient">
+        <nav class="navbar navbar-expand fixed-bottom pb-2 pt-2 menu">
             <div class="container-fluid d-flex justify-content-around pb-2 mb-1">
-                <a class="nav-link py-0 d-flex flex-column text-center lh-1 <?=(in_array($page_id, ['today'])?'text-primary':'text-secondary')?> me-2"
-                    href="/">
+                    <a class="nav-link py-0 d-flex flex-column text-center lh-1
+                        {% if app.request.get('_route') == 'app_home' %} text-primary {% else %} text-secondary {% endif %}  me-2" href="{{path('app_home')}}">
                     <i class="bi bi-collection fs-4 mb-2"></i>
                     <span style="font-size:12px;">Today</span>
                 </a>
-                <a class="nav-link py-0 d-flex flex-column text-center lh-1 <?=(in_array($page_id, ['discover'])?'text-primary':'text-secondary')?> me-2"
-                    href="/discover">
+                    <a class="nav-link py-0 d-flex flex-column text-center lh-1
+                        {% if app.request.get('_route') == 'app_discover' %} text-primary {% else %} text-secondary {% endif %} me-2"
+                        href="{{path('app_discover')}}">
                     <i class="bi bi-compass fs-4 mb-2"></i>
                     <span style="font-size:12px;">Discover</span>
                 </a>
-                <a class="nav-link py-0 d-flex flex-column text-center lh-1 <?=(in_array($page_id, ['explorer'])?'text-primary':'text-secondary')?> me-2"
-                    href="/explorer">
+                <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_home' %} text-primary {% else %} text-secondary {% endif %} me-2" href="http://stellarchain.io">
                     <i class="bi bi-search fs-4 mb-2"></i>
                     <span style="font-size:12px;">Explorer</span>
                 </a>
-                <a class="nav-link py-0 d-flex flex-column text-center lh-1 <?=(in_array($page_id, ['markets'])?'text-primary':'text-secondary')?> me-2"
-                    href="/markets">
+                    <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_markets' %} text-primary {% else %} text-secondary {% endif %} me-2" href="{{path('app_markets')}}">
                     <i class="bi bi-graph-up-arrow fs-4 mb-2"></i>
                     <span style="font-size:12px;">Markets</span>
                 </a>
-                <a class="nav-link py-0 d-flex flex-column text-center lh-1 <?=(in_array($page_id, ['account'])?'text-primary':'text-secondary')?> me-2"
-                    href="/account">
+                    <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_account' %} text-primary {% else %} text-secondary {% endif %} me-2" href="{{path('app_account')}}">
                     <i class="bi bi-person-circle fs-4 mb-2"></i>
                     <span style="font-size:12px;">Account</span>
                 </a>

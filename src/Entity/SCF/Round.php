@@ -53,6 +53,8 @@ class Round
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'round')]
     private Collection $projects;
 
+    private $totalProjectCount;
+
     public function __construct()
     {
         $this->roundPhases = new ArrayCollection();
