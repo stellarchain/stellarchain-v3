@@ -88,7 +88,7 @@ class FetchLatestStellarMarketDataCommand extends Command
             return Command::SUCCESS;
         }
 
-        $io->error('Something its wrong! Check your command.');
+        $io->error('Something its wrong! Check your command. '.json_encode($responseData));
 
         return Command::FAILURE;
     }

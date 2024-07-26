@@ -10,10 +10,6 @@
             <div class="flex-grow-1">
                 <span class="ps-0 mb-2 fs-1 fw-bold">Discover Stellar</span>
             </div>
-            <!--<div class="flex-shrink-0 text-end">
-			        <b>Tuesday</b>
-			        <p class="small text-secondary mb-0">11th June 2024</p>
-			    </div>-->
         </div>
     </div>
 
@@ -31,7 +27,7 @@
 
     {% for project in projects %}
     <div class="list-group mb-2">
-        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="{{path('app_project_show', {id: project.id})}}">
             <div class="flex-shrink-0 text-decoration-none" href="#">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
@@ -73,7 +69,7 @@
     <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
         {% for project in projects %}
         <div class="list-group me-2">
-            <a class="list-group-item list-group-item-action p-2" href="#" style="min-width: 275px;">
+            <a class="list-group-item list-group-item-action p-2" href="{{path('app_project_show', {id: project.id})}}" style="min-width: 275px;">
                  {% if project.image.name %}
                 <img src="{{vich_uploader_asset(project)}}" class="img-fluid pb-3" style="max-height: 168px;">
                 {% else %}
@@ -117,7 +113,7 @@
 
     {% for event in events %}
     <div class="list-group mb-2">
-        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="{{path('app_show_events',{id: event.id})}}">
             <div class="flex-shrink-0 text-decoration-none" href="#">
                 <div class="d-flex flex-column align-items-center justify-content-center rounded bg-primary bg-opacity-10 text-primary lh-1"
                     style="height: 36px; width: 36px;">
@@ -154,7 +150,7 @@
     <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
         {% for community in communities %}
         <div class="list-group me-2">
-            <a class="list-group-item list-group-item-action px-1 py-3 text-center" href="#" style="min-width: 180px;">
+            <a class="list-group-item list-group-item-action px-1 py-3 text-center" href="{{path('app_show_communities', {id: community.id})}}" style="min-width: 180px;">
                 <div class="bg-primary bg-opacity-25 border border-primary rounded d-flex mx-auto mt-2 mb-2"
                     style="height: 48px; width: 48px;">
                     <i class="bi bi-people rounded-circle align-self-center mx-auto text-primary"
@@ -162,7 +158,7 @@
                 </div>
                 <div class="small">
                     <p class="lh-1 mb-1 fw-bold">{{community.name}}</p>
-                    <p class="small text-secondary mb-0">{{community.description}}</p>
+                    <p class="small text-secondary mb-0">{{community.description | raw}}</p>
                     <p class="small text-secondary mb-0"><b>234</b> members &middot; <b>535</b> posts</p>
                 </div>
             </a>
@@ -185,7 +181,7 @@
 
     {% for job in jobs %}
     <div class="list-group mb-2">
-        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="#">
+        <a class="list-group-item list-group-item-action d-flex align-items-center p-2" href="{{path('app_show_jobs', {id: job.id})}}">
             <div class="flex-shrink-0 text-decoration-none" href="#">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
@@ -204,7 +200,7 @@
                     data-bs-placement="top" data-bs-title="Verified Project"><i
                         class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i></span>
                 <span class="text-secondary d-flex px-1 py-0 rounded hover" data-bs-toggle="tooltip"
-                    data-bs-placement="top" data-bs-title="United Kingdom"><span class="fi fi-gb"></span></span>
+                    data-bs-placement="top" data-bs-title="United Kingdom">{{job.location.emoji}}</span>
             </div>
         </a>
     </div>
