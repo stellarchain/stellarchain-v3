@@ -7,13 +7,33 @@ export default class extends Controller {
   static targets = ['swiper'];
 
   connect() {
-    const swiper = new Swiper('.swiper', {
+    new Swiper('.swiper', {
       modules: [Navigation, Pagination],
       slidesPerView: 5,
+      breakpoints: {
+        '@0.25': {
+          slidesPerView: 1,
+          spaceBetween: 50,
+        },
+        '@0.75': {
+          slidesPerView: 2,
+          spaceBetween: 50,
+        },
+        '@1.00': {
+          slidesPerView: 3,
+          spaceBetween: 200,
+        },
+        '@1.50': {
+          slidesPerView: 4,
+        },
+        '@2.00': {
+          slidesPerView: 5,
+        },
+      },
       speed: 10,
       autoplay: true,
       speed: 800,
-      spaceBetween: 100,
+      spaceBetween: 150,
       autoHeight: false,
       effect: 'slide',
       direction: 'horizontal',
