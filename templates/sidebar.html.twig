@@ -118,7 +118,7 @@
     </div>
 
     <ul class="nav flex-column mt-auto mb-0 px-3 pt-3" {{stimulus_controller('settings')}}>
-        <li class="nav-item">
+        <li class="nav-item hover rounded-1 d-flex justify-content-between">
             <a class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center"
                 {{stimulus_action('settings', 'showModal' , 'click' )}}>
                 <i class="bi bi-emoji-smile me-2"></i>
@@ -129,16 +129,19 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Modal title</h5>
+                            <h5 class="modal-title"><i class="bi bi-heart-fill"></i> Feedback</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Modal body text goes here.</p>
+                            <div class="mb-3">
+                                <textarea type="text" class="form-control" id="formGroupExampleInput"
+                                    placeholder="Tell us your opinion"></textarea>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button {{stimulus_action('settings', 'closeModal' , 'click' )}}
                                 class="btn btn-secondary">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-primary">Send</button>
                         </div>
                     </div>
                 </div>
@@ -146,9 +149,8 @@
         </li>
         <li class="nav-item hover rounded-1 d-flex justify-content-between">
             {% if app.user %}
-            <a href="{{path('app_account_show', {username: app.user.username})}}" class="nav-link"><i
-                    class="bi bi-person-circle me-2"></i>
-                {{ app.user.firstName}} {{ app.user.lastName }}
+            <a href="{{path('app_account_show', {id: app.user.id})}}" class="nav-link">
+                <i class="bi bi-person-circle me-2"></i>{{app.user.firstName}} {{ app.user.lastName}}
             </a>
             <a href="{{path('app_logout')}}" class="float-end mt-2">
                 <i class="bi bi-power me-2"></i>

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Account!{% endblock %}
+{% block title %}My account{% endblock %}
 
 {% block body %}
-<div class="vh-100 overflow-y-scroll overflow-x-hidden d-flex flex-column hide-scrollbar">
+<div class="vh-100 overflow-y-scroll overflow-x-hidden d-flex flex-column hide-scrollbar" {{stimulus_controller('account')}}>
 		<div class="mt-4">
 			<div class="d-flex align-items-center small py-2">
 			    <div class="flex-grow-1">
@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="list-group mb-2">
-					<a href="#" class="list-group-item list-group-item-action bg-darker">
+                    <a href="{{path('app_account_edit')}}" class="list-group-item list-group-item-action bg-darker">
 						<div class="d-flex align-items-center">
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-gear-wide-connected fs-3 text-primary"></i>
@@ -102,7 +102,7 @@
 					</a>
 				</div>
 				<div class="list-group mb-2">
-					<a href="#" class="list-group-item list-group-item-action bg-darker">
+					<div role="button" class="list-group-item list-group-item-action bg-darker" {{ stimulus_action('account', 'toggle', 'click') }} >
 						<div class="d-flex align-items-center">
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-front fs-3 text-primary"></i>
@@ -112,13 +112,13 @@
 						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
 						    </div>
 						    <div class="flex-shrink-0 form-check form-select-lg form-switch p-0 align-self-center d-flex">
-						        <input class="form-check-input align-self-center p-0 m-0" type="checkbox" id="darkModeSwitch2" checked="">
+						        <input class="form-check-input align-self-center p-0 m-0" type="checkbox" {{ stimulus_target('account', 'darkMode') }} id="darkModeSwitch">
 						    </div>
 						</div>
-					</a>
+					</div>
 				</div>
 				<div class="list-group mb-2">
-					<a href="#" class="list-group-item list-group-item-action bg-darker">
+                <a href="{{path('app_logout')}}" class="list-group-item list-group-item-action bg-darker">
 						<div class="d-flex align-items-center">
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-power fs-3 text-danger"></i>

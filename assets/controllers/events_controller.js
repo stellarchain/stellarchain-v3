@@ -24,11 +24,8 @@ export default class extends Controller {
           spaceBetween: 200,
         },
         '@1.50': {
-          slidesPerView: 4,
-        },
-        '@2.00': {
           slidesPerView: 5,
-        },
+        }
       },
       speed: 10,
       autoplay: true,

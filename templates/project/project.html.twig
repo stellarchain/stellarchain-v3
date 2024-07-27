@@ -10,22 +10,72 @@
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
+        <div class="col-md-6 offset-md-2">
+            <div class="mb-2">
+                <span class="badge bg-secondary">{{project.round.name}}</span>
+                <span class="badge bg-secondary">{{project.awardTypeEnum | award_label}}</span>
+                <span class="badge bg-secondary">{{project.type.name}}</span>
+                <span class="badge bg-secondary">${{project.budget | number_format}}</span>
+                <span class="badge bg-secondary">
+                    <a class="link-underline link-underline-opacity-0 text-reset"
+                        href="https://dashboard.communityfund.stellar.org{{project.scfUrl}}" target="_blank">View in
+                        SCF</a>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="text-end">
+                <span class="text-secondary px-1 py-0 rounded hover"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Staff Favorite"
+                >
+                    <i class="bi bi-heart text-danger align-self-center"></i>
+                </span>
+
+                <span class="text-secondary  px-1 py-0 rounded hover"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Staff Favorite"
+                >
+                    <i class="bi bi-star-fill text-warning align-self-center"></i>
+                </span>
+
+                <span class="text-secondary px-1 py-0 rounded hover"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Stellar Community Fund Winner"
+                >
+                    <i class="bi text-info  bi-award-fill align-self-center"></i>
+                </span>
+
+                <span class="text-secondary px-1 py-0 rounded hover"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Verified Project"
+                >
+                    <i class="bi bi-patch-check-fill text-primary text-primary align-self-center"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card card-body mb-2">
                 {{project.content | raw}}
             </div>
-
-            {% if project.image.name %}
-            <img src="{{vich_uploader_asset(project)}}" class="img-fluid rounded mb-1">
-            {% else %}
-            <img src="/assets-custom/event.png" class="img-fluid rounded mb-1">
-            {% endif %}
-
+            <div class="text-center mb-2 mt-2">
+                {% if project.image.name %}
+                <img src="{{vich_uploader_asset(project)}}" class="img-fluid rounded mb-1">
+                {% else %}
+                <img src="/assets-custom/event.png" class="img-fluid rounded mb-1">
+                {% endif %}
+            </div>
             {% for briefSection in project.projectBriefs %}
             <div class="card card-body mb-2">
                 <strong>{{briefSection.label | raw}} </strong>
-                {{briefSection.description | raw}}
-                {{briefSection.content | raw}} <br />
+                <small class=""> {{briefSection.description | raw}} </small>
+                <div>{{briefSection.content | raw}} </div>
             </div>
             {% endfor %}
             <div class="container my-5">

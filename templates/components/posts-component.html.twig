@@ -59,7 +59,7 @@
 
                     <span class="small ms-1"><i class="bi bi-chat small"></i> {{post.post.comments.count()}}</span>
                     <a class="text-decoration-none small ms-1 text-secondary"
-                        href="{{ path('app_account_show', {'username': post.post.user.username }) }}">
+                        href="{{ path('app_account_show', {'id': post.post.user.id}) }}">
                         @{{post.post.user.username}}
                     </a>
                     <span class="small">&middot;</span>

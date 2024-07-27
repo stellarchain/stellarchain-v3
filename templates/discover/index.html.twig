@@ -117,8 +117,8 @@
             <div class="flex-shrink-0 text-decoration-none" href="#">
                 <div class="d-flex flex-column align-items-center justify-content-center rounded bg-primary bg-opacity-10 text-primary lh-1"
                     style="height: 36px; width: 36px;">
-                    <div class="fs-6 fw-bold">15</div>
-                    <div class="small"><span class="small">Oct</span></div>
+                    <div class="fs-6 fw-bold">{{event.startDate | date('d')}}</div>
+                    <div class="small"><span class="small">{{event.startDate|date('M')}}</span></div>
                 </div>
             </div>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
