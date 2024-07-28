@@ -41,49 +41,59 @@ class SCFUpdateRoundsCommand extends Command
         $roundsData = new ArrayCollection(isset($responseData['data']) ? $responseData['data'] : []);
 
         foreach ($roundsData as $roundData) {
-            $now = new \DateTimeImmutable();
-
-            $round = $this->roundRepository->findOneBy(['original_id' => $roundData['id']]);
-            if (!$round) {
-                $round = new Round();
-                $round->setCreatedAt($now);
-            }
-
-            $round->setName($roundData['name'])
-                ->setOriginalId($roundData['id'])
-                ->setDescription($roundData['description'])
-                ->setImage($roundData['teaser'])
-                ->setStartDate($this->arrayToDateTimeImmutable($roundData['startDate']))
-                ->setEndDate($this->arrayToDateTimeImmutable($roundData['endDate']))
-                ->setUpdatedAt($now);
-
-            foreach ($roundData['phases'] as $roundPhaseData) {
-                $now = new \DateTimeImmutable();
-
-                $roundPhase = $this->roundPhaseRepository->findOneBy(['original_id' => $roundPhaseData['id']]);
-                if (!$roundPhase) {
-                    $roundPhase = new RoundPhase();
-                    $roundPhase->setCreatedAt($now);
-                }
-
-                $roundPhase->setName($roundPhaseData['name'])
-                    ->setOriginalId($roundPhaseData['id'])
-                    ->setRound($round)
-                    ->setDescription($roundPhaseData['primaryStep']['text'])
-                    ->setStartDate($this->arrayToDateTimeImmutable($roundPhaseData['startDate']))
-                    ->setEndDate($this->arrayToDateTimeImmutable($roundPhaseData['endDate']))
-                    ->setUpdatedAt($now);
-
-                $this->entityManager->persist($roundPhase);
-            }
-
-            $this->entityManager->persist($round);
-            $this->entityManager->flush();
+            $this->processRound($roundData);
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('All rounds and rounds phases saved.');
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @return void
+     * @param array<int,mixed> $roundData
+     */
+    private function processRound(array $roundData): void
+    {
+
+        $now = new \DateTimeImmutable();
+
+        $round = $this->roundRepository->findOneBy(['original_id' => $roundData['id']]);
+        if (!$round) {
+            $round = new Round();
+            $round->setCreatedAt($now);
+        }
+
+        $round->setName($roundData['name'])
+            ->setOriginalId($roundData['id'])
+            ->setDescription($roundData['description'])
+            ->setImage($roundData['teaser'])
+            ->setStartDate($this->arrayToDateTimeImmutable($roundData['startDate']))
+            ->setEndDate($this->arrayToDateTimeImmutable($roundData['endDate']))
+            ->setUpdatedAt($now);
+
+        foreach ($roundData['phases'] as $roundPhaseData) {
+            $now = new \DateTimeImmutable();
+
+            $roundPhase = $this->roundPhaseRepository->findOneBy(['original_id' => $roundPhaseData['id']]);
+            if (!$roundPhase) {
+                $roundPhase = new RoundPhase();
+                $roundPhase->setCreatedAt($now);
+            }
+
+            $roundPhase->setName($roundPhaseData['name'])
+                ->setOriginalId($roundPhaseData['id'])
+                ->setRound($round)
+                ->setDescription($roundPhaseData['primaryStep']['text'])
+                ->setStartDate($this->arrayToDateTimeImmutable($roundPhaseData['startDate']))
+                ->setEndDate($this->arrayToDateTimeImmutable($roundPhaseData['endDate']))
+                ->setUpdatedAt($now);
+
+            $this->entityManager->persist($roundPhase);
+        }
+
+        $this->entityManager->persist($round);
+        $this->entityManager->flush();
     }
 
     function arrayToDateTimeImmutable(?array $dateTimeArray): ?DateTimeImmutable

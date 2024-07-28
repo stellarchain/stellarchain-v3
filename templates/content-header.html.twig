@@ -6,7 +6,7 @@
         {% if right_block is defined and right_block  %}
         <div class="flex-shrink-0 text-end">
             <b>{{ 'now' | date("l")}}</b>
-            <p class="small text-secondary mb-0">$0.1153 &middot;11th June</p>
+            <p class="small text-secondary mb-0">${{globalValues.price.value}} &middot;{{ 'now' | date("jS F")}} </p>
         </div>
         {% endif %}
     </div>

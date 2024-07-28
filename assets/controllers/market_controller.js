@@ -8,41 +8,32 @@ export default class extends Controller {
   connect() {
     const eventSource = new EventSource(this.urlValue);
     eventSource.onmessage = event => {
-        const data = JSON.parse(event.data);
-        for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                const stat = data[key];
-                const element = document.querySelector(`[data-stat="${key}"]`);
-                if (element) {
-                    if (key === 'rank') {
-                        element.innerHTML = stat.value;
-                    } else if (key === 'circulating_supply') {
-                        element.innerHTML = `XLM ${stat.value}`;
-                    } else if (key === 'market_cap_dominance') {
-                        element.innerHTML = `${stat.value}%`;
-                    } else if (key === 'price_usd') {
-                        element.innerHTML = `$${stat.value}`;
-                    } else {
-                        element.innerHTML = `$${stat.value}`;
-                    }
-
-                    const prevValue = stat.prev_value;
-                    const currentValue = stat.value;
-                    const change = prevValue != null ? (currentValue - prevValue) : 0;
-                    const percentageChange = prevValue != null && prevValue != 0 ? ((change / prevValue) * 100).toFixed(4) : 0;
-                    const caretDirection = change < 0 ? 'down' : 'up';
-                    const color = change < 0 ? 'danger' : 'success';
-                    const displayChange = key === 'rank' ? percentageChange.replace('-', '') : percentageChange;
-
-                    const badge = element.closest('.list-group-item').querySelector('.badge');
-                    if (badge) {
-                        badge.classList.remove('text-success', 'text-danger', 'bg-success', 'bg-danger');
-                        badge.classList.add(`text-${color}`, `bg-${color}`);
-                        badge.innerHTML = `<i class="bi bi-caret-${caretDirection}-fill"></i> ${displayChange}%`;
-                    }
-                }
+      const data = JSON.parse(event.data);
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const stat = data[key];
+          const data_el = document.querySelector(`[data-stat="${key}"]`);
+          if (data_el) {
+            if (key === 'rank') {
+              data_el.innerHTML = stat.value;
+            } else if (key === 'circulating_supply') {
+              data_el.innerHTML = `XLM ${stat.value}`;
+            } else if (key === 'market_cap_dominance') {
+              data_el.innerHTML = `${stat.value}%`;
+            } else {
+              data_el.innerHTML = `$${stat.value}`;
             }
-        };
+
+          }
+
+          const badge = document.querySelector('.market-info-' + key).querySelector('.badge');
+          if (badge) {
+            badge.classList.remove('text-success', 'text-danger', 'bg-success', 'bg-danger');
+            badge.classList.add(`text-${stat.color}`, `bg-${stat.color}`);
+            badge.innerHTML = `<i class="bi bi-caret-${stat.caretDirection}-fill"></i> ${stat.percentageChange}%`;
+          }
+        }
+      };
     }
   }
 

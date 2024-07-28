@@ -2,21 +2,23 @@
 
 namespace App\Service;
 
+use App\Repository\CoinStatRepository;
 use App\Repository\CommunityRepository;
 use App\Repository\EventRepository;
 use App\Repository\JobRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProjectRepository;
 
-class CountService
+class GlobalValueService
 {
-    private $projectRepository;
-    private $postRepository;
-    private $communityRepository;
-    private $jobRepository;
-    private $eventRepository;
-
-    public function __construct(ProjectRepository $projectRepository, PostRepository $postRepository, JobRepository $jobRepository, CommunityRepository $communityRepository, EventRepository $eventRepository)
+    public function __construct(
+        private ProjectRepository $projectRepository,
+        private PostRepository $postRepository,
+        private JobRepository $jobRepository,
+        private CommunityRepository $communityRepository,
+        private EventRepository $eventRepository,
+        private CoinStatRepository $coinStatRepository
+    )
     {
         $this->projectRepository = $projectRepository;
         $this->postRepository = $postRepository;
@@ -44,4 +46,14 @@ class CountService
     public function getEvents(): int {
         return $this->eventRepository->count([]);
     }
+
+    /**
+     * @return mixed|bool
+     */
+    public function getPrice(): array {
+        $requiredStats = ['price_usd'];
+        $stellarCoinStats = $this->coinStatRepository->findLatestAndPreviousBySymbol('XLM', $requiredStats);
+        return end($stellarCoinStats);
+    }
+
 }

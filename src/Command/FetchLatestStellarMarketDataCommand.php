@@ -29,8 +29,8 @@ class FetchLatestStellarMarketDataCommand extends Command
         public EntityManagerInterface $entityManager,
         public HubInterface $hub,
         private NumberFormatter $numberFormatter,
-        public CoinStatRepository $coinStatRepository)
-    {
+        public CoinStatRepository $coinStatRepository
+    ) {
         parent::__construct();
     }
 
@@ -69,14 +69,35 @@ class FetchLatestStellarMarketDataCommand extends Command
             $this->entityManager->persist($stellar);
             $this->entityManager->flush();
 
-            $io->success('Stellar XLM real-time data fetched successfully.');
 
             $requiredStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
             $stellarCoinStats = $this->coinStatRepository->findLatestAndPreviousBySymbol('XLM', $requiredStats);
             $formattedStats = [];
             foreach ($stellarCoinStats as $stat) {
+                $stat['change'] = 0;
+                $stat['percentageChange'] = 0.00;
+                $stat['caretDirection'] = 'right';
+                $stat['color'] = 'secondary';
+                $stat['displayChange'] = '0';
+
+                if ($stat['value'] !== null && $stat['prev_value'] !== null) {
+                    $stat['change'] =  $stat['value'] - $stat['prev_value'];
+                }
+                if ($stat['prev_value'] !== null && $stat['prev_value'] != 0) {
+                    $stat['percentageChange'] = number_format(($stat['change'] / $stat['prev_value']) * 100, 2);
+                }
+
+                $stat['caretDirection'] = $stat['change'] < 0 ? 'down' : 'up';
+                $stat['color'] = $stat['change'] < 0 ? 'danger' : 'success';
+
+                if ($stat['percentageChange'] == 0.00) {
+                    $stat['color'] = 'secondary';
+                    $stat['caretDirection'] = 'right';
+                }
+
                 $stat['value'] = $this->numberFormatter->formatLargeNumber($stat['value']);
                 $stat['prev_value'] = $this->numberFormatter->formatLargeNumber($stat['prev_value']);
+
                 $formattedStats[$stat['name']] = $stat;
             }
 
@@ -85,10 +106,12 @@ class FetchLatestStellarMarketDataCommand extends Command
                 json_encode($formattedStats)
             ));
 
+            $io->success('Stellar XLM real-time data fetched successfully.');
+
             return Command::SUCCESS;
         }
 
-        $io->error('Something its wrong! Check your command. '.json_encode($responseData));
+        $io->error('Something its wrong! Check your command. ' . json_encode($responseData));
 
         return Command::FAILURE;
     }
