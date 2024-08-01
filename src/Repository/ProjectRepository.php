@@ -16,7 +16,7 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-     public function findProjectsWithLikes(): array
+    public function findProjectsWithLikes(): array
     {
         $qb = $this->createQueryBuilder('p')
             ->leftJoin('p.projectLikes', 'l')
@@ -27,5 +27,14 @@ class ProjectRepository extends ServiceEntityRepository
             ->having('COUNT(l.id) > 0');
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findByNameLike(string $query): mixed
+    {
+         return $this->createQueryBuilder('p')
+            ->where('LOWER(p.name) LIKE LOWER(:name)')
+            ->setParameter('name', '%' . strtolower($query) . '%')
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -97,4 +97,13 @@ class JobRepository extends ServiceEntityRepository
             $qb->andWhere($expression);
         }
     }
+
+    public function findByNameLike(string $query): mixed
+    {
+         return $this->createQueryBuilder('p')
+            ->where('LOWER(p.title) LIKE LOWER(:name)')
+            ->setParameter('name', '%' . strtolower($query) . '%')
+            ->getQuery()
+            ->getResult();
+    }
 }

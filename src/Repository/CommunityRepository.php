@@ -16,6 +16,16 @@ class CommunityRepository extends ServiceEntityRepository
         parent::__construct($registry, Community::class);
     }
 
+
+    public function findByNameLike(string $query): mixed
+    {
+         return $this->createQueryBuilder('p')
+            ->where('LOWER(p.name) LIKE LOWER(:name)')
+            ->setParameter('name', '%' . strtolower($query) . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Community[] Returns an array of Community objects
     //     */
