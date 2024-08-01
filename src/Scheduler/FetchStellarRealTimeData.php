@@ -6,7 +6,7 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-#[AsCronTask('*/5 * * * *')]
+#[AsCronTask('*/10 * * * *')]
 class FetchStellarRealTimeData
 {
     public function __invoke(): void

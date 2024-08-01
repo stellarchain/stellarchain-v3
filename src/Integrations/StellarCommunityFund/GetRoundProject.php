@@ -27,12 +27,4 @@ class GetRoundProject extends Request
             'language' => 'en',
         ];
     }
-
-    protected function defaultHeaders(): array
-    {
-        return [
-            'cookie' => 'ignite=db3e2752c25ca0c8a30c84448392e778; PHPSESSID=4ccda8581cdcc86671d91c6fe3c1ae81',
-            'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
-        ];
-    }
 }

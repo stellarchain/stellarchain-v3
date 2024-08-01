@@ -95,6 +95,12 @@ class Project
     #[ORM\OneToMany(targetEntity: ProjectBrief::class, mappedBy: 'project')]
     private Collection $projectBriefs;
 
+    /**
+     * @var Collection<int, ProjectMember>
+     */
+    #[ORM\ManyToMany(targetEntity: ProjectMember::class, mappedBy: 'project')]
+    private Collection $projectMembers;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
@@ -102,6 +108,7 @@ class Project
         $this->updated_at = new \DateTimeImmutable();
         $this->comments = new ArrayCollection();
         $this->projectBriefs = new ArrayCollection();
+        $this->projectMembers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -432,6 +439,33 @@ class Project
             if ($projectBrief->getProject() === $this) {
                 $projectBrief->setProject(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProjectMember>
+     */
+    public function getProjectMembers(): Collection
+    {
+        return $this->projectMembers;
+    }
+
+    public function addProjectMember(ProjectMember $projectMember): static
+    {
+        if (!$this->projectMembers->contains($projectMember)) {
+            $this->projectMembers->add($projectMember);
+            $projectMember->addProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectMember(ProjectMember $projectMember): static
+    {
+        if ($this->projectMembers->removeElement($projectMember)) {
+            $projectMember->removeProject($this);
         }
 
         return $this;

@@ -6,8 +6,7 @@ use App\Config\AwardType;
 use App\Config\ProjectStatus;
 use App\Entity\Project;
 use App\Entity\ProjectType;
-use DateTimeZone;
-use DateTimeImmutable;
+use App\Utils\Helper;
 use App\Integrations\StellarCommunityFund\GetRoundProjects;
 use App\Integrations\StellarCommunityFund\SCFConnector;
 use App\Repository\ProjectRepository;
@@ -37,7 +36,8 @@ class SCFUpdateProjectsCommand extends Command
         private ProjectTypeRepository $projectTypeRepository,
         private RoundRepository $roundRepository,
         private RoundPhaseRepository $roundPhaseRepository,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private Helper $helper
     ) {
         parent::__construct();
     }
@@ -96,7 +96,6 @@ class SCFUpdateProjectsCommand extends Command
      */
     public function processProject(array $projectData): void
     {
-
         $additionalContentLabels = [];
         foreach ($projectData['additionalContent'] as $additionalContent) {
             if ($additionalContent['formElement']) {
@@ -158,25 +157,12 @@ class SCFUpdateProjectsCommand extends Command
             ->setStatus($statusEnum->value)
             ->setScfUrl($projectData['relativeUrl'])
             ->setScore($projectData['score'])
-            ->setCreatedAt($this->arrayToDateTimeImmutable($projectData['created']))
-            ->setUpdatedAt($this->arrayToDateTimeImmutable($projectData['updated']));
+            ->setCreatedAt($this->helper->arrayToDateTimeImmutable($projectData['created']))
+            ->setUpdatedAt($this->helper->arrayToDateTimeImmutable($projectData['updated']));
 
-        $imageFile = null;
         foreach ($projectData['media'] as $media) {
-            $imageFile = $media['imageUrl1920x1080'];
-
-            $tempDirectory = sys_get_temp_dir();
-            $tempFilePath = $tempDirectory . DIRECTORY_SEPARATOR . uniqid('image_', true) . '.jpg';
-            try {
-                $imageContent = file_get_contents($imageFile);
-                if ($imageContent === false) {
-                    throw new \Exception("Failed to download image.");
-                }
-                file_put_contents($tempFilePath, $imageContent);
-
-                $project->setImageFile(new ReplacingFile($tempFilePath));
-            } catch (\Exception $exception) {
-            }
+            $image = $this->helper->downloadImage($media['imageUrl1920x1080']);
+            $project->setImageFile(new ReplacingFile($image));
             break;
         }
 
@@ -184,22 +170,4 @@ class SCFUpdateProjectsCommand extends Command
         $this->entityManager->flush();
     }
 
-
-    function arrayToDateTimeImmutable(?array $dateTimeArray): ?DateTimeImmutable
-    {
-        if ($dateTimeArray) {
-            $date = $dateTimeArray['date'];
-            $timezone = new DateTimeZone($dateTimeArray['timezone']);
-
-            return new DateTimeImmutable($date, $timezone);
-        }
-        return null;
-    }
-
-    function normalizeString(string $input): string
-    {
-        $lowercaseString = strtolower($input);
-        $normalizedString = str_replace(' ', '-', $lowercaseString);
-        return $normalizedString;
-    }
 }

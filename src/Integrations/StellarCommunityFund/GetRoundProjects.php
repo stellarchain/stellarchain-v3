@@ -32,12 +32,4 @@ class GetRoundProjects extends Request
             'filter' => '[{"name":"deleted","modifiers":[{"name":"false","params":[]}]},{"name":"phase","modifiers":[{"name":"is","params":[ '.$this->phaseId.' ]}]}]'
         ];
     }
-
-    protected function defaultHeaders(): array
-    {
-        return [
-            'cookie' => 'ignite=9be4f55ccd48efb6e08375ebf7163d43; PHPSESSID=23b5aaf1e17cc6fe03cea3e824cb8a48',
-            'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
-        ];
-    }
 }

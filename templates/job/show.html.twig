@@ -1,16 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Jobs{% endblock %}
+{% block title %}{{job.title}}{% endblock %}
+
+{% set content_title = job.title%}
 
 {% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
-    <div class="mt-4">
-        <div class="d-flex align-items-center small py-2">
-            <div class="flex-grow-1">
-                <span class="ps-0 mb-2 fs-1 fw-bold">{{job.title}}</span>
+    {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
+    <div class="row">
+        <div class="col-sm-8 offset-md-2">
+            <div class="text-center mb-2 mt-2">
+                <div class="mb-2">
+                    <span class="badge bg-secondary">{{job.location}}</span>
+                    <span class="badge bg-secondary">${{job.salary}}</span>
+                    <span class="badge bg-secondary">{{job.category}}</span>
+                    <span class="badge bg-secondary">{{job.user}}</span>
+                    <span class="badge bg-secondary">{{job.createdAt | date('d F Y')}}</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    {{job.description | raw}}
+                </div>
             </div>
         </div>
     </div>
+
     <div class="py-4">
         <span>&nbsp;</span>
     </div>
@@ -19,4 +35,5 @@
         <span>&nbsp;</span>
     </div>
 </div>
+
 {% endblock %}

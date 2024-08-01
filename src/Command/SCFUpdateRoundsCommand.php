@@ -4,8 +4,7 @@ namespace App\Command;
 
 use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
-use DateTimeZone;
-use DateTimeImmutable;
+use App\Utils\Helper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,14 +19,15 @@ use Doctrine\ORM\EntityManagerInterface;
 
 #[AsCommand(
     name: 'scf:update-rounds',
-    description: 'Add a short description for your command',
+    description: 'Update SCF rounds.',
 )]
 class SCFUpdateRoundsCommand extends Command
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
         private RoundRepository $roundRepository,
-        private RoundPhaseRepository $roundPhaseRepository
+        private RoundPhaseRepository $roundPhaseRepository,
+        private Helper $helper
     ) {
         parent::__construct();
     }
@@ -55,7 +55,6 @@ class SCFUpdateRoundsCommand extends Command
      */
     private function processRound(array $roundData): void
     {
-
         $now = new \DateTimeImmutable();
 
         $round = $this->roundRepository->findOneBy(['original_id' => $roundData['id']]);
@@ -68,8 +67,8 @@ class SCFUpdateRoundsCommand extends Command
             ->setOriginalId($roundData['id'])
             ->setDescription($roundData['description'])
             ->setImage($roundData['teaser'])
-            ->setStartDate($this->arrayToDateTimeImmutable($roundData['startDate']))
-            ->setEndDate($this->arrayToDateTimeImmutable($roundData['endDate']))
+            ->setStartDate($this->helper->arrayToDateTimeImmutable($roundData['startDate']))
+            ->setEndDate($this->helper->arrayToDateTimeImmutable($roundData['endDate']))
             ->setUpdatedAt($now);
 
         foreach ($roundData['phases'] as $roundPhaseData) {
@@ -85,8 +84,8 @@ class SCFUpdateRoundsCommand extends Command
                 ->setOriginalId($roundPhaseData['id'])
                 ->setRound($round)
                 ->setDescription($roundPhaseData['primaryStep']['text'])
-                ->setStartDate($this->arrayToDateTimeImmutable($roundPhaseData['startDate']))
-                ->setEndDate($this->arrayToDateTimeImmutable($roundPhaseData['endDate']))
+                ->setStartDate($this->helper->arrayToDateTimeImmutable($roundPhaseData['startDate']))
+                ->setEndDate($this->helper->arrayToDateTimeImmutable($roundPhaseData['endDate']))
                 ->setUpdatedAt($now);
 
             $this->entityManager->persist($roundPhase);
@@ -96,14 +95,4 @@ class SCFUpdateRoundsCommand extends Command
         $this->entityManager->flush();
     }
 
-    function arrayToDateTimeImmutable(?array $dateTimeArray): ?DateTimeImmutable
-    {
-        if ($dateTimeArray) {
-            $date = $dateTimeArray['date'];
-            $timezone = new DateTimeZone($dateTimeArray['timezone']);
-
-            return new DateTimeImmutable($date, $timezone);
-        }
-        return null;
-    }
 }

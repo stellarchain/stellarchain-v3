@@ -2,13 +2,34 @@
 
 {% block title %}{{event.name}}{% endblock %}
 
-{% block body %}
+{% set content_title = event.name%}
 
+{% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
-    <div class="mt-4">
-        <div class="d-flex align-items-center small py-2">
-            <div class="flex-grow-1">
-                <span class="ps-0 mb-2 fs-1 fw-bold">{{event.name}}</span>
+    {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
+    <div class="row">
+        <div class="col-sm-8 offset-md-2">
+            <div class="text-center mb-2 mt-2">
+
+
+                <div class="mb-2">
+
+                    <span class="badge bg-secondary">{{event.startDate | date('d F Y')}}</span>
+                    <span class="badge bg-secondary">{{event.endDate | date('d F Y')}}</span>
+                    <span class="badge bg-secondary">{{event.location}}</span>
+                </div>
+                {% if event.image.name %}
+                <img src="{{vich_uploader_asset(event)}}" class="img-fluid rounded mb-1">
+                {% else %}
+                <img src="/assets-custom/event.png" class="img-fluid rounded mb-1">
+                {% endif %}
+            </div>
+
+            <div class="card">
+
+                <div class="card-body">
+                    {{event.description | raw}}
+                </div>
             </div>
         </div>
     </div>

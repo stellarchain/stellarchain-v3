@@ -11,7 +11,9 @@ use App\Entity\JobCategory;
 use App\Entity\Location;
 use App\Entity\Post;
 use App\Entity\Project;
+use App\Entity\ProjectBrief;
 use App\Entity\ProjectCategory;
+use App\Entity\ProjectMember;
 use App\Entity\ProjectType;
 use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
@@ -46,12 +48,10 @@ class DashboardAdminController extends AbstractDashboardController
             MenuItem::linkToCrud('Projects', 'fas fa-list', Project::class),
             MenuItem::linkToCrud('Project Categories', 'fas fa-list', ProjectCategory::class),
             MenuItem::linkToCrud('Project Types', 'fas fa-list', ProjectType::class),
+            MenuItem::linkToCrud('Project Members', 'fas fa-list', ProjectMember::class),
+            MenuItem::linkToCrud('Project Information', 'fas fa-list', ProjectBrief::class),
             MenuItem::linkToCrud('SCF Rounds', 'fas fa-list', Round::class),
             MenuItem::linkToCrud('SCF Rounds Phases', 'fas fa-list', RoundPhase::class),
-        ]);
-
-        yield MenuItem::subMenu('Market', 'fas fa-list')->setSubItems([
-            MenuItem::linkToCrud('Coins', 'fas fa-list', Coin::class),
         ]);
 
         yield MenuItem::subMenu('Jobs', 'fas fa-list')->setSubItems([
@@ -60,6 +60,10 @@ class DashboardAdminController extends AbstractDashboardController
         ]);
         yield MenuItem::linkToCrud('Community', 'fas fa-list', Community::class);
         yield MenuItem::linkToCrud('Events', 'fas fa-list', Event::class);
+
+        yield MenuItem::subMenu('Market', 'fas fa-list')->setSubItems([
+            MenuItem::linkToCrud('Coins', 'fas fa-list', Coin::class),
+        ]);
 
         yield MenuItem::subMenu('Config', 'fas fa-list')->setSubItems([
             MenuItem::linkToCrud('Locations', 'fas fa-list', Location::class),

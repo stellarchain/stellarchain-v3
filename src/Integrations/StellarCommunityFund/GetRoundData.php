@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Integrations\StellarCommunityFund;
 
 use Saloon\Enums\Method;

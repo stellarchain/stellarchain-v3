@@ -10,7 +10,7 @@
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
-        <div class="col-md-6 offset-md-2">
+        <div class="col-sm-6 offset-md-2">
             <div class="mb-2">
                 <span class="badge bg-secondary">{{project.round.name}}</span>
                 <span class="badge bg-secondary">{{project.awardTypeEnum | award_label}}</span>
@@ -23,7 +23,7 @@
                 </span>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-sm-2">
             <div class="text-end">
                 <span class="text-secondary px-1 py-0 rounded hover"
                     data-bs-toggle="tooltip"
@@ -61,6 +61,21 @@
     </div>
     <div class="row">
         <div class="col-md-8 offset-md-2">
+            <div class="card card-body mb-2">
+                <div class="card-title">Team</div>
+                <div class="team d-flex">
+                    {% for member in project.projectMembers %}
+                        <div class="m-2">
+                            <span>
+                                <img class="rounded img-thumbnail"
+                                    style="width: 50px; height: 50px"
+                                    src="https://dashboard.communityfund.stellar.org/api/v4/media/{{member.originalId()}}/profileimage/width/150/height/150">
+                                {{member.name}}
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="card card-body mb-2">
                 {{project.content | raw}}
             </div>

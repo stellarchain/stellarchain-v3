@@ -7,7 +7,7 @@ use App\Entity\CoinStat;
 use App\Integrations\CoinMarketCap\CoinMarketCapConnectorV1;
 use App\Integrations\CoinMarketCap\GetStellarRealTimeDataRequest;
 use App\Repository\CoinStatRepository;
-use App\Service\NumberFormatter;
+use App\Service\MarketDataService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -28,8 +28,8 @@ class FetchLatestStellarMarketDataCommand extends Command
     public function __construct(
         public EntityManagerInterface $entityManager,
         public HubInterface $hub,
-        private NumberFormatter $numberFormatter,
-        public CoinStatRepository $coinStatRepository
+        public CoinStatRepository $coinStatRepository,
+        private MarketDataService $marketDataService
     ) {
         parent::__construct();
     }
@@ -63,48 +63,19 @@ class FetchLatestStellarMarketDataCommand extends Command
                 $stellarCoinStat->setValue($value);
                 $stellarCoinStat->updateTimestamps();
                 $stellar->addCoinStat($stellarCoinStat);
+
                 $this->entityManager->persist($stellarCoinStat);
             }
 
             $this->entityManager->persist($stellar);
             $this->entityManager->flush();
 
-
-            $requiredStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
-            $stellarCoinStats = $this->coinStatRepository->findLatestAndPreviousBySymbol('XLM', $requiredStats);
-            $formattedStats = [];
-            foreach ($stellarCoinStats as $stat) {
-                $stat['change'] = 0;
-                $stat['percentageChange'] = 0.00;
-                $stat['caretDirection'] = 'right';
-                $stat['color'] = 'secondary';
-                $stat['displayChange'] = '0';
-
-                if ($stat['value'] !== null && $stat['prev_value'] !== null) {
-                    $stat['change'] =  $stat['value'] - $stat['prev_value'];
-                }
-                if ($stat['prev_value'] !== null && $stat['prev_value'] != 0) {
-                    $stat['percentageChange'] = number_format(($stat['change'] / $stat['prev_value']) * 100, 2);
-                }
-
-                $stat['caretDirection'] = $stat['change'] < 0 ? 'down' : 'up';
-                $stat['color'] = $stat['change'] < 0 ? 'danger' : 'success';
-
-                if ($stat['percentageChange'] == 0.00) {
-                    $stat['color'] = 'secondary';
-                    $stat['caretDirection'] = 'right';
-                }
-
-                $stat['value'] = $this->numberFormatter->formatLargeNumber($stat['value']);
-                $stat['prev_value'] = $this->numberFormatter->formatLargeNumber($stat['prev_value']);
-
-                $formattedStats[$stat['name']] = $stat;
-            }
-
-            $this->hub->publish(new Update(
-                'stellar-real-time-data',
-                json_encode($formattedStats)
-            ));
+            $this->hub->publish(
+                new Update(
+                    'stellar-real-time-data',
+                    json_encode($this->marketDataService->buildMarketOverview())
+                )
+            );
 
             $io->success('Stellar XLM real-time data fetched successfully.');
 
