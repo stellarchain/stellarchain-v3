@@ -1,11 +1,29 @@
 <div{{ attributes.defaults(stimulus_controller('appear')) }}>
+
+    <div class="py-1 px-2 menu sticky-top border rounded mb-2">
+        <ul class="nav nav-pills nav-justified">
+            <li class="nav-item py-0">
+                <a class="nav-link py-1 tabs fw-bolder {{ order == 'followers' ? 'active' : '' }}" aria-current="page"
+                    href="{{path('app_communities')}}">
+                    Followers
+                </a>
+            </li>
+            <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder {{ order == 'posts' ? 'active' : '' }}"
+                    href="{{path('app_communities', {order: 'posts'})}}">Posts</a></li>
+            <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder {{ order == 'oldest' ? 'active' : '' }}"
+                    href="{{path('app_communities', {order: 'oldest'})}}">Oldest</a></li>
+            <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder {{ order == 'newest' ? 'active' : '' }}"
+                    href="{{path('app_communities', {order: 'newest'})}}">Newest</a></li>
+        </ul>
+    </div>
+
     {% if page > 1 %}
-        <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
+    <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
     {% endif %}
 
     {% for community in this.communities %}
     <div class="list-group mb-2" id="item--{{ page }}-{{ loop.index }}" data-live-ignore>
-        <div class="list-group-item list-group-item-action d-flex align-items-center p-2" >
+        <div class="list-group-item list-group-item-action d-flex align-items-center p-2">
             <div class="flex-shrink-0 text-decoration-none" href="#">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary  border border-primary"
                     style="height: 36px; width: 36px;">
@@ -13,7 +31,8 @@
                 </div>
             </div>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                <a href="{{path('app_show_communities', {id: community.id})}}" class="text-reset link-underline link-underline-opacity-0">
+                <a href="{{path('app_show_communities', {id: community.id})}}"
+                    class="text-reset link-underline link-underline-opacity-0">
                     <b class="mb-1">{{community.name}}</b>
                     <div class="small text-secondary">
                         <span class="small">{{community.description | raw}}</span>
@@ -32,8 +51,7 @@
                             class="bi bi-card-heading"></i> 234</span>
                 </div>
                 <span class="text-secondary d-flex py-0 rounded hover" data-bs-toggle="tooltip" data-bs-placement="top"
-                    role="button"
-                    data-bs-title="Follow"><i
+                    role="button" data-bs-title="Follow"><i
                         class="bi bi-plus-circle text-primary text-primary align-self-center"></i></span>
             </div>
         </div>
@@ -41,10 +59,10 @@
     {% endfor %}
     {% if this.hasMore %}
     {% for i in 1..per_page %}
-        <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
-            data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
-            <span class="ProductGrid_loader" style="--delay: {{ (loop.index + 1) / per_page }};"></span>
-        </div>
+    <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
+        data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
+        <span class="ProductGrid_loader" style="--delay: {{ (loop.index + 1) / per_page }};"></span>
+    </div>
     {% endfor %}
     {% endif %}
-</div>
+    </div>

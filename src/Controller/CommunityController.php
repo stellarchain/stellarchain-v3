@@ -12,35 +12,7 @@ class CommunityController extends AbstractController
     #[Route('/communities', name: 'app_communities')]
     public function index(): Response
     {
-        return $this->render('community/index.html.twig', [
-            'controller_name' => 'CommunityController',
-        ]);
-    }
-
-
-    #[Route('/communities/posts', name: 'app_communities_posts')]
-    public function posts(): Response
-    {
-        return $this->render('community/index.html.twig', [
-            'controller_name' => 'CommunityController',
-        ]);
-    }
-
-
-    #[Route('/communities/oldest', name: 'app_communities_oldest')]
-    public function oldest(): Response
-    {
-        return $this->render('community/index.html.twig', [
-            'controller_name' => 'CommunityController',
-        ]);
-    }
-
-    #[Route('/communities/oldest', name: 'app_communities_newest')]
-    public function newest(): Response
-    {
-        return $this->render('community/index.html.twig', [
-            'controller_name' => 'CommunityController',
-        ]);
+        return $this->render('community/index.html.twig');
     }
 
     #[Route('/communities/{id}', name: 'app_show_communities')]

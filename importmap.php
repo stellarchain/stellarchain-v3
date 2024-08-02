@@ -78,4 +78,10 @@ return [
     'swiper/modules' => [
         'version' => '11.1.5',
     ],
+    'add-to-calendar-button' => [
+        'version' => '2.6.18',
+    ],
+    'timezones-ical-library' => [
+        'version' => '1.8.2',
+    ],
 ];

@@ -14,7 +14,9 @@
             <div class="mb-2">
                 <span class="badge bg-secondary">{{project.round.name}}</span>
                 <span class="badge bg-secondary">{{project.awardTypeEnum | award_label}}</span>
-                <span class="badge bg-secondary">{{project.type.name}}</span>
+                {% if project.type %}
+                    <span class="badge bg-secondary">{{project.type.name}}</span>
+                {% endif %}
                 <span class="badge bg-secondary">${{project.budget | number_format}}</span>
                 <span class="badge bg-secondary">
                     <a class="link-underline link-underline-opacity-0 text-reset"

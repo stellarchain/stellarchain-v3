@@ -8,8 +8,8 @@
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
-        <div class="col-sm-8 offset-md-2">
-            <div class="text-center mb-2 mt-2">
+        <div class="col-sm-6 offset-md-2">
+            <div class="mb-2 mt-2">
                 <div class="mb-2">
                     <span class="badge bg-secondary">{{job.location}}</span>
                     <span class="badge bg-secondary">${{job.salary}}</span>
@@ -19,10 +19,21 @@
                 </div>
             </div>
 
-            <div class="card">
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mb-2">
                 <div class="card-body">
                     {{job.description | raw}}
                 </div>
+            </div>
+
+            <div class="card mb-2">
+                <a class="btn btn-primary m-2" href="#" target="_blank" role="button">Apply</a>
             </div>
         </div>
     </div>

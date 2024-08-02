@@ -2,6 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 import Swiper from 'swiper/bundle';
 import {Navigation, Pagination} from 'swiper/modules';
 import 'swiper/css/bundle';
+import 'add-to-calendar-button';
 
 export default class extends Controller {
   static targets = ['swiper'];

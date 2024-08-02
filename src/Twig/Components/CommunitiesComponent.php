@@ -19,11 +19,11 @@ final class CommunitiesComponent
     use ComponentToolsTrait;
     use DefaultActionTrait;
 
-    #[LiveProp(writable: true)]
-    public string $type = 'hot';
-
     #[LiveProp]
     public int $page = 1;
+
+    #[LiveProp(writable: true, url: true)]
+    public string $order = 'followers';
 
     private const PER_PAGE = 10;
 
@@ -38,9 +38,9 @@ final class CommunitiesComponent
     }
 
     #[LiveAction]
-    public function changeType(string $type): void
+    public function changeOrder(string $order): void
     {
-        $this->type = $type;
+        $this->order = $order;
         $this->page = 1;
     }
 
@@ -68,8 +68,10 @@ final class CommunitiesComponent
      */
     public function getCommunities(): array
     {
+
+        $criteria = $this->buildCriteria();
         $offset = ($this->page - 1) * self::PER_PAGE;
-        $communities = $this->communityRepository->findBy([], [], self::PER_PAGE, $offset);
+        $communities = $this->communityRepository->findBy([], $criteria, self::PER_PAGE, $offset);
         return $communities;
     }
 
@@ -78,13 +80,15 @@ final class CommunitiesComponent
      */
     private function buildCriteria(): array
     {
-        switch ($this->type) {
-            case 'hot':
+        switch ($this->order) {
+            case 'followers':
                 return [];
-            case 'new':
+            case 'posts':
+                return [];
+            case 'oldest':
                 return ['created_at' => 'DESC'];
-            case 'top':
-                return ['rank' => 'DESC'];
+            case 'newest':
+                return ['created_at' => 'ASC'];
             default:
                 return [];
         }
