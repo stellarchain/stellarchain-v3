@@ -6,6 +6,7 @@ use App\Entity\Location;
 use App\Repository\JobCategoryRepository;
 use App\Repository\JobRepository;
 use App\Repository\LocationRepository;
+use App\Repository\RegionRepository;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -43,8 +44,10 @@ final class JobsComponent
         private JobRepository $jobRepository,
         private JobCategoryRepository $jobCategoryRepository,
         private LocationRepository $locationRepository,
+        private RegionRepository $regionRepository,
         private Security $security
-    ){}
+    ) {
+    }
 
     #[LiveAction]
     public function resetPage(): void
@@ -101,6 +104,14 @@ final class JobsComponent
     }
 
     /**
+     * @return array<int, Location>
+     */
+    public function getRegions(): array
+    {
+        return $this->regionRepository->findAll();
+    }
+
+    /**
      * @return array<string,string>
      */
     private function buildSortCriteria(): array
@@ -128,9 +139,25 @@ final class JobsComponent
         $criteria = Criteria::create();
 
         if ($this->location !== 'worldwide') {
-            $location = $this->locationRepository->find($this->location);
-            if ($location) {
-                $criteria->andWhere(Criteria::expr()->eq('location', $location));
+            if (strpos($this->location, 'region_') === 0) {
+                $regionId = str_replace('region_', '', $this->location);
+                $region = $this->regionRepository->find($regionId);
+
+                if ($region) {
+                    $locations = $this->locationRepository->findBy(['region' => $region]);
+                    $locationIds = array_map(function ($location) {
+                        return $location->getId();
+                    }, $locations);
+
+                    if (!empty($locationIds)) {
+                        $criteria->andWhere(Criteria::expr()->in('location', $locationIds));
+                    }
+                }
+            } else {
+                $location = $this->locationRepository->find($this->location);
+                if ($location) {
+                    $criteria->andWhere(Criteria::expr()->eq('location', $location));
+                }
             }
         }
 

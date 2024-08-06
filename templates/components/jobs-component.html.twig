@@ -39,13 +39,9 @@
                 >
                     <optgroup label="Regions">
                         <option value="worldwide">🌏 Worldwide</option>
-                        <option value="region_NA">⛰️ North America</option>
-                        <option value="region_LA">💃 Latin America</option>
-                        <option value="region_EU">🇪🇺 Europe</option>
-                        <option value="region_AF">🦁 Africa</option>
-                        <option value="region_ME">🕌 Middle East</option>
-                        <option value="region_AS">⛩ Asia</option>
-                        <option value="region_OC">🌊 Oceania</option>
+                        {% for region in this.regions %}
+                            <option value="region_{{region.id}}">{{region.icon}} {{region.name}}</option>
+                        {% endfor %}
                     </optgroup>
                     <optgroup label="Countries">
                         {% for location in this.locations %}
@@ -94,7 +90,7 @@
                     <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
                         <b class="mb-1">{{job.title}}</b>
                         <div class="small text-secondary">
-                            <span class="small">${{job.salary | number_format}} · {{job.category.name}} · @{{job.user.username}}</span>
+                            <span class="small">${{job.salary | number_format}} · {{job.category.name}} · @{{job.user.username}} · @{{job.location}}</span>
                         </div>
                     </div>
                     <div class="flex-shrink-0 me-2 d-flex">

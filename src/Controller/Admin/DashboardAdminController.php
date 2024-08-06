@@ -15,6 +15,7 @@ use App\Entity\ProjectBrief;
 use App\Entity\ProjectCategory;
 use App\Entity\ProjectMember;
 use App\Entity\ProjectType;
+use App\Entity\Region;
 use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
 use App\Entity\User;
@@ -67,6 +68,7 @@ class DashboardAdminController extends AbstractDashboardController
 
         yield MenuItem::subMenu('Config', 'fas fa-list')->setSubItems([
             MenuItem::linkToCrud('Locations', 'fas fa-list', Location::class),
+            MenuItem::linkToCrud('Regions', 'fas fa-list', Region::class),
             MenuItem::linkToCrud('Users', 'fas fa-list', User::class)->setPermission('ROLE_ADMIN')
         ]);
 

@@ -92,6 +92,9 @@ class LikeService
         if ($like) {
             $this->entityManager->remove($like);
             $this->entityManager->flush();
+
+            $post = $this->postRepository->findOneBy(['id' => $entityId]);
+            $this->postRankingService->updateRank($post);
         }
     }
 }

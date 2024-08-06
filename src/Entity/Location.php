@@ -18,9 +18,6 @@ class Location
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $continent = null;
-
     /**
      * @var Collection<int, Job>
      */
@@ -36,6 +33,9 @@ class Location
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $emoji = null;
 
+    #[ORM\ManyToOne(inversedBy: 'locations')]
+    private ?Region $region = null;
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
@@ -44,7 +44,7 @@ class Location
 
     public function __toString(): string
     {
-        return $this->name. ' ('. $this->continent . ')';
+        return $this->name. ' ('. $this->region. ')';
     }
 
     public function getId(): ?int
@@ -60,18 +60,6 @@ class Location
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getContinent(): ?string
-    {
-        return $this->continent;
-    }
-
-    public function setContinent(string $continent): static
-    {
-        $this->continent = $continent;
 
         return $this;
     }
@@ -144,6 +132,18 @@ class Location
     public function setEmoji(?string $emoji): static
     {
         $this->emoji = $emoji;
+
+        return $this;
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): static
+    {
+        $this->region = $region;
 
         return $this;
     }

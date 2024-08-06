@@ -2,18 +2,17 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Location;
+use App\Entity\Region;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class LocationCrudController extends AbstractCrudController
+class RegionCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Location::class;
+        return Region::class;
     }
 
     public function configureFields(string $pageName): iterable
@@ -21,8 +20,7 @@ class LocationCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name'),
-            AssociationField::new('region')->autocomplete(),
-            TextField::new('emoji'),
+            TextField::new('icon'),
             DateTimeField::new('created_at')->onlyOnIndex(),
         ];
     }
