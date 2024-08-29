@@ -19,6 +19,7 @@ class IndexController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $posts = $entityManager->getRepository(Post::class)->withProjects();
+
         return $this->render('home/index.html.twig', [
             'posts' => $posts,
         ]);

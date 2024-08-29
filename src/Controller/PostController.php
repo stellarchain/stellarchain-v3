@@ -71,7 +71,7 @@ class PostController extends AbstractController
 
         $this->rankingService->updateRank($post);
 
-        return $this->render('post/show.html.twig', [
+        return $this->render('post/show-new.html.twig', [
             'post' => $post,
             'comments' => $commentsWithForms,
             'comment_form' => $commentForm->createView()

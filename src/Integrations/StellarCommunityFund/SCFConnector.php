@@ -24,7 +24,7 @@ class SCFConnector extends Connector
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'cookie' => 'ignite=542b9222b1d91a3a5e4c076d850c9d4a; PHPSESSID=3e3d3edb3624f8c82fce1dafe4559899',
+            'cookie' => 'ignite=5062e123aa31806c4f7738d1336f488d',
             'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
         ];
     }

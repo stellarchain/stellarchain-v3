@@ -8,14 +8,14 @@ when@dev:
             main:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
-                level: debug
+                level: error
                 channels: ["!event"]
-            file_log:
-                type: stream
+            # file_log:
+            #     type: stream
                 # log to var/log/(environment).log
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                # path: "%kernel.logs_dir%/%kernel.environment%.log"
                 # log *all* messages (debug is lowest level)
-                level: debug
+                # level: error
             # uncomment to get logging in your browser
             # you may have to allow bigger header sizes in your Web server configuration
             #firephp:

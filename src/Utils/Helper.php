@@ -40,8 +40,17 @@ class Helper
 
             return $tempFilePath;
         } catch (Exception $e) {
-            echo $e->getMessage().PHP_EOL;
+            echo $e->getMessage() . PHP_EOL;
             return false;
         }
+    }
+
+    public function getUrlParams(string $url): array
+    {
+        $query_string = parse_url($url, PHP_URL_QUERY);
+        $query_params = [];
+        parse_str($query_string, $query_params);
+
+        return $query_params;
     }
 }

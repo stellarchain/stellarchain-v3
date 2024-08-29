@@ -1,17 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StatisticsController!{% endblock %}
+{% set content_title = 'Statistics'%}
+
+{% block title %}{{content_title}}{% endblock %}
 
 {% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
-
-    <div class="mt-4">
-        <div class="d-flex align-items-center small py-2">
-            <div class="flex-grow-1">
-                <span class="ps-0 mb-2 fs-1 fw-bold">Statistics</span>
-            </div>
-        </div>
-    </div>
+    {% include 'content-header.html.twig' with {'right_block': false , 'center_title': false} %}
 
     <div class="d-flex align-items-center border-0 py-2">
         <div class="flex-grow-1 d-flex flex-column lh-1">
@@ -23,7 +18,7 @@
     </div>
     <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
         <div class="list-group me-2">
-            <a class="list-group-item list-group-item-action p-2" href="#" style="width: 250px;">
+            <a class="list-group-item list-group-item-action p-2" href="{{path('app_statistics_show', {stat: 'price_usd'})}}" style="width: 250px;">
                 <div class="d-flex bg-light rounded" style="height: 168px;">
                     <img src="/assets-custom/sparkline.svg" class="img-fluid align-self-center w-100">
                 </div>
@@ -42,7 +37,7 @@
             </a>
         </div>
         <div class="list-group me-2">
-            <a class="list-group-item list-group-item-action p-2" href="#" style="width: 250px;">
+            <a class="list-group-item list-group-item-action p-2" href="{{path('app_statistics_show', {stat: 'market_cap'})}}" style="width: 250px;">
                 <div class="d-flex bg-light rounded" style="height: 168px;">
                     <img src="/assets-custom/sparkline.svg" class="img-fluid align-self-center w-100">
                 </div>
@@ -61,7 +56,26 @@
             </a>
         </div>
         <div class="list-group me-2">
-            <a class="list-group-item list-group-item-action p-2" href="#" style="width: 250px;">
+            <a class="list-group-item list-group-item-action p-2" href="{{path('app_statistics_show', {stat: 'market_cap_dominance'})}}" style="width: 250px;">
+                <div class="d-flex bg-light rounded" style="height: 168px;">
+                    <img src="/assets-custom/sparkline.svg" class="img-fluid align-self-center w-100">
+                </div>
+                <div class="d-flex align-items-center pt-2">
+                    <div class="flex-grow-1 d-flex flex-column lh-1 small">
+                        <b class="mb-1">Market Cap Dominance</b>
+                        <div class="small text-secondary">
+                            <span class="small">Lorem ipsum </span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex">
+                        <span class="badge bg-opacity-25 align-self-center text-danger bg-danger small"><i
+                                class="bi bi-caret-down-fill"></i> -2</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="list-group me-2">
+            <a class="list-group-item list-group-item-action p-2" href="{{path('app_statistics_show', {stat: 'circulating_supply'})}}" style="width: 250px;">
                 <div class="d-flex bg-light rounded" style="height: 168px;">
                     <img src="/assets-custom/sparkline.svg" class="img-fluid align-self-center w-100">
                 </div>
@@ -80,7 +94,7 @@
             </a>
         </div>
         <div class="list-group me-2">
-            <a class="list-group-item list-group-item-action p-2" href="#" style="width: 250px;">
+            <a class="list-group-item list-group-item-action p-2" href="{{path('app_statistics_show', {stat: 'volume_24h'})}}" style="width: 250px;">
                 <div class="d-flex bg-light rounded" style="height: 168px;">
                     <img src="/assets-custom/sparkline.svg" class="img-fluid align-self-center w-100">
                 </div>
@@ -847,96 +861,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script type="text/javascript">
-
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
-        const ctx = document.getElementById('chart');
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Profit',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1,
-                    backgroundColor: [
-                        'rgba(13, 110, 253, 0.2)'
-                    ],
-                    borderColor: '#0d6efd',
-                    fill: true
-                }]
-            },
-            options: {
-
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: '#6c757d'
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: '#6c757d'
-                        }
-                    }
-                }
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const htmlElement = document.documentElement;
-            const switchElement = document.getElementById('darkModeSwitch');
-
-            // Set the default theme to dark if no setting is found in local storage
-            const currentTheme = localStorage.getItem('bsTheme') || 'dark';
-            htmlElement.setAttribute('data-bs-theme', currentTheme);
-            switchElement.checked = currentTheme === 'dark';
-
-            switchElement.addEventListener('change', function () {
-                if (this.checked) {
-                    htmlElement.setAttribute('data-bs-theme', 'dark');
-                    localStorage.setItem('bsTheme', 'dark');
-                } else {
-                    htmlElement.setAttribute('data-bs-theme', 'light');
-                    localStorage.setItem('bsTheme', 'light');
-                }
-            });
-        });
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const htmlElement = document.documentElement;
-            const switchElement = document.getElementById('darkModeSwitch2');
-
-            // Set the default theme to dark if no setting is found in local storage
-            const currentTheme = localStorage.getItem('bsTheme') || 'dark';
-            htmlElement.setAttribute('data-bs-theme', currentTheme);
-            switchElement.checked = currentTheme === 'dark';
-
-            switchElement.addEventListener('change', function () {
-                if (this.checked) {
-                    htmlElement.setAttribute('data-bs-theme', 'dark');
-                    localStorage.setItem('bsTheme', 'dark');
-                } else {
-                    htmlElement.setAttribute('data-bs-theme', 'light');
-                    localStorage.setItem('bsTheme', 'light');
-                }
-            });
-        });
-    </script>
     <div class="mb-5 pb-3">
         &nbsp;
     </div>

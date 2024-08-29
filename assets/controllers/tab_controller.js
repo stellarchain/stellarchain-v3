@@ -2,7 +2,6 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     connect() {
-    console.log(1)
         this.updateTabFromUrl();
         this.element.addEventListener('shown.bs.tab', this.updateUrl.bind(this));
     }

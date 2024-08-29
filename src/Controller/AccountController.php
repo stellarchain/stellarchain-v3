@@ -27,7 +27,7 @@ class AccountController extends AbstractController
     public function profile(User $user): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('account/index.html.twig', [
+        return $this->render('account/show.html.twig', [
             'user' => $user,
         ]);
     }

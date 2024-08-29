@@ -50,10 +50,15 @@ class GlobalValueService
     /**
      * @return mixed|bool
      */
-    public function getPrice(): array {
+    public function getPrice(): float {
         $requiredStats = ['price_usd'];
         $stellarCoinStats = $this->coinStatRepository->findLatestAndPreviousBySymbol('XLM', $requiredStats);
-        return end($stellarCoinStats);
+
+        if (count($stellarCoinStats)){
+            return end($stellarCoinStats)['value'];
+        }
+
+        return 0;
     }
 
 }

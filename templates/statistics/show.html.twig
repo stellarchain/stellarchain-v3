@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stat{% endblock %}
+
+{% set content_title = chart_name%}
+
+{% block body %}
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+    {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
+    <div class="card">
+        {{ render_chart(chart, {'class': 'statistics', 'data-controller': 'statistics'}) }}
+    </div>
+
+    <div class="py-4">
+        <span>&nbsp;</span>
+    </div>
+
+    <div class="mt-0 d-block d-sm-none">
+        <span>&nbsp;</span>
+    </div>
+</div>
+
+{% endblock %}

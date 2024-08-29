@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -42,10 +41,6 @@ class Post
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    #[ORM\Column(length: 255, unique: true)]
-    #[Gedmo\Slug(fields: ['title'])]
-    private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;

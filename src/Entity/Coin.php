@@ -6,10 +6,8 @@ use App\Repository\CoinRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: CoinRepository::class)]
-#[Broadcast]
 class Coin
 {
     #[ORM\Id]
@@ -41,6 +39,8 @@ class Coin
     public function __construct()
     {
         $this->coinStats = new ArrayCollection();
+        $this->updated_at = new \DateTimeImmutable();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -136,5 +136,20 @@ class Coin
         }
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTime();
+        }
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updated_at = new \DateTime();
     }
 }

@@ -61,6 +61,7 @@ class SCFUpdateProjectsCommand extends Command
                     $totalPages = $response['totalPages'];
 
                     foreach ($roundProjects as $project) {
+                        $io->info('Project: '. $project['title']);
                         $this->processProject($project);
                     }
 
@@ -100,7 +101,6 @@ class SCFUpdateProjectsCommand extends Command
         foreach ($projectData['additionalContent'] as $additionalContent) {
             if ($additionalContent['formElement']) {
                 $key = $additionalContent['formElement']['label'];
-
             }
             if (!$additionalContent['formElementOption']) {
                 $additionalContentLabels[$key] = $additionalContent['content'];
@@ -127,7 +127,13 @@ class SCFUpdateProjectsCommand extends Command
             }
         }
 
-        $statusEnum = ProjectStatus::fromString($projectData['status']['processStep']);
+        if (!empty($projectData['status']) && isset($projectData['status']['processStep'])) {
+            $statusProject = $projectData['status']['processStep'];
+        } else {
+            $statusProject = "status_empty";
+        }
+
+        $statusEnum = ProjectStatus::fromString($statusProject);
         $awardEnum = AwardType::fromString($awardType);
 
         $projectType = $this->projectTypeRepository->findOneBy(['name' => $type]);
@@ -145,11 +151,12 @@ class SCFUpdateProjectsCommand extends Command
         if (!$project) {
             $project = new Project();
         }
+
         $project->setName($projectData['title'])
             ->setOriginalId($projectData['id'])
             ->setUser($user)
             ->setContent($projectData['content'])
-            ->setBudget($budget)
+            ->setBudget((int)$budget)
             ->setRound($round)
             ->setType($projectType)
             ->setAwardType($awardEnum->value)
@@ -162,12 +169,13 @@ class SCFUpdateProjectsCommand extends Command
 
         foreach ($projectData['media'] as $media) {
             $image = $this->helper->downloadImage($media['imageUrl1920x1080']);
-            $project->setImageFile(new ReplacingFile($image));
-            break;
+            if ($image) {
+                $project->setImageFile(new ReplacingFile($image));
+                break;
+            }
         }
 
         $this->entityManager->persist($project);
         $this->entityManager->flush();
     }
-
 }

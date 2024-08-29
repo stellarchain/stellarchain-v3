@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page not found{% endblock %}
+
+{% set content_title = 'Page not found'%}
+
+{% block body %}
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+    {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
+    <div class="row">
+        <div class="col-sm-8 offset-md-2">
+            <div class="mb-2 mt-2 text-center rounded" style="background-color:rgb(71 71 71) !important">
+                <img src="/assets-custom/404logo.png" style="width: 500px; margin:0 auto"/>
+            </div>
+            <p class="text-center">
+                The requested page couldn't be located. Checkout for any URL
+                misspelling or <a href="{{ path('app_home') }}">return to the homepage</a>.
+            </p>
+        </div>
+    </div>
+
+    <div class="py-4">
+        <span>&nbsp;</span>
+    </div>
+
+    <div class="mt-0 d-block d-sm-none">
+        <span>&nbsp;</span>
+    </div>
+</div>
+{% endblock %}

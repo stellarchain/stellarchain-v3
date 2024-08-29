@@ -30,7 +30,10 @@ RUN set -eux; \
 		@composer \
 		apcu \
 		intl \
+		pcntl \
+		bcmath \
 		opcache \
+		redis \
 		zip \
 	;
 

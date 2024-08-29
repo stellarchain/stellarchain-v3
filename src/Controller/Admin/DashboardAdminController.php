@@ -18,6 +18,7 @@ use App\Entity\ProjectType;
 use App\Entity\Region;
 use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
+use App\Entity\StellarHorizon\Asset;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -64,6 +65,7 @@ class DashboardAdminController extends AbstractDashboardController
 
         yield MenuItem::subMenu('Market', 'fas fa-list')->setSubItems([
             MenuItem::linkToCrud('Coins', 'fas fa-list', Coin::class),
+            MenuItem::linkToCrud('Assets', 'fas fa-list', Asset::class),
         ]);
 
         yield MenuItem::subMenu('Config', 'fas fa-list')->setSubItems([

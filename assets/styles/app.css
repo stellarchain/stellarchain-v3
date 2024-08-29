@@ -1,7 +1,8 @@
 .sm-chart {
     width: 100px !important;
-    height: 35px !important;
+    margin: 0px auto;
 }
+canvas{position:relative; z-index:999;}
 
 .ts-dropdown, .ts-control, .ts-control input {
     color: #FFF !important;

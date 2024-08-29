@@ -20,7 +20,19 @@ services:
       - host.docker.internal:host-gateway
     tty: true
 
-  worker:
+  scheduler:
+    volumes:
+      - ./:/app
+
+  messenger:
+    volumes:
+      - ./:/app
+
+  trades:
+    volumes:
+      - ./:/app
+
+  transactions:
     volumes:
       - ./:/app
 

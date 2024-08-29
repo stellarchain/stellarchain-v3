@@ -1,0 +1,17 @@
+{
+  "configurations": {
+    "Listen for XDebug": {
+      "adapter": "vscode-php-debug",
+      "filetypes": ["php"],
+      "configuration": {
+        "name": "Listen for XDebug",
+        "type": "php",
+        "request": "launch",
+        "port": 9003,
+        "pathMappings": {
+          "/app": "${workspaceRoot}"
+        }
+      }
+    }
+  }
+}

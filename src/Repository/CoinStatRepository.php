@@ -49,4 +49,25 @@ class CoinStatRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function getStatsByName(string $name): array
+    {
+        $sql = "
+            SELECT
+                created_at,
+                value
+            FROM coin_stat
+            WHERE name = :name
+            ORDER BY created_at ASC;
+        ";
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('created_at', 'created_at');
+        $rsm->addScalarResult('value', 'value' );
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter('name', $name);
+
+        return $query->getResult();
+    }
 }
