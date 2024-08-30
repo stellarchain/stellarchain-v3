@@ -8,6 +8,7 @@ use App\Repository\EventRepository;
 use App\Repository\JobRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\StellarHorizon\AssetRepository;
 
 class GlobalValueService
 {
@@ -17,7 +18,8 @@ class GlobalValueService
         private JobRepository $jobRepository,
         private CommunityRepository $communityRepository,
         private EventRepository $eventRepository,
-        private CoinStatRepository $coinStatRepository
+        private CoinStatRepository $coinStatRepository,
+        private AssetRepository $assetRepository
     )
     {
         $this->projectRepository = $projectRepository;
@@ -25,6 +27,7 @@ class GlobalValueService
         $this->communityRepository = $communityRepository;
         $this->jobRepository = $jobRepository;
         $this->eventRepository = $eventRepository;
+        $this->assetRepository = $assetRepository;
     }
 
     public function getProjects(): int {
@@ -47,6 +50,9 @@ class GlobalValueService
         return $this->eventRepository->count([]);
     }
 
+    public function getMarketAssets(): int {
+        return $this->assetRepository->count(['in_market' => true]);
+    }
     /**
      * @return mixed|bool
      */
