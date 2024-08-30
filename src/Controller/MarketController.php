@@ -36,7 +36,7 @@ class MarketController extends AbstractController
                 $recentMetrics = $assetMetricRepository->findBy(
                     ['asset' => $asset],
                     ['created_at' => 'DESC'],
-                   10
+                    10
                 );
 
                 // Reverse the order to have the oldest first (for chronological plotting)
@@ -57,7 +57,6 @@ class MarketController extends AbstractController
                     'labels' => $chartLabels,
                     'datasets' => [
                         [
-                            'label' => $asset->getAssetCode() . ' 1h%',
                             'backgroundColor' => 'rgb(255, 99, 132)',
                             'borderColor' => 'rgb(255, 99, 132)',
                             'data' => $chartData,
@@ -65,17 +64,12 @@ class MarketController extends AbstractController
                             'tension' => 0.1,
                             'borderWidth' => 1,
                             'pointBorderWidth' => 0.1,
-                            'pointRadius' => 2,
+                            'pointRadius' => 1,
                         ],
                     ],
                 ]);
 
                 $chart->setOptions([
-                    'layout' => [
-                        'padding' => [
-                            'bottom' => 25
-                        ]
-                    ],
                     'scales' => [
                         'y' => [
                             'display' => false,
@@ -89,11 +83,11 @@ class MarketController extends AbstractController
                             'display' => false,
                         ]
                     ],
-                    'tooltips' => [
-                        'enabled' => true,
-                        'yAlign' => 'center',
-                        'position' => 'nearest',
-                    ],
+                    'tooltip' => [
+                        'enabled' => false,
+                        'yAlign' => 'top',
+                        'xAlign' => 'top'
+                    ]
                 ]);
 
                 // Store the chart in the charts array

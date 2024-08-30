@@ -108,7 +108,7 @@
                    {{ latestMetrics[asset.id].priceChange1h}}%
                 </td>
                 <td class="border-0 bg-white text-end d-none d-lg-table-cell align-middle small {% if latestMetrics[asset.id].priceChange24h < 0 %}text-danger{% else %}text-success{% endif %}">
-                     {% if latestMetrics[asset.id].priceChange24h < 0 %}
+                    {% if latestMetrics[asset.id].priceChange24h < 0 %}
                         <i class="bi bi-caret-down-fill"></i>
                     {% else %}
                         <i class="bi bi-caret-up-fill"></i>

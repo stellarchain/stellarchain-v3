@@ -79,7 +79,6 @@ class StatisticsController extends AbstractController
                 ]
             ],
             'plugins' => [
-
                 'tooltip' => [
                     'mode' => 'interpolate',
                     'intersect' => false,
@@ -111,10 +110,6 @@ class StatisticsController extends AbstractController
                     ]
                 ]
 
-            ],
-            'tooltips' => [
-                'enabled' => true,
-                'position' => 'average'
             ]
         ]);
 
