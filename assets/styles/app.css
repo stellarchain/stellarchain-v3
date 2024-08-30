@@ -1,6 +1,7 @@
 .sm-chart {
     height: 36px !important;
     margin: 0px auto;
+    width: 80px;
 }
 canvas{position:relative; z-index:999;}
 
