@@ -1,10 +1,11 @@
 import {Controller} from '@hotwired/stimulus';
 import api from '../api.js';
+import {showToastAuth} from 'app';
 
 export default class extends Controller {
   static targets = [];
   async initialize() {
-      console.log('post loaded')
+     window.addEventListener('auth:false', () => showToastAuth())
   }
   async vote({currentTarget, params: {id, liked, type}}) {
     try {

@@ -15,6 +15,7 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -23,6 +24,7 @@ final class CommentsComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use ComponentToolsTrait;
 
     #[LiveProp]
     public Post $entity;
@@ -99,6 +101,12 @@ final class CommentsComponent extends AbstractController
     #[LiveAction]
     public function save(): void
     {
+        if (!$this->getUser()) {
+            // If the user is not authenticated, return a 401 Unauthorized response
+            $this->dispatchBrowserEvent('auth:false');
+            // Optionally, you could use Turbo to trigger a frontend event to show a toast notification
+            return;
+        }
         $this->submitForm();
         $comment = $this->form->getData();
 
