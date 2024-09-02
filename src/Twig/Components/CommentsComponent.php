@@ -11,9 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -24,7 +24,13 @@ final class CommentsComponent extends AbstractController
     use DefaultActionTrait;
     use ComponentWithFormTrait;
 
-    public ?object $entity = null;
+    #[LiveProp]
+    public Post $entity;
+
+    public string $commentType;
+
+    #[LiveProp]
+    public ?Comment $parentComment = null;
 
     public function __construct(
         private CommentRepository $commentRepository,
@@ -38,9 +44,16 @@ final class CommentsComponent extends AbstractController
         $comment = new Comment();
         $comment->setPost($this->entity);
 
+        if ($this->parentComment) {
+            $comment->setParent($this->parentComment);
+        }
+
         return $this->createForm(CommentFormType::class, $comment);
     }
 
+    /**
+     * @return array<int,Comment>
+     */
     public function getComments(): array
     {
         if (!$this->entity) {
@@ -53,9 +66,11 @@ final class CommentsComponent extends AbstractController
         switch ($entityClass) {
             case Post::class:
                 $criteria['post'] = $this->entity;
+                $this->commentType = 'post';
                 break;
             case Project::class:
                 $criteria['project'] = $this->entity;
+                $this->commentType = 'project';
                 break;
             default:
                 throw new \InvalidArgumentException('Unsupported entity type');
@@ -69,6 +84,18 @@ final class CommentsComponent extends AbstractController
         );
     }
 
+    public function getTotalCommentsAndReplies(): int
+    {
+        $comments = $this->getComments();
+        $totalCount = count($comments);
+
+        foreach ($comments as $comment) {
+            $totalCount += $comment->getReplies()->count();
+        }
+
+        return $totalCount;
+    }
+
     #[LiveAction]
     public function save(): void
     {
@@ -76,8 +103,44 @@ final class CommentsComponent extends AbstractController
         $comment = $this->form->getData();
 
         if ($this->form->isSubmitted() && $this->form->isValid()) {
+            if ($this->parentComment) {
+                $comment->setParent($this->parentComment);
+            }
+            $comment->setUser($this->getUser());
+
+            $entityClass = get_class($this->entity);
+            switch ($entityClass) {
+                case Post::class:
+                    $this->commentType = 'post';
+                    break;
+                case Project::class:
+                    $this->commentType = 'project';
+                    break;
+                default:
+                    throw new \InvalidArgumentException('Unsupported entity type');
+            }
+
+            $comment->setCommentType($this->commentType);
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
+
+            // Reset the form after saving
+            $this->parentComment = null;
+            $this->form = $this->instantiateForm();
         }
+    }
+
+    #[LiveAction]
+    public function newComment(): void
+    {
+        $this->parentComment = null;
+        $this->form = $this->instantiateForm();
+    }
+
+    #[LiveAction]
+    public function reply(#[LiveArg] int $parentId): void
+    {
+        $this->parentComment = $this->commentRepository->find($parentId);
+        $this->form = $this->instantiateForm();
     }
 }

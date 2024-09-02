@@ -4,62 +4,55 @@
 
 {% set content_title = post.title %}
 
-{% import 'macros/comment.html.twig' as comment_template %}
-
 {% block body %}
-<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
-    {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card card-body">
-                {{post.body}}
-            </div>
-            <div class="container my-5">
-                <div class="mb-4" id="post-form-content">
-                    {% block comment_form_block %}
-                       {% include 'blocks/comment_form_block.html.twig' with { 'form': comment_form } %}
-                    {% endblock %}
-                </div>
-
-                <div id="comments-list" {{ turbo_stream_listen('comments-list-' ~ post.id) }}>
-                    {% set prev_comment_id = null %}
-                    {% for index, comment_data in comments %}
-                        {% set next_comment_id = (index + 1 < comments|length) ? comments[index + 1].comment.id : null %}
-                        {% set root_comment = comment_data.comment.parent is null ? comment_data : root_comment ?? comment_data %}
-                        {{ comment_template.render_comment(comment_data, root_comment, prev_comment_id, next_comment_id) }}
-                        {% set prev_comment_id = comment_data.comment.id %}
-                    {% endfor %}
+<div {{ stimulus_controller('post') }}>
+    <div class="d-flex align-items-center small py-2 justify-content-between">
+        <div class="d-flex grid gap-2">
+            <a class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" href="/">
+                <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
+                    <i class="bi bi-arrow-left"></i>
+                </span>
+            </a>
+            <a class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" href="#">
+                <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
+                    <i class="bi bi-heart"></i>
+                </span>
+            </a>
+        </div>
+        <div class="d-flex grid gap-2">
+            <a class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" href="#">
+                <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
+                    <i class="bi bi-box-arrow-up"></i>
+                </span>
+            </a>
+            <a class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" href="#">
+                <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
+                    <i class="bi bi-three-dots"></i>
+                </span>
+            </a>
+            <a type="button" class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;"
+                data-bs-toggle="modal" data-bs-target="#commentModal" data-action="live#action"
+                data-live-action-param="newComment">
+                <span class="rounded-circle align-self-center mx-auto fw-bold"><i class="bi bi-chat"></i></span>
+            </a>
+        </div>
+    </div>
+    <div class="card mb-2">
+        <div class="card-body rounded py-2">
+            <div class="d-flex align-items-center">
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="fw-bold mb-0">{{post.title}}</p>
+                    <p class="small mb-0">{{post.body}}</p>
+                    <div class="small text-secondary fw-bold">
+                        <span class="small">{{post.rank}} points by <a class="text-decoration-none"
+                                href="{{path('app_account_show', {id: post.user.id})}}">@{{post.user.username}}</a></span>
+                        <span class="small">{{ post.createdAt | time_diff }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block create_comment %}
-{% import 'macros/comment.html.twig' as comment_template %}
-
-<turbo-stream action="replace" targets="form[name=comment_form]">
-    <template>
-        {{block('comment_form_block')}}
-    </template>
-</turbo-stream>
-
-<turbo-stream action="prepend" target="comments-list" >
-    <template>
-        {{ comment_template.render_comment(comment) }}
-    <template>
-</turbo-stream>
-
-{% endblock %}
-
-{% block update_comment %}
-{% import 'macros/comment.html.twig' as comment_template %}
-
-<turbo-stream action="append" target="{{ 'replies-' ~ parent_id }}" comment="{{comment.comment.id}}">
-    <template>
-        {{ comment_template.render_comment(comment) }}
-    <template>
-</turbo-stream>
-
+{{ component('comments-component', {entity: post}) }}
 {% endblock %}

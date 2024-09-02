@@ -1,43 +1,56 @@
 {% import 'macros/comment.html.twig' as comment_template %}
-<div{{ attributes }}>
-    <div class="comments-box">
-        <div class="mb-4" style="display:none" id="post-form-content">
-            {{ form_start(this.getFormView,{ attr: { 'data-action': 'live#action:prevent', 'data-live-action-param': 'save'}})}}
-            <div class="form-floating mb-2 w-100">
-                {{ form_widget(this.getFormView.content, {'attr': {'placeholder': 'Leave a comment', 'style':
-                'height:100px'}}) }}
-                <label for="{{ this.getFormView.content.vars.id }}">Leave a comment</label>
-                <div class="form-error">
-                    {{ form_errors(this.getFormView.content) }}
+<div{{ attributes.defaults(stimulus_controller('comment'))}}>
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">{{ parentComment ? 'Reply' : 'New Comment' }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(this.getFormView, { attr: { 'data-action': 'live#action:prevent',
+                    'data-live-action-param': 'save' }}) }}
+                    <div class="form-floating mb-2 w-100">
+                        {{ form_widget(this.getFormView.content, {'attr': {'placeholder': parentComment ? 'Leave a
+                        reply' :
+                        'Leave a comment', 'style': 'height:100px'}}) }}
+                        <label for="{{ this.getFormView.content.vars.id }}">{{ parentComment ? 'Reply' : 'Leave a
+                            comment'
+                            }}</label>
+                        <div class="form-error">
+                            {{ form_errors(this.getFormView.content) }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    {{ form_end(this.getFormView) }}
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
-            {{ form_end(this.getFormView) }}
         </div>
+    </div>
 
+    <div class="comments-box">
         <div class="d-flex align-items-center border-0 py-2">
             <div class="flex-grow-1 d-flex flex-column lh-1">
-                <span class="fw-bold mb-1">{{this.comments | length }} Comments</span>
+                <span class="fw-bold mb-1">{{ this.getTotalCommentsAndReplies }} Comments</span>
                 <div class="small">
                     <span class="text-secondary small mb-0">Sorted by popular first</span>
                 </div>
             </div>
             <div class="flex-shrink-0">
                 <a class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" href="#">
-                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
-                            class="bi bi-sort-up"></i></span>
+                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
+                        <i class="bi bi-sort-up"></i>
+                    </span>
                 </a>
             </div>
         </div>
 
-        <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar" id="comments-list" {{ turbo_stream_listen('comments-list-' ~ entity.id) }}>
+        <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar" id="comments-list" {{ turbo_stream_listen('comments-list-' ~ entity.id) }} >
             {% set prev_comment_id = null %}
             {% for index, comment_data in this.comments %}
                 {% set next_comment_id = (index + 1 < this.comments|length) ? this.comments[index + 1].id : null %}
                 {% set root_comment=comment_data.parent is null ? comment_data : root_comment ?? comment_data %}
-
                 {{ comment_template.render_comment(comment_data, root_comment, prev_comment_id, next_comment_id) }}
-
                 {% set prev_comment_id=comment_data.id %}
             {% endfor %}
             <div class="my-5 py-5">
@@ -47,5 +60,5 @@
                 &nbsp;
             </div>
         </div>
-
     </div>
+</div>
