@@ -3,7 +3,7 @@
 {% block title %}Markets{% endblock %}
 
 {% block body %}
-<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar" {{stimulus_controller('markets')}}>
 
     <div class="mt-4">
         <div class="d-flex align-items-center small pt-2">
@@ -67,7 +67,7 @@
         <tbody>
             {% for asset in assets %}
             <tr class="border-5 border-start-0 border-end-0 border-light bg-dark mb-2 font-monospace"
-                onclick="document.location = '#';" style="cursor: pointer;">
+                onclick="window.open('https://stellarchain.io/assets/{{asset.assetCode}}-{{asset.assetIssuer}}');" style="cursor: pointer;">
                 <td class="border-0 bg-white">
                     <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                         style="height: 36px; width: 36px;">
@@ -76,7 +76,9 @@
                 </td>
                 <td class="border-0 bg-white ps-1">
                     <div class="d-flex flex-column lh-1 align-self-center mt-1">
-                        <span class="fw-bold mb-1">{{asset.assetCode}}</span>
+                        <span class="fw-bold mb-1">
+                            {{asset.assetCode}}
+                        </span>
                         <div class="small text-secondary"><span class="small">
                         ${{
                         (
@@ -149,7 +151,7 @@
                 <td class="border-0 bg-white text-end align-middle">
                     <div class="small font-monospace align-self-center text-end">
                         <div class="sm-chart">
-                          {{ render_chart(charts[asset.id]) }}
+                            {{ render_chart(charts[asset.id], {class: asset.assetCode}) }}
                         </div>
                         <div class="small text-danger d-block d-lg-none">
                             <i class="bi bi-caret-down-fill"></i> {{ latestMetrics[asset.id].priceChange7d}}%

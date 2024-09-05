@@ -16,28 +16,22 @@ class LedgerStatRepository extends ServiceEntityRepository
         parent::__construct($registry, LedgerStat::class);
     }
 
-    //    /**
-    //     * @return LedgerStat[] Returns an array of LedgerStat objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('l.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?LedgerStat
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Retrieves LedgerStat records between two dates.
+     *
+     * @param \DateTimeImmutable $startDate
+     * @param \DateTimeImmutable $endDate
+     * @return LedgerStat[] Returns an array of LedgerStat objects
+     */
+    public function getBetweenDates(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.created_at >= :startDate')
+            ->andWhere('l.created_at <= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->orderBy('l.created_at', 'ASC')  // Order by date (optional)
+            ->getQuery()
+            ->getResult();
+    }
 }

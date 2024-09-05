@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CoinStatRepository;
+use App\Service\LedgerMetricsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,6 +26,7 @@ class StatisticsController extends AbstractController
         ChartBuilderInterface $chartBuilder,
         CoinStatRepository $coinStatRepository,
         TranslatorInterface $translator,
+        LedgerMetricsService $ledgerMetricsService,
         string $stat
     ): Response {
 
@@ -32,6 +34,11 @@ class StatisticsController extends AbstractController
         if (!in_array($stat, $standardStats, true)) {
             throw $this->createNotFoundException("The stat '{$stat}' was not found.");
         }
+
+        $endDate = new \DateTimeImmutable(); // Today
+        $startDate = $endDate->sub(new \DateInterval('P1D'));
+
+        $ledgerMetrics = $ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate);
 
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $priceData = $coinStatRepository->getStatsByName($stat);
@@ -60,7 +67,7 @@ class StatisticsController extends AbstractController
         ]);
 
         $totalDataPoints = count($data);
-        $initialViewPercentage = 0.1;
+        $initialViewPercentage = 0.05;
         $maxValue = $totalDataPoints - 1;
         $minValue = $maxValue - floor($totalDataPoints * $initialViewPercentage);
         $minValue = max($minValue, 0);

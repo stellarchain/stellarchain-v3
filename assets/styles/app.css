@@ -4,7 +4,10 @@
     width: 80px;
 }
 canvas{position:relative; z-index:999;}
-
+ .chartjs-tooltip {
+    position: absolute;
+    z-index: 9999; /* High value to ensure it appears on top */
+}
 .ts-dropdown, .ts-control, .ts-control input {
     color: #FFF !important;
 }

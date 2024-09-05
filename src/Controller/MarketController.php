@@ -36,7 +36,7 @@ class MarketController extends AbstractController
                 $recentMetrics = $assetMetricRepository->findBy(
                     ['asset' => $asset],
                     ['created_at' => 'DESC'],
-                    10
+                    5
                 );
 
                 // Reverse the order to have the oldest first (for chronological plotting)
@@ -63,8 +63,8 @@ class MarketController extends AbstractController
                             'fill' => false,
                             'tension' => 0.1,
                             'borderWidth' => 1,
-                            'pointBorderWidth' => 0.1,
-                            'pointRadius' => 1,
+                            'pointBorderWidth' => 0.2,
+                            'pointRadius' => 1.5,
                         ],
                     ],
                 ]);
@@ -81,13 +81,8 @@ class MarketController extends AbstractController
                     'plugins' => [
                         'legend' => [
                             'display' => false,
-                        ]
+                        ],
                     ],
-                    'tooltip' => [
-                        'enabled' => false,
-                        'yAlign' => 'top',
-                        'xAlign' => 'top'
-                    ]
                 ]);
 
                 // Store the chart in the charts array

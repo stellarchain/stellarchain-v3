@@ -6,6 +6,9 @@ export default class extends Controller {
   }
 
   connect() {
+    this.element.addEventListener('chartjs:pre-connect', this._onPreConnect);
+    this.element.addEventListener('chartjs:connect', this._onConnect.bind(this)); // Bind the context here
+
     const eventSource = new EventSource(this.urlValue);
     eventSource.onmessage = event => {
       const data = JSON.parse(event.data);
@@ -35,6 +38,34 @@ export default class extends Controller {
         }
       };
     }
+  }
+
+
+  disconnect() {
+    this.element.removeEventListener('chartjs:pre-connect', this._onPreConnect);
+    this.element.removeEventListener('chartjs:connect', this._onConnect.bind(this));
+  }
+
+  _onPreConnect(event) {
+  }
+
+  _onConnect(event) {
+    event.detail.chart.options.plugins.tooltip = {
+      enabled: false,
+      callbacks: {
+        label: function (tooltipItem) {
+          return tooltipItem.raw.toFixed(6);
+        },
+      },
+    };
+
+    event.detail.chart.options.plugins.tooltips = {
+      enabled: false,
+      custom: function (tooltipModel) {
+        console.log(tooltipModel)
+      },
+    };
+
   }
 
 }

@@ -16,6 +16,23 @@ export default class extends Controller {
   }
 
   _onConnect(event) {
+
+    event.detail.chart.options.plugins.tooltip = {
+      callbacks: {
+        label: function (tooltipItem) {
+          return tooltipItem.raw.toFixed(6);
+        },
+      },
+    };
+
+    event.detail.chart.options.plugins.tooltips = {
+      enabled: false,
+      custom: function (tooltipModel) {
+        console.log(tooltipModel)
+      },
+    };
+
+
     event.detail.chart.options.plugins.zoom.pan.onPan = ({chart}) => {
       const {min} = chart.scales.x;
       if (min === 0) {
