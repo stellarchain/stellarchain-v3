@@ -14,7 +14,7 @@ framework:
             # 'App\Message\YourMessage': async
             'App\Message\StoringTrade': async
             'App\Message\UpdateAsset': async
-            #'App\Message\ProcessTransaction': async
+            'App\Message\ProcessTransaction': async
 
 # when@test:
 #    framework:

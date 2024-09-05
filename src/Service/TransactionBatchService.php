@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\LedgerStat;
 use Doctrine\ORM\EntityManagerInterface;
 
 class TransactionBatchService
@@ -67,23 +68,22 @@ class TransactionBatchService
                 $transactionsPerSecond = $timePassed > 0 ? $this->transactionCount / $timePassed : 0;
             }
 
-            dump(
-                'Ledger Id: ' . $this->ledgerId,
-                'Ledger Time: '. $timePassed . ' seconds',
-                'Operations Count: ' . $this->totalOperations,
-                'Transactions success: ' . $this->totalSuccessfulTransactions,
-                'Transactions failed:' . $this->totalFailedTransactions,
-                'Created Contracts: ' . $this->totalContractCreated,
-                'Invoke Contracts: ' . $this->totalContractInvocations,
-                'Transactions/second: ' . $transactionsPerSecond,
-                'Transactions Value'
-            );
+            $ledgerStat = new LedgerStat();
+            $ledgerStat->setLedgerId($this->ledgerId)
+                ->setLifetime($timePassed)
+                ->setOperations($this->totalOperations)
+                ->setSuccessfulTransactions($this->totalSuccessfulTransactions)
+                ->setFailedTransactions($this->totalFailedTransactions)
+                ->setCreatedContracts($this->totalContractCreated)
+                ->setContractInvocations($this->totalContractInvocations)
+                ->setCreatedAt(new \DateTimeImmutable())
+                ->setTransactionsSecond($transactionsPerSecond);
 
-            //$this->entityManager->flush();
-            //$this->entityManager->clear();
+            $this->entityManager->persist($ledgerStat);
+            $this->entityManager->flush();
+            $this->entityManager->clear();
 
             $this->resetCounters();
-            // Update the ledger ID
             $this->ledgerId = $ledgerId;
             $this->lastLedgerChangeTime = $currentTime;
         }
