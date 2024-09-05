@@ -85,22 +85,6 @@ class AssetsBuildMetricsCommand extends Command
 
                 if ($volume24h['baseAmount']) {
                     $priceInUsd = (1 / $latestPrice * $usdXlmPrice);
-                    dump(
-                        'Asset: ' . $asset->getAssetCode(),
-                        'Price: ' . $latestPrice,
-                        'XLM Price: ' . 1 / $latestPrice,
-                        'USD Price: ' . $priceInUsd,
-                        'Price 1h ago: ' . 1 / $price1hAgo,
-                        'Price 24h ago: ' . 1 / $price24hAgo,
-                        'Price 7d ago: ' . 1 / $price7dAgo,
-                        'Price % 1h ago: ' . $priceChange1h,
-                        'Price % 24h ago: ' . $priceChange24h,
-                        'Price % 7d ago: ' . $priceChange7d,
-                        'Total trades in 1h' . $totalTrades,
-                        'Volume 24H: ' . $volume24h['baseAmount'],
-                        'Volume 1h: ' . $volume1h['baseAmount'],
-                        '======================================='
-                    );
                     $assetMetric = new AssetMetric();
                     $assetMetric->setAsset($asset)
                         ->setPrice(1 / $latestPrice)
@@ -119,6 +103,23 @@ class AssetsBuildMetricsCommand extends Command
                     }
 
                     if ($asset->getUpdatedAt() <= $cutoffTime && $asset->isInMarket()) {
+
+                        dump(
+                            'Asset: ' . $asset->getAssetCode(),
+                            'Price: ' . $latestPrice,
+                            'XLM Price: ' . 1 / $latestPrice,
+                            'USD Price: ' . $priceInUsd,
+                            'Price 1h ago: ' . 1 / $price1hAgo,
+                            'Price 24h ago: ' . 1 / $price24hAgo,
+                            'Price 7d ago: ' . 1 / $price7dAgo,
+                            'Price % 1h ago: ' . $priceChange1h,
+                            'Price % 24h ago: ' . $priceChange24h,
+                            'Price % 7d ago: ' . $priceChange7d,
+                            'Total trades in 1h' . $totalTrades,
+                            'Volume 24H: ' . $volume24h['baseAmount'],
+                            'Volume 1h: ' . $volume1h['baseAmount'],
+                            '======================================='
+                        );
                         $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
                         $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
                         if ($assetResponse instanceof AssetResponse) {

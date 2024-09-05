@@ -57,6 +57,7 @@ class UpdateAssetHandler
           ->setNumContracts($assetDto->getNumContracts())
           ->setContractsAmount($assetDto->getContractsAmount())
           ->setNumArchivedContracts($assetDto->getNumArchivedContracts())
+          ->setUpdatedAt(new \DateTimeImmutable())
           ->setArchivedContractsAmount($assetDto->getArchivedContractsAmount());
 
         $this->entityManager->persist($asset);

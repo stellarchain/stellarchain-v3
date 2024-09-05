@@ -79,19 +79,14 @@ class TransactionBatchService
                 'Transactions Value'
             );
 
-            $this->flushBatch();
+            //$this->entityManager->flush();
+            //$this->entityManager->clear();
+
+            $this->resetCounters();
             // Update the ledger ID
             $this->ledgerId = $ledgerId;
             $this->lastLedgerChangeTime = $currentTime;
         }
-    }
-
-    public function flushBatch(): void
-    {
-        //$this->entityManager->flush();
-        //$this->entityManager->clear();
-
-        $this->resetCounters();
     }
 
     private function resetCounters(): void
