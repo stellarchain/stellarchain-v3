@@ -102,7 +102,7 @@ class AssetsBuildMetricsCommand extends Command
                         $this->entityManager->persist($asset);
                     }
 
-                    if ($asset->getUpdatedAt() <= $cutoffTime && $asset->isInMarket()) {
+                    if ($asset->isInMarket()) {
 
                         dump(
                             'Asset: ' . $asset->getAssetCode(),
