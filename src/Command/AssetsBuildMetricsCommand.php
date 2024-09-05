@@ -118,7 +118,7 @@ class AssetsBuildMetricsCommand extends Command
                         $this->entityManager->persist($asset);
                     }
 
-                    if ($asset->getUpdatedAt() <= $cutoffTime) {
+                    if ($asset->getUpdatedAt() <= $cutoffTime && $asset->isInMarket()) {
                         $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
                         $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
                         if ($assetResponse instanceof AssetResponse) {
