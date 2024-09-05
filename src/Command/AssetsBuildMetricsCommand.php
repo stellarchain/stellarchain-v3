@@ -44,7 +44,7 @@ class AssetsBuildMetricsCommand extends Command
         $batchSize = 20;
         $nativeAsset = $this->assetRepository->findOneBy(['asset_type' => 'native']);
         do {
-            $assets = $this->assetRepository->findBy([], null, $batchSize, $offset);
+            $assets = $this->assetRepository->findBy(['in_market' => true], null, $batchSize, $offset);
             foreach ($assets as $asset) {
                 $this->processAsset($asset, $nativeAsset);
             }
@@ -100,12 +100,6 @@ class AssetsBuildMetricsCommand extends Command
                         $asset->setInMarket($isInMarket);
                         $this->entityManager->persist($asset);
                     }
-                    $this->entityManager->persist($assetMetric);
-                    $this->entityManager->flush();
-                }
-
-
-                if ($asset->getUpdatedAt() <= $cutoffTime && $asset->isInMarket()) {
                     dump(
                         'Asset: ' . $asset->getAssetCode(),
                         'Price: ' . $latestPrice,
@@ -122,12 +116,17 @@ class AssetsBuildMetricsCommand extends Command
                         'Volume 1h: ' . $volume1h['baseAmount'],
                         '======================================='
                     );
-                    $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
-                    $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
-                    if ($assetResponse instanceof AssetResponse) {
-                        $this->bus->dispatch(new UpdateAsset($assetResponse));
-                    }
+                    $this->entityManager->persist($assetMetric);
+                    $this->entityManager->flush();
                 }
+            }
+        }
+
+        if ($asset->getUpdatedAt() <= $cutoffTime && $asset->isInMarket()) {
+            $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
+            $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
+            if ($assetResponse instanceof AssetResponse) {
+                $this->bus->dispatch(new UpdateAsset($assetResponse));
             }
         }
     }
