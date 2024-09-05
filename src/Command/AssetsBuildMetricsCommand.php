@@ -97,7 +97,7 @@ class AssetsBuildMetricsCommand extends Command
 
                     $isInMarket = ($priceInUsd * $volume1h['baseAmount']) > 10;
 
-                    if ($isInMarket) {
+                    if ($isInMarket && false) {
                         $asset->setInMarket($isInMarket);
                         $this->entityManager->persist($asset);
                     }
