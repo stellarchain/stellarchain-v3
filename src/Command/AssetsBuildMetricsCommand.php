@@ -81,7 +81,7 @@ class AssetsBuildMetricsCommand extends Command
 
                 $volume24h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime24hAgo);
                 $volume1h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime);
-                $totalTrades = $this->tradeRepository->countTotalTrades($asset, $nativeAsset,$roundedDateTime);
+                $totalTrades = $this->tradeRepository->countTotalTrades($asset, $nativeAsset, $roundedDateTime);
 
                 if ($volume24h['baseAmount']) {
                     $priceInUsd = (1 / $latestPrice * $usdXlmPrice);
@@ -96,7 +96,7 @@ class AssetsBuildMetricsCommand extends Command
                         'Price % 1h ago: ' . $priceChange1h,
                         'Price % 24h ago: ' . $priceChange24h,
                         'Price % 7d ago: ' . $priceChange7d,
-                        'Total trades in 1h'. $totalTrades,
+                        'Total trades in 1h' . $totalTrades,
                         'Volume 24H: ' . $volume24h['baseAmount'],
                         'Volume 1h: ' . $volume1h['baseAmount'],
                         '======================================='
@@ -116,13 +116,13 @@ class AssetsBuildMetricsCommand extends Command
                     if ($isInMarket) {
                         $asset->setInMarket($isInMarket);
                         $this->entityManager->persist($asset);
+                    }
 
-                        if ($asset->getCreatedAt() <= $cutoffTime && false) {
-                            $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
-                            $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
-                            if ($assetResponse instanceof AssetResponse) {
-                                $this->bus->dispatch(new UpdateAsset($assetResponse));
-                            }
+                    if ($asset->getUpdatedAt() <= $cutoffTime) {
+                        $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
+                        $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
+                        if ($assetResponse instanceof AssetResponse) {
+                            $this->bus->dispatch(new UpdateAsset($assetResponse));
                         }
                     }
                     $this->entityManager->persist($assetMetric);

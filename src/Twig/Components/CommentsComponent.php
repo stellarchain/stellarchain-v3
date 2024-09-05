@@ -99,6 +99,21 @@ final class CommentsComponent extends AbstractController
     }
 
     #[LiveAction]
+    public function vote(#[LiveArg] int $commentId): void
+    {
+        $comment = $this->commentRepository->find($commentId);
+
+        if (!$comment) {
+            throw $this->createNotFoundException('Comment not found.');
+        }
+
+        $comment->setVotes($comment->getVotes() + 1);
+
+        $this->entityManager->persist($comment);
+        $this->entityManager->flush();
+    }
+
+    #[LiveAction]
     public function save(): void
     {
         if (!$this->getUser()) {

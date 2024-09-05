@@ -49,6 +49,9 @@ class Comment
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "parent")]
     private $replies;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $votes = null;
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();
@@ -212,6 +215,18 @@ class Comment
                 $reply->setParent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVotes(): ?int
+    {
+        return $this->votes;
+    }
+
+    public function setVotes(?int $votes): static
+    {
+        $this->votes = $votes;
 
         return $this;
     }

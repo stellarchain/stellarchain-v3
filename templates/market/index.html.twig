@@ -77,7 +77,17 @@
                 <td class="border-0 bg-white ps-1">
                     <div class="d-flex flex-column lh-1 align-self-center mt-1">
                         <span class="fw-bold mb-1">{{asset.assetCode}}</span>
-                        <div class="small text-secondary"><span class="small">{{(asset.amount)}}</span></div>
+                        <div class="small text-secondary"><span class="small">
+                        ${{
+                        (
+                            (asset.claimableBalancesAmount +
+                             asset.liquidityPoolsAmount +
+                             asset.contractsAmount +
+                             (asset.balances is not empty ? asset.balances.authorized : 0))
+                            * (latestMetrics[asset.id].price * globalValues.price)
+                        ) | number_format()
+                        }}
+                        </span></div>
                     </div>
                 </td>
                 <td class="border-0 bg-white">
@@ -127,7 +137,14 @@
                     ${{ (latestMetrics[asset.id].volume24h * latestMetrics[asset.id].price * globalValues.price) | number_format(2, '.', ',')  | split('.')[0] }}<span class="text-secondary">.{{ (latestMetrics[asset.id].volume24h * latestMetrics[asset.id].price * globalValues.price) | number_format(2, '.', ',') | split('.')[1] }}</span>
                 </td>
                 <td class="border-0 bg-white text-end d-none d-lg-table-cell align-middle small text-nowrap">
-                    0 {{asset.assetCode}}
+                    {{
+                    (asset.claimableBalancesAmount +
+                         asset.liquidityPoolsAmount +
+                         asset.contractsAmount +
+                         (asset.balances is not empty ? asset.balances.authorized : 0)) | number_format()
+                    }}
+
+                    {{asset.assetCode}}
                 </td>
                 <td class="border-0 bg-white text-end align-middle">
                     <div class="small font-monospace align-self-center text-end">

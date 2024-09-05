@@ -5,7 +5,6 @@ import {showToastAuth} from 'app';
 export default class extends Controller {
   static targets = [];
   async initialize() {
-     window.addEventListener('auth:false', () => showToastAuth())
   }
   async vote({currentTarget, params: {id, liked, type}}) {
     try {
