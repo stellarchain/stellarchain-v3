@@ -96,37 +96,37 @@ class AssetsBuildMetricsCommand extends Command
                         ->setPriceChange7d($priceChange7d);
 
                     $isInMarket = ($priceInUsd * $volume1h['baseAmount']) > 10;
-
                     if ($isInMarket && false) {
                         $asset->setInMarket($isInMarket);
                         $this->entityManager->persist($asset);
                     }
-
-                    if ($asset->getUpdatedAt() <= $cutoffTime && $asset->isInMarket()) {
-                        dump(
-                            'Asset: ' . $asset->getAssetCode(),
-                            'Price: ' . $latestPrice,
-                            'XLM Price: ' . 1 / $latestPrice,
-                            'USD Price: ' . $priceInUsd,
-                            'Price 1h ago: ' . 1 / $price1hAgo,
-                            'Price 24h ago: ' . 1 / $price24hAgo,
-                            'Price 7d ago: ' . 1 / $price7dAgo,
-                            'Price % 1h ago: ' . $priceChange1h,
-                            'Price % 24h ago: ' . $priceChange24h,
-                            'Price % 7d ago: ' . $priceChange7d,
-                            'Total trades in 1h' . $totalTrades,
-                            'Volume 24H: ' . $volume24h['baseAmount'],
-                            'Volume 1h: ' . $volume1h['baseAmount'],
-                            '======================================='
-                        );
-                        $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
-                        $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
-                        if ($assetResponse instanceof AssetResponse) {
-                            $this->bus->dispatch(new UpdateAsset($assetResponse));
-                        }
-                    }
                     $this->entityManager->persist($assetMetric);
                     $this->entityManager->flush();
+                }
+
+
+                if ($asset->getUpdatedAt() <= $cutoffTime && $asset->isInMarket()) {
+                    dump(
+                        'Asset: ' . $asset->getAssetCode(),
+                        'Price: ' . $latestPrice,
+                        'XLM Price: ' . 1 / $latestPrice,
+                        'USD Price: ' . $priceInUsd,
+                        'Price 1h ago: ' . 1 / $price1hAgo,
+                        'Price 24h ago: ' . 1 / $price24hAgo,
+                        'Price 7d ago: ' . 1 / $price7dAgo,
+                        'Price % 1h ago: ' . $priceChange1h,
+                        'Price % 24h ago: ' . $priceChange24h,
+                        'Price % 7d ago: ' . $priceChange7d,
+                        'Total trades in 1h' . $totalTrades,
+                        'Volume 24H: ' . $volume24h['baseAmount'],
+                        'Volume 1h: ' . $volume1h['baseAmount'],
+                        '======================================='
+                    );
+                    $assetData = $this->importAsset($asset->getAssetCode(), $asset->getAssetIssuer());
+                    $assetResponse = AssetResponse::fromJson($assetData['_embedded']['records'][0]);
+                    if ($assetResponse instanceof AssetResponse) {
+                        $this->bus->dispatch(new UpdateAsset($assetResponse));
+                    }
                 }
             }
         }
