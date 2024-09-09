@@ -59,7 +59,10 @@ class PostController extends AbstractController
     {
         $this->rankingService->updateRank($post);
         $user = $this->security->getUser();
-        $isLiked = $this->likeService->isLikedByUser($post->getId(), 'post', $user);
+        $isLiked = false;
+        if ($user) {
+            $isLiked = $this->likeService->isLikedByUser($post->getId(), 'post', $user);
+        }
         $likes = $this->postRepository->getLikesCount($post);
         return $this->render('post/show.html.twig', [
             'post' => $post,
