@@ -54,6 +54,9 @@ class Post
     #[ORM\Column(nullable: true)]
     private ?int $views = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $votes = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -251,5 +254,17 @@ class Post
             $totalReplies += $comment->getRepliesCount();
         }
         return $totalReplies;
+    }
+
+    public function getVotes(): ?int
+    {
+        return $this->votes;
+    }
+
+    public function setVotes(?int $votes): static
+    {
+        $this->votes = $votes;
+
+        return $this;
     }
 }

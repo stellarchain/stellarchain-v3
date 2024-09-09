@@ -2,6 +2,10 @@
 
 {% block title %}Register{% endblock %}
 
+{% block sidebar %}
+{# No sidebar for login page #}
+{% endblock %}
+
 {% block body %}
     <div class="container vh-100 d-flex align-items-center">
         <div class="w-100">
@@ -105,6 +109,7 @@
                         <div class="mb-3"><button type="submit" id="submit" name="submit" class="btn-lg btn-primary w-100 btn">Register</button></div>
                     {{ form_end(registrationForm) }}
 
+                    <div class="mb-3 text-center"><a href="{{path('app_login')}}">Login</a></div>
                     <div class="text-center mt-4">
                       <ul class="list-inline m-0">
                           <li class="list-inline-item small">

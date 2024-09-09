@@ -2,29 +2,31 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Post;
-use App\Form\CommentFormType;
 use App\Form\PostFormType;
-use App\Repository\CommentRepository;
-use App\Service\CommentService;
+use App\Repository\PostRepository;
+use App\Service\LikeService;
 use App\Service\RankingService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\UX\Turbo\TurboBundle;
 
 class PostController extends AbstractController
 {
-    private $commentService;
     private $rankingService;
+    private $likeService;
+    private $postRepository;
+    private $security;
 
-    public function __construct(CommentService $commentService, RankingService $rankingService)
+    public function __construct(RankingService $rankingService, LikeService $likeService, Security $security, PostRepository $postRepository)
     {
-        $this->commentService = $commentService;
         $this->rankingService = $rankingService;
+        $this->likeService = $likeService;
+        $this->postRepository= $postRepository;
+        $this->security = $security;
     }
 
     #[Route('/l/new', name: 'app_post_new')]
@@ -56,114 +58,13 @@ class PostController extends AbstractController
     public function show(Post $post): Response
     {
         $this->rankingService->updateRank($post);
+        $user = $this->security->getUser();
+        $isLiked = $this->likeService->isLikedByUser($post->getId(), 'post', $user);
+        $likes = $this->postRepository->getLikesCount($post);
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'liked' => $isLiked,
+            'likes' => $likes
         ]);
     }
-
-    #[Route('/l/{id}', name: 'app_post_comment', methods: ['POST'])]
-    public function comment(Request $request, EntityManagerInterface $entityManager, CommentRepository $commentRepository, Post $post): Response
-    {
-        $comment = new Comment();
-        $form = $this->createForm(CommentFormType::class, $comment, [
-            'action' => $this->generateUrl('app_post_comment', ['id' => $post->getId()]),
-        ]);
-        $emptyForm = clone $form;
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment->updateTimestamps();
-            $comment->setCommentType('post');
-            $comment->setPost($post);
-            $comment->setUser($this->getUser());
-
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-
-                $replyForm = $this->commentService->createReplyForm($comment->getId(), $comment->getPost()->getId());
-                $replyForm->setData(['parent' => $comment->getId()]);
-
-                return $this->renderBlock('post/show.html.twig', 'create_comment',
-                    [
-                        'comment_form' => $emptyForm,
-                        'comment' => [
-                            'comment' => $comment,
-                            'reply_form' => $replyForm->createView(),
-                            'replies' => $this->commentService->commentsWithForms($comment->getReplies()->toArray(), $comment->getPost()->getId()),
-                        ]
-                    ]
-                );
-            }
-        }
-
-        $comments = $commentRepository->findBy(
-            ['post' => $post, 'parent' => null],
-            ['created_at' => 'DESC']
-        );
-
-        return $this->render('post/show.html.twig', [
-            'post' => $post,
-            'comment_form' => $form,
-            'comments' => $this->commentService->commentsWithForms($comments, $post->getId()),
-        ]);
-    }
-
-    #[Route('/l/{id}/reply', name: 'app_comment_reply', methods: ['POST'])]
-    public function replyComment(Request $request, EntityManagerInterface $entityManager, CommentRepository $commentRepository, Comment $comment): Response
-    {
-        $reply = new Comment();
-        $form = $this->commentService->createReplyForm($comment->getId(), $comment->getPost()->getId());
-        $form->handleRequest($request);
-        $reply = $form->getData();
-
-        $commentForm = $this->createForm(CommentFormType::class, $comment, [
-            'action' => $this->generateUrl('app_post_comment', ['id' => $comment->getPost()->getId()]),
-        ]);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $reply->updateTimestamps();
-            $reply->setCommentType('post');
-            $reply->setPost($comment->getPost());
-            $reply->setUser($this->getUser());
-            $reply->setParent($comment);
-
-            $entityManager->persist($reply);
-            $entityManager->flush();
-
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-                $replyForm = $this->commentService->createReplyForm($reply->getId(), $comment->getPost()->getId());
-
-                return $this->renderBlock(
-                    'post/show.html.twig',
-                    'update_comment',
-                    [
-                        'comment' => [
-                            'comment' => $reply,
-                            'reply_form' => $replyForm->createView(),
-                            'replies' => $this->commentService->commentsWithForms($reply->getReplies()->toArray(), $comment->getPost()->getId()),
-                        ],
-                        'parent_id' => $comment->getId(),
-                        'comment_form' => $form
-                    ]
-
-                );
-            }
-        }
-
-        $comments = $commentRepository->findBy(
-            ['post' => $comment->getPost(), 'parent' => null],
-            ['created_at' => 'DESC']
-        );
-
-        return $this->render('post/show.html.twig', [
-            'post' => $comment->getPost(),
-            'comment_form' => $commentForm,
-            'comments' => $this->commentService->commentsWithForms($comments, $comment->getPost()->getId()),
-        ]);
-    }
-
 }

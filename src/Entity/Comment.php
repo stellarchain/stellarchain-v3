@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
@@ -183,9 +184,17 @@ class Comment
     /**
      * @return Collection|Comment[]
      */
-    public function getReplies(): Collection
+    public function getReplies(string $sortOrder = 'popular'): Collection
     {
-        return $this->replies;
+        $criteria = Criteria::create();
+
+        if ($sortOrder === 'latest') {
+            $criteria->orderBy(['created_at' => 'DESC']);
+        } else { // 'popular'
+            $criteria->orderBy(['votes' => 'DESC']);
+        }
+
+        return $this->replies->matching($criteria);
     }
 
     public function getRepliesCount(): int

@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
 use App\Repository\CommunityRepository;
 use App\Repository\EventRepository;
 use App\Repository\JobRepository;
+use App\Repository\PostRepository;
 use App\Repository\ProjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +15,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class IndexController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(PostRepository $postRepository): Response
     {
-        $posts = $entityManager->getRepository(Post::class)->withProjects();
+        $posts = $postRepository->findAll();
 
         return $this->render('home/index.html.twig', [
             'posts' => $posts,

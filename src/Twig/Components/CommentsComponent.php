@@ -31,6 +31,9 @@ final class CommentsComponent extends AbstractController
 
     public string $commentType;
 
+    #[LiveProp(writable: true, url: true)]
+    public string $order = 'popular';
+
     #[LiveProp]
     public ?Comment $parentComment = null;
 
@@ -79,23 +82,36 @@ final class CommentsComponent extends AbstractController
         }
 
         $criteria['parent'] = null;
+        $sortField = $this->order === 'latest' ? 'created_at' : 'votes';
 
-        return $this->commentRepository->findBy(
+        $comments = $this->commentRepository->findBy(
             $criteria,
-            ['created_at' => 'DESC']
+            [$sortField => 'DESC']
         );
+
+        foreach ($comments as $comment) {
+            $comment->getReplies($this->order);
+        }
+        return $comments;
     }
 
-    public function getTotalCommentsAndReplies(): int
+    public function getTotalCommentsAndReplies(): array
     {
         $comments = $this->getComments();
         $totalCount = count($comments);
+        $totalReplies = 0;
 
         foreach ($comments as $comment) {
-            $totalCount += $comment->getReplies()->count();
+            $totalReplies += $comment->getReplies()->count();
         }
 
-        return $totalCount;
+        return ['comments' => $totalCount, 'replies' => $totalReplies];
+    }
+
+    #[LiveAction]
+    public function toggleSort(): void
+    {
+        $this->order = $this->order === 'popular' ? 'latest' : 'popular';
     }
 
     #[LiveAction]
@@ -130,6 +146,7 @@ final class CommentsComponent extends AbstractController
                 $comment->setParent($this->parentComment);
             }
             $comment->setUser($this->getUser());
+            $comment->setVotes(0);
 
             $entityClass = get_class($this->entity);
             switch ($entityClass) {

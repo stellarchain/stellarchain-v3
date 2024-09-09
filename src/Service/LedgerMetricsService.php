@@ -98,7 +98,7 @@ class LedgerMetricsService
                 $transactionsPerSecond = $totalTime > 0 ? $numberOfTransactions / $totalTime : 0;
 
                 $metricsByInterval[] = [
-                    'time_start' => $periodStart->format('H:i'),
+                    'time_start' => $periodStart->format('D m H:i'),
                     'ledgers_per_interval' => $ledgersPerInterval,
                     'transactions_per_ledger' => $ledgersPerInterval > 0 ? $transactionsPerLedger / $ledgersPerInterval : 0,
                     'operations_per_ledger' => $ledgersPerInterval > 0 ? $operationsPerLedger / $ledgersPerInterval : 0,

@@ -21,12 +21,109 @@ class StatisticsController extends AbstractController
         ]);
     }
 
+    #[Route('/statistics/ledger/{stat}', name: 'app_statistics_ledger_show')]
+    public function show_ledgers(
+        ChartBuilderInterface $chartBuilder,
+        TranslatorInterface $translator,
+        LedgerMetricsService $ledgerMetricsService,
+        string $stat
+    ): Response {
+        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+
+        $endDate = new \DateTimeImmutable(); // Today
+        $startDate = $endDate->sub(new \DateInterval('P1D'));
+
+        $ledgerMetrics = $ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate);
+
+        $labels = [];
+        $data = [];
+        foreach ($ledgerMetrics as $entry) {
+            $labels[] = $entry['time_start']; // Labels are the dates
+            $data[] = $entry[$stat];
+        }
+
+        $chart->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => $translator->trans($stat),
+                    'backgroundColor' => 'rgb(255, 99, 132)',
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'data' => $data,
+                    'fill' => false,
+                    'tension' => 0.1,
+                    'borderWidth' => 1,
+                    'pointBorderWidth' => 0.,
+                    'pointRadius' => 2,
+                ],
+            ],
+        ]);
+
+        $totalDataPoints = count($data);
+        $initialViewPercentage = 0.90;
+        $maxValue = $totalDataPoints - 1;
+        $minValue = $maxValue - floor($totalDataPoints * $initialViewPercentage);
+        $minValue = max($minValue, 0);
+
+        $chart->setOptions([
+            'class' => 'stats',
+            'responsive' => true,
+            'scales' => [
+                'y' => [
+                    'display' => true,
+                ],
+                'x' => [
+                    'display' => true,
+                    'min' => $minValue,  // Dynamically set the min value
+                    'max' => $maxValue,  // Dynamically set the max value
+                ]
+            ],
+            'plugins' => [
+                'tooltip' => [
+                    'mode' => 'interpolate',
+                    'intersect' => false,
+                ],
+                'crosshair' => [
+                    'zoom' => [
+                        'enabled' => false,
+                    ]
+                ],
+                'legend' => [
+                    'display' => false,
+                ],
+                'zoom' => [
+                    'zoom' => [
+                        'wheel' => [
+                            'enabled' => true
+                        ],
+                        'drag' => [
+                            'enabled' => false
+                        ],
+                        'pinch' => [
+                            'enabled' => false
+                        ],
+                        'mode' => 'x',
+                    ],
+                    'pan' => [
+                        'enabled' => true,
+                        'mode' => 'x'
+                    ]
+                ]
+
+            ]
+        ]);
+
+        return $this->render('statistics/show.html.twig', [
+            'chart' => $chart,
+            'chart_name' => $translator->trans($stat)
+        ]);
+    }
+
     #[Route('/statistics/price/{stat}', name: 'app_statistics_show')]
     public function show(
         ChartBuilderInterface $chartBuilder,
         CoinStatRepository $coinStatRepository,
         TranslatorInterface $translator,
-        LedgerMetricsService $ledgerMetricsService,
         string $stat
     ): Response {
 
@@ -34,12 +131,6 @@ class StatisticsController extends AbstractController
         if (!in_array($stat, $standardStats, true)) {
             throw $this->createNotFoundException("The stat '{$stat}' was not found.");
         }
-
-        $endDate = new \DateTimeImmutable(); // Today
-        $startDate = $endDate->sub(new \DateInterval('P1D'));
-
-        $ledgerMetrics = $ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate);
-
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $priceData = $coinStatRepository->getStatsByName($stat);
         $labels = [];

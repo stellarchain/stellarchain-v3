@@ -77,7 +77,7 @@ class TransactionBatchService
                 ->setCreatedContracts($this->totalContractCreated)
                 ->setContractInvocations($this->totalContractInvocations)
                 ->setCreatedAt(new \DateTimeImmutable())
-                ->setTransactionsSecond($transactionsPerSecond);
+                ->setTransactionsSecond((int)$transactionsPerSecond);
 
             $this->entityManager->persist($ledgerStat);
             $this->entityManager->flush();

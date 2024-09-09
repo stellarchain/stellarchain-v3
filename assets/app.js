@@ -13,16 +13,7 @@ window.addEventListener('auth:false', () => showToastAuth())
 document.addEventListener('turbo:load', () => {
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-});
 
-document.addEventListener('chartjs:init', function (event) {
-  const Chart = event.detail.Chart;
-  Chart.register(zoomPlugin);
-  Chart.register(CrosshairPlugin);
-  Interaction.modes.interpolate = Interpolate;
-});
-
-document.addEventListener('DOMContentLoaded', function () {
   const links = document.querySelectorAll('a[href^="#"]');
   links.forEach(link => {
     link.addEventListener('click', function (e) {
@@ -34,6 +25,16 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+});
+
+document.addEventListener('chartjs:init', function (event) {
+  const Chart = event.detail.Chart;
+  Chart.register(zoomPlugin);
+  Chart.register(CrosshairPlugin);
+  Interaction.modes.interpolate = Interpolate;
+});
+
+document.addEventListener('DOMContentLoaded', function () {
 });
 
 
