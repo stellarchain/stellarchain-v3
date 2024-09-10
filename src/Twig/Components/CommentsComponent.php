@@ -95,17 +95,22 @@ final class CommentsComponent extends AbstractController
         return $comments;
     }
 
-    public function getTotalCommentsAndReplies(): array
+    public function getTotalCommentsAndReplies(): int
     {
-        $comments = $this->getComments();
-        $totalCount = count($comments);
-        $totalReplies = 0;
+        $entityClass = get_class($this->entity);
+        $total = 0;
 
-        foreach ($comments as $comment) {
-            $totalReplies += $comment->getReplies()->count();
+        switch ($entityClass) {
+            case Post::class:
+                $total = $this->entity->getComments()->count();
+                break;
+            case Project::class:
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported entity type');
         }
 
-        return ['comments' => $totalCount, 'replies' => $totalReplies];
+        return $total;
     }
 
     #[LiveAction]
@@ -133,9 +138,7 @@ final class CommentsComponent extends AbstractController
     public function save(): void
     {
         if (!$this->getUser()) {
-            // If the user is not authenticated, return a 401 Unauthorized response
             $this->dispatchBrowserEvent('auth:false');
-            // Optionally, you could use Turbo to trigger a frontend event to show a toast notification
             return;
         }
         $this->submitForm();

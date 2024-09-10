@@ -1,8 +1,8 @@
 import './bootstrap.js';
 import './styles/app.css';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { Interaction } from 'chart.js';
-import {CrosshairPlugin,Interpolate} from 'chartjs-plugin-crosshair';
+import {Interaction} from 'chart.js';
+import {CrosshairPlugin, Interpolate} from 'chartjs-plugin-crosshair';
 
 document.addEventListener("turbo:before-prefetch", (event) => {
   event.preventDefault()
@@ -22,6 +22,47 @@ document.addEventListener('turbo:load', () => {
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
         targetElement.scrollIntoView({behavior: 'smooth'});
+      }
+    });
+  });
+
+  const shareModal = document.getElementById('shareModalComment');
+  const shareLinkInput = document.getElementById('shareLinkComment');
+  const copyButton = document.getElementById('copyButtonComment');
+
+  if (shareModal) {
+    shareModal.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget; // Button that triggered the modal
+      const shareUrl = button.getAttribute('data-share-url'); // Extract info from data-* attributes
+      shareLinkInput.value = shareUrl; // Update the modal's input with the share URL
+    });
+
+    copyButton.addEventListener('click', function () {
+      shareLinkInput.select(); // Select the text
+      document.execCommand('copy'); // Copy the text to clipboard
+      alert('Link copied to clipboard!');
+    });
+  }
+
+  document.querySelectorAll('.dropdown-toggle-comment').forEach(function (dropdownToggle) {
+    dropdownToggle.addEventListener('click', function (event) {
+      event.preventDefault(); // Prevents the default anchor behavior
+
+      // Toggle the 'show' class for the dropdown menu
+      const dropdownMenu = this.nextElementSibling;
+      if (dropdownMenu.classList.contains('show')) {
+        dropdownMenu.classList.remove('show');
+      } else {
+        dropdownMenu.classList.add('show');
+      }
+    });
+  });
+
+  // Optionally close the dropdown if clicked outside
+  document.addEventListener('click', function (event) {
+    document.querySelectorAll('.dropdown-menu.show').forEach(function (openDropdown) {
+      if (!openDropdown.contains(event.target) && !openDropdown.previousElementSibling.contains(event.target)) {
+        openDropdown.classList.remove('show');
       }
     });
   });

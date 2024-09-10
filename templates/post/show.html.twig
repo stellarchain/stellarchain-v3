@@ -13,7 +13,8 @@
                     <i class="bi bi-arrow-left"></i>
                 </span>
             </a>
-            <a class="bg-white border rounded d-flex flex-shrink-0 text-decoration-none " style="height: 36px; width: 36px;">
+            <a class="bg-white border rounded d-flex flex-shrink-0 text-decoration-none "
+                style="height: 36px; width: 36px;">
                 <span class="rounded-circle align-self-center mx-auto fw-bold fs-6 d-flex gap-1">
                     <i {{ stimulus_target('like', 'heartIcon' ) }} class="bi bi-heart{{ liked ? '-fill' : '' }} small"
                         role="button" aria-label="Like post" data-like-liked-param="{{ liked ? 'true' : 'false' }}" {{
@@ -24,16 +25,26 @@
             </a>
         </div>
         <div class="d-flex grid gap-2">
-            <a role="button" class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" data-bs-toggle="modal" data-bs-target="#shareModal">
+            <a role="button" class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;"
+                data-bs-toggle="modal" data-bs-target="#shareModal">
                 <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
                     <i class="bi bi-box-arrow-up"></i>
                 </span>
             </a>
-            <a class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" href="#">
-                <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
-                    <i class="bi bi-three-dots"></i>
-                </span>
-            </a>
+            <div class="dropdown show ">
+                <a class="bg-white rounded border dropdown-toggle-comment d-flex flex-shrink-0" style="height: 36px; width: 36px;"href="#" role="button" id="dropdownMenuLink"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
+                        <i class="bi bi-three-dots"></i>
+                    </span>
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#">Delete</a>
+                    <a class="dropdown-item" href="#">Edit</a>
+                    <a class="dropdown-item" href="#">Report</a>
+                </div>
+            </div>
             <a type="button" class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;"
                 data-bs-toggle="modal" data-bs-target="#commentModal" data-action="live#action"
                 data-live-action-param="newComment">
@@ -61,27 +72,52 @@
 {{ component('comments-component', {entity: post}) }}
 
 <div class="modal modal-md fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="shareModalLabel">Share this post</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p class="text-center">Share this post on your favorite social platforms:</p>
-        <div class="d-flex justify-content-center gap-3">
-          <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url('app_post_show', {id: post.id}) }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-facebook"></i> Facebook
-          </a>
-          <a href="https://twitter.com/intent/tweet?url={{ absolute_url('app_post_show', {id: post.id}) }}&text={{ post.title }}" class="btn btn-info" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-twitter"></i> Twitter
-          </a>
-          <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ absolute_url('app_post_show', {id: post.id}) }}&title={{ post.title }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-linkedin"></i> LinkedIn
-          </a>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareModalLabel">Share this post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">Share this post on your favorite social platforms:</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url('app_post_show', {id: post.id}) }}"
+                        class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-facebook"></i> Facebook
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ absolute_url('app_post_show', {id: post.id}) }}&text={{ post.title }}"
+                        class="btn btn-info" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-twitter"></i> Twitter
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ absolute_url('app_post_show', {id: post.id}) }}&title={{ post.title }}"
+                        class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
+
+<div class="modal fade" id="shareModalComment" tabindex="-1" aria-labelledby="shareModalLabelComment"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareModalLabelComment">Share Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-column">
+                    <p class="mb-2">Copy the link to share this comment:</p>
+                    <input id="shareLinkComment" class="form-control" type="text" value="" readonly>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-primary" id="copyButtonComment">Copy Link</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

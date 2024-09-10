@@ -2,21 +2,24 @@
     <div class="py-1 px-2 menu sticky-top border rounded mb-2">
         <ul class="nav nav-pills nav-justified" role="tablist" id="pills-tab" data-controller="tab">
             <li class="nav-item py-0" role="presentation">
-                <a class="nav-link py-1 tabs fw-bolder {{ type == 'hot' ? 'active' : '' }}" href="{{path('app_home', {type: 'hot'})}}">
+                <a class="nav-link py-1 tabs fw-bolder {{ type == 'hot' ? 'active' : '' }}"
+                    href="{{path('app_home', {type: 'hot'})}}">
                     <i class="bi bi-lightning-fill me-2"></i>
                     Hot
                 </a>
             </li>
 
             <li class="nav-item py-0" role="presentation">
-                <a class="nav-link py-1 tabs fw-bolder {{ type == 'new' ? 'active' : '' }}" href="{{path('app_home', {type: 'new'})}}">
+                <a class="nav-link py-1 tabs fw-bolder {{ type == 'new' ? 'active' : '' }}"
+                    href="{{path('app_home', {type: 'new'})}}">
                     <i class="bi bi-check-circle-fill me-2"></i>
                     New
                 </a>
             </li>
 
             <li class="nav-item py-0" role="presentation">
-                <a class="nav-link py-1 tabs fw-bolder {{ type == 'top' ? 'active' : '' }}" id="pills-top-tab" href="{{path('app_home', {type: 'top'})}}">
+                <a class="nav-link py-1 tabs fw-bolder {{ type == 'top' ? 'active' : '' }}" id="pills-top-tab"
+                    href="{{path('app_home', {type: 'top'})}}">
                     <i class="bi bi-arrow-up-circle-fill me-2"></i>
                     Top
                 </a>
@@ -24,6 +27,7 @@
 
         </ul>
     </div>
+
     {% if page > 1 %}
     <div id="item--{{ page - 1 }}-{{ per_page }}" data-live-ignore="true"></div>
     {% endif %}
