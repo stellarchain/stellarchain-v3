@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Community;
+use App\Entity\CommunityPost;
 use App\Form\CommunityFormType;
+use App\Form\CommunityPostType;
+use App\Repository\CommunityPostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,11 +44,27 @@ class CommunityController extends AbstractController
     }
 
     #[Route('/communities/{id}', name: 'app_show_communities')]
-    public function show(Community $community): Response
+    public function show(Request $request, EntityManagerInterface $entityManager, Community $community, CommunityPostRepository $communityPostRepository): Response
     {
+        $communityPost = new CommunityPost();
+        $form = $this->createForm(CommunityPostType::class, $communityPost);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $communityPost->setUser($this->getUser());
+            $communityPost->setCommunity($community);
+            $entityManager->persist($communityPost);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_show_communities', ['id' => $community->getId()]);
+        }
+
+        $communityPosts = $communityPostRepository->getCommunityPosts($community);
+
         return $this->render('community/show.html.twig', [
-            'controller_name' => 'CommunityController',
-            'community' => $community
+            'community' => $community,
+            'postForm' => $form,
+            'communityPosts' => $communityPosts
         ]);
     }
 }

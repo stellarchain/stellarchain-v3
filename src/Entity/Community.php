@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommunityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommunityRepository::class)]
@@ -26,9 +28,16 @@ class Community
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $description = null;
 
+    /**
+     * @var Collection<int, CommunityPost>
+     */
+    #[ORM\OneToMany(targetEntity: CommunityPost::class, mappedBy: 'community')]
+    private Collection $communityPosts;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
+        $this->communityPosts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,6 +97,36 @@ class Community
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommunityPost>
+     */
+    public function getCommunityPosts(): Collection
+    {
+        return $this->communityPosts;
+    }
+
+    public function addCommunityPost(CommunityPost $communityPost): static
+    {
+        if (!$this->communityPosts->contains($communityPost)) {
+            $this->communityPosts->add($communityPost);
+            $communityPost->setCommunity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommunityPost(CommunityPost $communityPost): static
+    {
+        if ($this->communityPosts->removeElement($communityPost)) {
+            // set the owning side to null (unless already changed)
+            if ($communityPost->getCommunity() === $this) {
+                $communityPost->setCommunity(null);
+            }
+        }
 
         return $this;
     }

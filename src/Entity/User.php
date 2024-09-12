@@ -84,6 +84,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'user')]
     private Collection $jobs;
 
+    /**
+     * @var Collection<int, CommunityPost>
+     */
+    #[ORM\OneToMany(targetEntity: CommunityPost::class, mappedBy: 'user')]
+    private Collection $communityPosts;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -92,6 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->comments = new ArrayCollection();
         $this->communities = new ArrayCollection();
         $this->jobs = new ArrayCollection();
+        $this->communityPosts = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -365,6 +372,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($job->getUser() === $this) {
                 $job->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommunityPost>
+     */
+    public function getCommunityPosts(): Collection
+    {
+        return $this->communityPosts;
+    }
+
+    public function addCommunityPost(CommunityPost $communityPost): static
+    {
+        if (!$this->communityPosts->contains($communityPost)) {
+            $this->communityPosts->add($communityPost);
+            $communityPost->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommunityPost(CommunityPost $communityPost): static
+    {
+        if ($this->communityPosts->removeElement($communityPost)) {
+            // set the owning side to null (unless already changed)
+            if ($communityPost->getUser() === $this) {
+                $communityPost->setUser(null);
             }
         }
 

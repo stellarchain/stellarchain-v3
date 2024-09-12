@@ -9,11 +9,62 @@
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
         <div class="col-sm-8 offset-md-2">
+            <div class="flex-shrink-0 m-2 d-flex">
+                <div class="me-2">
+                    <span class="badge rounded-pill border border-primary text-primary align-self-center"
+                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Followers"><i
+                            class="bi bi-person-circle"></i> 234</span>
+                </div>
+                <div class="me-2">
+                    <span class="badge rounded-pill border border-primary text-primary align-self-center"
+                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Posts"><i
+                            class="bi bi-card-heading"></i> 234</span>
+                </div>
+                <span class="text-secondary d-flex py-0 rounded hover" data-bs-toggle="tooltip" data-bs-placement="top"
+                    role="button" data-bs-title="Follow"><i
+                        class="bi bi-plus-circle text-primary text-primary align-self-center"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8 offset-md-2">
             <div class="card">
                 <div class="card-body">
                     {{community.description | raw}}
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 offset-md-2">
+            <div class="card mt-2">
+                <div class="card-body">
+                    {{ form_start(postForm) }}
+                    {{ form_row(postForm.content) }}
+                    {{ form_errors(postForm.content) }}
+                    <button type="submit" id="submit" name="submit" class="btn-primary btn">
+                        Post
+                    </button>
+                    {{ form_end(postForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 offset-md-2">
+            {% for communityPost in communityPosts %}
+            <div class="card mt-2">
+                <div class="card-body">
+                    {{communityPost.content}}
+                    <span class="small text-secondary">
+                        {{communityPost.createdAt | time_diff}} by
+                        <a href="{{path('app_account_show', {id: communityPost.user.id})}}">@{{communityPost.user.username}}
+                        </a>
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
