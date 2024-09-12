@@ -90,6 +90,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: CommunityPost::class, mappedBy: 'user')]
     private Collection $communityPosts;
 
+    /**
+     * @var Collection<int, Vote>
+     */
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'user_id')]
+    private Collection $votes;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -99,6 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->communities = new ArrayCollection();
         $this->jobs = new ArrayCollection();
         $this->communityPosts = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -402,6 +409,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($communityPost->getUser() === $this) {
                 $communityPost->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vote>
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): static
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): static
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getUserId() === $this) {
+                $vote->setUserId(null);
             }
         }
 

@@ -95,18 +95,7 @@
                 <div>{{briefSection.content | raw}} </div>
             </div>
             {% endfor %}
-            <div class="container my-5">
-                <div class="mb-4" id="post-form-content">
-                    {% block comment_form_block %}
-                    {% include 'blocks/comment_form_block.html.twig' %}
-                    {% endblock %}
-                </div>
-
-                <div id="comments-list" {{ turbo_stream_listen('comments-list-' ~ project.id) }}>
-                    Comments
-                </div>
-            </div>
-        </div>
+       </div>
     </div>
 </div>
 {% endblock %}

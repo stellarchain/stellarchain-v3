@@ -5,6 +5,7 @@
 {% set content_title = post.title %}
 
 {% block body %}
+<div class="post-content vh-100 overflow-x-hidden">
 <div {{ stimulus_controller('post')|stimulus_controller('like') }}>
     <div class="d-flex align-items-center small py-2 justify-content-between">
         <div class="d-flex grid gap-2">
@@ -16,7 +17,7 @@
             <a class="bg-white border rounded d-flex flex-shrink-0 text-decoration-none "
                 style="height: 36px; width: 36px;">
                 <span class="rounded-circle align-self-center mx-auto fw-bold fs-6 d-flex gap-1">
-                    <i {{ stimulus_target('like', 'heartIcon' ) }} class="bi bi-heart{{ liked ? '-fill' : '' }} small"
+                    <i {{ stimulus_target('like', 'heartIcon' ) }} class="bi bi-caret-up{{ liked ? '-fill' : '' }} small"
                         role="button" aria-label="Like post" data-like-liked-param="{{ liked ? 'true' : 'false' }}" {{
                         stimulus_action('like', 'like' , 'click' , { id: post.id, type: 'post' }) }}>
                     </i>
@@ -70,7 +71,7 @@
 </div>
 
 {{ component('comments-component', {entity: post}) }}
-
+</div>
 <div class="modal modal-md fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

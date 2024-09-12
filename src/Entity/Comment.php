@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+
 #[Broadcast]
 class Comment
 {
@@ -51,12 +52,31 @@ class Comment
     private $replies;
 
     #[ORM\Column(nullable: true)]
-    private ?int $votes = null;
+    private ?int $votes_count = null;
+
+    /**
+     * @var Collection<int, Vote>
+     */
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'comment')]
+    private Collection $votes;
+
+    private bool $userHasVoted = false;
 
     public function __construct()
     {
         $this->replies = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->votes = new ArrayCollection();
+    }
+
+    public function setUserHasVoted(bool $hasVoted): void
+    {
+        $this->userHasVoted = $hasVoted;
+    }
+
+    public function getUserHasVoted(): bool
+    {
+        return $this->userHasVoted;
     }
 
     public function __toString(): string
@@ -191,7 +211,7 @@ class Comment
         if ($sortOrder === 'latest') {
             $criteria->orderBy(['created_at' => 'DESC']);
         } else { // 'popular'
-            $criteria->orderBy(['votes' => 'DESC']);
+            $criteria->orderBy(['votes_count' => 'DESC']);
         }
 
         return $this->replies->matching($criteria);
@@ -228,14 +248,44 @@ class Comment
         return $this;
     }
 
-    public function getVotes(): ?int
+    public function getVotesCount(): ?int
+    {
+        return $this->votes_count;
+    }
+
+    public function setVotesCount(?int $votes): static
+    {
+        $this->votes_count = $votes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vote>
+     */
+    public function getVotes(): Collection
     {
         return $this->votes;
     }
 
-    public function setVotes(?int $votes): static
+    public function addVote(Vote $vote): static
     {
-        $this->votes = $votes;
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): static
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getComment() === $this) {
+                $vote->setComment(null);
+            }
+        }
 
         return $this;
     }

@@ -5,8 +5,11 @@ namespace App\Twig\Components;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\Project;
+use App\Entity\User;
+use App\Entity\Vote;
 use App\Form\CommentFormType;
 use App\Repository\CommentRepository;
+use App\Repository\VoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -40,7 +43,8 @@ final class CommentsComponent extends AbstractController
     public function __construct(
         private CommentRepository $commentRepository,
         private FormFactoryInterface $formFactory,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private VoteRepository $voteRepository
     ) {
     }
 
@@ -82,17 +86,40 @@ final class CommentsComponent extends AbstractController
         }
 
         $criteria['parent'] = null;
-        $sortField = $this->order === 'latest' ? 'created_at' : 'votes';
+        $sortField = $this->order === 'latest' ? 'created_at' : 'votes_count';
 
         $comments = $this->commentRepository->findBy(
             $criteria,
             [$sortField => 'DESC']
         );
 
-        foreach ($comments as $comment) {
-            $comment->getReplies($this->order);
+        $user = $this->getUser();
+        if ($user) {
+            foreach ($comments as $comment) {
+                $this->setUserHasVotedRecursively($comment, $user);
+            }
         }
+
         return $comments;
+    }
+
+    private function setUserHasVotedRecursively(Comment $comment, User $user): void
+    {
+        // Check if the user has voted on the comment
+        $comment->setUserHasVoted($this->hasUserVoted($comment, $user));
+
+        // Recursively check all replies to this comment
+        foreach ($comment->getReplies() as $reply) {
+            $this->setUserHasVotedRecursively($reply, $user);
+        }
+    }
+
+    public function hasUserVoted(Comment $comment, User $user): bool
+    {
+        return $this->voteRepository->findOneBy([
+            'user' => $user,
+            'comment' => $comment,
+        ]) !== null;
     }
 
     public function getTotalCommentsAndReplies(): int
@@ -122,13 +149,34 @@ final class CommentsComponent extends AbstractController
     #[LiveAction]
     public function vote(#[LiveArg] int $commentId): void
     {
-        $comment = $this->commentRepository->find($commentId);
+        $user = $this->getUser();
+        if (!$this->getUser()) {
+            $this->dispatchBrowserEvent('auth:false');
+            return;
+        }
 
+        $comment = $this->commentRepository->find($commentId);
         if (!$comment) {
             throw $this->createNotFoundException('Comment not found.');
         }
 
-        $comment->setVotes($comment->getVotes() + 1);
+        $existingVote = $this->voteRepository->findOneBy([
+            'user' => $user,
+            'comment' => $comment,
+        ]);
+
+        if ($existingVote || !$user) {
+            $this->dispatchBrowserEvent('auth:false');
+        }
+
+
+
+        $vote = new Vote();
+        $vote->setUser($user);
+        $vote->setComment($comment);
+        $this->entityManager->persist($vote);
+
+        $comment->setVotesCount($comment->getVotesCount() + 1);
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
@@ -149,7 +197,7 @@ final class CommentsComponent extends AbstractController
                 $comment->setParent($this->parentComment);
             }
             $comment->setUser($this->getUser());
-            $comment->setVotes(0);
+            $comment->setVotesCount(0);
 
             $entityClass = get_class($this->entity);
             switch ($entityClass) {

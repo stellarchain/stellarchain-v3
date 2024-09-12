@@ -22,8 +22,8 @@ export default class extends Controller {
 
       this.totalLikesTarget.textContent = totalLikes;
       this.heartIconTargets.forEach(icon => {
-        icon.classList.toggle('bi-heart-fill', newLiked);
-        icon.classList.toggle('bi-heart', !newLiked);
+        icon.classList.toggle('bi-caret-up-fill', newLiked);
+        icon.classList.toggle('bi-caret-up', !newLiked);
       });
 
       currentTarget.dataset.likeLikedParam = newLiked ? 'true' : 'false'
