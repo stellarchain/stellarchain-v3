@@ -167,9 +167,8 @@ final class CommentsComponent extends AbstractController
 
         if ($existingVote || !$user) {
             $this->dispatchBrowserEvent('auth:false');
+            return;
         }
-
-
 
         $vote = new Vote();
         $vote->setUser($user);

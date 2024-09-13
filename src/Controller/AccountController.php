@@ -23,7 +23,7 @@ class AccountController extends AbstractController
         return $this->render('account/edit.html.twig');
     }
 
-    #[Route('/profile/{id}', name: 'app_account_show')]
+    #[Route('/profile/{id}', name: 'app_profile_show')]
     public function profile(User $user): Response
     {
         return $this->render('account/show.html.twig', [

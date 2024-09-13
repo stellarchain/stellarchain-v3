@@ -19,9 +19,9 @@
                 </div>
             </a>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                <a class="text-decoration-none fw-bold mb-1" href="{{path('app_account_show', {id: user.id})}}">{{user.firstName}} {{user.lastName}}</a>
+                <a class="text-decoration-none fw-bold mb-1" href="{{path('app_profile_show', {id: user.id})}}">{{user.firstName}} {{user.lastName}}</a>
                 <div class="small text-secondary">
-                    <a class="text-decoration-none text-secondary small mb-0" href="{{path('app_account_show', {id: user.id})}}">@{{user.username}}
+                    <a class="text-decoration-none text-secondary small mb-0" href="{{path('app_profile_show', {id: user.id})}}">@{{user.username}}
                         <i class="bi bi-patch-check-fill text-primary ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Verified User"></i>
                     </a>
                 </div>

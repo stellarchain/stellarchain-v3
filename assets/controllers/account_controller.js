@@ -9,13 +9,15 @@ export default class extends Controller {
     const currentTheme = localStorage.getItem('bsTheme') || 'dark';
     htmlElement.setAttribute('data-bs-theme', currentTheme);
     this.darkModeTarget.checked = currentTheme === 'dark';
+    console.log( this.darkModeTarget.checked)
   }
 
   toggle() {
     const htmlElement = document.documentElement;
-    console.log('aaaa')
-    setTimeout(() => {
-      if (this.darkModeTarget.checked) {
+    const currentTheme = localStorage.getItem('bsTheme') || 'dark';
+    const isDark = currentTheme === 'dark';
+    console.log(isDark)
+    if (isDark) {
         htmlElement.setAttribute('data-bs-theme', 'light');
         localStorage.setItem('bsTheme', 'light');
         this.darkModeTarget.checked = false
@@ -24,6 +26,5 @@ export default class extends Controller {
         localStorage.setItem('bsTheme', 'dark');
         this.darkModeTarget.checked = true
       }
-    }, 0);
   }
 }

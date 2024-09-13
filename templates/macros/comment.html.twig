@@ -17,7 +17,7 @@
                             class="bi bi-patch-check-fill text-primary text-primary"></i></span></b>
                 <div class="small text-secondary fw-bold">
                     <span class="small"><a class="text-decoration-none"
-                            href="{{path('app_account_show', {id: comment.user.id})}}">@{{
+                            href="{{path('app_profile_show', {id: comment.user.id})}}">@{{
                             comment.user.username }}</a></span>
                     ·
                     <span class="small">{{ comment.createdAt | time_diff }}</span>

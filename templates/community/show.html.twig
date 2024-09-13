@@ -59,7 +59,7 @@
                     {{communityPost.content}}
                     <span class="small text-secondary">
                         {{communityPost.createdAt | time_diff}} by
-                        <a href="{{path('app_account_show', {id: communityPost.user.id})}}">@{{communityPost.user.username}}
+                        <a href="{{path('app_profile_show', {id: communityPost.user.id})}}">@{{communityPost.user.username}}
                         </a>
                     </span>
                 </div>
