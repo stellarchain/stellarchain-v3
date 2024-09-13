@@ -13,6 +13,6 @@ class NumberFormatter
             return number_format($number / 1_000, 2) . 'K';
         }
 
-        return $number;
+        return number_format($number, 5);
     }
 }

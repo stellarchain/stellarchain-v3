@@ -87,7 +87,7 @@
                              asset.contractsAmount +
                              (asset.balances is not empty ? asset.balances.authorized : 0))
                             * (latestMetrics[asset.id].price * globalValues.price)
-                        ) | number_format()
+                        ) | format_large_number()
                         }}
                         </span></div>
                     </div>
@@ -97,7 +97,7 @@
                         <span class="small">
                             <span class="font-monospace">
                                 <span class="">
-                                    <strong>${{ (latestMetrics[asset.id].price * globalValues.price) | number_format(5, '.', ',') | split('.')[0]}}<span class="text-secondary">.{{ (latestMetrics[asset.id].price * globalValues.price) | number_format(8, '.', ',') | split('.')[1] }}</span>
+                                    <strong>${{ (latestMetrics[asset.id].price * globalValues.price) | number_format(5, '.', ',') | split('.')[0]}}<span class="text-secondary">.{{ (latestMetrics[asset.id].price * globalValues.price) | number_format(5, '.', ',') | split('.')[1] }}</span>
                                     </strong>
                                 </span>
                             </span>
@@ -105,7 +105,7 @@
                         <div class="small text-secondary mt-1">
                             <span class="small">
                                 <span class="font-monospace">
-                                    <span class="">{{ latestMetrics[asset.id].price | number_format(5, '.', ',') }} XLM</span>
+                                    <span class="">{{ latestMetrics[asset.id].price | format_large_number }} XLM</span>
                                 </span>
                             </span>
                         </div>
@@ -155,8 +155,15 @@
                         <div class="sm-chart">
                             {{ render_chart(charts[asset.id], {class: asset.assetCode}) }}
                         </div>
-                        <div class="small text-danger d-block d-lg-none">
-                            <i class="bi bi-caret-down-fill"></i> {{ latestMetrics[asset.id].priceChange7d}}%
+                        <div class="small {% if latestMetrics[asset.id].priceChange1h < 0 %}text-danger{% elseif latestMetrics[asset.id].priceChange1h == 0.0 %}text-secondary{% else %}text-success{% endif %} d-block d-lg-none">
+                           {% if latestMetrics[asset.id].priceChange1h < 0 %}
+                               <i class="bi bi-caret-down-fill"></i>
+                           {% elseif latestMetrics[asset.id].priceChange1h == 0.0 %}
+                               <i class="bi bi-caret-right-fill"></i>
+                           {% else %}
+                               <i class="bi bi-caret-up-fill"></i>
+                           {% endif %}
+                           {{ latestMetrics[asset.id].priceChange1h}}%
                         </div>
                     </div>
                 </td>
