@@ -53,4 +53,17 @@ class AssetRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    public function findByWithMetrics(array $filterCriteria, array $sortCriteria, int $limit, int $offset)
+    {
+        // Custom query to join the latest metric and sort by the given sort criteria
+        return $this->createQueryBuilder('asset')
+            ->leftJoin('asset.latestMetric', 'latestMetric')  // Assuming there's a relation for latestMetric
+            ->where($filterCriteria)  // Apply filter criteria
+            ->orderBy($sortCriteria)  // Apply sort criteria
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
 }

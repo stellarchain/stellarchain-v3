@@ -54,8 +54,13 @@ final class MarketComponent
 
     public function hasMore(): bool
     {
-        $totalAssets = $this->assetRepository->count(['in_market' => true]);
+        $totalAssets = $this->totalAssets();
         return $totalAssets > ($this->page * self::PER_PAGE);
+    }
+
+    public function totalAssets(): int
+    {
+        return $this->assetRepository->count(['in_market' => true]);
     }
 
     #[ExposeInTemplate('per_page')]
@@ -104,10 +109,6 @@ final class MarketComponent
             }
         }
 
-        if ($this->sort == 'default'){
-            usort($assetsData, fn ($a, $b) => $b['latestMetric']->getPrice() <=> $a['latestMetric']->getPrice());
-        }
-
         return [
             'assets' => $assetsData, // Precomputed asset data
         ];
@@ -128,7 +129,7 @@ final class MarketComponent
             case 'age':
                 return ['created_at' => 'ASC'];
             default:
-                return [];
+                return ['created_at' => 'DESC'];
         }
     }
 
