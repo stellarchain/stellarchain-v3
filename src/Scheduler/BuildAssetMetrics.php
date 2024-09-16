@@ -6,7 +6,7 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-#[AsCronTask('1 * * * *')]
+#[AsCronTask('0 * * * *')]
 class BuildAssetMetrics
 {
     public function __invoke(): void

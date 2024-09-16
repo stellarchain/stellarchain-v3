@@ -62,15 +62,16 @@ class AssetsBuildMetricsCommand extends Command
         $interval = new \DateInterval('PT3H');
         $cutoffTime = (clone $currentDateTime)->sub($interval);
         $latestPriceResult = $this->tradeRepository->findOneBy(['base_asset' => $nativeAsset, 'counter_asset' => $asset], ['ledger_close_time' => 'DESC']);
-        $roundedDateTime = $currentDateTime->setTime($currentDateTime->format('H'), 0, 0);
-        $roundedDateTime7dAgo = (clone $roundedDateTime)->modify('-7 days');
-        $roundedDateTime24hAgo = (clone $roundedDateTime)->modify('-24 hours');
+        $roundedDateTime = (clone $currentDateTime)->modify('-1 hour');
+        $roundedDateTime7dAgo = (clone $currentDateTime)->modify('-7 days');
+        $roundedDateTime24hAgo = (clone $currentDateTime)->modify('-24 hours');
         $usdXlmPrice = $this->globalValueService->getPrice();
 
         if ($latestPriceResult && !empty($asset->getAssetCode())) {
             $latestPrice = (float)$latestPriceResult->getPrice();
             $price1hAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime);
 
+            dump($price1hAgo, $roundedDateTime);
             if ($price1hAgo) {
                 $price24hAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime24hAgo);
                 $price7dAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime7dAgo);
@@ -82,7 +83,6 @@ class AssetsBuildMetricsCommand extends Command
                 $volume24h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime24hAgo);
                 $volume1h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime);
                 $totalTrades = $this->tradeRepository->countTotalTrades($asset, $nativeAsset, $roundedDateTime);
-
                 if ($volume24h['baseAmount']) {
                     $priceInUsd = (1 / $latestPrice * $usdXlmPrice);
                     $assetMetric = new AssetMetric();
@@ -93,6 +93,7 @@ class AssetsBuildMetricsCommand extends Command
                         ->setPriceChange1h($priceChange1h)
                         ->setPriceChange24h($priceChange24h)
                         ->setCreatedAt(new \DateTimeImmutable())
+                        ->setTotalTrades($totalTrades)
                         ->setPriceChange7d($priceChange7d);
 
                     $isInMarket = ($priceInUsd * $volume1h['baseAmount']) > 10;

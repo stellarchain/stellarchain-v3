@@ -124,3 +124,58 @@ canvas#race{position:relative; z-index:1;}
     height: 165px;
     width: 100%
 }
+
+.rank-col {
+    width: 4%;
+}
+
+.market-col{
+    width: 10%;
+
+}
+.price-col {
+    width: 10%;
+}
+
+.h1-col {
+    width: 10%;
+}
+
+.d7-col {
+    width: 10%;
+}
+
+.h24-col {
+
+    width: 10%;
+}
+
+.vol-col {
+    width: 16%;
+}
+
+.circulating-col {
+    width: 20%;
+}
+
+.chart-col {
+    width: 10%;
+}
+
+/* Mobile view (up to 576px) */
+@media (max-width: 990px) {
+    .market-col,
+    .price-col,
+    .h1-col,
+    .d7-col,
+    .h24-col,
+    .chart-col {
+        width: 29%;
+    }
+}
+/* Mobile view (up to 576px) */
+@media (max-width: 990px) {
+    .rank-col {
+        width: 13%;
+    }
+}

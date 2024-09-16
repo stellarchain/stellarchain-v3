@@ -1,0 +1,175 @@
+<div{{ attributes.defaults(stimulus_controller('markets')|stimulus_controller('appear')) }}>
+
+    <div class="mt-4">
+        <div class="d-flex align-items-center small pt-2">
+            <div class="flex-grow-1">
+                <span class="ps-0 mb-2 fs-1 fw-bold">Markets</span>
+            </div>
+            <div class="flex-shrink-0 text-end">
+                <b>{{ "now"|date("l") }}</b>
+                <p class="small text-secondary mb-0">{{this.assetsData.assets | length}} pairs · {{ "now"|date("jS F")}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="bg-black py-2">
+        <div class="row g-2">
+            <div class="col-4">
+                <select class="form-select bg-white" aria-label="Default select example"
+                    data-model="currency"
+                    data-action="live#action"
+                    data-live-action-param="resetPage"
+                >
+                    <option>USD</option>
+                    <option>BTC</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <select class="form-select bg-white"
+                    data-model="range"
+                    data-action="live#action"
+                    data-live-action-param="resetPage"
+                    aria-label="Default select example"
+                >
+                    <option>1 hour</option>
+                    <option selected="">24 hour</option>
+                    <option>7 days</option>
+                    <option>30 days</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <select class="form-select bg-white"
+                    data-model="sort"
+                    data-action="live#action"
+                    data-live-action-param="resetPage"
+                >
+                    <option selected="" value="default">Sort by</option>
+                    <option value="volume">Daily Volume</option>
+                    <option value="trustlines">Trustlines</option>
+                    <option value="total">Total Trades</option>
+                    <option value="daily">Daily Trades</option>
+                    <option value="cap">Market Cap</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div>
+         <div class="border-0 small d-flex">
+            <div class="border-0 text-secondary text-center p-2 rank-col">Rank</div>
+            <div class="border-0 text-secondary ps-1 market-col p-2">Market Cap</div>
+            <div class="border-0 text-secondary text-end price-col p-2">Price</div>
+            <div class="border-0 text-secondary text-end h1-col p-2 d-none d-lg-block">1h%</div>
+            <div class="border-0 text-secondary text-end h24-col p-2 d-none d-lg-block">24h%</div>
+            <div class="border-0 text-secondary text-end d7-col p-2 d-none d-lg-block">7d%</div>
+            <div class="border-0 text-secondary text-end vol-col p-2 d-none d-lg-block">Volume(24h)</div>
+            <div class="border-0 text-secondary text-end circulating-col p-2 d-none d-lg-block">Circulating Supply</div>
+            <div class="border-0 text-secondary text-end chart-col p-2">Change</div>
+        </div>
+    </div>
+
+    {% if page > 1 %}
+        <div id="item--{{ page - 1 }}-{{ per_page }}"></div>
+    {% endif %}
+
+    <div data-markets-target="assetsList">
+    {% for assetData in this.assetsData.assets %}
+        {% set asset = assetData.asset %}
+        {% set latestMetric = assetData.latestMetric %}
+        {% set assetChart = assetData.chart %}
+            <div class="d-flex border-5 border-start-0 border-end-0 border-light bg-dark mb-2 font-monospace" style="font-size:14px"
+            onclick="window.open('https://stellarchain.io/assets/{{ asset.assetCode }}-{{ asset.assetIssuer }}');"
+            style="cursor: pointer;" id="item--{{ page }}-{{ loop.index }}" data-live-ignore="true">
+
+            <div class="border-0 bg-white p-2 border-end rank-col">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">1</span>
+                </div>
+            </div>
+
+            <div class="border-0 bg-white pb-2 pt-2 border-end market-col">
+                <div class="d-flex flex-column lh-1 align-self-center mt-1">
+                    <span class="fw-bold mb-1">{{ asset.assetCode }}</span>
+                    <div class="small text-secondary">
+                        <span class="small">
+                            ${{ (
+                            (asset.claimableBalancesAmount + asset.liquidityPoolsAmount + asset.contractsAmount +
+                            (asset.balances is not empty ? asset.balances.authorized : 0))
+                            * latestMetric.price * globalValues.price
+                            ) | format_large_number() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-0 bg-white p-2 price-col">
+                <div class="font-monospace align-self-center mt-1 text-end lh-1">
+                    <span class="small">
+                        <strong>
+                            <span>${{ (latestMetric.price * globalValues.price) | number_format(5, '.', ',') |split('.')[0] }}</span><span class="text-secondary">.{{ (latestMetric.price * globalValues.price) | number_format(5, '.', ',') | split('.')[1] }}</span>
+                        </strong>
+                    </span>
+                    <div class="small text-secondary mt-1">
+                        <span class="small">
+                            <span class="font-monospace">{{ latestMetric.price | format_large_number }} XLM</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {% set change1hClass = latestMetric.priceChange1h < 0 ? 'text-danger' : (latestMetric.priceChange1h==0.0 ? 'text-secondary' : 'text-success' ) %}
+            <div class="bg-white small {{ change1hClass }} p-2 h1-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+                <i class="bi {{ latestMetric.priceChange1h < 0 ? 'bi-caret-down-fill' : (latestMetric.priceChange1h == 0.0 ? 'bi-caret-right-fill' : 'bi-caret-up-fill') }}"></i>
+                {{ latestMetric.priceChange1h }}%
+            </div>
+
+            {% set change24hClass = latestMetric.priceChange24h < 0 ? 'text-danger' : (latestMetric.priceChange24h==0.0 ? 'text-secondary' : 'text-success' ) %}
+
+            <div class="bg-white small {{ change24hClass }} p-2 h24-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+                <i class="bi {{ latestMetric.priceChange24h < 0 ? 'bi-caret-down-fill' : 'bi-caret-up-fill' }}"></i>
+                {{ latestMetric.priceChange24h }}%
+            </div>
+
+            {% set change7dClass = latestMetric.priceChange7d < 0 ? 'text-danger' : (latestMetric.priceChange7d==0.0 ? 'text-secondary' : 'text-success' ) %}
+            <div class="bg-white small {{ change7dClass }} p-2 d7-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+                <i class="bi {{ latestMetric.priceChange7d < 0 ? 'bi-caret-down-fill' : 'bi-caret-up-fill' }}"></i>
+                {{ latestMetric.priceChange7d }}%
+            </div>
+
+            <div class="bg-white small p-2 border-end vol-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+                ${{ (latestMetric.volume24h * latestMetric.price * globalValues.price) | number_format(2, '.', ',') | split('.')[0] }}
+                <span class="text-secondary">.{{ (latestMetric.volume24h * latestMetric.price * globalValues.price) | number_format(2, '.', ',') | split('.')[1] }}</span>
+            </div>
+
+            <div class="bg-white small text-nowrap p-2 circulating-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+                {{ (asset.claimableBalancesAmount + asset.liquidityPoolsAmount + asset.contractsAmount +
+                (asset.balances is not empty ? asset.balances.authorized : 0)) | number_format() }} {{
+                asset.assetCode }}
+            </div>
+
+            <div class="border-0 bg-white text-end p-2 chart-col" >
+                <div class="small font-monospace align-self-center text-end">
+                    <div class="sm-chart">
+                       {{ render_chart(assetChart, {class: asset.assetCode}) }}
+                    </div>
+                    <div class="small {{ change1hClass }} d-block d-lg-none">
+                        <i class="bi {{ latestMetric.priceChange1h < 0 ? 'bi-caret-down-fill' : (latestMetric.priceChange1h == 0.0 ? 'bi-caret-right-fill' : 'bi-caret-up-fill') }}"></i>
+                        {{ latestMetric.priceChange1h }}%
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endfor %}
+    </div>
+{% if this.hasMore %}
+    {% for i in 1..per_page %}
+       <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
+           data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
+           <span class="grid_loader" style="--delay: {{ (loop.index + 1) / per_page }};">
+               <p class="card-text placeholder-glow">
+                  <span class="placeholder col-12 p-4"></span>
+               </p>
+           </span>
+       </div>
+    {% endfor %}
+    {% endif %}
+</div>

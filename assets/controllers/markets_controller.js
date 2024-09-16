@@ -1,6 +1,18 @@
 import {Controller} from '@hotwired/stimulus';
+import {getComponent} from '@symfony/ux-live-component';
 
 export default class extends Controller {
+  static targets = ['assetsList'];
+
+  async initialize() {
+    this.component = await getComponent(this.element);
+
+    this.component.on('model:set', (model, value, component) => {
+      console.log(model, value, component)
+      this.assetsListTarget.innerHTML = '';
+    });
+  }
+
   connect() {
     this.element.addEventListener('chartjs:pre-connect', this._onPreConnect);
     this.element.addEventListener('chartjs:connect', this._onConnect.bind(this)); // Bind the context here

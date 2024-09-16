@@ -40,6 +40,9 @@ class AssetMetric
     #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 2)]
     private ?string $price_change_7d = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $total_trades = null;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
@@ -151,6 +154,18 @@ class AssetMetric
     public function setPriceChange7d(string $price_change_7d): static
     {
         $this->price_change_7d = $price_change_7d;
+
+        return $this;
+    }
+
+    public function getTotalTrades(): ?int
+    {
+        return $this->total_trades;
+    }
+
+    public function setTotalTrades(?int $total_trades): static
+    {
+        $this->total_trades = $total_trades;
 
         return $this;
     }
