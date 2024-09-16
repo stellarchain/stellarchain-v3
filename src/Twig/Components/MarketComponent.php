@@ -128,7 +128,7 @@ final class MarketComponent
             case 'age':
                 return ['created_at' => 'ASC'];
             default:
-                return ['created_at' => 'DESC'];
+                return [];
         }
     }
 
