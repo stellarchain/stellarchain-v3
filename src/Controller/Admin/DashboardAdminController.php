@@ -6,6 +6,7 @@ use App\Entity\Coin;
 use App\Entity\Comment;
 use App\Entity\Community;
 use App\Entity\Event;
+use App\Entity\Feedback;
 use App\Entity\Job;
 use App\Entity\JobCategory;
 use App\Entity\Location;
@@ -71,8 +72,10 @@ class DashboardAdminController extends AbstractDashboardController
         yield MenuItem::subMenu('Config', 'fas fa-list')->setSubItems([
             MenuItem::linkToCrud('Locations', 'fas fa-list', Location::class),
             MenuItem::linkToCrud('Regions', 'fas fa-list', Region::class),
-            MenuItem::linkToCrud('Users', 'fas fa-list', User::class)->setPermission('ROLE_ADMIN')
+            MenuItem::linkToCrud('Users', 'fas fa-list', User::class)->setPermission('ROLE_ADMIN'),
         ]);
+
+        yield MenuItem::linkToCrud('Feedbacks', 'fas fa-list', Feedback::class);
 
     }
 

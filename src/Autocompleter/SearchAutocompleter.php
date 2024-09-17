@@ -21,9 +21,9 @@ class SearchAutocompleter implements EntityAutocompleterInterface
     {
         return $repository
             ->createQueryBuilder('assets')
-            ->andWhere('assets.asset_code LIKE :search')
+            ->andWhere('LOWER(assets.asset_code) LIKE LOWER(:search)')
             ->andWhere('assets.in_market = :inMarket')
-            ->setParameter('search', '%'.$query.'%')
+            ->setParameter('search', '%'.strtolower($query).'%')
             ->setParameter('inMarket', true)
 
             // maybe do some custom filtering in all cases

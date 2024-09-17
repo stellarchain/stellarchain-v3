@@ -37,9 +37,27 @@
 <body class="vh-100">
     <div class="d-flex flex-column flex-lg-row overflow-hidden h-100">
         {% block sidebar %}
-            {{ include('sidebar.html.twig') }}
+        {{ include('sidebar.html.twig') }}
         {% endblock %}
         <div class="container">
+            {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <div id="liveToastAuth" class="toast bg-{{ type }} show" role="alert" aria-live="assertive"
+                        data-bs-autohide="true"
+                    aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">Message</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+
             {% block body %}{% endblock %}
         </div>
     </div>
@@ -48,25 +66,29 @@
         <nav class="navbar navbar-expand fixed-bottom pb-2 pt-2 menu">
             <div class="container-fluid d-flex justify-content-around pb-2 mb-1">
                 <a class="nav-link py-0 d-flex flex-column text-center lh-1
-                        {% if app.request.get('_route') == 'app_home' %} text-primary {% else %} text-secondary {% endif %}  me-2" href="{{path('app_home')}}">
+                        {% if app.request.get('_route') == 'app_home' %} text-primary {% else %} text-secondary {% endif %}  me-2"
+                    href="{{path('app_home')}}">
                     <i class="bi bi-collection fs-4 mb-2"></i>
                     <span style="font-size:12px;">Today</span>
                 </a>
                 <a class="nav-link py-0 d-flex flex-column text-center lh-1
                         {% if app.request.get('_route') == 'app_discover' %} text-primary {% else %} text-secondary {% endif %} me-2"
-                        href="{{path('app_discover')}}">
+                    href="{{path('app_discover')}}">
                     <i class="bi bi-compass fs-4 mb-2"></i>
                     <span style="font-size:12px;">Discover</span>
                 </a>
-                <a class="nav-link py-0 d-flex flex-column text-center lh-1 text-secondary me-2" href="http://stellarchain.io">
+                <a class="nav-link py-0 d-flex flex-column text-center lh-1 text-secondary me-2"
+                    href="http://stellarchain.io">
                     <i class="bi bi-search fs-4 mb-2"></i>
                     <span style="font-size:12px;">Explorer</span>
                 </a>
-                    <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_markets' %} text-primary {% else %} text-secondary {% endif %} me-2" href="{{path('app_markets')}}">
+                <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_markets' %} text-primary {% else %} text-secondary {% endif %} me-2"
+                    href="{{path('app_markets')}}">
                     <i class="bi bi-graph-up-arrow fs-4 mb-2"></i>
                     <span style="font-size:12px;">Markets</span>
                 </a>
-                    <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_account' %} text-primary {% else %} text-secondary {% endif %} me-2" href="{{path('app_account')}}">
+                <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_account' %} text-primary {% else %} text-secondary {% endif %} me-2"
+                    href="{{path('app_account')}}">
                     <i class="bi bi-person-circle fs-4 mb-2"></i>
                     <span style="font-size:12px;">Account</span>
                 </a>

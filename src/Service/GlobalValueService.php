@@ -53,6 +53,7 @@ class GlobalValueService
     public function getMarketAssets(): int {
         return $this->assetRepository->count(['in_market' => true]);
     }
+
     /**
      * @return mixed|bool
      */

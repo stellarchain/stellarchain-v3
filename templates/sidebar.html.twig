@@ -135,17 +135,18 @@
                             <h5 class="modal-title"><i class="bi bi-heart-fill"></i> Feedback</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <form action="{{ path('app_feedback_submit') }}" method="post">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <textarea type="text" class="form-control" id="formGroupExampleInput"
-                                    placeholder="Tell us your opinion"></textarea>
+                                <textarea name="feedback_message" class="form-control" id="feedbackMessage" placeholder="Tell us your opinion"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button {{stimulus_action('settings', 'closeModal' , 'click' )}}
                                 class="btn btn-secondary">Close</button>
-                            <button type="button" class="btn btn-primary">Send</button>
+                            <button type="submit" class="btn btn-primary">Send</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
