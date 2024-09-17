@@ -1,8 +1,8 @@
 import './bootstrap.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {Tooltip} from 'bootstrap';
 import {Interaction} from 'chart.js';
 import {CrosshairPlugin, Interpolate} from 'chartjs-plugin-crosshair';
 
@@ -14,7 +14,7 @@ window.addEventListener('auth:false', () => showToastAuth())
 
 document.addEventListener('turbo:load', () => {
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
 
   const links = document.querySelectorAll('a[href^="#"]');
   links.forEach(link => {
