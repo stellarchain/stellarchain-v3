@@ -3,8 +3,8 @@
 {% block title %}New Post{% endblock %}
 
 {% block sidebar %}
-    {{include('sidebar.html.twig')}}
-    {{include('burger-menu.html.twig')}}
+{{include('sidebar.html.twig')}}
+{{include('burger-menu.html.twig')}}
 {% endblock %}
 
 {% block body %}
@@ -12,22 +12,39 @@
     <div class="row">
         <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-xl-4 offset-xl-4">
             <div class="d-flex mb-2">
-              <a href="/" class="mx-auto flex-shrink-0 bg-primary bg-opacity-10 rounded-3 d-flex" style="height: 60px; width: 60px;">
-                  <i class="bi bi-person-badge fs-2 rounded align-self-center mx-auto text-primary"></i>
-              </a>
+                <a href="/" class="mx-auto flex-shrink-0 bg-primary bg-opacity-10 rounded-3 d-flex"
+                    style="height: 60px; width: 60px;">
+                    <i class="bi bi-person-badge fs-2 rounded align-self-center mx-auto text-primary"></i>
+                </a>
             </div>
             <div class="d-flex flex-column text-center mb-4">
-               <p class="text-center fs-4 fw-semibold w-100 mb-2">Submit project</p>
-               <p class="small text-muted mb-2">
-                    Describe your project
+                <p class="text-center fs-4 fw-semibold w-100 mb-2">Create new post</p>
+                <p class="small text-muted mb-2">
+                    Describe your idea
                 </p>
             </div>
             {{ form_start(newPostForm) }}
-                {{ form_row(newPostForm.title) }}
-                {{ form_errors(newPostForm.title) }}
-                {{ form_row(newPostForm.body) }}
-                <div class="mb-3"><button type="submit" id="submit" name="submit" class="btn-lg btn-primary w-100 btn">Submit project</button></div>
+            <div class="form-floating mb-2 w-100">
+                <input name="{{ field_name(newPostForm.title) }}"
+                    value="{{ field_value(newPostForm.title) }}"
+                    placeholder="{{ field_label(newPostForm.title) }}" class="form-control" type="text">
+                <label for="title" class="form-label required">Post title</label>
+                <div class="form-error">
+                    {{ form_errors(newPostForm.title) }}
+                </div>
+            </div>
+             <div class="form-floating mb-2 w-100">
+                <textarea name="{{ field_name(newPostForm.body) }}"
+                    style="height: 100px"
+                    placeholder="{{ field_label(newPostForm.body) }}" class="form-control">{{ field_value(newPostForm.body) }}</textarea>
+                <label for="body" class="form-label required">Your idea</label>
+                <div class="form-error">
+                    {{ form_errors(newPostForm.body) }}
+                </div>
+            </div>
+            <div class="mb-3"><button type="submit" id="submit" name="submit"
+                    class="btn btn-primary w-100 btn">Submit</button></div>
             {{ form_end(newPostForm) }}
+        </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

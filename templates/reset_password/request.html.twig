@@ -2,8 +2,11 @@
 
 {% block title %}Reset your password{% endblock %}
 
-{% block body %}
+{% block sidebar %}
+{# No sidebar for login page #}
+{% endblock %}
 
+{% block body %}
     <div class="container vh-100 align-items-center d-flex">
     <div class="w-100">
         <div class="row">
@@ -40,6 +43,9 @@
                     </div>
                     <div class="mb-3"><button type="submit" id="submit" name="submit" class="btn-lg btn-primary w-100 btn">Send password reset email</button></div>
                 {{ form_end(requestForm) }}
+                <div class="text-center">
+                    <a href="{{path('app_login')}}">Go to login.</a>
+                </div>
             </div>
         </div>
     </div>

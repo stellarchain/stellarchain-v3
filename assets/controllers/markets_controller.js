@@ -38,7 +38,7 @@ export default class extends Controller {
     }
 
     event.detail.chart.options.onHover = (event, chartElement) => {
-      event.native.target.style.cursor = 'default';
+      event.native.target.style.cursor = 'pointer';
     }
     event.detail.chart.options.plugins.tooltip = {
       enabled: false,
@@ -52,7 +52,7 @@ export default class extends Controller {
         if (!tooltipEl) {
           tooltipEl = document.createElement('div');
           tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.className = 'tooltip fade rounded bs-tooltip-top bg-dark'; // Bootstrap classes
+          tooltipEl.className = 'tooltip fade rounded bs-tooltip-top bg-white'; // Bootstrap classes
           tooltipEl.setAttribute('role', 'tooltip');
           tooltipEl.innerHTML = '<div class="tooltip-body"></div>';
           document.body.appendChild(tooltipEl);
@@ -71,7 +71,7 @@ export default class extends Controller {
         let innerHtml = '';
 
         titleLines.forEach(function (title) {
-          innerHtml += '<span>Hour: ' + title + ',</span>';
+          innerHtml += '<span>Time: ' + title + ',</span>';
         });
 
         bodyLines.forEach(function (body, i) {

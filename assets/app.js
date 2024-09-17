@@ -76,8 +76,10 @@ document.addEventListener('chartjs:init', function (event) {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+    const htmlElement = document.documentElement;
+    const currentTheme = localStorage.getItem('bsTheme') || 'dark';
+    htmlElement.setAttribute('data-bs-theme', currentTheme);
 });
-
 
 export function showToastAuth() {
   const toastLiveAuth = document.getElementById('liveToastAuth');

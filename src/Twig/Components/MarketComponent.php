@@ -90,7 +90,7 @@ final class MarketComponent
                 $recentMetrics = $this->assetMetricRepository->findBy(
                     ['asset' => $asset],
                     ['created_at' => 'DESC'],
-                    5
+                   7
                 );
                 $metricsForChart = array_reverse($recentMetrics);
 
@@ -158,7 +158,7 @@ final class MarketComponent
                     'fill' => false,
                     'tension' => 0.1,
                     'borderWidth' => 1,
-                    'pointBorderWidth' => 0.2,
+                    'pointBorderWidth' => 1,
                     'pointRadius' => 1.5,
                 ],
             ],

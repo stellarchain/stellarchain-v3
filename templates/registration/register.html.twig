@@ -81,17 +81,31 @@
 
                         <div class="form-floating mb-2 w-100">
                             <input
-                                name="{{ field_name(registrationForm.plainPassword) }}"
-                                value="{{ field_value(registrationForm.plainPassword) }}"
-                                placeholder="{{ field_label(registrationForm.plainPassword) }}"
+                                name="{{ field_name(registrationForm.plainPassword.first) }}"
+                                value="{{ field_value(registrationForm.plainPassword.first) }}"
+                                placeholder="{{ field_label(registrationForm.plainPassword.first) }}"
                                 class="form-control"
                                 type="text"
                             >
                             <label for="password" class="form-label required">Password</label>
                             <div class="form-error">
-                                {{ form_errors(registrationForm.plainPassword) }}
+                                {{ form_errors(registrationForm.plainPassword.first) }}
                             </div>
                         </div>
+                        <div class="form-floating mb-2 w-100">
+                            <input
+                                name="{{ field_name(registrationForm.plainPassword.second) }}"
+                                value="{{ field_value(registrationForm.plainPassword.second) }}"
+                                placeholder="{{ field_label(registrationForm.plainPassword.second) }}"
+                                class="form-control"
+                                type="text"
+                            >
+                            <label for="password" class="form-label required">Repeat Password</label>
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.plainPassword.second) }}
+                            </div>
+                        </div>
+
 
                         <div class="mt-2 mb-3 float-start">
                             <div class="form-check form-switch">

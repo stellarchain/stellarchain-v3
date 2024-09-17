@@ -1,18 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Create new community{% endblock %}
-{% set content_title = 'Create new community' %}
+{% set content_title = 'Create community' %}
 
 {% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <div class="card mb-2">
-                <div class="card-body">
-                    {{form(form)}}
-                </div>
-            </div>
+            {{form(form)}}
         </div>
     </div>
 

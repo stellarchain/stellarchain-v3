@@ -17,7 +17,9 @@ canvas{position:relative; z-index:999;}
     z-index: 9999; /* High value to ensure it appears on top */
 }
 .ts-dropdown, .ts-control, .ts-control input {
-    color: #FFF !important;
+    color: #a7acb1 !important;
+    background-color: var(--bs-dark) !important;
+    border-color: var(--bs-dark) !important;
 }
 
 :root {
