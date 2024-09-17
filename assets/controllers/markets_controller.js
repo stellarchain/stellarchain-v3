@@ -8,8 +8,8 @@ export default class extends Controller {
     this.component = await getComponent(this.element);
 
     this.component.on('model:set', (model, value, component) => {
-      console.log(model, value, component)
-      this.assetsListTarget.innerHTML = '';
+      const items = this.assetsListTarget.querySelectorAll('.list-item');
+      items.forEach(item => item.remove());
     });
   }
 
@@ -38,7 +38,7 @@ export default class extends Controller {
     }
 
     event.detail.chart.options.onHover = (event, chartElement) => {
-        event.native.target.style.cursor = 'default';
+      event.native.target.style.cursor = 'default';
     }
     event.detail.chart.options.plugins.tooltip = {
       enabled: false,

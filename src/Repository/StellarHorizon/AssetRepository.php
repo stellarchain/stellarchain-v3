@@ -56,14 +56,26 @@ class AssetRepository extends ServiceEntityRepository
 
     public function findByWithMetrics(array $filterCriteria, array $sortCriteria, int $limit, int $offset)
     {
-        // Custom query to join the latest metric and sort by the given sort criteria
-        return $this->createQueryBuilder('asset')
-            ->leftJoin('asset.latestMetric', 'latestMetric')  // Assuming there's a relation for latestMetric
-            ->where($filterCriteria)  // Apply filter criteria
-            ->orderBy($sortCriteria)  // Apply sort criteria
-            ->setMaxResults($limit)
-            ->setFirstResult($offset)
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.assetMetrics', 'am', 'WITH', 'am.id = (
+                SELECT MAX(am_sub.id)
+                FROM App\Entity\StellarHorizon\AssetMetric am_sub
+                WHERE am_sub.asset = a
+            )')
+            ->addSelect('am');
+
+        foreach ($filterCriteria as $field => $value) {
+            $qb->andWhere("a.$field = :$field")
+                ->setParameter($field, $value);
+        }
+
+        foreach ($sortCriteria as $field => $direction) {
+            $qb->orderBy($field, $direction);
+        }
+
+        $qb->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $qb->getQuery()->getResult();
     }
 }

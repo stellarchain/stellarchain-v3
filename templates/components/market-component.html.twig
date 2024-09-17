@@ -14,14 +14,15 @@
     <div class="bg-black py-2">
         <div class="row g-2">
             <div class="col-4">
-                <select class="form-select bg-white" aria-label="Default select example"
-                    data-model="currency"
+                <input class="form-select bg-white" placeholder="Asset"
+                    data-model="asset"
                     data-action="live#action"
+                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                        url: path('ux_entity_autocomplete', { alias: 'search' })
+                    }) }}
                     data-live-action-param="resetPage"
                 >
-                    <option>USD</option>
-                    <option>BTC</option>
-                </select>
+                </input>
             </div>
             <div class="col-4">
                 <select class="form-select bg-white"
@@ -42,11 +43,10 @@
                     data-action="live#action"
                     data-live-action-param="resetPage"
                 >
-                    <option selected="" value="default">Sort by</option>
+                    <option selected="" value="default">Price</option>
                     <option value="volume">Daily Volume</option>
-                    <option value="trustlines">Trustlines</option>
-                    <option value="total">Total Trades</option>
-                    <option value="daily">Daily Trades</option>
+                    <option value="trades">Hourly Trades</option>
+                    <option value="age">Age</option>
                     <option value="cap">Market Cap</option>
                 </select>
             </div>
@@ -66,16 +66,16 @@
         </div>
     </div>
 
+    <div data-markets-target="assetsList">
     {% if page > 1 %}
         <div id="item--{{ page - 1 }}-{{ per_page }}"></div>
     {% endif %}
 
-    <div data-markets-target="assetsList">
     {% for assetData in this.assetsData.assets %}
         {% set asset = assetData.asset %}
         {% set latestMetric = assetData.latestMetric %}
         {% set assetChart = assetData.chart %}
-            <div class="d-flex border-5 border-start-0 border-end-0 border-light bg-dark mb-2 font-monospace" style="font-size:14px"
+            <div class="d-flex border-5 border-start-0 border-end-0 border-light bg-dark mb-2 font-monospace list-item" style="font-size:14px"
             onclick="window.open('https://stellarchain.io/assets/{{ asset.assetCode }}-{{ asset.assetIssuer }}');"
             style="cursor: pointer;" id="item--{{ page }}-{{ loop.index }}" data-live-ignore="true">
 
@@ -159,10 +159,9 @@
 
         </div>
     {% endfor %}
-    </div>
-{% if this.hasMore %}
+    {% if this.hasMore %}
     {% for i in 1..per_page %}
-       <div class="list-group mb-2" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
+       <div class="list-group mb-2 list-item" id="item--{{ page + 1 }}-{{ i }}" {% if loop.first %} data-appear-target="loader"
            data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
            <span class="grid_loader" style="--delay: {{ (loop.index + 1) / per_page }};">
                <p class="card-text placeholder-glow">
@@ -172,4 +171,6 @@
        </div>
     {% endfor %}
     {% endif %}
+
+    </div>
 </div>

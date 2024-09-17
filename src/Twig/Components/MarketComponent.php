@@ -20,7 +20,7 @@ final class MarketComponent
     use DefaultActionTrait;
 
     #[LiveProp(writable: true, url: true)]
-    public string $currency = 'USD'; // Default currency
+    public string $asset = 'USDC'; // Default currency
 
     #[LiveProp(writable: true, url: true)]
     public string $range = '24 hour'; // Default time range
@@ -60,7 +60,7 @@ final class MarketComponent
 
     public function totalAssets(): int
     {
-        return $this->assetRepository->count(['in_market' => true]);
+        return $this->assetRepository->count($this->buildFilterCriteria());
     }
 
     #[ExposeInTemplate('per_page')]
@@ -75,18 +75,16 @@ final class MarketComponent
         $sortCriteria = $this->buildSortCriteria();
         $offset = ($this->page - 1) * self::PER_PAGE;
 
-        $assets = $this->assetRepository->findBy(
+        $assets = $this->assetRepository->findByWithMetrics(
             $filterCriteria,
             $sortCriteria,
             self::PER_PAGE,
             $offset
         );
+
         $assetsData = [];
         foreach ($assets as $asset) {
-            $latestMetric = $this->assetMetricRepository->findOneBy(
-                ['asset' => $asset],
-                ['created_at' => 'DESC']
-            );
+            $latestMetric = $asset->getAssetMetrics()->first();
 
             if ($latestMetric) {
                 $recentMetrics = $this->assetMetricRepository->findBy(
@@ -121,21 +119,28 @@ final class MarketComponent
     {
         switch ($this->sort) {
             case 'volume':
-                return ['amount' => 'DESC'];
-            case 'trustlines':
-                return ['amount' => 'DESC'];
+                return ['am.volume_24h' => 'DESC'];
+            case 'trades':
+                return ['am.total_trades' => 'DESC'];
             case 'cap':
-                return ['amount' => 'DESC'];
+                return ['a.amount' => 'DESC'];
             case 'age':
-                return ['created_at' => 'ASC'];
+                return ['a.created_at' => 'DESC'];
             default:
-                return ['created_at' => 'DESC'];
+                return ['am.price' => 'DESC'];  // Default sorting by latest metric price
         }
     }
 
     private function buildFilterCriteria(): array
     {
-        return ['in_market' => true];
+        $filter = [
+            'in_market' => true
+        ];
+        if ($this->asset != ''){
+            $filter = array_merge($filter, ['asset_code' => $this->asset]);
+        }
+
+        return $filter;
     }
     /**
      * Helper function to build the chart object
