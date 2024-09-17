@@ -106,6 +106,11 @@ class Asset
         $this->assetMetrics = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->asset_code ?? 'XLM';
+    }
+
     public function getId(): ?int
     {
         return $this->id;

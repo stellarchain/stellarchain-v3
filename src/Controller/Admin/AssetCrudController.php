@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\StellarHorizon\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -23,7 +24,7 @@ class AssetCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('asset_code'),
-            TextField::new('asset_type'),
+            TextField::new('asset_type')->onlyOnForms(),
             TextField::new('asset_issuer'),
             IntegerField::new('num_claimable_balances')->onlyOnForms(),
             IntegerField::new('num_contracts')->onlyOnForms(),
@@ -40,5 +41,12 @@ class AssetCrudController extends AbstractCrudController
             DateTimeField::new('created_at')->onlyOnDetail(),
             DateTimeField::new('updated_at')->onlyOnIndex(),
         ];
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('in_market')
+            ->add('amount');
     }
 }
