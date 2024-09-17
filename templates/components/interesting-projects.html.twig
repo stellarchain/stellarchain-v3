@@ -18,9 +18,9 @@
                 </div>
             </a>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                <a class="text-decoration-none fw-bold mb-1" href="/projects/stellarchain">{{project.name}}</a>
+                <a class="text-decoration-none fw-bold mb-1" href="{{path('app_project_show', {id: project.id})}}">{{project.name}}</a>
                 <div class="small text-secondary">
-                    <a class="text-decoration-none text-secondary small mb-0" href="/projects/stellarchain">
+                    <a class="text-decoration-none text-secondary small mb-0" href="{{path('app_profile_show', {id: project.user.id})}}">
                         @{{project.user.username}}
                         <i class="bi bi-patch-check-fill text-primary ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Verified Project"></i>
                     </a>

@@ -20,7 +20,7 @@ final class MarketComponent
     use DefaultActionTrait;
 
     #[LiveProp(writable: true, url: true)]
-    public string $asset = 'USDC'; // Default currency
+    public string $asset = ''; // Default currency
 
     #[LiveProp(writable: true, url: true)]
     public string $range = '24 hour'; // Default time range
@@ -125,7 +125,7 @@ final class MarketComponent
             case 'cap':
                 return ['a.amount' => 'DESC'];
             case 'age':
-                return ['a.created_at' => 'DESC'];
+                return ['a.created_at' => 'ASC'];
             default:
                 return ['am.price' => 'DESC'];  // Default sorting by latest metric price
         }

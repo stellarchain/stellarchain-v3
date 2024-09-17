@@ -20,14 +20,18 @@ class AccountController extends AbstractController
     public function edit(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('account/edit.html.twig');
+        return $this->render('account/show.html.twig', [
+            'profile' => $this->getUser(),
+            'edit' => true,
+        ]);
     }
 
     #[Route('/profile/{id}', name: 'app_profile_show')]
     public function profile(User $user): Response
     {
         return $this->render('account/show.html.twig', [
-            'user' => $user,
+            'profile' => $user,
+            'edit' => false
         ]);
     }
 }
