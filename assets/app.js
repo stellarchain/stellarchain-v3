@@ -1,6 +1,8 @@
 import './bootstrap.js';
 import './styles/app.css';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {Interaction} from 'chart.js';
 import {CrosshairPlugin, Interpolate} from 'chartjs-plugin-crosshair';
 
