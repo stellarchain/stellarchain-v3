@@ -77,12 +77,11 @@ class DashboardAdminController extends AbstractDashboardController
             MenuItem::linkToCrud('Trades', 'fas fa-list', Trade::class),
         ]);
 
-
         yield MenuItem::subMenu('Statistics', 'fas fa-list')->setSubItems([
             MenuItem::linkToCrud('Ledger Stats', 'fas fa-list', LedgerStat::class),
         ]);
 
-        yield MenuItem::linkToCrud('Feedbacks', 'fas fa-list', Feedback::class);
+        yield MenuItem::linkToCrud('Feedbacks & Reports', 'fas fa-list', Feedback::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class)->setPermission('ROLE_ADMIN');
 
         yield MenuItem::subMenu('Settings', 'fas fa-list')->setSubItems([

@@ -5,10 +5,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="commentModalLabel">{{ parentComment ? 'Reply' : 'New Comment' }}</h5>
+                    <h5 class="modal-title" id="commentModalLabel">{{ parentComment ? 'Reply to @' ~ parentComment.user.username : 'New Comment' }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    {% if parentComment %}
+                    <div class="bg-white mb-2 p-1 rounded">
+                        <span class="text-break">{{parentComment.content}}</span><span><a href="{{path('app_profile_show', {id : parentComment.user.id})}}" class="small"> @{{parentComment.user.username}}</a></span>
+                    </div>
+                    {% endif %}
                     {{ form_start(this.getFormView, { attr: { 'data-action': 'live#action:prevent', 'data-live-action-param': 'save' }}) }}
                     <div class="form-floating mb-2 w-100">
                         {{ form_widget(this.getFormView.content, {'attr': {'placeholder': parentComment ? 'Leave a reply' : 'Leave a comment', 'style': 'height:100px'}}) }}

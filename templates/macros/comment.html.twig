@@ -43,7 +43,7 @@
         <div class="d-flex justify-content-between gap-2">
             <div class="d-flex gap-2">
                 {% if root_comment and root_comment.id %}
-                <a class="bg-white rounded d-flex flex-shrink-0" id="top-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="top-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ root_comment.id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Top">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
@@ -52,7 +52,7 @@
                 {% endif %}
 
                 {% if comment.parent %}
-                <a class="bg-white rounded d-flex flex-shrink-0" id="parrent-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="parrent-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ comment.parent.id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Parent">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
@@ -61,7 +61,7 @@
                 {% endif %}
 
                 {% if prev_comment_id %}
-                <a class="bg-white rounded d-flex flex-shrink-0" id="previous-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="previous-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ prev_comment_id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Previous">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
@@ -70,7 +70,7 @@
                 {% endif %}
 
                 {% if next_comment_id %}
-                <a class="bg-white rounded d-flex flex-shrink-0" id="next-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="next-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ next_comment_id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Next">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i

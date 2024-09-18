@@ -166,7 +166,7 @@ final class CommentsComponent extends AbstractController
         ]);
 
         if ($existingVote || !$user) {
-            $this->dispatchBrowserEvent('auth:false');
+            $this->dispatchBrowserEvent('auth:false', ['title' => 'Ignored', 'message' => 'Already voted.']);
             return;
         }
 

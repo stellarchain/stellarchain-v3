@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -13,11 +14,13 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class PostRepository extends ServiceEntityRepository
 {
     private $likeRepository;
+    private $entityManager;
 
-    public function __construct(ManagerRegistry $registry, LikeRepository $likeRepository)
+    public function __construct(ManagerRegistry $registry, LikeRepository $likeRepository, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Post::class);
         $this->likeRepository = $likeRepository;
+        $this->entityManager = $entityManager;
     }
     /**
      * Fetch all posts with associated entities
@@ -42,7 +45,6 @@ class PostRepository extends ServiceEntityRepository
 
     public function getPaginatedPosts($page = 1, $postsPerPage = 9): Paginator
     {
-
         $query = $this->createQueryBuilder('a')
             ->orderBy('a.created_at', 'DESC')
             ->getQuery();
@@ -59,5 +61,16 @@ class PostRepository extends ServiceEntityRepository
     public function getLikesCount(Post $post): int
     {
         return $this->likeRepository->countLikes($this->getClassMetadata()->getTableName(), $post->getId());
+    }
+
+    /**
+     * Delete a post
+     *
+     * @param Post $post
+     */
+    public function deletePost(Post $post): void
+    {
+        $this->entityManager->remove($post);
+        $this->entityManager->flush();
     }
 }

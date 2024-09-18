@@ -14,7 +14,6 @@ export default class extends Controller {
   scrollToComment(event) {
     event.preventDefault(); // Prevent default link behavior
 
-    console.log(1)
     const link = event.currentTarget; // The clicked link element
     const commentId = link.getAttribute('href'); // Get the href value (e.g., #comment_123)
     const commentElement = this.listTarget.querySelector(commentId); // Find the comment in the commentList

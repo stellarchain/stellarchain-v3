@@ -68,6 +68,6 @@ class IndexController extends AbstractController
 
         $this->addFlash('success', 'Feedback submitted successfully!');
 
-        return $this->redirectToRoute('app_home'); // Adjust the route as needed
+        return $this->redirectToRoute('app_home');
     }
 }

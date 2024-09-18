@@ -2,7 +2,7 @@ import './bootstrap.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import {Tooltip} from 'bootstrap';
+import {Tooltip, Toast} from 'bootstrap';
 import {Interaction} from 'chart.js';
 import {CrosshairPlugin, Interpolate} from 'chartjs-plugin-crosshair';
 
@@ -10,23 +10,15 @@ document.addEventListener("turbo:before-prefetch", (event) => {
   event.preventDefault()
 })
 
-window.addEventListener('auth:false', () => showToastAuth())
+window.addEventListener('auth:false', (event) => {
+  let message = event.detail.message
+  let title = event.detail.title
+  showToastAuth(title, message)
+})
 
 document.addEventListener('turbo:load', () => {
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
-
-  const links = document.querySelectorAll('a[href^="#"]');
-  links.forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({behavior: 'smooth'});
-      }
-    });
-  });
 
   const shareModal = document.getElementById('shareModalComment');
   const shareLinkInput = document.getElementById('shareLinkComment');
@@ -50,7 +42,6 @@ document.addEventListener('turbo:load', () => {
     dropdownToggle.addEventListener('click', function (event) {
       event.preventDefault(); // Prevents the default anchor behavior
 
-      // Toggle the 'show' class for the dropdown menu
       const dropdownMenu = this.nextElementSibling;
       if (dropdownMenu.classList.contains('show')) {
         dropdownMenu.classList.remove('show');
@@ -82,10 +73,18 @@ document.addEventListener('DOMContentLoaded', function () {
     htmlElement.setAttribute('data-bs-theme', currentTheme);
 });
 
-export function showToastAuth() {
+export function showToastAuth(title = 'Login', message = 'You need to authenticate.') {
   const toastLiveAuth = document.getElementById('liveToastAuth');
   if (toastLiveAuth) {
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveAuth);
+    const titleElement = toastLiveAuth.querySelector('.toast-header strong');
+    const messageElement = toastLiveAuth.querySelector('.toast-body');
+    if (titleElement) {
+      titleElement.textContent = title;
+    }
+    if (messageElement) {
+      messageElement.textContent = message;
+    }
+    const toastBootstrap = Toast.getOrCreateInstance(toastLiveAuth);
     toastBootstrap.show();
   } else {
     console.error('Toast element #liveToastAuth not found.');
