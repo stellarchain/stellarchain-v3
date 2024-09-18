@@ -60,7 +60,6 @@ document.addEventListener('turbo:load', () => {
     });
   });
 
-  // Optionally close the dropdown if clicked outside
   document.addEventListener('click', function (event) {
     document.querySelectorAll('.dropdown-menu.show').forEach(function (openDropdown) {
       if (!openDropdown.contains(event.target) && !openDropdown.previousElementSibling.contains(event.target)) {

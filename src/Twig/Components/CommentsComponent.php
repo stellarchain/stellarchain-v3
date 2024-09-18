@@ -37,7 +37,7 @@ final class CommentsComponent extends AbstractController
     #[LiveProp(writable: true, url: true)]
     public string $order = 'popular';
 
-    #[LiveProp]
+    #[LiveProp(updateFromParent: true)]
     public ?Comment $parentComment = null;
 
     public function __construct(
@@ -217,6 +217,8 @@ final class CommentsComponent extends AbstractController
             // Reset the form after saving
             $this->parentComment = null;
             $this->form = $this->instantiateForm();
+
+            $this->dispatchBrowserEvent('close-modal');
         }
     }
 

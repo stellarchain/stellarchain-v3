@@ -1,9 +1,15 @@
 import {Controller} from '@hotwired/stimulus';
 import api from '../api.js';
+import {Modal} from 'bootstrap';
 
 export default class extends Controller {
   static targets = [];
   async initialize() {
+    document.addEventListener('close-modal', () => {
+      var myModalEl = document.getElementById('commentModal');
+      var modal = Modal.getInstance(myModalEl);
+      modal.hide(); // Close the modal
+    });
   }
   async vote({currentTarget, params: {id, liked, type}}) {
     try {
