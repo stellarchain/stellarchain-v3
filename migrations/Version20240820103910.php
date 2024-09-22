@@ -19,8 +19,6 @@ final class Version20240820103910 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX asset_asset_type_idx');
     }
 
     public function down(Schema $schema): void
