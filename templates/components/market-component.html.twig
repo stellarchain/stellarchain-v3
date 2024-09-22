@@ -14,7 +14,7 @@
     <div class="bg-black py-2">
         <div class="row g-2">
             <div class="col-4">
-                <input class="form-select bg-white" placeholder="Search asset"
+                <input class="form-select bg-white asset-input" placeholder="Asset"
                     data-model="asset"
                     data-action="live#action"
                     {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
@@ -53,16 +53,16 @@
         </div>
     </div>
     <div>
-        <div class="border-bottom small d-flex">
-            <div class="border-0 text-secondary pt-2 pb-2 py-2 fw-bold rank-col">Rank</div>
-            <div class="border-0 text-secondary pt-2 pb-2 py-2 market-col fw-bold">Market Cap</div>
-            <div class="border-0 text-secondary text-end price-col fw-bold p-2">Price</div>
-            <div class="border-0 text-secondary text-end h1-col p-2 fw-bold d-none d-lg-block">1h%</div>
-            <div class="border-0 text-secondary text-end h24-col p-2 d-none fw-bold d-lg-block">24h%</div>
-            <div class="border-0 text-secondary text-end d7-col p-2 d-none fw-bold d-lg-block">7d%</div>
-            <div class="border-0 text-secondary text-end vol-col p-2 d-none fw-bold d-lg-block">Volume(24h)</div>
-            <div class="border-0 text-secondary text-end circulating-col p-2 d-none fw-bold d-lg-block">Circulating Supply</div>
-            <div class="border-0 text-secondary text-end chart-col fw-bold p-2">Change</div>
+        <div class="small d-flex">
+            <div class="border-0 text-secondary pt-2 pb-2 py-2 fw-bold rank-col fs-12">Rank</div>
+            <div class="border-0 text-secondary pt-2 pb-2 py-2 market-col fw-bold fs-12">Market Cap</div>
+            <div class="border-0 text-secondary text-end price-col fw-bold p-2 fs-12">Price</div>
+            <div class="border-0 text-secondary text-end h1-col p-2 fw-bold d-none d-lg-block fs-12">1h%</div>
+            <div class="border-0 text-secondary text-end h24-col p-2 d-none fw-bold d-lg-block fs-12">24h%</div>
+            <div class="border-0 text-secondary text-end d7-col p-2 d-none fw-bold d-lg-block fs-12">7d%</div>
+            <div class="border-0 text-secondary text-end vol-col p-2 d-none fw-bold d-lg-block fs-12">Volume(24h)</div>
+            <div class="border-0 text-secondary text-end circulating-col p-2 d-none fw-bold d-lg-block fs-12">Circulating Supply</div>
+            <div class="border-0 text-secondary text-end chart-col fw-bold p-2 fs-12">Change</div>
         </div>
     </div>
 

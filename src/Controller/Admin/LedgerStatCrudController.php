@@ -4,9 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\LedgerStat;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class LedgerStatCrudController extends AbstractCrudController
 {
@@ -15,14 +15,18 @@ class LedgerStatCrudController extends AbstractCrudController
         return LedgerStat::class;
     }
 
-    /*
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            IntegerField::new('ledger_id'),
+            IntegerField::new('lifetime'),
+            IntegerField::new('operations'),
+            IntegerField::new('successful_transactions'),
+            IntegerField::new('failed_transactions'),
+            IntegerField::new('created_contracts'),
+            IntegerField::new('contract_invocations'),
+            IntegerField::new('transactions_second'),
+            DateTimeField::new('created_at'),
         ];
     }
-    */
 }

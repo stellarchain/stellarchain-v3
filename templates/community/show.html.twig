@@ -38,16 +38,21 @@
     </div>
     <div class="row">
         <div class="col-sm-8 offset-md-2">
-            <div class="card mt-2">
-                <div class="card-body">
-                    {{ form_start(postForm) }}
-                    {{ form_row(postForm.content) }}
-                    {{ form_errors(postForm.content) }}
-                    <button type="submit" id="submit" name="submit" class="btn-primary btn">
-                        Post
-                    </button>
-                    {{ form_end(postForm) }}
+            <div class="mt-2">
+                {{ form_start(postForm) }}
+                <div class="form-floating mb-2 w-100">
+                    <input name="{{ field_name(postForm.content) }}"
+                        value="{{ field_value(postForm.content) }}"
+                        placeholder="{{ field_label(postForm.content) }}" class="form-control" type="text">
+                    <label for="content" class="form-label required">Whats on your mind</label>
+                    <div class="form-error">
+                        {{ form_errors(postForm.content) }}
+                    </div>
                 </div>
+                <button type="submit" id="submit" name="submit" class="btn bg-white">
+                    Post
+                </button>
+                {{ form_end(postForm) }}
             </div>
         </div>
     </div>

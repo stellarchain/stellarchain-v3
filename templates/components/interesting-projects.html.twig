@@ -1,4 +1,4 @@
-<div{{ attributes }}>
+<div{{ attributes.defaults(stimulus_controller('follow')) }}>
     <div class="card-header px-0 border-0 pb-0">
         <div class="d-flex align-items-center border-0 px-3 py-1">
             <div class="flex-grow-1 d-flex flex-column lh-1">
@@ -27,7 +27,9 @@
                 </div>
             </div>
             <div class="small align-self-center">
-                <a class="badge bg-primary bg-opacity-25 text-primary text-decoration-none" href="#">Follow</a>
+                <a role="button"
+                    class="badge bg-primary bg-opacity-25 text-primary text-decoration-none"
+                    {{ stimulus_action('follow', 'toggleFollowProject' , 'click' , { id: project.id, type: 'project' }) }}>Follow</a>
             </div>
         </div>
         {% endfor %}

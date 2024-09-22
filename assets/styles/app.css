@@ -307,3 +307,10 @@ canvas#race{position:relative; z-index:1;}
         width: 13%;
     }
 }
+.fs-12 {
+    font-size: 12px;
+}
+
+ input[type="text"]::placeholder {
+      color: white;
+}
