@@ -70,7 +70,7 @@
         {% for project in projects %}
         <div class="list-group me-2">
             <a class="list-group-item list-group-item-action p-2" href="{{path('app_project_show', {id: project.id})}}" style="min-width: 275px;">
-                 {% if project.image.name %}
+                 {% if project.image.name  and false %}
                 <img src="{{vich_uploader_asset(project)}}" class="img-fluid pb-3" style="max-height: 168px;">
                 {% else %}
                 <img src="/assets-custom/example.png" class="img-fluid pb-3" style="max-height: 168px;">

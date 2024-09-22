@@ -1,7 +1,7 @@
 <div class="list-group swiper-slide">
     <a class="list-group-item list-group-item-action p-2" href="{{path('app_project_show', {id: project.id})}}"
         style="min-width: 275px;">
-        {% if project.image.name %}
+        {% if project.image.name and false %}
             <img src="{{vich_uploader_asset(project)}}" class="img-fluid pb-3 rounded project-img">
         {% else %}
             <img src="/assets-custom/event.png" class="img-fluid pb-3 rounded project-img">
