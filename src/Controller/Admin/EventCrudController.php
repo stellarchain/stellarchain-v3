@@ -24,7 +24,7 @@ class EventCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            Field::new('imageFile')->setFormType(VichImageType::class)->onlyOnForms(),
+            Field::new('imageFile')->setFormType(VichImageType::class)->onlyOnForms()->setRequired(true),
             ImageField::new('imageFile')->onlyOnIndex(),
             TextField::new('name'),
             AssociationField::new('location')->autocomplete(),
