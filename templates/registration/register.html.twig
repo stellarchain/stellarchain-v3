@@ -85,7 +85,8 @@
                                 value="{{ field_value(registrationForm.plainPassword.first) }}"
                                 placeholder="{{ field_label(registrationForm.plainPassword.first) }}"
                                 class="form-control"
-                                type="text"
+                                type="password"
+                                {{ stimulus_controller('symfony/ux-toggle-password/toggle-password', { buttonClasses: ['toggle-password-button', 'show-password-input']}) }}
                             >
                             <label for="password" class="form-label required">Password</label>
                             <div class="form-error">
@@ -98,7 +99,8 @@
                                 value="{{ field_value(registrationForm.plainPassword.second) }}"
                                 placeholder="{{ field_label(registrationForm.plainPassword.second) }}"
                                 class="form-control"
-                                type="text"
+                                type="password"
+                                {{ stimulus_controller('symfony/ux-toggle-password/toggle-password', { buttonClasses: ['toggle-password-button', 'show-password-input']}) }}
                             >
                             <label for="password" class="form-label required">Repeat Password</label>
                             <div class="form-error">

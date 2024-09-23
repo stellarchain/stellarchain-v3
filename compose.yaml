@@ -103,8 +103,13 @@ services:
       context: .
       target: frankenphp_dev
     image: ${IMAGES_PREFIX:-}app-php
+    logging:
+      driver: "json-file"
+      options:
+          max-size: "10m"
+          max-file: "3"
     restart: unless-stopped
-    command: php bin/console messenger:consume async -vvv
+    command: php bin/console messenger:consume async -vv
     environment:
       SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}

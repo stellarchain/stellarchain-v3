@@ -56,6 +56,7 @@ class RegistrationFormType extends AbstractType
                     ],
                 ],
                 'first_options' => [
+                    'toggle' => true,
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Please enter a password',

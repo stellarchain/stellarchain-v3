@@ -69,11 +69,11 @@
     <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2 hide-scrollbar">
         {% for project in projects %}
         <div class="list-group me-2">
-            <a class="list-group-item list-group-item-action p-2" href="{{path('app_project_show', {id: project.id})}}" style="min-width: 275px;">
+            <a class="list-group-item list-group-item-action p-2" href="{{path('app_project_show', {id: project.id})}}" style="min-width: 275px; min-height: 255px;">
                  {% if project.image.name  and false %}
                 <img src="{{vich_uploader_asset(project)}}" class="img-fluid pb-3" style="max-height: 168px;">
                 {% else %}
-                <img src="/assets-custom/example.png" class="img-fluid pb-3" style="max-height: 168px;">
+                <img src="/assets-custom/event.png" class="img-fluid pb-3" style="max-height: 168px;">
                 {% endif %}
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0 text-decoration-none" href="#">
