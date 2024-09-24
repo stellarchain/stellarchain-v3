@@ -6,12 +6,12 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-#[AsCronTask('0 * * * *')]
-class BuildAssetMetrics
+#[AsCronTask('1 * * * *')]
+class AssetAssignRanks
 {
     public function __invoke(): void
     {
-        $process = new Process(['bin/console', 'market:build-asset-metrics', '--no-debug'], timeout: 120);
+        $process = new Process(['bin/console', 'market:assets-assign-ranks', '--no-debug']);
         try {
             $process->mustRun();
             echo $process->getOutput();

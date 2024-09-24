@@ -43,7 +43,8 @@
                     data-action="live#action"
                     data-live-action-param="resetPage"
                 >
-                    <option selected="" value="default">Price</option>
+                    <option selected="" value="default">Rank</option>
+                    <option value="price">Price</option>
                     <option value="volume">Daily Volume</option>
                     <option value="trades">Hourly Trades</option>
                     <option value="age">Age</option>
@@ -82,7 +83,7 @@
             <div class="border-0 bg-white p-2 rank-col">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
-                    <span class="rounded-circle align-self-center mx-auto fw-bold">1</span>
+                    <span class="rounded-circle align-self-center mx-auto fw-bold">{{asset.rank | number_format}}</span>
                 </div>
             </div>
 

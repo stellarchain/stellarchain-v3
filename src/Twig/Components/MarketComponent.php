@@ -124,6 +124,8 @@ final class MarketComponent
                 return ['am.total_trades' => 'DESC'];
             case 'cap':
                 return ['a.amount' => 'DESC'];
+            case 'default':
+                return ['a.rank' => 'ASC'];
             case 'age':
                 return ['a.created_at' => 'ASC'];
             default:

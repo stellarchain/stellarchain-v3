@@ -61,7 +61,7 @@ class AssetsBuildMetricsCommand extends Command
         $currentDateTime = new \DateTime();
         $interval = new \DateInterval('PT3H');
         $cutoffTime = (clone $currentDateTime)->sub($interval);
-        $latestPriceResult = $this->tradeRepository->findOneBy(['base_asset' => $nativeAsset, 'counter_asset' => $asset], ['ledger_close_time' => 'DESC']);
+        $latestPriceResult = $this->tradeRepository->findOneBy(['base_asset' => $nativeAsset, 'counter_asset' => $asset, 'trade_type' => 'orderbook'], ['ledger_close_time' => 'DESC']);
         $roundedDateTime = (clone $currentDateTime)->modify('-1 hour');
         $roundedDateTime7dAgo = (clone $currentDateTime)->modify('-7 days');
         $roundedDateTime24hAgo = (clone $currentDateTime)->modify('-24 hours');
@@ -71,7 +71,6 @@ class AssetsBuildMetricsCommand extends Command
             $latestPrice = (float)$latestPriceResult->getPrice();
             $price1hAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime);
 
-            dump($price1hAgo, $roundedDateTime);
             if ($price1hAgo) {
                 $price24hAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime24hAgo);
                 $price7dAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime7dAgo);
@@ -82,9 +81,10 @@ class AssetsBuildMetricsCommand extends Command
 
                 $volume24h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime24hAgo);
                 $volume1h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime);
-                $totalTrades = $this->tradeRepository->countTotalTrades($asset, $nativeAsset, $roundedDateTime);
+                $totalTrades = $this->tradeRepository->countTotalTrades($asset, $nativeAsset, $roundedDateTime24hAgo);
+
                 if ($volume24h['baseAmount']) {
-                    $priceInUsd = (1 / $latestPrice * $usdXlmPrice);
+                    $priceInUsd = (1 / $latestPrice) * $usdXlmPrice;
                     $assetMetric = new AssetMetric();
                     $assetMetric->setAsset($asset)
                         ->setPrice(1 / $latestPrice)
@@ -99,8 +99,16 @@ class AssetsBuildMetricsCommand extends Command
                     $isInMarket = ($priceInUsd * $volume1h['baseAmount']) > 10;
                     if ($isInMarket && false) {
                         $asset->setInMarket($isInMarket);
-                        $this->entityManager->persist($asset);
                     }
+                    $rankScore = $this->calculateAssetRank(
+                        $priceInUsd,
+                        $volume24h['baseAmount'] * $priceInUsd,
+                        $totalTrades,
+                        $priceChange1h,
+                        $priceChange24h,
+                        $priceChange7d,
+                    );
+
                     dump(
                         'Asset: ' . $asset->getAssetCode(),
                         'Price: ' . $latestPrice,
@@ -112,11 +120,15 @@ class AssetsBuildMetricsCommand extends Command
                         'Price % 1h ago: ' . $priceChange1h,
                         'Price % 24h ago: ' . $priceChange24h,
                         'Price % 7d ago: ' . $priceChange7d,
-                        'Total trades in 1h' . $totalTrades,
-                        'Volume 24H: ' . $volume24h['baseAmount'],
+                        'Total trades in 24h: ' . $totalTrades,
+                        'Volume 24H in USD: ' . $volume24h['baseAmount'] * $priceInUsd,
                         'Volume 1h: ' . $volume1h['baseAmount'],
+                        'Rank Score: ' . $rankScore,
                         '======================================='
                     );
+
+                    $asset->setRankRaw($rankScore);
+                    $this->entityManager->persist($asset);
                     $this->entityManager->persist($assetMetric);
                     $this->entityManager->flush();
                 }
@@ -147,5 +159,23 @@ class AssetsBuildMetricsCommand extends Command
         $listAssetRequest = new SingleAsset($assetCode, $assetIssuer);
 
         return $connector->send($listAssetRequest)->json();
+    }
+
+    function calculateAssetRank($latestPrice, $volume24hInUsd, $totalTrades)
+    {
+        $wPrice = 0.01;  // 10% weight for price
+        $wVolume = 0.1; // 20% weight for volume
+        $wTrades = 0.8; // 10% weight for total trades
+
+        // Raw values (Price is inverted to match the previous logic)
+        $priceScore = 1/$latestPrice;
+        $totalTradesScore = $totalTrades;
+
+        // Final rank score calculation using the weighted sum of the raw values
+        $rankScore = ($wPrice * $priceScore) +
+            ($wVolume * $volume24hInUsd) +
+            ($wTrades * $totalTradesScore);
+
+        return number_format($rankScore, 5, '.', '');
     }
 }

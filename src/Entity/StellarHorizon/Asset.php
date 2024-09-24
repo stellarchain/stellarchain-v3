@@ -6,6 +6,7 @@ use App\Entity\StellarHorizon\AssetMetric;
 use App\Repository\StellarHorizon\AssetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -96,6 +97,12 @@ class Asset
      */
     #[ORM\OneToMany(targetEntity: AssetMetric::class, mappedBy: 'asset')]
     private Collection $assetMetrics;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 5, nullable: true)]
+    private ?string $rank = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 5, nullable: true)]
+    private ?string $rank_raw = null;
 
     public function __construct()
     {
@@ -445,6 +452,30 @@ class Asset
                 $assetMetric->setAsset(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRank(): ?string
+    {
+        return $this->rank;
+    }
+
+    public function setRank(?string $rank): static
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function getRankRaw(): ?string
+    {
+        return $this->rank_raw;
+    }
+
+    public function setRankRaw(?string $rank_raw): static
+    {
+        $this->rank_raw = $rank_raw;
 
         return $this;
     }

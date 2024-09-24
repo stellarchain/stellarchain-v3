@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class AssetCrudController extends AbstractCrudController
@@ -38,6 +39,8 @@ class AssetCrudController extends AbstractCrudController
             IntegerField::new('archived_contracts_amount')->onlyOnForms(),
             ArrayField::new('accounts')->onlyOnDetail(),
             BooleanField::new('in_market'),
+            NumberField::new('rank'),
+            NumberField::new('rank_raw'),
             DateTimeField::new('created_at')->onlyOnDetail(),
             DateTimeField::new('updated_at')->onlyOnIndex(),
         ];
@@ -47,6 +50,7 @@ class AssetCrudController extends AbstractCrudController
     {
         return $filters
             ->add('in_market')
+            ->add('rank')
             ->add('amount');
     }
 }
