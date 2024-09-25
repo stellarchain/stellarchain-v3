@@ -28,4 +28,21 @@ class CommunityPostRepository extends ServiceEntityRepository
             ->orderBy('cp.created_at', 'DESC') // or 'ASC' for ascending order
             ->getQuery()
             ->getResult();
-    }}
+    }
+
+    public function countTotalPosts(): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countTotalLikes(): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('SUM(p.likesCount)') // Assuming you have a likesCount field in your post
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+}

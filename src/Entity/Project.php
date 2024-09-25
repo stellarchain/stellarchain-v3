@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[Vich\Uploadable]
@@ -39,9 +40,11 @@ class Project
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[Ignore]
     #[Vich\UploadableField(mapping: 'projects', fileNameProperty: 'image.name', size: 'image.size')]
     private ?File $imageFile = null;
 
+    #[Ignore]
     #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private ?EmbeddedFile $image = null;
 
@@ -96,6 +99,12 @@ class Project
     #[ORM\ManyToMany(targetEntity: ProjectMember::class, mappedBy: 'project')]
     private Collection $projectMembers;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'followedProjects')]
+    private Collection $followers;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
@@ -104,6 +113,7 @@ class Project
         $this->comments = new ArrayCollection();
         $this->projectBriefs = new ArrayCollection();
         $this->projectMembers = new ArrayCollection();
+        $this->followers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -205,11 +215,6 @@ class Project
         $this->user = $user_id;
 
         return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
     }
 
     /**
@@ -464,5 +469,26 @@ class Project
         }
 
         return $this;
+    }
+
+    public function addFollower(User $user): self
+    {
+        if (!$this->followers->contains($user)) {
+            $this->followers[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeFollower(User $user): self
+    {
+        $this->followers->removeElement($user);
+
+        return $this;
+    }
+
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
     }
 }

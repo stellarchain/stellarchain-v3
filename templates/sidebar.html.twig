@@ -137,14 +137,15 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form action="{{ path('app_feedback_submit') }}" method="post">
+                        <input type="hidden" name="token" value="{{ csrf_token('feedback') }}">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <textarea name="feedback_message" class="form-control" id="feedbackMessage" placeholder="Tell us your opinion"></textarea>
+                                <textarea name="feedback_message" required class="form-control" id="feedbackMessage" placeholder="Tell us your opinion"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button {{stimulus_action('settings', 'closeModal' , 'click' )}}
-                                class="btn btn-secondary">Close</button>
+                            <a {{stimulus_action('settings', 'closeModal' , 'click' )}}
+                                class="btn btn-secondary">Close</a>
                             <button type="submit" class="btn btn-primary">Send</button>
                         </div>
                         </form>
@@ -169,9 +170,9 @@
             <a href="{{path('app_logout')}}" class="float-end mt-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout">
                 <i class="bi bi-power text-danger me-2"></i>
             </a>
-            {% endif %}
-            {% if not app.user %}
-            <a href="{{path('app_login')}}" class="nav-link"><i class="bi bi-person-circle me-2"></i>Login</a>
+            {% else %}
+
+            <a href="{{path('app_account')}}" class="nav-link"><i class="bi bi-person-circle me-2"></i>Account</a>
             {% endif %}
         </li>
     </ul>

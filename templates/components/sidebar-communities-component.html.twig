@@ -1,0 +1,105 @@
+<div{{ attributes.defaults(stimulus_controller('follow')) }}>
+<div class="text-center mb-2">
+    <a class="btn bg-white border btn-sm w-100" href="{{path('app_new_community')}}" role="button"><i class="bi bi-people-fill"></i> Create community</a>
+</div>
+<div class="card mb-2">
+    <div class="card-header px-0 border-0 pb-0">
+        <div class="d-flex align-items-center border-0 px-3 py-1">
+            <div class="flex-grow-1 d-flex flex-column lh-1">
+                <span class="fw-bold mb-1" href="#">Top Users</span>
+                <div class="small">
+                    <span class="text-muted small mb-0">Based on overall posts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-group mb-2 list-group-flush">
+        {%for user in this.topUsers %}
+            <div class="list-group-item list-group-item-action d-flex align-items-center py-1 border-0">
+                <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Total posts" class="flex-shrink-0 text-decoration-none" href="#">
+                    <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary" style="height: 36px; width: 36px;">
+                        <span class="align-self-center mx-auto fs-6 fw-bold">{{user.postCount}}</span>
+                    </div>
+                </a>
+                <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
+                    <a class="text-decoration-none fw-bold mb-1" href="{{path('app_profile_show', {id: user.0.id})}}">{{user.0.firstName}}</a>
+                    <div class="small text-secondary">
+                        <a class="text-decoration-none text-secondary small mb-0" href="{{path('app_profile_show', {id: user.0.id})}}">@{{user.0.username}}
+                        <i class="bi bi-patch-check-fill text-primary ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Verified User"></i></a>
+                    </div>
+                </div>
+                <div class="small align-self-center">
+                    <a role="button" {{ stimulus_action('follow', 'toggleFollowUser', 'click', { id: user.0.id, type: 'user' }) }}
+                        class="badge {%if user.0.isFollowed %} bg-success text-success {% else %} bg-primary text-primary {%endif%} bg-opacity-25 text-decoration-none">
+                        {%if user.0.isFollowed%} Following {% else %} Follow {%endif%}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="list-group mb-2">
+    <div class="list-group-item">
+        <div class="d-flex align-items-center small">
+            <span class="flex-shrink-0 text-decoration-none">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <i class="bi bi-card-heading align-self-center mx-auto fs-5 fw-bold"></i>
+                </div>
+            </span>
+            <div class="flex-grow-1 ms-2">
+                <b>{{this.totalPosts}}</b>
+                <p class="small text-secondary mb-0">Total posts</p>
+            </div>
+            <div class="flex-shrink-0 d-flex small">
+                <span class="badge bg-opacity-25 align-self-center text-success bg-success">
+                    <i class="bi bi-caret-up-fill"></i> +22
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="list-group-item">
+        <div class="d-flex align-items-center small">
+            <span class="flex-shrink-0 text-decoration-none">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <i class="bi bi-person align-self-center mx-auto fs-5 fw-bold"></i>
+                </div>
+            </span>
+            <div class="flex-grow-1 ms-2">
+                <b>{{this.totalFollowers}}</b>
+                <p class="small text-secondary mb-0">Total followers</p>
+            </div>
+            <div class="flex-shrink-0 d-flex small">
+                <span class="badge bg-opacity-25 align-self-center text-success bg-success">
+                    <i class="bi bi-caret-up-fill"></i> +22
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="list-group-item">
+        <div class="d-flex align-items-center small">
+            <span class="flex-shrink-0 text-decoration-none">
+                <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
+                    style="height: 36px; width: 36px;">
+                    <i class="bi bi-heart align-self-center mx-auto fs-5 fw-bold"></i>
+                </div>
+            </span>
+            <div class="flex-grow-1 ms-2">
+                <b>{{this.totalCommunities}}</b>
+                <p class="small text-secondary mb-0">Total communities</p>
+            </div>
+            <div class="flex-shrink-0 d-flex small">
+                <span class="badge bg-opacity-25 align-self-center text-success bg-success">
+                    <i class="bi bi-caret-up-fill"></i> +22
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-5 mb-4">
+    <span>&nbsp;</span>
+</div>
+</div>

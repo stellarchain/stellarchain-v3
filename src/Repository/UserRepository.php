@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Project;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,28 +34,43 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function isFollowingProject(User $user, Project $project): bool
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('COUNT(f)')
+            ->join('u.followedProjects', 'f')
+            ->where('u.id = :userId')
+            ->andWhere('f.id = :projectId')
+            ->setParameter('userId', $user->getId())
+            ->setParameter('projectId', $project->getId());
 
-    //    public function findOneBySomeField($value): ?User
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return (int) $qb->getQuery()->getSingleScalarResult() > 0;
+    }
+
+    public function findTopUsersByPostCount(int $limit): array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u, COUNT(p.id) as postCount')
+            ->leftJoin('u.communityPosts', 'p')
+            ->groupBy('u.id')
+            ->orderBy('postCount', 'DESC')
+            ->having('COUNT(p.id) > 0')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countUniqueFollowers(): int
+    {
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(DISTINCT f.id)')
+            ->leftJoin('u.followedCommunities', 'f') // Assuming there's a followers relationship
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function isFollowing($currentUser, $targetUser): bool
+    {
+        return $currentUser && $currentUser->getFollowedUsers()->contains($targetUser);
+    }
 }

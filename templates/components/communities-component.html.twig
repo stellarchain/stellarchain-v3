@@ -42,18 +42,24 @@
             <div class="flex-shrink-0 me-2 d-flex">
                 <div class="small me-2">
                     <span class="badge rounded-pill border border-primary text-primary align-self-center"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Followers"><i
-                            class="bi bi-person-circle"></i> 0 </span>
+                          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Followers">
+                        <i class="bi bi-person-circle"></i> <span class="followers-badge">{{ community.followersCount }}</span>
+                    </span>
                 </div>
                 <div class="small me-2">
                     <span class="badge rounded-pill border border-primary text-primary align-self-center"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Posts"><i
-                            class="bi bi-card-heading"></i> {{community.communityPosts.count}} </span>
+                          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Posts">
+                        <i class="bi bi-card-heading"></i> {{ community.postsCount }}
+                    </span>
                 </div>
-                <span class="text-secondary d-flex py-0 rounded hover" data-bs-toggle="tooltip" data-bs-placement="top"
-                    role="button" data-bs-title="Follow" {{ stimulus_action('follow', 'toggleFollowCommunity' , 'click' , { id: community.id, type: 'community' }) }}>
-                    <i class="bi bi-plus-circle text-primary text-primary align-self-center"></i>
+                <div class="me-1">
+                <span class="text-secondary d-flex py-0 rounded hover " data-bs-toggle="tooltip" data-bs-placement="top"
+                    role="button" data-bs-title="{{community.isFollowed ? 'Unfollow' : 'Follow'}}"
+                      {{ stimulus_action('follow', 'toggleFollowCommunity', 'click', { id: community.id, type: 'community' }) }}>
+
+                    {{ community.isFollowed ? '<i class="bi bi-x-circle text-danger align-self-center"></i>' : '<i class="bi bi-plus-circle text-primary align-self-center"></i>' }}
                 </span>
+                </div>
             </div>
         </div>
     </div>

@@ -7,6 +7,7 @@ use App\Entity\CommunityPost;
 use App\Form\CommunityFormType;
 use App\Form\CommunityPostType;
 use App\Repository\CommunityPostRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +45,7 @@ class CommunityController extends AbstractController
     }
 
     #[Route('/communities/{id}', name: 'app_show_communities')]
-    public function show(Request $request, EntityManagerInterface $entityManager, Community $community, CommunityPostRepository $communityPostRepository): Response
+    public function show(Request $request, EntityManagerInterface $entityManager, Community $community, CommunityPostRepository $communityPostRepository, UserRepository $userRepository): Response
     {
         $communityPost = new CommunityPost();
         $form = $this->createForm(CommunityPostType::class, $communityPost);
@@ -60,11 +61,15 @@ class CommunityController extends AbstractController
         }
 
         $communityPosts = $communityPostRepository->getCommunityPosts($community);
+        $currentUser = $this->getUser();
+        $isFollowing = $currentUser ? $currentUser->getFollowedCommunities()->contains($community) : false;
 
         return $this->render('community/show.html.twig', [
             'community' => $community,
             'postForm' => $form,
-            'communityPosts' => $communityPosts
+            'communityPosts' => $communityPosts,
+            'isFollowing' => $isFollowing,
         ]);
     }
+
 }

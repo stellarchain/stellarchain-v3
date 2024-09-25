@@ -4,3 +4,5 @@ market_cap_dominance: Market Capitalization Dominance
 circulating_supply: Circulating Supply 
 volume_24h: Total Volume
 transactions_per_ledger: Transactions Per Ledger
+operations_per_ledger: Operations Per Ledger
+number_of_transactions: Number of Transactions 

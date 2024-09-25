@@ -12,7 +12,6 @@ class AccountController extends AbstractController
     #[Route('/account', name: 'app_account')]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('account/index.html.twig');
     }
 

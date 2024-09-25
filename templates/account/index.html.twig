@@ -10,8 +10,8 @@
 					<div class="bg-primary bg-opacity-25 border border-primary  rounded d-flex mx-auto my-2" style="height: 80px; width: 80px;">
 	                    <i class="bi bi-person-circle rounded-circle align-self-center mx-auto text-primary" style="font-size:48px;"></i>
 	                </div>
-                    <p class="mb-0"><b class="text-uppercase">{{app.user}}</b></p>
-					<p class="small"><span class="text-secondary">This is your profile page</span></p>
+                    <p class="mb-0"><b class="text-uppercase">Account</b></p>
+					<p class="small"><span class="text-secondary">Account info and settings</span></p>
 				</div>
 
 				<div class="list-group mb-2">
@@ -22,7 +22,7 @@
 						    </div>
 						    <div class="flex-grow-1 ms-3 small">
 						        <b>Settings</b>
-						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						        <p class="small text-secondary mb-0">Account settings</p>
 						    </div>
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-chevron-right text-secondary"></i>
@@ -38,7 +38,7 @@
 						    </div>
 						    <div class="flex-grow-1 ms-3 small">
 						        <b>Frequently Asked Questions</b>
-						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						        <p class="small text-secondary mb-0">Search for answers</p>
 						    </div>
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-chevron-right text-secondary"></i>
@@ -47,14 +47,14 @@
 					</a>
 				</div>
 				<div class="list-group mb-2">
-					<a href="#" class="list-group-item list-group-item-action bg-darker">
+					<a href="https://remote-tech.co.uk/terms" target="_blank" class="list-group-item list-group-item-action bg-darker">
 						<div class="d-flex align-items-center">
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-file-text fs-3 text-primary"></i>
 						    </div>
 						    <div class="flex-grow-1 ms-3 small">
 						        <b>Terms and Conditions</b>
-						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						        <p class="small text-secondary mb-0">Our terms and conditions</p>
 						    </div>
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-chevron-right text-secondary"></i>
@@ -63,14 +63,14 @@
 					</a>
 				</div>
 				<div class="list-group mb-2">
-					<a href="#" class="list-group-item list-group-item-action bg-darker">
+					<a href="https://remote-tech.co.uk/privacy" target="_blank" class="list-group-item list-group-item-action bg-darker">
 						<div class="d-flex align-items-center">
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-file-earmark-lock fs-3 text-primary"></i>
 						    </div>
 						    <div class="flex-grow-1 ms-3 small">
 						        <b>Privacy Policy</b>
-						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						        <p class="small text-secondary mb-0">Check privacy policy</p>
 						    </div>
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-chevron-right text-secondary"></i>
@@ -79,14 +79,14 @@
 					</a>
 				</div>
 				<div class="list-group mb-2">
-					<a href="#" class="list-group-item list-group-item-action bg-darker">
+					<a href="https://support.remote-tech.co.uk" target="_blank" class="list-group-item list-group-item-action bg-darker">
 						<div class="d-flex align-items-center">
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-life-preserver fs-3 text-primary"></i>
 						    </div>
 						    <div class="flex-grow-1 ms-3 small">
 						        <b>Support</b>
-						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						        <p class="small text-secondary mb-0">Ask for help</p>
 						    </div>
 						    <div class="flex-shrink-0">
 						        <i class="bi bi-chevron-right text-secondary"></i>
@@ -102,7 +102,7 @@
 						    </div>
 						    <div class="flex-grow-1 ms-3 small">
 						        <b>Dark Mode</b>
-						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
+						        <p class="small text-secondary mb-0">Toggle theme</p>
 						    </div>
 						    <div class="flex-shrink-0 form-check form-select-lg form-switch p-0 align-self-center d-flex">
 						        <input class="form-check-input align-self-center p-0 m-0" type="checkbox" {{ stimulus_target('account', 'darkMode') }} id="darkModeSwitch">
@@ -111,18 +111,32 @@
 					</div>
 				</div>
 				<div class="list-group mb-2">
-                <a href="{{path('app_logout')}}" class="list-group-item list-group-item-action bg-darker">
-						<div class="d-flex align-items-center">
-						    <div class="flex-shrink-0">
-						        <i class="bi bi-power fs-3 text-danger"></i>
-						    </div>
-						    <div class="flex-grow-1 ms-3 small">
-						        <b>Log out</b>
-						        <p class="small text-secondary mb-0">Lorem Ipsum</p>
-						    </div>
-						</div>
-					</a>
-				</div>
+                    {%if app.user %}
+                    <a href="{{path('app_logout')}}" class="list-group-item list-group-item-action bg-darker">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-power fs-3 text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3 small">
+                                    <b>Log out</b>
+                                    <p class="small text-secondary mb-0">Lorem Ipsum</p>
+                                </div>
+                            </div>
+                        </a>
+                    {%else%}
+                        <a href="{{path('app_login')}}" class="list-group-item list-group-item-action bg-darker">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-person-circle fs-3 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3 small">
+                                    <b>Login</b>
+                                    <p class="small text-secondary mb-0">Login page</p>
+                                </div>
+                            </div>
+                        </a>
+                    {%endif%}
+                </div>
 			</div>
 		</div>
 

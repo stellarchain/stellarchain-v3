@@ -5,24 +5,29 @@
 {% set content_title = community.name%}
 
 {% block body %}
-<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar" {{stimulus_controller('follow')}}>
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="row">
         <div class="col-sm-8 offset-md-2">
             <div class="flex-shrink-0 m-2 d-flex">
                 <div class="me-2">
-                    <span class="badge rounded-pill border border-primary text-primary align-self-center"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Followers"><i
-                            class="bi bi-person-circle"></i> 234</span>
+                    <span class="badge rounded-pill border border-primary text-primary align-self-center "
+                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Followers">
+                        <i class="bi bi-person-circle"></i> <span class="followers-badge"> {{community.followers.count}} </span>
+                    </span>
                 </div>
                 <div class="me-2">
                     <span class="badge rounded-pill border border-primary text-primary align-self-center"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Posts"><i
-                            class="bi bi-card-heading"></i> 234</span>
+                       data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Posts">
+                        <i class="bi bi-card-heading"></i> {{community.communityPosts.count}}
+                    </span>
                 </div>
-                <span class="text-secondary d-flex py-0 rounded hover" data-bs-toggle="tooltip" data-bs-placement="top"
-                    role="button" data-bs-title="Follow"><i
-                        class="bi bi-plus-circle text-primary text-primary align-self-center"></i></span>
+                <span
+                    {{ stimulus_action('follow', 'toggleFollowCommunity' , 'click' , { id: community.id, type: 'community' }) }}
+                    class="text-secondary d-flex py-0 rounded hover" data-bs-toggle="tooltip" data-bs-placement="top"
+                    role="button" data-bs-title="Follow">
+                        {{ isFollowing ? '<i class="bi bi-x-circle text-danger align-self-center"></i>' : '<i class="bi bi-plus-circle text-primary align-self-center"></i>' }}
+                </span>
             </div>
         </div>
     </div>

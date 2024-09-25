@@ -310,7 +310,3 @@ canvas#race{position:relative; z-index:1;}
 .fs-12 {
     font-size: 12px;
 }
-
- input[type="text"]::placeholder {
-      color: white;
-}

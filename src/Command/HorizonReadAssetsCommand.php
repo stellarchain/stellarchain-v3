@@ -44,18 +44,13 @@ class HorizonReadAssetsCommand extends Command
             parse_str($query_string, $query_params);
             $cursor = $query_params['cursor'];
 
-            foreach($assets as $asset){
-                $this->saveAsset($asset);
-            }
-
-            $io->note(sprintf('Saved: %s', $totalAssets));
-
             if ($totalRecords < 200){
                 break;
             }
-        }
 
-        $io->success(sprintf('Successfully imported total of %s assets', $totalAssets));
+
+            $io->success(sprintf('Counted total of %s assets', $totalAssets));
+        }
 
         return Command::SUCCESS;
     }

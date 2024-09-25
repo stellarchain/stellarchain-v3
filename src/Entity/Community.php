@@ -34,10 +34,17 @@ class Community
     #[ORM\OneToMany(targetEntity: CommunityPost::class, mappedBy: 'community')]
     private Collection $communityPosts;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'followedCommunities')]
+    private Collection $followers;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
         $this->communityPosts = new ArrayCollection();
+        $this->followers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +134,30 @@ class Community
                 $communityPost->setCommunity(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function addFollower(User $follower): static
+    {
+        if (!$this->followers->contains($follower)) {
+            $this->followers->add($follower);
+        }
+
+        return $this;
+    }
+
+    public function removeFollower(User $follower): static
+    {
+        $this->followers->removeElement($follower);
 
         return $this;
     }

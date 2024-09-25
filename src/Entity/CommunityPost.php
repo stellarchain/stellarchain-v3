@@ -30,7 +30,7 @@ class CommunityPost
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'communityUserPosts')]
+    #[ORM\ManyToOne(inversedBy: 'communityPosts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

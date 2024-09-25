@@ -54,20 +54,33 @@ class IndexController extends AbstractController
     #[Route('/feedback/submit', name: 'app_feedback_submit', methods: ['POST'])]
     public function submitFeedback(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $message = $request->request->get('feedback_message');
+        $submittedToken = $request->getPayload()->get('token');
+        if ($this->isCsrfTokenValid('feedback', $submittedToken)) {
+            $message = $request->request->get('feedback_message');
 
-        $feedback = new Feedback();
-        $feedback->setMessage($message);
-        $feedback->setCreatedAt(new \DateTimeImmutable());
-        $user = $this->getUser();
-        if ($user){
-            $feedback->setUserId($user);
+            if (empty($message)) {
+                $this->addFlash('error', 'Warning: Feedback not submitted!');
+                return $this->json([
+                    'error' => 'Feedback failed to send.'
+                ]);
+            }
+
+            $feedback = new Feedback();
+            $feedback->setMessage($message);
+            $feedback->setCreatedAt(new \DateTimeImmutable());
+            $user = $this->getUser();
+            if ($user) {
+                $feedback->setUserId($user);
+            }
+            $entityManager->persist($feedback);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Feedback submitted successfully!');
+
+            return $this->redirectToRoute('app_home');
         }
-        $entityManager->persist($feedback);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Feedback submitted successfully!');
-
-        return $this->redirectToRoute('app_home');
+        return $this->json([
+            'error' => 'Invalid request'
+        ]);
     }
 }

@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: AssetRepository::class)]
 #[UniqueEntity(
     fields: ['asset_type', 'asset_code', 'asset_issuer'],
@@ -86,7 +87,7 @@ class Asset
     /**
      * @var Collection<int, Trade>
      */
-    #[ORM\OneToMany(targetEntity: Trade::class, mappedBy: 'base_asset')]
+    #[ORM\OneToMany(targetEntity: Trade::class, mappedBy: 'counter_asset')]
     private Collection $counterTrades;
 
     #[ORM\Column(nullable: true)]

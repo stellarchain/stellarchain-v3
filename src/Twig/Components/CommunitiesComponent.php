@@ -63,18 +63,30 @@ final class CommunitiesComponent
         return self::PER_PAGE;
     }
 
-    /**
-     * @return array<int, Community>
-     */
     public function getCommunities(): array
     {
-
         $criteria = $this->buildCriteria();
         $offset = ($this->page - 1) * self::PER_PAGE;
         $communities = $this->communityRepository->findBy([], $criteria, self::PER_PAGE, $offset);
-        return $communities;
-    }
 
+        // Add follow status for each community
+        $user = $this->security->getUser();
+        $communitiesWithFollowStatus = [];
+
+        foreach ($communities as $community) {
+            $isFollowed = $user && $community->getFollowers()->contains($user);
+            $communitiesWithFollowStatus[] = [
+                'id' => $community->getId(),
+                'name' => $community->getName(),
+                'description' => $community->getDescription(),
+                'followersCount' => $community->getFollowers()->count(),
+                'postsCount' => $community->getCommunityPosts()->count(),
+                'isFollowed' => $isFollowed,
+            ];
+        }
+
+        return $communitiesWithFollowStatus;
+    }
     /**
      * @return array|array<string,string>
      */

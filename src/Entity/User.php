@@ -78,6 +78,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Community::class, mappedBy: 'user')]
     private Collection $communities;
 
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[ORM\JoinTable(name: 'user_follows_user')]
+    #[ORM\JoinColumn(name: 'follower_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'followed_id', referencedColumnName: 'id')]
+    private Collection $followedUsers;
+
+    /**
+     * @var Collection<int, Community>
+     */
+    #[ORM\ManyToMany(targetEntity: Community::class, mappedBy: 'followers')]
+    private Collection $followedCommunities;
+
+    /**
+     * @var Collection<int, Community>
+     */
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'followers')]
+    private Collection $followedProjects;
+
     /**
      * @var Collection<int, Job>
      */
@@ -93,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Vote>
      */
-    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'user')]
     private Collection $votes;
 
     public function __construct()
@@ -106,6 +124,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->jobs = new ArrayCollection();
         $this->communityPosts = new ArrayCollection();
         $this->votes = new ArrayCollection();
+        $this->followedCommunities = new ArrayCollection();
+        $this->followedProjects = new ArrayCollection();
+        $this->followedUsers = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -427,7 +448,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->votes->contains($vote)) {
             $this->votes->add($vote);
-            $vote->setUserId($this);
+            $vote->setUser($this);
         }
 
         return $this;
@@ -437,11 +458,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->votes->removeElement($vote)) {
             // set the owning side to null (unless already changed)
-            if ($vote->getUserId() === $this) {
-                $vote->setUserId(null);
+            if ($vote->getUser() === $this) {
+                $vote->setUser(null);
             }
         }
 
         return $this;
+    }
+
+    public function followUser(User $user): self
+    {
+        if (!$this->followedUsers->contains($user)) {
+            $this->followedUsers[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function unfollowUser(User $user): self
+    {
+        $this->followedUsers->removeElement($user);
+
+        return $this;
+    }
+
+    public function getFollowedUsers(): Collection
+    {
+        return $this->followedUsers;
+    }
+
+    public function getFollowedCommunities(): Collection
+    {
+        return $this->followedCommunities;
+    }
+
+    public function getFollowedProjects(): Collection
+    {
+        return $this->followedProjects;
     }
 }
