@@ -15,66 +15,79 @@ class FollowController extends AbstractController
     #[Route('/follow/community/{community}', name: 'app_follow_community')]
     public function community(Community $community, EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // Check if the user is already following
-        if ($community->getFollowers()->contains($user)) {
-            // If already following, remove the follower
-            $community->removeFollower($user);
-        } else {
-            // If not following, add the follower
-            $community->addFollower($user);
+        $user = $this->getUser();
+        if ($user) {
+            if ($community->getFollowers()->contains($user)) {
+                $community->removeFollower($user);
+            } else {
+                $community->addFollower($user);
+            }
+
+            $entityManager->persist($community);
+            $entityManager->flush();
+
+
+            return $this->json([
+                'followers' => $community->getFollowers()->count(),
+                'community' => $community->getName(),
+                'isFollowed' => $community->getFollowers()->contains($user) // Return the follow status
+            ]);
         }
 
-        $entityManager->persist($community);
-        $entityManager->flush();
-
-        return $this->json([
-            'followers' => $community->getFollowers()->count(),
-            'community' => $community->getName(),
-            'isFollowed' => $community->getFollowers()->contains($user) // Return the follow status
-        ]);
+        return $this->json(['error' => 'Something is wrong.'], 400);
     }
 
     #[Route('/follow/user/{user}', name: 'app_follow_user')]
     public function user(User $user, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $currentUser = $this->getUser();
-        $userToFollow = $user;
+        if ($currentUser) {
+            $userToFollow = $user;
+            if (!$userToFollow) {
+                return $this->json(['error' => 'User not found'], 404);
+            }
+            if ($currentUser->getFollowedUsers()->contains($userToFollow)) {
+                $currentUser->unfollowUser($userToFollow);
+            } else {
+                $currentUser->followUser($userToFollow);
+            }
 
-        if (!$userToFollow) {
-            return $this->json(['error' => 'User not found'], 404);
+            $entityManager->persist($currentUser);
+            $entityManager->flush();
+
+            return $this->json(['status' => 'success']);
         }
 
-        if ($currentUser->getFollowedUsers()->contains($userToFollow)) {
-            $currentUser->unfollowUser($userToFollow);
-        } else {
-            $currentUser->followUser($userToFollow);
-        }
-
-        $entityManager->persist($currentUser);
-        $entityManager->flush();
-
-        return $this->json(['status' => 'success']);
+        return $this->json(['error' => 'Something is wrong.'], 400);
     }
 
     #[Route('/follow/project/{project}', name: 'app_follow_project')]
     public function project(Project $project, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
-        if ($project->getFollowers()->contains($user)) {
-            $project->removeFollower($user);
-        } else {
-            $project->addFollower($user);
+
+        if ($user) {
+            if ($project->getFollowers()->contains($user)) {
+                $project->removeFollower($user);
+            } else {
+                $project->addFollower($user);
+            }
+
+            $entityManager->persist($project);
+            $entityManager->flush();
+
+            return $this->json([
+                'followers' => $project->getFollowers()->count(),
+                'project' => $project->getId(),
+                'isFollowed' => $project->getFollowers()->contains($user) // Return if the user is now following
+            ]);
         }
 
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-        return $this->json([
-            'followers' => $project->getFollowers()->count(),
-            'project' => $project->getId(),
-            'isFollowed' => $project->getFollowers()->contains($user) // Return if the user is now following
-        ]);
+        return $this->json(['error' => 'Something is wrong.'], 400);
     }
 }
