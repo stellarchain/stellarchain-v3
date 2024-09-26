@@ -15,8 +15,6 @@ class FollowController extends AbstractController
     #[Route('/follow/community/{community}', name: 'app_follow_community')]
     public function community(Community $community, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $user = $this->getUser();
         if ($user) {
             if ($community->getFollowers()->contains($user)) {
@@ -42,8 +40,6 @@ class FollowController extends AbstractController
     #[Route('/follow/user/{user}', name: 'app_follow_user')]
     public function user(User $user, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $currentUser = $this->getUser();
         if ($currentUser) {
             $userToFollow = $user;
@@ -68,9 +64,7 @@ class FollowController extends AbstractController
     #[Route('/follow/project/{project}', name: 'app_follow_project')]
     public function project(Project $project, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
-
         if ($user) {
             if ($project->getFollowers()->contains($user)) {
                 $project->removeFollower($user);

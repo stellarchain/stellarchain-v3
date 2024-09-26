@@ -9,7 +9,6 @@ export default class extends Controller {
     this.component = await getComponent(this.element);
 
     this.component.on('model:set', (model, value, component) => {
-      console.log(model, value, component)
       if (model !== 'category'){
         this.projectsListTarget.innerHTML = '';
       }

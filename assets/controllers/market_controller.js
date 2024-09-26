@@ -26,11 +26,11 @@ export default class extends Controller {
             } else {
               data_el.innerHTML = `$${stat.value}`;
             }
-
           }
 
-          const badge = document.querySelector('.market-info-' + key).querySelector('.badge');
-          if (badge) {
+          const market_info_badge = document.querySelector('.market-info-' + key);
+          if (market_info_badge) {
+            let badge = market_info_badge.querySelector('.badge')
             badge.classList.remove('text-success', 'text-danger', 'bg-success', 'bg-danger');
             badge.classList.add(`text-${stat.color}`, `bg-${stat.color}`);
             badge.innerHTML = `<i class="bi bi-caret-${stat.caretDirection}-fill"></i> ${stat.percentageChange}%`;
@@ -62,7 +62,6 @@ export default class extends Controller {
     event.detail.chart.options.plugins.tooltips = {
       enabled: false,
       custom: function (tooltipModel) {
-        console.log(tooltipModel)
       },
     };
 

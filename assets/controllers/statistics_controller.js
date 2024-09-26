@@ -28,7 +28,6 @@ export default class extends Controller {
     event.detail.chart.options.plugins.tooltips = {
       enabled: false,
       custom: function (tooltipModel) {
-        console.log(tooltipModel)
       },
     };
 
@@ -70,7 +69,6 @@ export default class extends Controller {
 
     const {min} = chart.scales.x;
     const newMin = newDataCount - min;
-    console.log(newMin);
     chart.options.scales.x.min = Math.max(newMin, 0);
 
     chart.update();

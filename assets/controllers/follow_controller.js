@@ -1,4 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
+import {showToastAuth} from 'app';
 
 export default class extends Controller {
   static targets = ['list'];
@@ -7,36 +8,37 @@ export default class extends Controller {
     const button = event.currentTarget;
     const followIcon = button.querySelector('i');
     const response = await fetch(`/follow/community/${event.params.id}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
     });
 
     if (response.ok) {
-        const data = await response.json();
+      const data = await response.json();
 
-        console.log(followIcon)
-        if (data.isFollowed) {
-            button.classList.add('followed');
-            followIcon.classList.add('text-danger')
-            followIcon.classList.add('bi-x-circle')
-            followIcon.classList.remove('text-primary')
-            followIcon.classList.remove('bi-plus-circle')
-        } else {
-            button.classList.remove('following');
-            followIcon.classList.remove('text-danger')
-            followIcon.classList.remove('bi-x-circle')
-            followIcon.classList.add('text-primary')
-            followIcon.classList.add('bi-plus-circle')
-            button.innerHtml = '<i class="bi  align-self-center"></i>';
-        }
+      if (data.isFollowed) {
+        button.classList.add('followed');
+        followIcon.classList.add('text-danger')
+        followIcon.classList.add('bi-x-circle')
+        followIcon.classList.remove('text-primary')
+        followIcon.classList.remove('bi-plus-circle')
+      } else {
+        button.classList.remove('following');
+        followIcon.classList.remove('text-danger')
+        followIcon.classList.remove('bi-x-circle')
+        followIcon.classList.add('text-primary')
+        followIcon.classList.add('bi-plus-circle')
+        button.innerHtml = '<i class="bi  align-self-center"></i>';
+      }
 
-        const followerCountBadge = document.querySelector('.followers-badge'); // Select the follower count badge
-        if (followerCountBadge) {
-            followerCountBadge.textContent = data.followers; // Update the follower count
-        }
+      const followerCountBadge = document.querySelector('.followers-badge'); // Select the follower count badge
+      if (followerCountBadge) {
+        followerCountBadge.textContent = data.followers; // Update the follower count
+      }
+    } else {
+      showToastAuth('Authentication.', 'Please login to follow.')
     }
   }
 
@@ -62,7 +64,7 @@ export default class extends Controller {
       button.classList.toggle('text-success');
       button.classList.toggle('text-primary');
     } else {
-      console.error('Failed to toggle follow status');
+      showToastAuth('Authentication.', 'Please login to follow.')
     }
   }
 
@@ -88,7 +90,7 @@ export default class extends Controller {
         button.classList.toggle('text-primary');
       }
     } catch (error) {
-      console.error('Error:', error);
+      showToastAuth('Authentication.', 'Please login to follow.')
     }
   }
 }
