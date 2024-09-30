@@ -131,6 +131,7 @@
     width: 82px;
     position: absolute;
     justify-content: center;
+    left: 20%;
 }
 
 @media only screen and (max-width: 767px) {

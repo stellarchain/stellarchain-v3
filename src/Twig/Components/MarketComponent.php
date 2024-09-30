@@ -173,7 +173,10 @@ final class MarketComponent
                 'x' => ['display' => false],
             ],
             'plugins' => [
-                'legend' => ['display' => false]
+                'legend' => ['display' => false],
+                'tooltip' => [
+                    'position' => 'average',
+                ],
             ],
         ]);
 

@@ -63,7 +63,7 @@
             <div class="border-0 text-secondary text-end d7-col p-2 d-none fw-bold d-lg-block fs-12">7d%</div>
             <div class="border-0 text-secondary text-end vol-col p-2 d-none fw-bold d-lg-block fs-12">Volume(24h)</div>
             <div class="border-0 text-secondary text-end circulating-col p-2 d-none fw-bold d-lg-block fs-12">Circulating Supply</div>
-            <div class="border-0 text-secondary text-end chart-col fw-bold p-2 fs-12">Change</div>
+            <div class="border-0 text-secondary text-end chart-col fw-bold p-2 fs-12">Change (% 1h)</div>
         </div>
     </div>
 
@@ -166,7 +166,7 @@
            data-action="appear->live#action" data-live-action-param="debounce(750)|more" {% endif %}>
            <span class="grid_loader" style="--delay: {{ (loop.index + 1) / per_page }};">
                <p class="card-text placeholder-glow">
-                  <span class="placeholder col-12 p-4"></span>
+                  <span class="placeholder col-12 p-4 rounded-1 bg-info"></span>
                </p>
            </span>
        </div>
