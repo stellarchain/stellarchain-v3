@@ -132,7 +132,7 @@
     position: absolute;
     justify-content: center;
     left: 20%;
-    top: 0;
+    top: 5px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -140,6 +140,7 @@
         height: 40px !important;
         width: 100px;
         position: absolute;
+        top: 0;
     }
 }
 

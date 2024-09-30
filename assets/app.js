@@ -65,6 +65,7 @@ document.addEventListener('chartjs:init', function (event) {
   Chart.register(zoomPlugin);
   Chart.register(CrosshairPlugin);
   Interaction.modes.interpolate = Interpolate;
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {

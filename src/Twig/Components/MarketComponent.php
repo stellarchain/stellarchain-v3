@@ -90,12 +90,12 @@ final class MarketComponent
                 $recentMetrics = $this->assetMetricRepository->findBy(
                     ['asset' => $asset],
                     ['created_at' => 'DESC'],
-                    7
+                   20
                 );
                 $metricsForChart = array_reverse($recentMetrics);
 
                 $chartData = array_map(fn ($metric) => $metric->getPriceChange1h(), $metricsForChart);
-                $chartLabels = array_map(fn ($metric) => $metric->getCreatedAt()->format('H:i'), $metricsForChart);
+                $chartLabels = array_map(fn ($metric) => $metric->getCreatedAt()->format('d/m H:i'), $metricsForChart);
 
                 $chart = $this->buildChart($chartLabels, $chartData);
 
@@ -154,14 +154,14 @@ final class MarketComponent
             'labels' => $labels,
             'datasets' => [
                 [
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
+                    'backgroundColor' => 'rgb(220, 53, 69)',
+                    'borderColor' => 'rgb(220, 53, 69)',
                     'data' => $data,
                     'fill' => false,
                     'tension' => 0.1,
                     'borderWidth' => 1,
-                    'pointBorderWidth' => 1.5,
-                    'pointRadius' => 1.5,
+                    'pointBorderWidth' => 0.5,
+                    'pointRadius' => 0.5,
                 ],
             ],
         ]);
