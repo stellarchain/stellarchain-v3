@@ -126,14 +126,18 @@
   display: none;
 }
 .sm-chart {
-    height: 36px !important;
-    margin: 0px auto;
-    width: 80px;
+    height: 42px !important;
+    display: flex;
+    width: 82px;
+    position: absolute;
+    justify-content: center;
 }
 
 @media only screen and (max-width: 767px) {
     .sm-chart {
-        height: 20px !important;
+        height: 40px !important;
+        width: 100px;
+        position: absolute;
     }
 }
 

@@ -90,7 +90,7 @@ final class MarketComponent
                 $recentMetrics = $this->assetMetricRepository->findBy(
                     ['asset' => $asset],
                     ['created_at' => 'DESC'],
-                   7
+                    7
                 );
                 $metricsForChart = array_reverse($recentMetrics);
 
@@ -138,7 +138,7 @@ final class MarketComponent
         $filter = [
             'in_market' => true
         ];
-        if ($this->asset != ''){
+        if ($this->asset != '') {
             $filter = array_merge($filter, ['asset_code' => $this->asset]);
         }
 
@@ -160,18 +160,20 @@ final class MarketComponent
                     'fill' => false,
                     'tension' => 0.1,
                     'borderWidth' => 1,
-                    'pointBorderWidth' => 1,
+                    'pointBorderWidth' => 1.5,
                     'pointRadius' => 1.5,
                 ],
             ],
         ]);
         $chart->setOptions([
+            'responsive' => false,
+            'maintainAspectRatio' => true,
             'scales' => [
                 'y' => ['display' => false],
                 'x' => ['display' => false],
             ],
             'plugins' => [
-                'legend' => ['display' => false],
+                'legend' => ['display' => false]
             ],
         ]);
 

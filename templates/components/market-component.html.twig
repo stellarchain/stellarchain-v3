@@ -146,12 +146,12 @@
                 asset.assetCode }}
             </div>
 
-            <div class="border-0 bg-white text-end p-2 chart-col" >
-                <div class="small font-monospace align-self-center text-end">
+            <div class="border-0 bg-white p-2 chart-col position-relative" >
+                <div class="small font-monospace">
                     <div class="sm-chart">
                        {{ render_chart(assetChart, {class: asset.assetCode}) }}
                     </div>
-                    <div class="small {{ change1hClass }} d-block d-lg-none">
+                    <div class="small {{ change1hClass }} d-block d-lg-none position-absolute end-0 bottom-0">
                         <i class="bi {{ latestMetric.priceChange1h < 0 ? 'bi-caret-down-fill' : (latestMetric.priceChange1h == 0.0 ? 'bi-caret-right-fill' : 'bi-caret-up-fill') }}"></i>
                         {{ latestMetric.priceChange1h }}%
                     </div>
