@@ -26,13 +26,11 @@ class AccountController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $profile = new UserProfile();
-
-        if ($this->getUser()) {
+        if ($this->getUser()->getUserProfile()){
             $profile = $this->getUser()->getUserProfile();
         }
 
         $form = $this->createForm(EditAccountType::class, $profile);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $profile->setUser($this->getUser());
@@ -41,8 +39,6 @@ class AccountController extends AbstractController
 
             return $this->redirectToRoute('app_profile_show', ['id' => $profile->getId()]);
         }
-
-        $profile = $this->getUser();
 
         return $this->render('account/show.html.twig', [
             'profile' => $profile,
