@@ -17,16 +17,14 @@ class EditAccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('role_position')
             ->add('phone')
             ->add('address')
             ->add('github')
             ->add('skills', CollectionType::class, [
                 'entry_type' => TextType::class,
                 'allow_add' => true,
-                'prototype' => true,
-                'prototype_data' => 'New Tag Placeholder',
-            ])
-            ->add('role_position');
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -25,7 +25,12 @@ class AccountController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $profile = new UserProfile();
+        if ($this->getUser()->getUserProfile()){
+            $profile = $this->getUser()->getUserProfile();
+        }else{
+            $profile = new UserProfile();
+        }
+
         $form = $this->createForm(EditAccountType::class, $profile);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
