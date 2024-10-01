@@ -14,7 +14,7 @@ class UserProfile
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'userProfile', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'userProfile')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
