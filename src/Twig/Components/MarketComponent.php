@@ -144,6 +144,7 @@ final class MarketComponent
 
         return $filter;
     }
+
     /**
      * Helper function to build the chart object
      */
@@ -159,7 +160,7 @@ final class MarketComponent
                     'data' => $data,
                     'fill' => false,
                     'tension' => 0.1,
-                    'borderWidth' => 1,
+                    'borderWidth' => 1.3,
                     'pointBorderWidth' => 0.5,
                     'pointRadius' => 0.5,
                 ],
