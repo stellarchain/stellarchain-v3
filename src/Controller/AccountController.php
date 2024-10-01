@@ -41,7 +41,7 @@ class AccountController extends AbstractController
         }
 
         return $this->render('account/show.html.twig', [
-            'profile' => $profile,
+            'profile' => $this->getUser(),
             'edit' => true,
             'form' => $form
         ]);
