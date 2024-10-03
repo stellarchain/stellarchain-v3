@@ -307,6 +307,11 @@ canvas#race{position:relative; z-index:1;}
     .chart-col {
         width: 29%;
     }
+
+    .statistics {
+        position: relative !important;
+        width:100% !important;
+    }
 }
 /* Mobile view (up to 576px) */
 @media (max-width: 990px) {
@@ -317,3 +322,4 @@ canvas#race{position:relative; z-index:1;}
 .fs-12 {
     font-size: 12px;
 }
+

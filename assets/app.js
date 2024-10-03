@@ -5,6 +5,8 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import {Tooltip, Toast} from 'bootstrap';
 import {Interaction} from 'chart.js';
 import {CrosshairPlugin, Interpolate} from 'chartjs-plugin-crosshair';
+import gradient from 'chartjs-plugin-gradient';
+import 'chartjs-adapter-date-fns';
 
 document.addEventListener("turbo:before-prefetch", (event) => {
   event.preventDefault()
@@ -64,8 +66,8 @@ document.addEventListener('chartjs:init', function (event) {
   const Chart = event.detail.Chart;
   Chart.register(zoomPlugin);
   Chart.register(CrosshairPlugin);
+  Chart.register(gradient);
   Interaction.modes.interpolate = Interpolate;
-
 });
 
 document.addEventListener('DOMContentLoaded', function () {

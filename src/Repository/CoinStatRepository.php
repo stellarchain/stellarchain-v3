@@ -50,7 +50,7 @@ class CoinStatRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function getStatsByName(string $name): array
+    public function getStatsByName(string $name, $offset = 0, int $limit = 25): array
     {
         $sql = "
             SELECT
@@ -58,16 +58,40 @@ class CoinStatRepository extends ServiceEntityRepository
                 value
             FROM coin_stat
             WHERE name = :name
-            ORDER BY created_at ASC;
+            ORDER BY created_at DESC LIMIT :limit OFFSET :offset;
         ";
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('created_at', 'created_at');
-        $rsm->addScalarResult('value', 'value' );
+        $rsm->addScalarResult('value', 'value');
 
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         $query->setParameter('name', $name);
 
+        $query->setParameter('limit', $limit);
+        $query->setParameter('offset', $offset);
+
         return $query->getResult();
+    }
+
+    public function getTotalCountByName(string $name): int
+    {
+        $sql = "
+            SELECT
+                COUNT(*) AS total_count
+            FROM coin_stat
+            WHERE name = :name;
+        ";
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('total_count', 'total_count');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+
+        $query->setParameter('name', $name);
+
+        $result = $query->getSingleScalarResult();
+
+        return (int)$result;
     }
 }

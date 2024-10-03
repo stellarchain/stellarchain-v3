@@ -7,10 +7,7 @@
 {% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
-    <div class="card">
-        {{ render_chart(chart, {'class': 'statistics', 'data-controller': 'statistics'}) }}
-    </div>
-
+    {{component('coin-chart-component', {stat: stat})}}
     <div class="py-4">
         <span>&nbsp;</span>
     </div>
@@ -19,5 +16,4 @@
         <span>&nbsp;</span>
     </div>
 </div>
-
 {% endblock %}

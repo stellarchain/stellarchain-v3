@@ -40,7 +40,7 @@ return [
         'type' => 'css',
     ],
     'chart.js' => [
-        'version' => '4.4.3',
+        'version' => '4.4.1',
     ],
     '@swup/fade-theme' => [
         'version' => '2.0.1',
@@ -114,5 +114,14 @@ return [
     'bootstrap/dist/css/bootstrap.min.css' => [
         'version' => '5.3.3',
         'type' => 'css',
+    ],
+    'chartjs-plugin-gradient' => [
+        'version' => '0.6.1',
+    ],
+    'date-fns' => [
+        'version' => '4.1.0',
+    ],
+    'chartjs-adapter-date-fns' => [
+        'version' => '3.0.0',
     ],
 ];

@@ -1,0 +1,18 @@
+<div{{ attributes.defaults(stimulus_controller('statistics')) }}>
+    <div class="card">
+        <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div class="bg-black p-2 rounded m-2">
+                {{this.chartName}}: <span id="chart-stat-value"></span>
+            </div>
+            <div class="p-2 m-2">
+                <div class="d-flex gap-1 justify-content-end">
+                    <button class="btn btn-light btn-sm">10M</button>
+                    <button class="btn btn-light btn-sm">1D</button>
+                    <button class="btn btn-light btn-sm">1W</button>
+                </div>
+            </div>
+        </div>
+        {{ render_chart(this.chart, {'class': 'statistics'}) }}
+        <span class="m-1 small text-secondary"> Page {{page}} </span>
+    </div>
+</div>
