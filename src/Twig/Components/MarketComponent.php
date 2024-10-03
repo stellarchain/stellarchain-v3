@@ -177,7 +177,35 @@ final class MarketComponent
                 'legend' => ['display' => false],
                 'tooltip' => [
                     'position' => 'average',
+                    'intersect' => false,
+                    'mode' => 'interpolate',
                 ],
+                'crosshair' => [
+                    'zoom' => [
+                        'enabled' => false,
+                    ]
+                ],
+                'legend' => [
+                    'display' => false,
+                ],
+                'zoom' => [
+                    'zoom' => [
+                        'wheel' => [
+                            'enabled' => true
+                        ],
+                        'drag' => [
+                            'enabled' => false
+                        ],
+                        'pinch' => [
+                            'enabled' => false
+                        ],
+                        'mode' => 'x',
+                    ],
+                    'pan' => [
+                        'enabled' => true,
+                        'mode' => 'x'
+                    ]
+                ]
             ],
         ]);
 
