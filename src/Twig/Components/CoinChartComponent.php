@@ -116,13 +116,14 @@ final class CoinChartComponent
     public function getChartDataLedger($page): array
     {
         $endDate = new \DateTimeImmutable(); // Today
+        $offset = ($page - 1) * self::PER_PAGE;
         $startDate = $endDate->sub(new \DateInterval('P1D'));
         $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate);
 
         $labels = [];
         $data = [];
         foreach ($ledgerMetrics as $entry) {
-            $labels[] =  \DateTime::createFromFormat('Y-m-d H:i:s', $entry['time_start'])->format('m-d-Y H:i');
+            $labels[] = $entry['time_start']; // Labels are the dates
             $data[] = $entry[$this->stat];
         }
         return [$labels, $data];
