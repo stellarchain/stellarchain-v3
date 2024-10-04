@@ -95,7 +95,10 @@ export default class extends Controller {
 
     chartOptions.plugins.tooltip.callbacks.title = function (tooltipItems) {
       let statValue = document.getElementById('chart-stat-value');
-      statValue.innerHTML = tooltipItems[0].raw;
+      statValue.innerHTML = tooltipItems[0].raw.toFixed(6).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
 
       if (tooltipItems.length > 0) {
         const item = tooltipItems[0];
@@ -121,7 +124,6 @@ export default class extends Controller {
       }
     };
 
-    console.log('chart update')
     event.detail.chart.update();
   }
 

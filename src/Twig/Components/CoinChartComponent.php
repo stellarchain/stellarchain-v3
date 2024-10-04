@@ -29,7 +29,7 @@ final class CoinChartComponent
 
     private static array $pagesData = [];
 
-    private const PER_PAGE = 20;
+    private const PER_PAGE = 100;
 
     private CoinStatRepository $coinStatRepository;
     private ChartBuilderInterface $chartBuilder;
@@ -174,9 +174,9 @@ final class CoinChartComponent
                     'data' => $chartData[1],
                     'fill' => 'start',
                     'tension' => 0.4,
-                    'borderWidth' => 2,
-                    'pointBorderWidth' => 2,
-                    'pointRadius' => 2,
+                    'borderWidth' => 1,
+                    'pointBorderWidth' => 1,
+                    'pointRadius' => 1,
                 ],
             ],
         ]);
