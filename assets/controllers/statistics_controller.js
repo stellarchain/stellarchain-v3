@@ -35,12 +35,19 @@ export default class extends Controller {
     }
   }
 
-  updateChartDataset(newData, chart) {
-    console.log(newData, chart)
-     chart.data.datasets[0].data = [...newData.chart.datasets[0].data, ...chart.data.datasets[0].data];
-     chart.data.labels = [...newData.chart.labels, ...chart.data.labels]; // Prepend new labels
+  updateChartDataset(newData, event) {
+    let chart = event.detail.chart;
+    event.detail.chart.data.datasets[0].data = [...newData.chart.datasets[0].data, ...chart.data.datasets[0].data];
+    event.detail.chart.data.labels = [...newData.chart.labels, ...chart.data.labels];
+    event.detail.chart.update()
+  }
 
-    chartOptions.plugins.tooltip.callbacks.title = function (tooltipItems) {
+  bootstrapEvents(event) {
+    let chart = event.detail.chart;
+    let chartOptions = chart.options;
+    let that = this;
+
+    chart.options.plugins.tooltip.callbacks.title = function (tooltipItems) {
       let statValue = document.getElementById('chart-stat-value');
       statValue.innerHTML = tooltipItems[0].raw;
 
@@ -57,25 +64,15 @@ export default class extends Controller {
           return labels[item.dataIndex];
         }
       }
-
       return '';
     };
-     chart.update(); // Redraw the chart with the new data
-  }
 
-  _onConnect(event) {
-
-    window.addEventListener('chart_data', (data) => {
-      this.updateChartDataset(data.detail, event.detail.chart)
-    });
-
-    let chartOptions = event.detail.chart.options;
-    let that = this;
     chartOptions.scales.y.ticks = {
-      callback: function (value, index, values) {
+      callback: function (value) {
         return that.formatLargeNumber(value);
       }
     };
+
     chartOptions.scales.x.ticks = {
       callback: function (value, index, values) {
         const date = new Date(this.getLabelForValue(value))
@@ -124,9 +121,15 @@ export default class extends Controller {
       }
     };
 
-    event.detail.chart.options.plugins.zoom.zoom.onZoomComplete = ({chart}) => {
-        this.debouncedFetchMoreData();
-    };
+    console.log('chart update')
+    event.detail.chart.update();
+  }
+
+  _onConnect(event) {
+    this.bootstrapEvents(event)
+    window.addEventListener('chart_data', (data) => {
+      this.updateChartDataset(data.detail, event)
+    });
   }
 
   debounce(func, wait) {

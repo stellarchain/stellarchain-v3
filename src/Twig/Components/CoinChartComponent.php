@@ -2,6 +2,7 @@
 
 namespace App\Twig\Components;
 
+use App\Service\LedgerMetricsService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -18,7 +19,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 final class CoinChartComponent
 {
     use DefaultActionTrait;
-     use ComponentToolsTrait;
+    use ComponentToolsTrait;
 
     #[LiveProp]
     public string $stat;
@@ -33,15 +34,18 @@ final class CoinChartComponent
     private CoinStatRepository $coinStatRepository;
     private ChartBuilderInterface $chartBuilder;
     private TranslatorInterface $translator;
+    private LedgerMetricsService $ledgerMetricsService;
 
     public function __construct(
         CoinStatRepository $coinStatRepository,
         ChartBuilderInterface $chartBuilder,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        LedgerMetricsService $ledgerMetricsService,
     ) {
         $this->coinStatRepository = $coinStatRepository;
         $this->chartBuilder = $chartBuilder;
         $this->translator = $translator;
+        $this->ledgerMetricsService = $ledgerMetricsService;
     }
 
     #[LiveAction]
@@ -79,31 +83,17 @@ final class CoinChartComponent
             return;
         }
         ++$this->page;
-        $standardStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
-        if (!in_array($this->stat, $standardStats, true)) {
-            throw new \InvalidArgumentException("The stat '{$this->stat}' was not found.");
-        }
 
-        $offset = ($this->page - 1) * self::PER_PAGE;
-        $pageData = $this->coinStatRepository->getStatsByName($this->stat, $offset, self::PER_PAGE);
-
-        $labels = [];
-        $data = [];
-        foreach ($pageData as $entry) {
-            $labels[] = \DateTime::createFromFormat('Y-m-d H:i:s', $entry['created_at'])->format('m-d-Y H:i');
-            $data[] = (float) $entry['value'];
-        }
-
-        // Prepare chart data
+        $dataSet = $this->getChartDataByKey($this->page);
         $chartData = [
-            'labels' => $labels,
+            'labels' => $dataSet[0],
             'datasets' => [
                 [
                     'label' => $this->translator->trans($this->stat),
                     'backgroundColor' => 'rgba(99, 106, 255, 0.82)',
                     'borderColor' => 'rgba(220, 53, 69)',
                     'pointBackgroundColor' => 'rgb(255, 99, 132)',
-                    'data' => $data,
+                    'data' => $dataSet[1],
                     'fill' => 'start',
                     'tension' => 0.4,
                     'borderWidth' => 1,
@@ -118,29 +108,54 @@ final class CoinChartComponent
 
         $this->dispatchBrowserEvent('chart_data', [
             'chart' => $chartData,
+            'stat' => $this->stat,
             'hasMore' => $hasMore,
         ]);
     }
 
-    public function getChart(): Chart
+    public function getChartDataLedger($page): array
     {
-        $standardStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
-        if (!in_array($this->stat, $standardStats, true)) {
-            throw new \InvalidArgumentException("The stat '{$this->stat}' was not found.");
-        }
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
-        $offset = 0;
-        $pageData = $this->coinStatRepository->getStatsByName($this->stat, $offset, self::PER_PAGE);
-        $priceData = array_reverse($pageData);
+        $endDate = new \DateTimeImmutable(); // Today
+        $offset = ($page - 1) * self::PER_PAGE;
+        $startDate = $endDate->sub(new \DateInterval('P1D'));
+        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate);
+
         $labels = [];
         $data = [];
-        foreach ($priceData as $entry) {
-            $labels[] = \DateTime::createFromFormat('Y-m-d H:i:s', $entry['created_at'])->format('m-d-Y H:i');
-            $data[] = (float) $entry['value'];
+        foreach ($ledgerMetrics as $entry) {
+            $labels[] = $entry['time_start']; // Labels are the dates
+            $data[] = $entry[$this->stat];
         }
+        return [$labels, $data];
+    }
 
+    public function getChartDataByKey($page): array
+    {
+        $priceStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
+        if (in_array($this->stat, $priceStats, true)) {
+
+            $offset = ($page - 1) * self::PER_PAGE;
+            $pageData = $this->coinStatRepository->getStatsByName($this->stat, $offset, self::PER_PAGE);
+            $priceData = array_reverse($pageData);
+            $labels = [];
+            $data = [];
+            foreach ($priceData as $entry) {
+                $labels[] = \DateTime::createFromFormat('Y-m-d H:i:s', $entry['created_at'])->format('m-d-Y H:i');
+                $data[] = (float) $entry['value'];
+            }
+
+            return [$labels, $data];
+        } else {
+            return $this->getChartDataLedger($page);
+        }
+    }
+
+    public function getChart(): Chart
+    {
+        $chartData = $this->getChartDataByKey(1);
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
-            'labels' => $labels,
+            'labels' => $chartData[0],
             'datasets' => [
                 [
                     'label' => $this->translator->trans($this->stat),
@@ -156,7 +171,7 @@ final class CoinChartComponent
                             ]
                         ],
                     ],
-                    'data' => $data,
+                    'data' => $chartData[1],
                     'fill' => 'start',
                     'tension' => 0.4,
                     'borderWidth' => 2,
@@ -166,7 +181,7 @@ final class CoinChartComponent
             ],
         ]);
 
-        $totalDataPoints = count($data);
+        $totalDataPoints = count($chartData[1]);
         $initialViewPercentage = 0.5;
         $maxValue = $totalDataPoints - 1;
         $minValue = $maxValue - floor($totalDataPoints * $initialViewPercentage);
@@ -184,7 +199,7 @@ final class CoinChartComponent
                         'color' => '#721111'
                     ],
                     'grid' => [
-                        'color' => '#666666'
+                        'color' => '#2b2b2b'
                     ],
                     'type' => 'logarithmic',
                 ],
