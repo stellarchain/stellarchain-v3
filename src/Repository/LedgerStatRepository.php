@@ -30,7 +30,7 @@ class LedgerStatRepository extends ServiceEntityRepository
             ->andWhere('l.created_at <= :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
-            ->orderBy('l.created_at', 'ASC')  // Order by date (optional)
+            ->orderBy('l.created_at', 'DESC')  // Order by date (optional)
             ->getQuery()
             ->getResult();
     }
