@@ -116,9 +116,8 @@ final class CoinChartComponent
     public function getChartDataLedger($page): array
     {
         $endDate = new \DateTimeImmutable(); // Today
-        $startDate = $endDate->sub(new \DateInterval('P'.$page.'D'));
+        $startDate = $endDate->sub(new \DateInterval('P1D'));
         $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate);
-        $ledgerMetrics = array_reverse($ledgerMetrics);
 
         $labels = [];
         $data = [];
