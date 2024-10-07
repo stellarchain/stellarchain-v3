@@ -55,7 +55,7 @@ class FollowController extends AbstractController
             $entityManager->persist($currentUser);
             $entityManager->flush();
 
-                return $this->json(['status' => 'success']);
+            return $this->json(['status' => 'success']);
         }
 
         return $this->json(['error' => 'Something is wrong.'], 400);

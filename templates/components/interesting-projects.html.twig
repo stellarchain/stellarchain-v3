@@ -15,7 +15,7 @@
             <a class="flex-shrink-0 text-decoration-none" href="{{path('app_project_show', {id: project.id})}}">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
-                    <span class="align-self-center mx-auto fs-6 fw-bold">SC</span>
+                    <span class="align-self-center mx-auto fs-6 fw-bold">{{project.name | get_initials}}</span>
                 </div>
             </a>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">

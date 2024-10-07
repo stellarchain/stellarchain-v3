@@ -88,6 +88,8 @@ export default class extends Controller {
         button.classList.toggle('bg-primary');
         button.classList.toggle('text-success');
         button.classList.toggle('text-primary');
+      }else {
+        showToastAuth('Authentication.', 'Please login to follow.')
       }
     } catch (error) {
       showToastAuth('Authentication.', 'Please login to follow.')

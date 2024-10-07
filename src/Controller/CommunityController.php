@@ -49,14 +49,17 @@ class CommunityController extends AbstractController
     {
         $communityPost = new CommunityPost();
         $form = $this->createForm(CommunityPostType::class, $communityPost);
-
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $communityPost->setUser($this->getUser());
-            $communityPost->setCommunity($community);
-            $entityManager->persist($communityPost);
-            $entityManager->flush();
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($this->getUser()) {
+                $communityPost->setUser($this->getUser());
+                $communityPost->setCommunity($community);
+                $entityManager->persist($communityPost);
+                $entityManager->flush();
+            } else{
+                $this->addFlash('denied', 'Please login!');
+            }
             return $this->redirectToRoute('app_show_communities', ['id' => $community->getId()]);
         }
 
