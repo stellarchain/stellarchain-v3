@@ -6,3 +6,6 @@ volume_24h: Total Volume
 transactions_per_ledger: Transactions Per Ledger
 operations_per_ledger: Operations Per Ledger
 number_of_transactions: Number of Transactions 
+successful_transactions: Successfully transactions
+failed_transactions: Failed transactions
+transactions_per_second: Transactions per second
