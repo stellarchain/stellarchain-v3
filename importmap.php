@@ -124,4 +124,13 @@ return [
     'chartjs-adapter-date-fns' => [
         'version' => '3.0.0',
     ],
+    '@stellar/stellar-sdk' => [
+        'version' => '12.3.0',
+    ],
+    'lightweight-charts' => [
+        'version' => '4.2.1',
+    ],
+    'fancy-canvas' => [
+        'version' => '2.1.0',
+    ],
 ];
