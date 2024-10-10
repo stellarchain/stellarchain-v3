@@ -104,27 +104,27 @@ export default class extends Controller {
   listenPayments(server, asset) {
   }
 
-  getAsset(server, assetCode, assetIssuer){
+  getAsset(server, assetCode, assetIssuer) {
     server.assets().forCode(assetCode).forIssuer(assetIssuer).call().then(res => {
-        res = res.records[0]
-        document.getElementById('total_amount').textContent = Number(res.amount).toLocaleString();
-        document.getElementById('claimable_balances').textContent = Number(res.claimable_balances_amount).toLocaleString();
-        document.getElementById('liquidity_pools').textContent = Number(res.liquidity_pools_amount).toLocaleString();
-        document.getElementById('contracts_amount').textContent = res.contracts_amount;
-        document.getElementById('contractId').textContent = res.contract_id ? res.contract_id : 'No contract';
+      res = res.records[0]
+      document.getElementById('total_amount').textContent = Number(res.amount).toLocaleString();
+      document.getElementById('claimable_balances').textContent = Number(res.claimable_balances_amount).toLocaleString();
+      document.getElementById('liquidity_pools').textContent = Number(res.liquidity_pools_amount).toLocaleString();
+      document.getElementById('contracts_amount').textContent = res.contracts_amount;
+      document.getElementById('contractId').textContent = res.contract_id ? res.contract_id : 'No contract';
 
-        document.getElementById('authorized_accounts').textContent = res.accounts.authorized;
-        document.getElementById('unauthorized_accounts').textContent = res.accounts.unauthorized;
-        document.getElementById('authorized_liabilities').textContent = res.accounts.authorized_to_maintain_liabilities;
+      document.getElementById('authorized_accounts').textContent = res.accounts.authorized;
+      document.getElementById('unauthorized_accounts').textContent = res.accounts.unauthorized;
+      document.getElementById('authorized_liabilities').textContent = res.accounts.authorized_to_maintain_liabilities;
 
-        document.getElementById('balances_authorized').textContent = res.balances.authorized;
-        document.getElementById('balances_unauthorized').textContent = res.balances.unauthorized;
-        document.getElementById('balances_liabilities').textContent = res.balances.authorized_to_maintain_liabilities;
+      document.getElementById('balances_authorized').textContent = res.balances.authorized;
+      document.getElementById('balances_unauthorized').textContent = res.balances.unauthorized;
+      document.getElementById('balances_liabilities').textContent = res.balances.authorized_to_maintain_liabilities;
 
-        document.getElementById('archived_contracts_amount').textContent = res.archived_contracts_amount;
-        document.getElementById('num_archived_contracts').textContent = res.num_archived_contracts;
-        document.getElementById('num_claimable_balances').textContent = res.num_claimable_balances;
-        document.getElementById('num_contracts').textContent = res.num_contracts;
+      document.getElementById('archived_contracts_amount').textContent = res.archived_contracts_amount;
+      document.getElementById('num_archived_contracts').textContent = res.num_archived_contracts;
+      document.getElementById('num_claimable_balances').textContent = res.num_claimable_balances;
+      document.getElementById('num_contracts').textContent = res.num_contracts;
 
     })
   }
@@ -150,6 +150,7 @@ export default class extends Controller {
 
     const tradeElement = document.createElement('tr');
     tradeElement.classList.add('trade-item');
+    tradeElement.classList.add('small');
 
     // Extracting necessary fields from the message object
     const baseAmount = message.base_amount;
@@ -160,13 +161,11 @@ export default class extends Controller {
     const ledgerCloseTime = new Date(message.ledger_close_time).toLocaleString();
     const tradeType = message.trade_type;
 
-    // Populating the trade element with data
     tradeElement.innerHTML = `
-    <td>${baseAmount} ${baseAssetCode}</td>
-    <td>${counterAmount} ${counterAssetType}</td>
+    <td>${baseAmount}</td>
+    <td>${counterAmount}</td>
     <td>${price}</td>
-    <td>${ledgerCloseTime}</td>
-    <td>${tradeType}</td>
+    <td>${this.timeAgo(ledgerCloseTime)}</td>
   `;
 
     // Append the trade row (<tr>) to the <tbody> of trades table
@@ -191,9 +190,8 @@ export default class extends Controller {
       const createdAt = new Date().toLocaleString();
 
       bidRow.innerHTML = `
-      <td>${price}</td>
       <td class="text-end">${amount}</td>
-      <td class="text-end">${createdAt}</td>
+      <td class="text-end">${price}</td>
     `;
 
       bidTableBody.appendChild(bidRow);
@@ -207,16 +205,44 @@ export default class extends Controller {
       const createdAt = new Date().toLocaleString();
 
       askRow.innerHTML = `
-      <td>${price}</td>
-      <td class="text-end">${amount}</td>
-      <td class="text-end">${createdAt}</td>
+      <td class="text-start">${price}</td>
+      <td class="text-start">${amount}</td>
     `;
 
       askTableBody.appendChild(askRow);
     });
   }
 
-  handlePayments(message){
+  handlePayments(message) {
     console.log(message)
+  }
+
+
+  timeAgo(ledgerCloseTime) {
+    const now = new Date();
+    const closeTime = new Date(ledgerCloseTime);
+    const diffInSeconds = Math.floor((now - closeTime) / 1000);
+
+    let interval = Math.floor(diffInSeconds / 31536000);
+    if (interval >= 1) return interval + (interval === 1 ? " year ago" : " years ago");
+
+    interval = Math.floor(diffInSeconds / 2592000);
+    if (interval >= 1) return interval + (interval === 1 ? " month ago" : " months ago");
+
+    interval = Math.floor(diffInSeconds / 604800);
+    if (interval >= 1) return interval + (interval === 1 ? " week ago" : " weeks ago");
+
+    interval = Math.floor(diffInSeconds / 86400);
+    if (interval >= 1) return interval + (interval === 1 ? " day ago" : " days ago");
+
+    interval = Math.floor(diffInSeconds / 3600);
+    if (interval >= 1) return interval + (interval === 1 ? " hour ago" : " hours ago");
+
+    interval = Math.floor(diffInSeconds / 60);
+    if (interval >= 1) return interval + (interval === 1 ? " minute ago" : " minutes ago");
+
+    if (diffInSeconds >= 1) return diffInSeconds + (diffInSeconds === 1 ? " second ago" : " seconds ago");
+
+    return "just now";
   }
 }

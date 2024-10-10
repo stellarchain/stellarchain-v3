@@ -60,6 +60,10 @@ class MarketController extends AbstractController
                 $array = Toml::Parse($content);
                 $currencies = $array['CURRENCIES'];
                 $assetData['toml'] = $this->findArrayByCodeAndIssuer($currencies, $assetCode, $assetIssuer);
+
+                if (isset($array['DOCUMENTATION']) && isset($array['DOCUMENTATION']['ORG_URL'])){
+                    $assetData['toml']['url'] = $array['DOCUMENTATION']['ORG_URL'];
+                }
             } catch (\Exception $e) {
             }
         }

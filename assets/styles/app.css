@@ -410,10 +410,6 @@ canvas#race {
     font-size: 1rem;
 }
 
-.payments {
-    height: 500px;
-    overflow: auto;
-}
 
 .trades {
     height: 500px;
