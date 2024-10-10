@@ -49,7 +49,7 @@ class MarketController extends AbstractController
             $assetData['chart'] =  $chart;
             $assetData['priceMarket'] =  $chartData[0];
             $balances = $asset->getBalances() ? $asset->getBalances()['authorized'] : 0;
-            $assetData['marketCap'] = ($asset->getClaimableBalancesAmount() + $asset->getLiquidityPoolsAmount() + $asset->getContractsAmount() + $balances) * $chartData[0] * $usdXlmPrice;
+            $assetData['marketCap'] = ($asset->getClaimableBalancesAmount() + $asset->getLiquidityPoolsAmount() + $asset->getContractsAmount() + $balances) * $chartData[0];
             //latestMetric.price * globalValues.price
         }
 
