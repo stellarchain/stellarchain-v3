@@ -18,13 +18,14 @@
             </div>
             <div class="col-md-10">
                 <div class="info-section">
-                    {% if toml is defined %}
-                    {% if toml.name is defined %}
-                    <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
+                    {% if toml is defined and toml.name is defined %}
+                        <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
                     {% else %}
-                    <h2 class="mb-2">Asset: <span> {{asset.assetCode}} </span></h2>
+                        <h2 class="mb-2">Asset: <span> {{asset.assetCode}} </span></h2>
                     {% endif %}
-                    <p>
+
+                    {% if toml is defined %}
+                   <p>
                     {% if toml.url is defined %}
                         Website: <a href="{{ toml.url}}">{{toml.url}}</a>
                     {% endif %}
