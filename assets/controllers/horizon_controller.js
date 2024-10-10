@@ -190,7 +190,7 @@ export default class extends Controller {
       const createdAt = new Date().toLocaleString();
 
       bidRow.innerHTML = `
-      <td class="text-end">${amount}</td>
+      <td class="text-start">${amount}</td>
       <td class="text-end">${price}</td>
     `;
 
@@ -206,7 +206,7 @@ export default class extends Controller {
 
       askRow.innerHTML = `
       <td class="text-start">${price}</td>
-      <td class="text-start">${amount}</td>
+      <td class="text-end">${amount}</td>
     `;
 
       askTableBody.appendChild(askRow);

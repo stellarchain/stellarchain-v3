@@ -115,6 +115,8 @@
                 <div class="card-body">
                     <h5 class="card-title">Claimable Balances</h5>
                     <p class="card-text" id="claimable_balances"></p>
+                    <span>Claimable Balances</span>
+                    <span id="num_claimable_balances"></span>
                 </div>
             </div>
 
@@ -135,7 +137,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Contracts</h5>
-                    <p class="card-text">Number: <span id="num_contracts"></span></p>
+                    <p class="card-text">Active: <span id="num_contracts"></span></p>
+                    <p class="card-text">Archived amount: <span id="archived_contracts_amount"></span></p>
+                    <p class="card-text">Archived total: <span id="num_archived_contracts"></span></p>
                 </div>
             </div>
         </div>
@@ -182,24 +186,8 @@
                             <th>Authorized to Maintain Liabilities</th>
                             <td id="balances_liabilities"></td>
                         </tr>
-                        <tr>
-                            <th>Claimable Balances</th>
-                            <td id="num_claimable_balances"></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Additional Information -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Archived Contracts</h5>
-                    <p class="card-text">Amount: <span id="archived_contracts_amount"></span></p>
-                    <p class="card-text">Number: <span id="num_archived_contracts"></span></p>
+                    </table>
                 </div>
             </div>
         </div>
@@ -217,14 +205,14 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="card text-center">
                 <div class="card-body payments d-flex">
                     <table id="bidTable" class="table table-responsive table-striped table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'bid' ) }}>
                         <thead>
                             <tr>
-                                <th scope="col" class="small text-secondary text-end"> Amount {{asset.assetCode}}</th>
+                                <th scope="col" class="small text-secondary text-start"> Amount {{asset.assetCode}}</th>
                                 <th scope="col" class="small text-secondary text-end"> Price XLM </th>
                             </tr>
                         </thead>
@@ -236,7 +224,7 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="small text-secondary text-start"> Price XLM </th>
-                                <th scope="col" class="small text-secondary text-start"> Amount {{asset.assetCode}} </th>
+                                <th scope="col" class="small text-secondary text-end"> Amount {{asset.assetCode}} </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -246,7 +234,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Trades</h5>
@@ -266,8 +254,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
     <div class="py-4">
