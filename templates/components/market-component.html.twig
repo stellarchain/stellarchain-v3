@@ -76,8 +76,7 @@
         {% set asset = assetData.asset %}
         {% set latestMetric = assetData.latestMetric %}
         {% set assetChart = assetData.chart %}
-            <a class="text-decoration-none text-white text-reset d-flex border-5 border-light bg-dark mb-2 font-monospace list-item" style="cursor: pointer;font-size:14px"
-            href="{{path('app_markets_show_asset', {assetCode: asset.assetCode, assetIssuer: asset.assetIssuer})}}"
+            <div class=" d-flex border-5 border-light bg-dark mb-2 font-monospace list-item" style="font-size:14px"
             id="item--{{ page }}-{{ loop.index }}" data-live-ignore="true">
 
             <div class="border-0 bg-white p-2 rank-col">
@@ -89,7 +88,7 @@
 
             <div class="border-0 bg-white pb-2 pt-2 market-col">
                 <div class="d-flex flex-column lh-1 align-self-center mt-1">
-                    <span class="fw-bold mb-1">{{ asset.assetCode }}</span>
+                    <span class="fw-bold mb-1"><a class="text-decoration-none text-white text-reset" href="{{path('app_markets_show_asset', {assetCode: asset.assetCode, assetIssuer: asset.assetIssuer})}}">{{ asset.assetCode }}</a></span>
                     <div class="small text-secondary">
                         <span class="small">
                             ${{ (
@@ -159,7 +158,7 @@
                 </div>
             </div>
 
-            </a>
+            </div>
     {% endfor %}
     {% if this.hasMore %}
     {% for i in 1..per_page %}
