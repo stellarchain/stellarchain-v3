@@ -58,7 +58,8 @@ class UpdateAssetHandler
           ->setContractsAmount($assetDto->getContractsAmount())
           ->setNumArchivedContracts($assetDto->getNumArchivedContracts())
           ->setUpdatedAt(new \DateTimeImmutable())
-          ->setArchivedContractsAmount($assetDto->getArchivedContractsAmount());
+          ->setArchivedContractsAmount($assetDto->getArchivedContractsAmount())
+          ->setToml($assetDto->getLinks()->getToml()->getHref());
 
         $this->entityManager->persist($asset);
         $this->entityManager->flush();

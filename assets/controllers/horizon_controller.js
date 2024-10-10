@@ -125,6 +125,7 @@ export default class extends Controller {
         document.getElementById('num_archived_contracts').textContent = res.num_archived_contracts;
         document.getElementById('num_claimable_balances').textContent = res.num_claimable_balances;
         document.getElementById('num_contracts').textContent = res.num_contracts;
+
     })
   }
 

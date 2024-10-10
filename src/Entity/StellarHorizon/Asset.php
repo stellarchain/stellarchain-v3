@@ -105,6 +105,10 @@ class Asset
     #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 5, nullable: true)]
     private ?string $rank_raw = null;
 
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $toml = null;
+
     public function __construct()
     {
         $this->updated_at = new \DateTimeImmutable();
@@ -122,6 +126,18 @@ class Asset
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setToml(string $toml): static
+    {
+        $this->toml = $toml;
+
+        return $this;
+    }
+
+    public function getToml(): ?string
+    {
+        return $this->toml;
     }
 
     public function getAssetType(): ?string

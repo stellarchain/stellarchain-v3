@@ -384,7 +384,7 @@ canvas#race {
 }
 
 .icon-container {
-    background-color: #007bff;
+    background-color: rgba(220, 53, 69);
     color: #fff;
     border-radius: 50%;
     width: 80px;

@@ -9,12 +9,34 @@
         <div class="asset-header row align-items-center ">
             <div class="col-md-2 d-flex justify-content-center">
                 <div class="icon-container">
-                    <i class="bi bi-currency-bitcoin"></i>
+                    {% if toml is defined %}
+                    <img src="{{toml.image}}" height="75px" class="rounded-circle" />
+                    {% else%}
+                    <img src="https://stellarchain.io/img/xlm.316d17cc.png" height="75px" class="rounded-circle" />
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-10">
-                <h2 class="mb-2">Asset: <span>{{asset.assetCode}} </span></h2>
                 <div class="info-section">
+                    {% if toml is defined %}
+                    {% if toml.name is defined %}
+                    <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
+                    {% else %}
+                    <h2 class="mb-2">Asset: <span> {{asset.assetCode}} </span></h2>
+                    {% endif %}
+
+                    <p>
+                    {% if toml.desc is defined %}
+                    {{ toml.desc }}
+                    {% endif %}
+                    </p>
+
+                    <p>
+                    {% if toml.conditions is defined %}
+                    {{ toml.conditions }}
+                    {% endif %}
+                    </p>
+                    {% endif %}
                     <p>Issuer: <span>{{asset.assetIssuer}}</span></p>
                     <p>Contract: <span id="contractId"></span></p>
                 </div>
@@ -22,7 +44,7 @@
         </div>
     </div>
     <div class="row mt-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Market Price</h5>
@@ -30,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Market Cap</h5>
@@ -38,50 +60,59 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Price Change 24h</h5>
+                    <p class="card-text"><span class="text-warning">{{latestMetric.priceChange24h}}</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">24h Volume</h5>
-                    <p class="card-text"><span class="text-warning">{{latestMetric.volume24h | number_format}}</span></p>
+                    <p class="card-text"><span class="text-warning">{{latestMetric.volume24h | number_format}}</span>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
- <!-- Summary Cards -->
+    <!-- Summary Cards -->
     <div class="row text-center mt-2">
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Total Amount</h5>
-            <p class="card-text" id="total_amount"></p>
-          </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Amount</h5>
+                    <p class="card-text" id="total_amount"></p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Claimable Balances</h5>
-            <p class="card-text" id="claimable_balances"></p>
-          </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Claimable Balances</h5>
+                    <p class="card-text" id="claimable_balances"></p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Liquidity Pools</h5>
-            <p class="card-text" id="liquidity_pools"></p>
-          </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Liquidity Pools</h5>
+                    <p class="card-text" id="liquidity_pools"></p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Contracts Amount</h5>
-            <p class="card-text" id="contracts_amount"></p>
-          </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Contracts Amount</h5>
+                    <p class="card-text" id="contracts_amount"></p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <div class="row mt-4">
@@ -99,82 +130,82 @@
 
     <!-- More Asset Information -->
     <div class="row mt-4">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Accounts Information</h5>
-            <table class="table table-responsive table-hover table-trades table-borderless">
-              <tr>
-                <th>Authorized Accounts</th>
-                <td id="authorized_accounts"></td>
-              </tr>
-              <tr>
-                <th>Unauthorized Accounts</th>
-                <td id="unauthorized_accounts"></td>
-              </tr>
-              <tr>
-                <th>Authorized to Maintain Liabilities</th>
-                <td id="authorized_liabilities"></td>
-              </tr>
-            </table>
-          </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Accounts Information</h5>
+                    <table class="table table-responsive table-hover table-trades table-borderless">
+                        <tr>
+                            <th>Authorized Accounts</th>
+                            <td id="authorized_accounts"></td>
+                        </tr>
+                        <tr>
+                            <th>Unauthorized Accounts</th>
+                            <td id="unauthorized_accounts"></td>
+                        </tr>
+                        <tr>
+                            <th>Authorized to Maintain Liabilities</th>
+                            <td id="authorized_liabilities"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Balances</h5>
-            <table class="table table-responsive table-hover table-trades table-borderless">
-              <tr>
-                <th>Authorized</th>
-                <td id="balances_authorized"></td>
-              </tr>
-              <tr>
-                <th>Unauthorized</th>
-                <td id="balances_unauthorized"></td>
-              </tr>
-              <tr>
-                <th>Authorized to Maintain Liabilities</th>
-                <td id="balances_liabilities"></td>
-              </tr>
-            </table>
-          </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Balances</h5>
+                    <table class="table table-responsive table-hover table-trades table-borderless">
+                        <tr>
+                            <th>Authorized</th>
+                            <td id="balances_authorized"></td>
+                        </tr>
+                        <tr>
+                            <th>Unauthorized</th>
+                            <td id="balances_unauthorized"></td>
+                        </tr>
+                        <tr>
+                            <th>Authorized to Maintain Liabilities</th>
+                            <td id="balances_liabilities"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- Additional Information -->
     <div class="row mt-4">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Archived Contracts</h5>
-            <p class="card-text">Amount: <span id="archived_contracts_amount"></span></p>
-            <p class="card-text">Number: <span id="num_archived_contracts"></span></p>
-          </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Archived Contracts</h5>
+                    <p class="card-text">Amount: <span id="archived_contracts_amount"></span></p>
+                    <p class="card-text">Number: <span id="num_archived_contracts"></span></p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Claimable Balances</h5>
-            <p class="card-text">Number: <span id="num_claimable_balances"></span></p>
-          </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Claimable Balances</h5>
+                    <p class="card-text">Number: <span id="num_claimable_balances"></span></p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Contracts</h5>
-            <p class="card-text">Number: <span id="num_contracts"></span></p>
-          </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Contracts</h5>
+                    <p class="card-text">Number: <span id="num_contracts"></span></p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">{{asset.assetCode}}/XLM</h5>
@@ -182,16 +213,18 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8">
             <div class="card text-center">
-                <div class="card-body payments">
+                <div class="card-body payments d-flex">
                     <table id="bidTable" class="table table-responsive table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'bid' ) }}>
                         <thead>
                             <tr>
-                                <th scope="col" class="small text-secondary"> Price (XLM) </th>
                                 <th scope="col" class="small text-secondary text-end"> Amount(USDC) </th>
-                                <th scope="col" class="small text-secondary text-end"> Time </th>
+                                <th scope="col" class="small text-secondary"> Price (XLM) </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -203,7 +236,6 @@
                             <tr>
                                 <th scope="col" class="small text-secondary"> Price (XLM) </th>
                                 <th scope="col" class="small text-secondary text-end"> Amount(USDC) </th>
-                                <th scope="col" class="small text-secondary text-end"> Time </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -212,9 +244,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-6">
+
+        <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Trades</h5>
@@ -233,6 +264,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <div class="py-4">

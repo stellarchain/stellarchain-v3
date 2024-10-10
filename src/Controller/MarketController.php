@@ -8,8 +8,10 @@ use App\Service\GlobalValueService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
+use Yosymfony\Toml\Toml;
 
 class MarketController extends AbstractController
 {
@@ -20,7 +22,7 @@ class MarketController extends AbstractController
     }
 
     #[Route('/markets/{assetCode}-{assetIssuer}', name: 'app_markets_show_asset')]
-    public function show(string $assetCode, $assetIssuer, AssetRepository $assetRepository, AssetMetricRepository $assetMetricRepository, ChartBuilderInterface $chartBuilder, GlobalValueService $globalValueService): Response
+    public function show(string $assetCode, $assetIssuer, AssetRepository $assetRepository, AssetMetricRepository $assetMetricRepository, ChartBuilderInterface $chartBuilder, GlobalValueService $globalValueService, HttpClientInterface $client): Response
     {
         $asset = $assetRepository->findOneBy(['asset_code' => $assetCode, 'asset_issuer' => $assetIssuer]);
 
@@ -51,7 +53,31 @@ class MarketController extends AbstractController
             //latestMetric.price * globalValues.price
         }
 
+        if ($asset->getToml()) {
+            try {
+                $response = $client->request('GET', $asset->getToml());
+                $content = $response->getContent();
+                $array = Toml::Parse($content);
+                $currencies = $array['CURRENCIES'];
+                $assetData['toml'] = $this->findArrayByCodeAndIssuer($currencies, $assetCode, $assetIssuer);
+            } catch (\Exception $e) {
+            }
+        }
+
         return $this->render('market/asset.html.twig', $assetData);
+    }
+
+    function findArrayByCodeAndIssuer($array, $code, $issuer)
+    {
+        foreach ($array as $key => $item) {
+            if (
+                isset($item['code']) && isset($item['issuer']) &&
+                $item['code'] === $code && $item['issuer'] === $issuer
+            ) {
+                return $item; // Return the matched array
+            }
+        }
+        return null; // Return null if not found
     }
 
 
@@ -87,7 +113,7 @@ class MarketController extends AbstractController
                 ],
             ],
         ]);
-         $chart->setOptions([
+        $chart->setOptions([
             'class' => 'stats',
             'responsive' => true,
             'maintainAspectRatio' => true,
