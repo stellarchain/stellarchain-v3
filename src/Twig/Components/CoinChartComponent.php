@@ -208,6 +208,8 @@ final class CoinChartComponent
                     'grid' => [
                         'color' => 'transparent'
                     ],
+                    'min' => $minValue,
+                    'max' => $maxValue,
                 ]
             ],
             'plugins' => [

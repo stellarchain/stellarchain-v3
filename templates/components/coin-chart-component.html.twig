@@ -12,7 +12,10 @@
                 </div>
             </div>
         </div>
-        {{ render_chart(this.chart, {'class': 'statistics'}) }}
-        <span class="m-1 small text-secondary"> Page {{page}} </span>
+        <div class="">
+          {{ render_chart(this.chart, {'class': 'statistics'}) }}
+          <div class="spinner-border ml-auto absolute position-absolute top-50 start-50 d-none" id="loading-chart" role="status" aria-hidden="true"></div>
+        </div>
+        <span class="m-1 small text-secondary text-center"> {{page * 200}} records</span>
     </div>
 </div>

@@ -131,6 +131,10 @@ export default class extends Controller {
     this.bootstrapEvents(event)
     window.addEventListener('chart_data', (data) => {
       this.updateChartDataset(data.detail, event)
+      setTimeout(() => {
+        let loading = document.getElementById('loading-chart');
+        loading.classList.add('d-none');
+      }, 1000)
     });
   }
 
@@ -144,5 +148,7 @@ export default class extends Controller {
 
   fetchMoreData() {
     this.component.emit('more')
+    let loading = document.getElementById('loading-chart');
+    loading.classList.remove('d-none');
   }
 }
