@@ -190,7 +190,7 @@ export default class extends Controller {
     // Populate the bid table with linear-gradient backgrounds
     bids.forEach(bid => {
       const bidRow = document.createElement('tr');
-      bidRow.classList.add('bid-item', 'small', 'font-monospace');
+      bidRow.classList.add('bid-item', 'small');
 
       const amount = parseFloat(bid.amount);
       const price = bid.price;
@@ -212,7 +212,7 @@ export default class extends Controller {
     // Populate the ask table with linear-gradient backgrounds
     asks.forEach(ask => {
       const askRow = document.createElement('tr');
-      askRow.classList.add('ask-item', 'small', 'font-monospace');
+      askRow.classList.add('ask-item', 'small');
 
       const amount = parseFloat(ask.amount);
       const price = ask.price;
