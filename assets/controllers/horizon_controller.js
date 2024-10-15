@@ -179,40 +179,58 @@ export default class extends Controller {
     const bidTableBody = document.querySelector('#bidTable tbody');
     const askTableBody = document.querySelector('#askTable tbody');
 
+    // Clear the existing rows before populating new data
     bidTableBody.innerHTML = '';
     askTableBody.innerHTML = '';
 
+    // Find the largest amount in bids and asks to normalize the percentage
+    const maxBidAmount = Math.max(...bids.map(bid => parseFloat(bid.amount)));
+    const maxAskAmount = Math.max(...asks.map(ask => parseFloat(ask.amount)));
+
+    // Populate the bid table with linear-gradient backgrounds
     bids.forEach(bid => {
       const bidRow = document.createElement('tr');
       bidRow.classList.add('bid-item', 'small', 'font-monospace');
-      const amount = bid.amount;
+
+      const amount = parseFloat(bid.amount);
       const price = bid.price;
-      const createdAt = new Date().toLocaleString();
+
+      // Calculate percentage for background width based on the amount
+      const percentage = (amount / maxBidAmount) * 100;
+
+      // Apply linear-gradient as background
+      bidRow.style.background = `linear-gradient(to left, rgba(22, 163, 74, 0.1) ${percentage}%, transparent ${percentage}%)`;
 
       bidRow.innerHTML = `
       <td class="text-start">${amount}</td>
-      <td class="text-end">${price}</td>
+      <td class="text-end text-success">${price}</td>
     `;
 
       bidTableBody.appendChild(bidRow);
     });
 
+    // Populate the ask table with linear-gradient backgrounds
     asks.forEach(ask => {
       const askRow = document.createElement('tr');
       askRow.classList.add('ask-item', 'small', 'font-monospace');
-      const amount = ask.amount;
+
+      const amount = parseFloat(ask.amount);
       const price = ask.price;
-      const createdAt = new Date().toLocaleString();
+
+      // Calculate percentage for background width based on the amount
+      const percentage = (amount / maxAskAmount) * 100;
+
+      // Apply linear-gradient as background
+      askRow.style.background = `linear-gradient(to right, rgba(220, 38, 38, 0.1) ${percentage}%, transparent ${percentage}%)`;
 
       askRow.innerHTML = `
-      <td class="text-start">${price}</td>
+      <td class="text-start text-danger">${price}</td>
       <td class="text-end">${amount}</td>
     `;
 
       askTableBody.appendChild(askRow);
     });
   }
-
   handlePayments(message) {
     console.log(message)
   }
