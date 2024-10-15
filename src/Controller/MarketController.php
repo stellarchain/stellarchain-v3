@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\UX\Chartjs\Model\Chart;
 use Yosymfony\Toml\Toml;
 
@@ -32,19 +33,14 @@ class MarketController extends AbstractController
         HttpClientInterface $client): Response
     {
         $asset = $assetRepository->findOneBy(['asset_code' => $assetCode, 'asset_issuer' => $assetIssuer]);
-
+        if (!$asset){
+                throw new NotFoundHttpException('Sorry not existing!');
+        }
         $latestMetric = $asset->getAssetMetrics()->first();
 
-        $assetData = [
-            'asset' => $asset,
-        ];
-
+        $assetData = [ 'asset' => $asset];
         if ($latestMetric) {
-            $recentMetrics = $assetMetricRepository->findBy(
-                ['asset' => $asset],
-                ['created_at' => 'DESC'],
-                50
-            );
+            $recentMetrics = $assetMetricRepository->findBy(['asset' => $asset],['created_at' => 'DESC'],50);
             $metricsForChart = array_reverse($recentMetrics);
 
             $usdXlmPrice = $globalValueService->getPrice();
@@ -77,22 +73,32 @@ class MarketController extends AbstractController
         return $this->render('market/asset.html.twig', $assetData);
     }
 
-    function findArrayByCodeAndIssuer($array, $code, $issuer)
+    /**
+     * @return <missing>|null
+     * @param mixed $array
+     * @param mixed $code
+     * @param mixed $issuer
+     */
+    function findArrayByCodeAndIssuer(array $array, string $code, string $issuer): mixed
     {
-        foreach ($array as $key => $item) {
+        foreach ($array as $item) {
             if (
                 isset($item['code']) && isset($item['issuer']) &&
                 $item['code'] === $code && $item['issuer'] === $issuer
             ) {
-                return $item; // Return the matched array
+                return $item;
             }
         }
-        return null; // Return null if not found
+        return null;
     }
 
 
     /**
      * Helper function to build the chart object
+     * @param array<int,mixed> $labels
+     * @param array<int,mixed> $data
+     * @param mixed $chartBuilder
+     * @param mixed $assetCode
      */
     private function buildChart(array $labels, array $data, $chartBuilder, $assetCode): Chart
     {

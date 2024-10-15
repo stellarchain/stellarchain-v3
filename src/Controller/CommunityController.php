@@ -45,12 +45,16 @@ class CommunityController extends AbstractController
     }
 
     #[Route('/communities/{id}', name: 'app_show_communities')]
-    public function show(Request $request, EntityManagerInterface $entityManager, Community $community, CommunityPostRepository $communityPostRepository, UserRepository $userRepository): Response
+    public function show(Request $request,
+        EntityManagerInterface $entityManager,
+        Community $community,
+        CommunityPostRepository $communityPostRepository,
+        UserRepository $userRepository
+    ): Response
     {
         $communityPost = new CommunityPost();
         $form = $this->createForm(CommunityPostType::class, $communityPost);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             if($this->getUser()) {
                 $communityPost->setUser($this->getUser());
