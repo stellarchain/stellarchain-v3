@@ -27,7 +27,7 @@
                     {% if toml is defined %}
                    <p>
                     {% if toml.url is defined %}
-                        Website: <a href="{{ toml.url}}">{{toml.url}}</a>
+                        <span class="small"> Website: <a href="{{ toml.url}}">{{toml.url}}</a> </span>
                     {% endif %}
                     </p>
                     <p>
@@ -36,14 +36,9 @@
                     {% endif %}
                     </p>
 
-                    <p>
-                    {% if toml.conditions is defined %}
-                    {{ toml.conditions }}
                     {% endif %}
-                    </p>
-                    {% endif %}
-                    <p>Issuer: <span><a href="https://stellarchain.io/accounts/{{asset.assetIssuer}}">{{asset.assetIssuer}}</a></span></p>
-                    <p>Contract: <span id="contractId"></span></p>
+                    <p class="small">Issuer: <span><a href="https://stellarchain.io/accounts/{{asset.assetIssuer}}">{{asset.assetIssuer}}</a></span></p>
+                    <p class="small">Contract: <span id="contractId"></span></p>
                 </div>
             </div>
         </div>

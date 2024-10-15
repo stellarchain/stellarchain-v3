@@ -25,4 +25,5 @@
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+.local-history
 ###< phpunit/phpunit ###

@@ -56,17 +56,28 @@ class LedgerMetricsService
     }
 
 
-    public function getMetricsForTimeIntervals(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
-    {
+    public function getMetricsForTimeIntervals(
+        \DateTimeImmutable $startDate,
+        \DateTimeImmutable $endDate,
+        int $page,
+        int $perPage
+    ): array {
         $interval = new \DateInterval('PT10M'); // 10-minute interval
         $periods = new \DatePeriod($startDate, $interval, $endDate);
 
+        // Calculate the offset and limit based on the current page
+        $offset = ($page - 1) * $perPage;
+
+        // Convert the periods to an array for pagination (avoid iterating the entire day at once)
+        $periodArray = iterator_to_array($periods);
+        $pagedPeriods = array_slice($periodArray, $offset, $perPage);
+
         $metricsByInterval = [];
 
-        foreach ($periods as $periodStart) {
+        foreach ($pagedPeriods as $periodStart) {
             $periodEnd = $periodStart->add($interval);
 
-            // Get ledgers for this 10-minute period
+            // Get ledgers for this specific 10-minute period
             $ledgers = $this->ledgerRepository->getBetweenDates($periodStart, $periodEnd);
 
             $ledgersPerInterval = count($ledgers);
@@ -81,7 +92,6 @@ class LedgerMetricsService
             $createdContracts = 0;
 
             if ($ledgersPerInterval) {
-
                 foreach ($ledgers as $ledger) {
                     $transactionsPerLedger += $ledger->getSuccessfulTransactions() + $ledger->getFailedTransactions();
                     $operationsPerLedger += $ledger->getOperations();
@@ -113,7 +123,6 @@ class LedgerMetricsService
                 ];
             }
         }
-
         return $metricsByInterval;
     }
 }

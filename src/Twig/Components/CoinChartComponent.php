@@ -7,6 +7,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use App\Repository\CoinStatRepository;
+use PDO;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
@@ -56,8 +57,23 @@ final class CoinChartComponent
 
     public function hasMore(): bool
     {
-        $totalTicks = $this->totalTicks();
+        $priceStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
+        if (in_array($this->stat, $priceStats, true)) {
+            $totalTicks = $this->totalTicks();
+        } else {
+            $endDate = new \DateTimeImmutable();
+            $startDate = $endDate->sub(new \DateInterval('P1D')); // Start date is 1 day before the end date
+            $totalTicks = $this->totalLedgerMetrics($startDate, $endDate);
+        }
         return $totalTicks > ($this->page * self::PER_PAGE);
+    }
+
+    public function totalLedgerMetrics(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    {
+        $interval = new \DateInterval('PT10M'); // 10-minute interval
+        $period = new \DatePeriod($startDate, $interval, $endDate);
+
+        return iterator_count($period);
     }
 
     public function totalTicks(): int
@@ -115,15 +131,14 @@ final class CoinChartComponent
 
     public function getChartDataLedger($page): array
     {
-        $endDate = new \DateTimeImmutable(); // Today
-        $offset = ($page - 1) * self::PER_PAGE;
+        $endDate = new \DateTimeImmutable();
         $startDate = $endDate->sub(new \DateInterval('P1D'));
-        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate);
+        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate, $page, self::PER_PAGE);
 
         $labels = [];
         $data = [];
         foreach ($ledgerMetrics as $entry) {
-            $labels[] = $entry['time_start']; // Labels are the dates
+            $labels[] = $entry['time_start'];
             $data[] = $entry[$this->stat];
         }
         return [$labels, $data];

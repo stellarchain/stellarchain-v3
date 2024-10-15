@@ -22,7 +22,14 @@ class MarketController extends AbstractController
     }
 
     #[Route('/markets/{assetCode}-{assetIssuer}', name: 'app_markets_show_asset')]
-    public function show(string $assetCode, $assetIssuer, AssetRepository $assetRepository, AssetMetricRepository $assetMetricRepository, ChartBuilderInterface $chartBuilder, GlobalValueService $globalValueService, HttpClientInterface $client): Response
+    public function show(
+        string $assetCode,
+        string $assetIssuer,
+        AssetRepository $assetRepository,
+        AssetMetricRepository $assetMetricRepository,
+        ChartBuilderInterface $chartBuilder,
+        GlobalValueService $globalValueService,
+        HttpClientInterface $client): Response
     {
         $asset = $assetRepository->findOneBy(['asset_code' => $assetCode, 'asset_issuer' => $assetIssuer]);
 
@@ -50,7 +57,6 @@ class MarketController extends AbstractController
             $assetData['priceMarket'] =  $chartData[0];
             $balances = $asset->getBalances() ? $asset->getBalances()['authorized'] : 0;
             $assetData['marketCap'] = ($asset->getClaimableBalancesAmount() + $asset->getLiquidityPoolsAmount() + $asset->getContractsAmount() + $balances) * $chartData[0];
-            //latestMetric.price * globalValues.price
         }
 
         if ($asset->getToml()) {
