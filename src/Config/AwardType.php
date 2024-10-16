@@ -5,6 +5,7 @@ namespace App\Config;
 enum AwardType: int
 {
     case NotAssigned = 0;
+
     case ActivationAward = 1;
     case CommunityAward = 2;
 

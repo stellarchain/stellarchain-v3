@@ -111,28 +111,15 @@
                 <div class="card-body">
                     <h5 class="card-title">Claimable Balances</h5>
                     <p class="card-text" id="claimable_balances"></p>
-                    <span>Claimable Balances</span>
-                    <span id="num_claimable_balances"></span>
-                </div>
-            </div>
-
-            <div class="card mb-2">
-                <div class="card-body">
-                    <h5 class="card-title">Liquidity Pools</h5>
-                    <p class="card-text" id="liquidity_pools"></p>
-                </div>
-            </div>
-
-            <div class="card mb-2">
-                <div class="card-body">
-                    <h5 class="card-title">Contracts Amount</h5>
-                    <p class="card-text" id="contracts_amount"></p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Contracts</h5>
+                    <p class="card-text">Liquidity Pools: <span id="liquidity_pools"></span></p>
+                    <p class="card-text">Contracts Amount: <span id="contracts_amount"></span></p>
+                    <p class="card-text">Authorized Accounts: <span id="authorized_accounts"></span></p>
+                    <p class="card-text">Authorized: <span id="balances_authorized"></span></p>
                     <p class="card-text">Active: <span id="num_contracts"></span></p>
                     <p class="card-text">Archived amount: <span id="archived_contracts_amount"></span></p>
                     <p class="card-text">Archived total: <span id="num_archived_contracts"></span></p>
@@ -141,60 +128,17 @@
         </div>
     </div>
 
-    <!-- More Asset Information -->
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Accounts Information</h5>
-                    <table class="table table-responsive table-hover table-trades table-borderless">
-                        <tr>
-                            <th>Authorized Accounts</th>
-                            <td id="authorized_accounts"></td>
-                        </tr>
-                        <tr>
-                            <th>Unauthorized Accounts</th>
-                            <td id="unauthorized_accounts"></td>
-                        </tr>
-                        <tr>
-                            <th>Authorized to Maintain Liabilities</th>
-                            <td id="authorized_liabilities"></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Balances</h5>
-                    <table class="table table-responsive table-hover table-trades table-borderless">
-                        <tr>
-                            <th>Authorized</th>
-                            <td id="balances_authorized"></td>
-                        </tr>
-                        <tr>
-                            <th>Unauthorized</th>
-                            <td id="balances_unauthorized"></td>
-                        </tr>
-                        <tr>
-                            <th>Authorized to Maintain Liabilities</th>
-                            <td id="balances_liabilities"></td>
-                        </tr>
-
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">{{asset.assetCode}}/XLM</h5>
+                    <div class="card">
+                        1D
+                    </div>
                     <div id="trades-chart" style="height:500px" {{ stimulus_target('horizon', 'chart' ) }}></div>
+                    <div class="spinner-border ml-auto absolute position-absolute top-50 start-50 d-none" id="loading-chart" role="status" aria-hidden="true"></div>
                 </div>
             </div>
         </div>
@@ -203,7 +147,8 @@
     <div class="row mt-4">
         <div class="col-md-7">
             <div class="card text-center">
-                <div class="card-body payments d-flex">
+                <div class="card-title mt-3">Order Book</div>
+                <div class="card-body payments align-items-start d-flex">
                     <table id="bidTable" class="table table-responsive table-striped table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'bid' ) }}>
                         <thead>
@@ -232,8 +177,8 @@
 
         <div class="col-md-5">
             <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">Trades</h5>
+                <div class="card-title mt-3">Trades</div>
+                <div class="card-body payments overflow-auto">
                     <table id="trades" class="table table-responsive table-striped table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'trades' ) }}>
                         <thead>

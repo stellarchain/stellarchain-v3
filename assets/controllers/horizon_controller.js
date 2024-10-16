@@ -8,104 +8,189 @@ import {createChart} from 'lightweight-charts';
 export default class extends Controller {
   static targets = ['payments', 'trades', 'chart'];
 
-  async initialize() {
+  aggregatedTrades = null;
+  chart = null;
+  candlestickSeries = null;
+  volumeSeries = null;
+  tooltip = null;
+  asset = null;
+  server = null;
+  loadingTrades = false;
+  resolution = 86400000;
+  orderBookStream = null;
+  tradesStream = null;
 
-    const assetCode = this.element.dataset.horizonAssetCodeValue;
-    const assetIssuer = this.element.dataset.horizonAssetIssuerValue;
-    const asset = new Asset(assetCode, assetIssuer);
-    const server = new Horizon.Server("https://horizon.stellar.org");
-    this.listenPayments(server, asset);
-    this.listenOrderbook(server, asset);
-    this.listenTrades(server, asset);
-    this.loadAggregatedTradesChart(server, asset);
-    this.getAsset(server, assetCode, assetIssuer)
+  async initialize() {
+    this.asset = new Asset(this.element.dataset.horizonAssetCodeValue, this.element.dataset.horizonAssetIssuerValue);
+    this.server = new Horizon.Server("https://horizon.stellar.org");
+    this.initChart();
+    this.listenOrderbook();
+    this.listenTrades();
+    this.loadAggregatedTradesChart();
+    this.getAsset(this.element.dataset.horizonAssetCodeValue, this.element.dataset.horizonAssetIssuerValue)
   }
 
-  loadAggregatedTradesChart(server, asset) {
-    const chartOptions = {
+  disconnect() {
+    if (this.orderBookStream) {
+      this.orderBookStream(); // Closing orderbook stream
+      this.orderBookStream = null; // Clear reference after closing
+    }
+
+    if (this.tradesStream) {
+      this.tradesStream(); // Closing trades stream
+      this.tradesStream = null; // Clear reference after closing
+    }
+
+    this.server = null;
+    this.asset = null;
+  }
+
+  initChart() {
+    this.chart = createChart(document.getElementById('trades-chart'), {
       layout: {textColor: 'white', background: {type: 'solid', color: 'transparent'}},
       grid: {
         vertLines: {color: '#2b2b2b'},
         horzLines: {color: '#2b2b2b'},
       }
-    };
-    const chart = createChart(document.getElementById('trades-chart'), chartOptions);
-    const volumeSeries = chart.addHistogramSeries({
-      priceFormat: {
-        type: 'volume',
-      },
-      priceScaleId: '', // set as an overlay by setting a blank priceScaleId
     });
-    volumeSeries.priceScale().applyOptions({
+    this.volumeSeries = this.chart.addHistogramSeries({
+      priceScaleId: "",
+      lineWidth: 2,
+      priceFormat: {
+        type: "volume",
+      },
+      overlay: true,
       scaleMargins: {
-        top: 0.9, // highest point of the series will be 70% away from the top
+        top: 0.9,
         bottom: 0,
       },
     });
-    const candlestickSeries = chart.addCandlestickSeries({
+    this.volumeSeries.priceScale().applyOptions({
+      scaleMargins: {
+        top: 0.9,
+        bottom: 0,
+      },
+    });
+    this.candlestickSeries = this.chart.addCandlestickSeries({
       upColor: 'rgb(246, 70, 93)', downColor: 'rgb(46, 189, 133)', borderVisible: false,
       wickUpColor: 'rgb(246, 70, 93)', wickDownColor: 'rgb(46, 189, 133)',
     });
 
-    const toolTip = document.createElement('div');
-    toolTip.style = `width: 96px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
-    toolTip.style.background = 'white';
-    toolTip.style.color = 'black';
-    toolTip.style.borderColor = '#2962FF';
+    this.toolTip = document.createElement('div');
+    this.toolTip.style = `width: 96px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+    this.toolTip.style.background = 'white';
+    this.toolTip.style.color = 'black';
+    this.toolTip.style.borderColor = '#2962FF';
 
-    this.chartTarget.appendChild(toolTip);
-    chart.subscribeCrosshairMove(param => {
+    this.chartTarget.appendChild(this.toolTip);
+
+    this.chart.subscribeCrosshairMove(param => {
       if (
         param.point === undefined ||
         !param.time ||
         param.point.x < 0 ||
         param.point.y < 0
       ) {
-        toolTip.style.display = 'none';
+        this.toolTip.style.display = 'none';
       } else {
-        toolTip.style.display = 'block';
-        const data = param.seriesData.get(candlestickSeries);
+        this.toolTip.style.display = 'block';
+        const data = param.seriesData.get(this.candlestickSeries);
         const price = data.value !== undefined ? data.value : data.close;
         const close = data.close !== undefined ? data.close : 'no close';
-        toolTip.innerHTML = `<div>${1 / price.toFixed(2)} ${close}</div>`;
+        this.toolTip.innerHTML = `<div>${1 / price.toFixed(2)} ${close}</div>`;
 
-        toolTip.style.left = param.point.x + 'px';
-        toolTip.style.top = param.point.y + 'px';
+        this.toolTip.style.left = param.point.x + 'px';
+        this.toolTip.style.top = param.point.y + 'px';
       }
     });
 
-    const es = server.tradeAggregation(asset, Asset.native(), 1582178400000, Date.now(), 86400000, 0).limit(100).call().then(
-      (message) => {
-        const transformedData = message.records.map(record => ({
-          time: new Date(parseInt(record.timestamp)).toISOString().split('T').join(' ').slice(0, 16), // Convert timestamp to 'YYYY-MM-DD HH:mm'
-          open: parseFloat(record.open),
-          high: parseFloat(record.high),
-          low: parseFloat(record.low),
-          close: parseFloat(record.close)
-        }));
+    this.chart.priceScale("").applyOptions({
+      scaleMargins: {
+        top: 0.9,
+        bottom: 0,
+      },
+    });
 
-        const volumeData = message.records.map((item) => {
-          return {
-            time: new Date(parseInt(item.timestamp)).toISOString().split('T').join(' ').slice(0, 16),
-            value: item.base_volume,
-            color:
-              item.open > item.close
-                ? "rgba(239, 83, 80, 0.5)"
-                : "rgba(38, 166, 154, 0.5)",
-          };
-        });
-        volumeSeries.setData(volumeData);
-        candlestickSeries.setData(transformedData);
-        chart.timeScale().fitContent();
+    this.chart.timeScale().subscribeVisibleLogicalRangeChange((logicalRange) => {
+      if (logicalRange.from < 0 && this.candlestickSeries.data()) {
+        let startTime = this.candlestickSeries.data()[0].time
+        if (!this.loadingTrades) {
+          console.log(logicalRange, startTime)
+          this.loadingTrades = true;
+          document.getElementById('loading-chart').classList.toggle('d-none');
+          this.server.tradeAggregation(this.asset, Asset.native(), 0, startTime * 1000, this.resolution, 0)
+            .order('desc').limit(200)
+            .call().then((message) => this.addChartData(message))
+          console.log('get_more_data', startTime)
+        }
       }
-    );
+    });
+    window.addEventListener("resize", this.resizeHandler);
   }
 
-  listenPayments(server, asset) {
+  loadAggregatedTradesChart() {
+    if (!this.loadingTrades) {
+      this.loadingTrades = true;
+      document.getElementById('loading-chart').classList.toggle('d-none');
+      this.server.tradeAggregation(this.asset, Asset.native(), 0, 0, this.resolution, 0).order('desc').limit(200).cursor('now').call().then(
+        (message) => this.addChartData(message)
+      );
+    }
   }
 
-  getAsset(server, assetCode, assetIssuer) {
-    server.assets().forCode(assetCode).forIssuer(assetIssuer).call().then(res => {
+  addChartData(message) {
+    const transformedData = message.records.map(record => ({
+      time: parseInt(record.timestamp / 1000), // Convert timestamp to 'YYYY-MM-DD HH:mm'
+      open: parseFloat(record.open),
+      high: parseFloat(record.high),
+      low: parseFloat(record.low),
+      close: parseFloat(record.close)
+    }));
+
+    transformedData.sort((a, b) => {
+      return a.time - b.time;
+    });
+    const volumeData = message.records.map((item) => {
+      return {
+        time: parseInt(item.timestamp / 1000),
+        value: parseFloat(item.base_volume),
+        color:
+          item.open > item.close
+            ? "rgba(239, 83, 80, 0.5)"
+            : "rgba(38, 166, 154, 0.5)",
+      };
+    });
+
+    volumeData.sort((a, b) => {
+      return a.time - b.time;
+    });
+
+    // Retrieve the existing data
+    const currentCandleData = this.candlestickSeries.data() || [];
+    const currentVolumeData = this.volumeSeries.data() || [];
+
+    // Prepend the new data to the existing data
+    const updatedCandleData = [...transformedData, ...currentCandleData];
+    const updatedVolumeData = [...volumeData, ...currentVolumeData];
+
+    // Update the chart with the combined data
+    this.candlestickSeries.setData(updatedCandleData);
+    this.volumeSeries.setData(updatedVolumeData);
+
+    this.chart.timeScale().fitContent();
+    this.loadingTrades = false;
+    document.getElementById('loading-chart').classList.toggle('d-none');
+  }
+
+  resizeHandler() {
+    if (!this.chart) return;
+    const dimensions = document.getElementById('trades-chart').getBoundingClientRect();
+    this.chart.resize(dimensions.width, dimensions.height);
+    this.chart.timeScale().fitContent();
+  }
+
+  getAsset(assetCode, assetIssuer) {
+    this.server.assets().forCode(assetCode).forIssuer(assetIssuer).call().then(res => {
       res = res.records[0]
       document.getElementById('total_amount').textContent = Number(res.amount).toLocaleString();
       document.getElementById('claimable_balances').textContent = Number(res.claimable_balances_amount).toLocaleString();
@@ -114,31 +199,26 @@ export default class extends Controller {
       document.getElementById('contractId').textContent = res.contract_id ? res.contract_id : 'No contract';
 
       document.getElementById('authorized_accounts').textContent = res.accounts.authorized;
-      document.getElementById('unauthorized_accounts').textContent = res.accounts.unauthorized;
-      document.getElementById('authorized_liabilities').textContent = res.accounts.authorized_to_maintain_liabilities;
 
       document.getElementById('balances_authorized').textContent = res.balances.authorized;
-      document.getElementById('balances_unauthorized').textContent = res.balances.unauthorized;
-      document.getElementById('balances_liabilities').textContent = res.balances.authorized_to_maintain_liabilities;
 
       document.getElementById('archived_contracts_amount').textContent = res.archived_contracts_amount;
       document.getElementById('num_archived_contracts').textContent = res.num_archived_contracts;
-      document.getElementById('num_claimable_balances').textContent = res.num_claimable_balances;
       document.getElementById('num_contracts').textContent = res.num_contracts;
 
     })
   }
 
-  listenOrderbook(server, asset) {
-    const es = server.orderbook(asset, Asset.native())
+  listenOrderbook() {
+    this.orderBookStream = this.server.orderbook(this.asset, Asset.native())
       .cursor('now')
       .stream({
         onmessage: this.handleOrderBook.bind(this)
       })
   }
 
-  listenTrades(server, asset) {
-    const es = server.trades().forAssetPair(asset, Asset.native())
+  listenTrades() {
+    this.tradesStream = this.server.trades().forAssetPair(this.asset, Asset.native())
       .cursor('now')
       .stream({
         onmessage: this.handleTrade.bind(this)
@@ -231,10 +311,6 @@ export default class extends Controller {
       askTableBody.appendChild(askRow);
     });
   }
-  handlePayments(message) {
-    console.log(message)
-  }
-
 
   timeAgo(ledgerCloseTime) {
     const now = new Date();
