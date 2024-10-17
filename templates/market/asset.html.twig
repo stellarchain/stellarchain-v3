@@ -21,13 +21,13 @@
                     {% if toml is defined and toml.name is defined %}
                         <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
                     {% else %}
-                        <h2 class="mb-2">Asset: <span> {{asset.assetCode}} </span></h2>
+                        <h2 class="mb-2"><span> {{asset.assetCode}} </span></h2>
                     {% endif %}
 
                     {% if toml is defined %}
                    <p>
                     {% if toml.url is defined %}
-                        <span class="small"> Website: <a href="{{ toml.url}}">{{toml.url}}</a> </span>
+                        <span class="small">  <a href="{{ toml.url}}">{{toml.url}}</a> </span>
                     {% endif %}
                     </p>
                     <p>
@@ -177,8 +177,8 @@
 
         <div class="col-md-5">
             <div class="card text-center">
-                <div class="card-title mt-3">Trades</div>
-                <div class="card-body payments overflow-auto">
+                <div class="card-title mt-3">Live Trades</div>
+                <div class="card-body trades-card  overflow-auto">
                     <table id="trades" class="table table-responsive table-striped table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'trades' ) }}>
                         <thead>

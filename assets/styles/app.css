@@ -420,3 +420,7 @@ table {
     --bs-table-bg: transparent !important;
 }
 
+.trades-card {
+    min-height: 500px;
+    max-height: 700px;
+}
