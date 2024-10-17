@@ -177,7 +177,6 @@ export default class extends Controller {
     this.candlestickSeries.setData(updatedCandleData);
     this.volumeSeries.setData(updatedVolumeData);
 
-    this.chart.timeScale().fitContent();
     this.loadingTrades = false;
     document.getElementById('loading-chart').classList.toggle('d-none');
   }
