@@ -233,7 +233,6 @@ export default class extends Controller {
   }
 
   handleTrade(message) {
-    console.log(message);
     const trades = document.querySelector('#trades tbody');
 
     const tradeElement = document.createElement('tr');
