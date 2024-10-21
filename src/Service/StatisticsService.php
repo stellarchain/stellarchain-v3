@@ -34,7 +34,7 @@ class StatisticsService
             'blockchain_charts' => [
                 'blockchain_size' => false,
                 'average_ledger_size' => false,
-                'ledger_per_day' => [],
+                'ledger_per_day' => false,
                 'transactions_per_ledger' => [],
                 'successful_transactions' => [],
                 'failed_transactions' => [],

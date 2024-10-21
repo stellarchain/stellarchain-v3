@@ -36,8 +36,8 @@ blockchain_charts:
         title: Transactions per ledger
         desc: Transactions per ledger desc
     successful_transactions:
-        title: Successfully transactions
-        desc: Successfully transactions desc
+        title: Success transactions
+        desc: Success transactions desc
     failed_transactions:
         title: Failed transactions
         desc: Failed transactions desc
