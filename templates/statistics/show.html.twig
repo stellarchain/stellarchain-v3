@@ -5,9 +5,25 @@
 {% set content_title = chart_name%}
 
 {% block body %}
-<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar" {{stimulus_controller('statistics')}}>
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
-    {{component('coin-chart-component', {stat: stat})}}
+    <div class="card">
+        <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div class="bg-black p-2 rounded m-2 fw-bold fs-4">
+                {{chart_name}} <span id="chart-stat-value"></span>
+            </div>
+            <div class="p-2 m-2">
+                <div class="d-flex gap-1 justify-content-end">
+                    <button class="btn btn-black btn-sm active">10M</button>
+                    <button class="btn btn-black btn-sm">1D</button>
+                    <button class="btn btn-black btn-sm">1W</button>
+                </div>
+            </div>
+        </div>
+        <div id="stat-chart" style="height:600px"></div>
+        <div class="spinner-border ml-auto absolute position-absolute top-50 start-50 d-none" id="loading-chart"
+            role="status" aria-hidden="true"></div>
+    </div>
     <div class="py-4">
         <span>&nbsp;</span>
     </div>

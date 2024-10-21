@@ -1,11 +1,72 @@
-price_usd: Market Price XLM
-market_cap: Market Capitalization 
-market_cap_dominance: Market Capitalization Dominance
-circulating_supply: Circulating Supply 
-volume_24h: Total Volume
-transactions_per_ledger: Transactions Per Ledger
-operations_per_ledger: Operations Per Ledger
-number_of_transactions: Number of Transactions 
-successful_transactions: Successfully transactions
-failed_transactions: Failed transactions
-transactions_per_second: Transactions per second
+price_charts: 
+    title: Price Charts
+    desc: Price charts desc
+    price_usd: 
+        title: Market Price
+        desc: Market price description
+    market_cap:
+        title: Market Capitalization
+        desc: Market capitalization desc
+    volume_24h:
+        title: Volume
+        desc: Payments volume
+    circulating_supply:
+        title: Circulating Supply
+        desc: Circulating supply desc
+    market_cap_dominance:
+        title: Market Cap Dominance
+        desc: Market cap dominance desc
+    trades_volume:
+        title: Trades volume 
+        desc: Trades volume desc
+
+blockchain_charts:
+    title: Blockchain Charts
+    desc: Blockchain charts desc
+    blockchain_size:
+        title: Blockchain Charts
+        desc: Blockchain charts desc
+    average_ledger_size:
+        title: Average Ledger Size
+        desc: Average ledger size desc
+    ledger_per_day:
+        title: Ledger per day
+        desc: Ledger per day desc
+    transactions_per_ledger:
+        title: Transactions per ledger
+        desc: Transactions per ledger desc
+    successful_transactions:
+        title: Successfully transactions
+        desc: Successfully transactions desc
+    failed_transactions:
+        title: Failed transactions
+        desc: Failed transactions desc
+    transactions_per_second:
+        title: Transactions per second
+        desc: Transactions per second desc
+    operations_per_ledger:
+        title: Operations per ledger
+        desc: Operations per ledger
+    number_of_transactions:
+        title: Number of transactions
+        desc: Number of transactions desc
+    blockchain_charts:
+        title: Average ledger time
+        desc: Average ledger time desc
+    contract_invocations:
+        title: Contract invocations
+        desc: Contract Invocations desc
+    created_contracts:
+        title: Created contracts
+        desc: Created contracts desc
+
+# price_usd: Market Price XLM
+# market_cap: Market Capitalization 
+# market_cap_dominance: Market Capitalization Dominance
+# volume_24h: Total Volume
+# transactions_per_ledger: Transactions Per Ledger
+# operations_per_ledger: Operations Per Ledger
+# number_of_transactions: Number of Transactions 
+# successful_transactions: Successfully transactions
+# failed_transactions: Failed transactions
+# transactions_per_second: Transactions per second

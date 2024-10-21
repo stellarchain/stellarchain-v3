@@ -7,7 +7,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use App\Repository\CoinStatRepository;
-use PDO;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
@@ -144,7 +143,7 @@ final class CoinChartComponent
         return [$labels, $data];
     }
 
-    public function getChartDataByKey($page): array
+    public function getChartDataByKey($page =1): array
     {
         $priceStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
         if (in_array($this->stat, $priceStats, true)) {

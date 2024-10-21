@@ -6,6 +6,7 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+
 #[AsCronTask('0 0 * * *')]
 class CountTotalAssets
 {

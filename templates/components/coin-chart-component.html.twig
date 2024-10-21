@@ -1,4 +1,4 @@
-<div{{ attributes.defaults(stimulus_controller('statistics')) }}>
+<div{{ attributes.defaults(stimulus_controller('statistics', this.chartDataByKey)) }}>
     <div class="card">
         <div class="d-flex justify-content-between flex-column flex-md-row">
             <div class="bg-black p-2 rounded m-2 fw-bold fs-4">
@@ -13,7 +13,6 @@
             </div>
         </div>
         <div class="">
-          {{ render_chart(this.chart, {'class': 'statistics'}) }}
           <div class="spinner-border ml-auto absolute position-absolute top-50 start-50 d-none" id="loading-chart" role="status" aria-hidden="true"></div>
         </div>
         <span class="m-1 small text-secondary text-center"> {{page * 200}} records</span>

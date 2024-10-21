@@ -27,6 +27,7 @@ export default class extends Controller {
     this.listenOrderbook();
     this.listenTrades();
     this.loadAggregatedTradesChart();
+    this.loadInitialTrades();
     this.getAsset(this.element.dataset.horizonAssetCodeValue, this.element.dataset.horizonAssetIssuerValue)
   }
 
@@ -115,13 +116,11 @@ export default class extends Controller {
       if (logicalRange.from < 0 && this.candlestickSeries.data()) {
         let startTime = this.candlestickSeries.data()[0].time
         if (!this.loadingTrades) {
-          console.log(logicalRange, startTime)
           this.loadingTrades = true;
           document.getElementById('loading-chart').classList.toggle('d-none');
           this.server.tradeAggregation(this.asset, Asset.native(), 0, startTime * 1000, this.resolution, 0)
             .order('desc').limit(200)
             .call().then((message) => this.addChartData(message))
-          console.log('get_more_data', startTime)
         }
       }
     });
@@ -216,6 +215,15 @@ export default class extends Controller {
       })
   }
 
+  loadInitialTrades(){
+    this.server.trades().forAssetPair(this.asset, Asset.native())
+      .cursor('now')
+      .order('desc')
+      .call().then(res => {
+        res.records.map(record => this.handleTrade(record))
+      })
+  }
+
   listenTrades() {
     this.tradesStream = this.server.trades().forAssetPair(this.asset, Asset.native())
       .cursor('now')
@@ -225,6 +233,7 @@ export default class extends Controller {
   }
 
   handleTrade(message) {
+    console.log(message);
     const trades = document.querySelector('#trades tbody');
 
     const tradeElement = document.createElement('tr');

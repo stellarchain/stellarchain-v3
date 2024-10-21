@@ -4,8 +4,6 @@ namespace App\Command;
 
 use App\Integrations\StellarHorizon\HorizonConnector;
 use App\Integrations\StellarHorizon\ListHorizonAssets;
-use App\Message\UpdateAsset;
-use Soneso\StellarSDK\Responses\Asset\AssetResponse;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,16 +62,5 @@ class HorizonReadAssetsCommand extends Command
         $listAssetsRequest = new ListHorizonAssets($cursor);
 
         return $connector->send($listAssetsRequest)->json();
-    }
-
-    /**
-     * @param array<int,mixed> $assetData
-     */
-    public function saveAsset(array $assetData): void
-    {
-        $assetResponse = AssetResponse::fromJson($assetData);
-        if ($assetResponse instanceof AssetResponse) {
-            $this->bus->dispatch(new UpdateAsset($assetResponse));
-        }
     }
 }
