@@ -46,14 +46,14 @@ class StatisticsService
                 'created_contracts' => [],
             ],
             //todo
-            /* 'network_charts' => [ */
-            /*     'total_assets' => [], */
-            /*     'active_addresses' => [], */
-            /*     'inactive_addresses' => [], */
-            /*     'top_100_active_addresses' => [], */
-            /*     'output_value_per_day' => [], */
-            /*     'transactions_value' => [], */
-            /* ], */
+            'network_charts' => [
+                'total_assets' => [],
+                /*     'active_addresses' => [], */
+                /*     'inactive_addresses' => [], */
+                /*     'top_100_active_addresses' => [], */
+                /*     'output_value_per_day' => [], */
+                /*     'transactions_value' => [], */
+            ],
             /* 'community_fund' => [ */
             /*     'total_submissions' => [], */
             /*     'total_awarded' => [], */
@@ -77,6 +77,24 @@ class StatisticsService
         ];
     }
 
+    public function getMetricsData($type, $stat)
+    {
+        $metrics = [
+            'label' => [],
+            'data' => [],
+            'change' => 0
+        ];
+        if ($type == 'price_charts') {
+            $metrics = $this->getPriceMetrics($stat);
+        }
+
+        if ($type == 'blockchain_charts') {
+            $metrics = $this->getBlockchainMetrics($stat);
+        }
+
+        return $metrics;
+    }
+
     /**
      * @return array<int,array>|array
      */
@@ -85,61 +103,77 @@ class StatisticsService
         $statistics = $this->getKeys();
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
-                if (is_array($chart)){
-                    if ($typeKey == 'price_charts') {
-                        $pageData = $this->coinStatRepository->getStatsByName($key, 0, 50);
-                        $priceData = array_reverse($pageData);
-                        $labels = [];
-                        $data = [];
-                        foreach ($priceData as $entry) {
-                            $labels[] = \DateTime::createFromFormat('Y-m-d H:i:s', $entry['created_at'])->format('m-d-Y H:i');
-                            $data[] = (float) $entry['value'];
-                        }
-
-                        $change = 0;
-                        $dataCount = count($data);
-
-                        if ($dataCount > 1) {
-                            $latestValue = $data[$dataCount - 1];
-                            $previousValue = $data[$dataCount - 2];
-
-                            if ($previousValue != 0) {
-                                $change = (($latestValue - $previousValue) / $previousValue) * 100;
-                            }
-                        }
-
-                        $statistics[$typeKey][$key] = ['chart' => $this->buildChart($labels, $data), 'change' => $change];
-                    }
-
-                    if ($typeKey == 'blockchain_charts') {
-                        $endDate = new \DateTimeImmutable();
-                        $startDate = $endDate->sub(new \DateInterval('PT5H'));
-                        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate, 1, 100);
-
-                        $labels = [];
-                        $data = [];
-                        foreach ($ledgerMetrics as $entry) {
-                            $labels[] = $entry['time_start'];
-                            $data[] = $entry[$key];
-                        }
-                        $change = 0;
-                        $dataCount = count($data);
-
-                        if ($dataCount > 1) {
-                            $latestValue = $data[$dataCount - 1];
-                            $previousValue = $data[$dataCount - 2];
-
-                            if ($previousValue != 0) {
-                                $change = (($latestValue - $previousValue) / $previousValue) * 100;
-                            }
-                        }
-
-                        $statistics[$typeKey][$key] = ['chart' => $this->buildChart($labels, $data), 'change' => $change];
-                    }
+                if (is_array($chart)) {
+                    $metrics = $this->getMetricsData($typeKey, $key);
+                    $statistics[$typeKey][$key] = [
+                        'chart' => $this->buildChart($metrics['label'], $metrics['data']),
+                        'change' => $metrics['change']
+                    ];
                 }
             }
         }
         return $statistics;
+    }
+
+    public function getBlockchainMetrics($key)
+    {
+        $endDate = new \DateTimeImmutable();
+        $startDate = $endDate->sub(new \DateInterval('PT5H'));
+        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate, 1, 100);
+
+        $labels = [];
+        $data = [];
+        foreach ($ledgerMetrics as $entry) {
+            $labels[] = $entry['time_start'];
+            $data[] = $entry[$key];
+        }
+        $change = 0;
+        $dataCount = count($data);
+
+        if ($dataCount > 1) {
+            $latestValue = $data[$dataCount - 1];
+            $previousValue = $data[$dataCount - 2];
+
+            if ($previousValue != 0) {
+                $change = (($latestValue - $previousValue) / $previousValue) * 100;
+            }
+        }
+
+        return [
+            'change' => $change,
+            'label' => $labels,
+            'data' => $data
+        ];
+    }
+
+    public function getPriceMetrics(string $key): array
+    {
+        $pageData = $this->coinStatRepository->getStatsByName($key, 0, 50);
+        $priceData = array_reverse($pageData);
+        $labels = [];
+        $data = [];
+        foreach ($priceData as $entry) {
+            $labels[] = \DateTime::createFromFormat('Y-m-d H:i:s', $entry['created_at'])->format('m-d-Y H:i');
+            $data[] = (float) $entry['value'];
+        }
+
+        $change = 0;
+        $dataCount = count($data);
+
+        if ($dataCount > 1) {
+            $latestValue = $data[$dataCount - 1];
+            $previousValue = $data[$dataCount - 2];
+
+            if ($previousValue != 0) {
+                $change = (($latestValue - $previousValue) / $previousValue) * 100;
+            }
+        }
+
+        return [
+            'change' => $change,
+            'label' => $labels,
+            'data' => $data
+        ];
     }
 
 

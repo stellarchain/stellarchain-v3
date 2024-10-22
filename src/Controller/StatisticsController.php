@@ -19,11 +19,26 @@ class StatisticsController extends AbstractController
         ]);
     }
 
-    #[Route('/statistics/{stat}/{chart}', name: 'app_statistics_show')]
-    public function show_ledgers( TranslatorInterface $translator, string $stat, string $chart): Response {
+    #[Route('/statistics/{stat}/{chart}', name: 'app_statistics_show', methods: ['GET'])]
+    public function charts(TranslatorInterface $translator, string $stat, string $chart): Response
+    {
         return $this->render('statistics/show.html.twig', [
-            'chart_name' => $translator->trans($stat.'.'.$chart.'.title'),
+            'chart_name' => $translator->trans($stat . '.' . $chart . '.title'),
             'stat' => $stat
         ]);
+    }
+
+    #[Route('/statistics/{stat}/{chart}', name: 'app_statistics_get', methods: ['POST'])]
+    public function charts_data(StatisticsService $statisticsService, string $stat, string $chart): Response
+    {
+        $chartData = $statisticsService->getMetricsData($stat, $chart);
+        $areaSeries = [];
+        foreach($chartData['label'] as $k => $time) {
+            $areaSeries[] = [
+                'value' => $chartData['data'][$k],
+                'time' => \DateTime::createFromFormat('m-d-Y H:i', $time)->getTimestamp()
+            ];
+        }
+        return $this->json($areaSeries);
     }
 }
