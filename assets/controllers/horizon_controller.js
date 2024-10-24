@@ -1,7 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 import StellarSdk from '@stellar/stellar-sdk';
 const {Horizon, Asset} = StellarSdk;
-import {createChart} from 'lightweight-charts';
+import {createChart, CrosshairMode, LineStyle} from 'lightweight-charts';
 
 
 /* stimulusFetch: 'lazy' */
@@ -19,6 +19,9 @@ export default class extends Controller {
   resolution = 86400000;
   orderBookStream = null;
   tradesStream = null;
+  areaSeries = null;
+  maSeries = null;
+  chartContainer = null;
 
   async initialize() {
     this.asset = new Asset(this.element.dataset.horizonAssetCodeValue, this.element.dataset.horizonAssetIssuerValue);
@@ -29,6 +32,27 @@ export default class extends Controller {
     this.loadAggregatedTradesChart();
     this.loadInitialTrades();
     this.getAsset(this.element.dataset.horizonAssetCodeValue, this.element.dataset.horizonAssetIssuerValue)
+  }
+
+  calculateMovingAverageSeriesData(candleData, maLength) {
+    const maData = [];
+
+    for (let i = 0; i < candleData.length; i++) {
+      if (i < maLength) {
+        // Provide whitespace data points until the MA can be calculated
+        maData.push({time: candleData[i].time});
+      } else {
+        // Calculate the moving average, slow but simple way
+        let sum = 0;
+        for (let j = 0; j < maLength; j++) {
+          sum += candleData[i - j].close;
+        }
+        const maValue = sum / maLength;
+        maData.push({time: candleData[i].time, value: maValue});
+      }
+    }
+
+    return maData;
   }
 
   disconnect() {
@@ -47,11 +71,31 @@ export default class extends Controller {
   }
 
   initChart() {
-    this.chart = createChart(document.getElementById('trades-chart'), {
-      layout: {textColor: 'white', background: {type: 'solid', color: 'transparent'}},
+    this.chartContainer = document.getElementById('trades-chart');
+    this.chart = createChart(this.chartContainer, {
+      layout: {textColor: 'white', background: {type: 'solid', color: 'transparent'}, fontFamily: "'Roboto', sans-serif"},
       grid: {
         vertLines: {color: '#2b2b2b'},
         horzLines: {color: '#2b2b2b'},
+      },
+      crosshair: {
+        // Change mode from default 'magnet' to 'normal'.
+        // Allows the crosshair to move freely without snapping to datapoints
+        mode: CrosshairMode.Normal,
+
+        // Vertical crosshair line (showing Date in Label)
+        vertLine: {
+          width: 8,
+          color: '#C3BCDB44',
+          style: LineStyle.Solid,
+          labelBackgroundColor: '#9B7DFF',
+        },
+
+        // Horizontal crosshair line (showing Price in Label)
+        horzLine: {
+          color: '#9B7DFF',
+          labelBackgroundColor: '#9B7DFF',
+        },
       }
     });
     this.volumeSeries = this.chart.addHistogramSeries({
@@ -72,18 +116,28 @@ export default class extends Controller {
         bottom: 0,
       },
     });
+
+    this.maSeries = this.chart.addLineSeries({color: '#2962FF', lineWidth: 1});
+
+    this.areaSeries = this.chart.addAreaSeries({
+      lastValueVisible: false, // hide the last value marker for this series
+      crosshairMarkerVisible: false, // hide the crosshair marker for this series
+      lineColor: 'transparent', // hide the line
+      topColor: 'rgba(239, 83, 80, 0.5)',
+      bottomColor: 'rgba(56, 33, 110, 0.1)',
+    });
     this.candlestickSeries = this.chart.addCandlestickSeries({
       upColor: 'rgb(246, 70, 93)', downColor: 'rgb(46, 189, 133)', borderVisible: false,
       wickUpColor: 'rgb(246, 70, 93)', wickDownColor: 'rgb(46, 189, 133)',
     });
 
     this.toolTip = document.createElement('div');
-    this.toolTip.style = `width: 96px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
-    this.toolTip.style.background = 'white';
-    this.toolTip.style.color = 'black';
-    this.toolTip.style.borderColor = '#2962FF';
+    this.toolTip.style = `width: 120px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+    this.toolTip.style.background = 'black';
+    this.toolTip.style.color = 'white';
+    this.toolTip.style.borderColor = 'transparent';
 
-    this.chartTarget.appendChild(this.toolTip);
+    this.chartContainer.appendChild(this.toolTip);
 
     this.chart.subscribeCrosshairMove(param => {
       if (
@@ -94,14 +148,31 @@ export default class extends Controller {
       ) {
         this.toolTip.style.display = 'none';
       } else {
+        let date = new Date(param.time*1000);
+        const dateStr = date.toDateString();
         this.toolTip.style.display = 'block';
         const data = param.seriesData.get(this.candlestickSeries);
         const price = data.value !== undefined ? data.value : data.close;
-        const close = data.close !== undefined ? data.close : 'no close';
-        this.toolTip.innerHTML = `<div>${1 / price.toFixed(2)} ${close}</div>`;
+        this.toolTip.innerHTML = `<div style="color: ${'rgba( 38, 166, 154, 1)'}"></div><div style="font-size: 24px; margin: 4px 0px; color: ${'white'}">
+            ${Math.round(100 * price) / 100}
+            </div><div style="color: ${'white'}">
+            ${dateStr}
+            </div>`;
+        const toolTipWidth = 120;
+        const toolTipHeight = 80;
+        const toolTipMargin = 15;
+        const y = param.point.y;
+        let left = param.point.x + toolTipMargin;
+        if (left > this.chartContainer.clientWidth - toolTipWidth) {
+          left = param.point.x - toolTipMargin - toolTipWidth;
+        }
 
-        this.toolTip.style.left = param.point.x + 'px';
-        this.toolTip.style.top = param.point.y + 'px';
+        let top = y + toolTipMargin;
+        if (top > this.chartContainer.clientHeight - toolTipHeight) {
+          top = y - toolTipHeight - toolTipMargin;
+        }
+        this.toolTip.style.left = left + 'px';
+        this.toolTip.style.top = top + 'px';
       }
     });
 
@@ -175,6 +246,15 @@ export default class extends Controller {
     // Update the chart with the combined data
     this.candlestickSeries.setData(updatedCandleData);
     this.volumeSeries.setData(updatedVolumeData);
+    const lineData = this.candlestickSeries.data().map(datapoint => ({
+      time: datapoint.time,
+      value: (datapoint.close + datapoint.open) / 2,
+    }));
+
+    this.areaSeries.setData(lineData)
+
+    const maData = this.calculateMovingAverageSeriesData(this.candlestickSeries.data(), 20);
+    this.maSeries.setData(maData);
 
     this.loadingTrades = false;
     document.getElementById('loading-chart').classList.toggle('d-none');
@@ -182,7 +262,7 @@ export default class extends Controller {
 
   resizeHandler() {
     if (!this.chart) return;
-    const dimensions = document.getElementById('trades-chart').getBoundingClientRect();
+    const dimensions = this.chartContainer.getBoundingClientRect();
     this.chart.resize(dimensions.width, dimensions.height);
     this.chart.timeScale().fitContent();
   }
@@ -215,7 +295,7 @@ export default class extends Controller {
       })
   }
 
-  loadInitialTrades(){
+  loadInitialTrades() {
     this.server.trades().forAssetPair(this.asset, Asset.native())
       .cursor('now')
       .order('desc')
