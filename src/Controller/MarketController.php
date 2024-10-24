@@ -103,6 +103,13 @@ class MarketController extends AbstractController
     private function buildChart(array $labels, array $data, $chartBuilder, $assetCode): Chart
     {
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+
+        $totalDataPoints = count($data);
+        $initialViewPercentage = 0.1;
+        $maxValue = $totalDataPoints - 1;
+        $minValue = $maxValue - floor($totalDataPoints * $initialViewPercentage);
+        $minValue = max($minValue, 0);
+
         $chart->setData([
             'labels' => $labels,
             'datasets' => [
@@ -150,6 +157,8 @@ class MarketController extends AbstractController
                     'grid' => [
                         'color' => 'transparent'
                     ],
+                    'min' => $minValue,
+                    'max' => $maxValue
                 ]
             ],
             'plugins' => [
