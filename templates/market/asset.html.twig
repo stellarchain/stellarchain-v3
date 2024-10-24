@@ -19,25 +19,27 @@
             <div class="col-md-10">
                 <div class="info-section">
                     {% if toml is defined and toml.name is defined %}
-                        <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
+                    <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
                     {% else %}
-                        <h2 class="mb-2"><span> {{asset.assetCode}} </span></h2>
+                    <h2 class="mb-2"><span> {{asset.assetCode}} </span></h2>
                     {% endif %}
 
                     {% if toml is defined %}
-                   <p>
-                    {% if toml.url is defined %}
-                        <span class="small">  <a href="{{ toml.url}}">{{toml.url}}</a> </span>
-                    {% endif %}
+                    <p>
+                        {% if toml.url is defined %}
+                        <span class="small"> <a href="{{ toml.url}}">{{toml.url}}</a> </span>
+                        {% endif %}
                     </p>
                     <p>
-                    {% if toml.desc is defined %}
-                    {{ toml.desc }}
-                    {% endif %}
+                        {% if toml.desc is defined %}
+                        {{ toml.desc }}
+                        {% endif %}
                     </p>
 
                     {% endif %}
-                    <p class="small">Issuer: <span><a href="https://stellarchain.io/accounts/{{asset.assetIssuer}}">{{asset.assetIssuer}}</a></span></p>
+                    <p class="small">Issuer: <span><a
+                                href="https://stellarchain.io/accounts/{{asset.assetIssuer}}">{{asset.assetIssuer}}</a></span>
+                    </p>
                     <p class="small">Contract: <span id="contractId"></span></p>
                 </div>
             </div>
@@ -72,7 +74,8 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">24h Volume</h5>
-                    <p class="card-text"><span class="text-warning">{{latestMetric.volume24h | number_format}} {{asset.assetCode}}</span>
+                    <p class="card-text"><span class="text-warning">{{latestMetric.volume24h | number_format}}
+                            {{asset.assetCode}}</span>
                     </p>
                 </div>
             </div>
@@ -89,18 +92,8 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-9">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">Market Price</h5>
-                    <div class="chart card mt-2">
-                        {{render_chart(chart)}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-             <div class="card mb-2">
+            <div class="col-md-3">
+            <div class="card mb-2">
                 <div class="card-body">
                     <h5 class="card-title">Total Amount</h5>
                     <p class="card-text" id="total_amount"></p>
@@ -126,20 +119,33 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-9">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Market Price</h5>
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{asset.assetCode}}/XLM</h5>
+                            <div class="card">
+                                1D
+                            </div>
+                            <div id="trades-chart" style="height:360px" {{ stimulus_target('horizon', 'chart' ) }}>
+                            </div>
+                            <div class="spinner-border font-black ml-auto absolute position-absolute top-50 start-50 d-none"
+                                id="loading-chart" role="status" aria-hidden="true"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
     <div class="row mt-4">
         <div class="col-md-12">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">{{asset.assetCode}}/XLM</h5>
-                    <div class="card">
-                        1D
-                    </div>
-                    <div id="trades-chart" style="height:500px" {{ stimulus_target('horizon', 'chart' ) }}></div>
-                    <div class="spinner-border font-black ml-auto absolute position-absolute top-50 start-50 d-none" id="loading-chart" role="status" aria-hidden="true"></div>
-                </div>
+            <div class="chart card mt-2">
+                {{render_chart(chart)}}
             </div>
         </div>
     </div>
@@ -149,7 +155,8 @@
             <div class="card text-center">
                 <div class="card-title mt-3">Order Book</div>
                 <div class="card-body payments align-items-start d-flex">
-                    <table id="bidTable" class="table table-responsive table-striped table-hover table-trades table-borderless" {{
+                    <table id="bidTable"
+                        class="table table-responsive table-striped table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'bid' ) }}>
                         <thead>
                             <tr>
@@ -160,7 +167,8 @@
                         <tbody>
                         </tbody>
                     </table>
-                    <table id="askTable" class="table table-responsive table-striped table-hover table-trades table-borderless" {{
+                    <table id="askTable"
+                        class="table table-responsive table-striped table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'ask' ) }}>
                         <thead>
                             <tr>
@@ -179,7 +187,8 @@
             <div class="card text-center">
                 <div class="card-title mt-3">Live Trades</div>
                 <div class="card-body trades-card  overflow-auto">
-                    <table id="trades" class="table table-responsive table-striped table-hover table-trades table-borderless" {{
+                    <table id="trades"
+                        class="table table-responsive table-striped table-hover table-trades table-borderless" {{
                         stimulus_target('horizon', 'trades' ) }}>
                         <thead>
                             <tr>

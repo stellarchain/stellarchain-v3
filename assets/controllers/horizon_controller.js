@@ -299,6 +299,7 @@ export default class extends Controller {
     this.server.trades().forAssetPair(this.asset, Asset.native())
       .cursor('now')
       .order('desc')
+      .limit(50)
       .call().then(res => {
         res.records.map(record => this.handleTrade(record))
       })
