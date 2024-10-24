@@ -123,14 +123,13 @@
         <div class="col-md-9">
             <div class="card text-center">
                 <div class="card-body">
-                    <h5 class="card-title">Market Price</h5>
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">{{asset.assetCode}}/XLM</h5>
                             <div class="card">
                                 1D
                             </div>
-                            <div id="trades-chart" style="height:360px" {{ stimulus_target('horizon', 'chart' ) }}>
+                            <div id="trades-chart" style="height:390px" {{ stimulus_target('horizon', 'chart' ) }}>
                             </div>
                             <div class="spinner-border font-black ml-auto absolute position-absolute top-50 start-50 d-none"
                                 id="loading-chart" role="status" aria-hidden="true"></div>
@@ -145,6 +144,7 @@
     <div class="row mt-4">
         <div class="col-md-7">
             <div class="chart card p-3">
+                <span class="text-center">Price {{asset.assetCode}}/XLM</span>
                 {{render_chart(chart)}}
             </div>
 

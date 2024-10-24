@@ -189,7 +189,7 @@ class StatisticsService
                     'data' => $data,
                     'fill' => false,
                     'tension' => 0.1,
-                    'borderWidth' => 1.3,
+                    'borderWidth' => 1,
                     'pointBorderWidth' => 0.5,
                     'pointRadius' => 0.5,
                 ],

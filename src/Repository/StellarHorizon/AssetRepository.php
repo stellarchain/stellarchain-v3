@@ -4,8 +4,6 @@ namespace App\Repository\StellarHorizon;
 
 use App\Entity\StellarHorizon\Asset;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -65,8 +63,15 @@ class AssetRepository extends ServiceEntityRepository
             ->addSelect('am');
 
         foreach ($filterCriteria as $field => $value) {
-            $qb->andWhere("a.$field = :$field")
-                ->setParameter($field, $value);
+            if (is_array($value)) {
+                // Use IN clause for array values
+                $qb->andWhere("a.$field IN (:$field)")
+                    ->setParameter($field, $value);
+            } else {
+                // Use regular = comparison for non-array values
+                $qb->andWhere("a.$field = :$field")
+                    ->setParameter($field, $value);
+            }
         }
 
         foreach ($sortCriteria as $field => $direction) {

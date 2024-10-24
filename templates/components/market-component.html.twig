@@ -13,8 +13,8 @@
     </div>
     <div class="bg-black py-2">
         <div class="row g-2">
-            <div class="col-4">
-                <input class="form-select bg-white asset-input" placeholder="Asset"
+            <div class="col-md-4 col-xs-8">
+                <input class="form-select bg-white asset-input" placeholder="Search assets"
                     data-model="asset"
                     data-action="live#action"
                     {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
@@ -24,20 +24,7 @@
                 >
                 </input>
             </div>
-            <div class="col-4">
-                <select class="form-select bg-white"
-                    data-model="range"
-                    data-action="live#action"
-                    data-live-action-param="resetPage"
-                    aria-label="Default select example"
-                >
-                    <option>1 hour</option>
-                    <option selected="">24 hour</option>
-                    <option>7 days</option>
-                    <option>30 days</option>
-                </select>
-            </div>
-            <div class="col-4">
+            <div class="col-md-2 col-xs-2">
                 <select class="form-select bg-white"
                     data-model="sort"
                     data-action="live#action"

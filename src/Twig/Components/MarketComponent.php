@@ -139,7 +139,7 @@ final class MarketComponent
             'in_market' => true
         ];
         if ($this->asset != '') {
-            $filter = array_merge($filter, ['asset_code' => $this->asset]);
+            $filter = array_merge($filter, ['asset_code' => explode(',',$this->asset)]);
         }
 
         return $filter;
