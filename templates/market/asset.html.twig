@@ -5,8 +5,8 @@
 {% block body %}
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar" {{stimulus_controller('horizon', {assetCode:
     asset.assetCode, assetIssuer: asset.assetIssuer})}}>
-    <div class="card">
-        <div class="asset-header row align-items-center ">
+    <div class="card mt-2">
+        <div class="asset-header row">
             <div class="col-md-2 d-flex justify-content-center">
                 <div class="icon-container">
                     {% if toml is defined %}
@@ -47,44 +47,67 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">Market Price</h5>
-                    <p class="card-text"><span class="text-success">${{priceMarket}}</span></p>
+            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-currency-dollar text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title m-0">Market Price</h5>
+                    <p class="card-text">
+                        <span class="text-success">${{priceMarket | number_format(5)}}</span>
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">Market Cap</h5>
-                    <p class="card-text"><span class="text-info">${{marketCap | number_format}}</span></p>
+            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi  bi-graph-up-arrow text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title m-0">Market Cap</h5>
+                    <p class="card-text">
+                        <span class="text-success">${{marketCap | number_format}}</span>
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">Change 24h</h5>
-                    <p class="card-text"><span class="text-warning">{{latestMetric.priceChange24h}}%</span></p>
+            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-percent text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title m-0">Change 24h</h5>
+                    <p class="card-text">
+                        <span class="text-success">{{latestMetric.priceChange24h}}%</span>
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">24h Volume</h5>
-                    <p class="card-text"><span class="text-warning">{{latestMetric.volume24h | number_format}}
+            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-database text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title m-0">Volume 24h</h5>
+                    <p class="card-text">
+                        <span class="text-warning">{{latestMetric.volume24h | number_format}}
                             {{asset.assetCode}}</span>
                     </p>
                 </div>
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h5 class="card-title">24h Trades</h5>
-                    <p class="card-text"><span class="text-warning">{{latestMetric.totalTrades}}</span>
+            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title m-0">Trades</h5>
+                    <p class="card-text">
+                        <span class="text-warning">{{latestMetric.totalTrades}}</span>
                     </p>
                 </div>
             </div>
@@ -92,35 +115,7 @@
     </div>
 
     <div class="row mt-4">
-            <div class="col-md-3">
-            <div class="card mb-2">
-                <div class="card-body">
-                    <h5 class="card-title">Total Amount</h5>
-                    <p class="card-text" id="total_amount"></p>
-                </div>
-            </div>
-
-            <div class="card mb-2">
-                <div class="card-body">
-                    <h5 class="card-title">Claimable Balances</h5>
-                    <p class="card-text" id="claimable_balances"></p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <p class="card-text">Liquidity Pools: <span id="liquidity_pools"></span></p>
-                    <p class="card-text">Contracts Amount: <span id="contracts_amount"></span></p>
-                    <p class="card-text">Authorized Accounts: <span id="authorized_accounts"></span></p>
-                    <p class="card-text">Authorized: <span id="balances_authorized"></span></p>
-                    <p class="card-text">Active: <span id="num_contracts"></span></p>
-                    <p class="card-text">Archived amount: <span id="archived_contracts_amount"></span></p>
-                    <p class="card-text">Archived total: <span id="num_archived_contracts"></span></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="card text-center">
                 <div class="card-body">
                     <div class="card text-center">
@@ -139,7 +134,77 @@
             </div>
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+                <div class="card d-flex flex-row p-2 gap-2 mb-1">
+                    <span class="p-1">
+                        <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                    </span>
+                    <div class="rounded">
+                        <h5 class="card-title">Total amount</h5>
+                        <p class="card-text text-muted" id="total_amount"></p
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="card d-flex flex-row p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title">Claimable Balances</h5>
+                    <p class="card-text text-muted" id="claimable_balances"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card d-flex flex-row p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title">Liquidity Pools</h5>
+                    <p class="card-text text-muted"><span id="liquidity_pools"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card d-flex flex-row p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title">Contracts</h5>
+                    <p class="card-text text-muted"><span id="num_contracts"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card d-flex flex-row p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title">Contracts amount</h5>
+                    <p class="card-text text-muted"><span id="contracts_amount"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card d-flex flex-row p-2 gap-2">
+                <span class="p-1">
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                </span>
+                <div class="rounded">
+                    <h5 class="card-title">Authorized accounts</h5>
+                    <p class="card-text text-muted"><span id="authorized_accounts"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row mt-4">
         <div class="col-md-7">
@@ -189,9 +254,9 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="small text-secondary"> Amount {{asset.assetCode}} </th>
-                                <th scope="col" class="small text-secondary text-end"> Amount XLM </th>
+                                <th scope="col" class="small text-secondary"> Amount XLM </th>
                                 <th scope="col" class="small text-secondary"> Price XLM </th>
-                                <th scope="col" class="small text-secondary text-end"> Time </th>
+                                <th scope="col" class="small text-secondary"> Time </th>
                             </tr>
                         </thead>
                         <tbody>

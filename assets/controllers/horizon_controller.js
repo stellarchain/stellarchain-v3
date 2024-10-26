@@ -275,13 +275,7 @@ export default class extends Controller {
       document.getElementById('liquidity_pools').textContent = Number(res.liquidity_pools_amount).toLocaleString();
       document.getElementById('contracts_amount').textContent = res.contracts_amount;
       document.getElementById('contractId').textContent = res.contract_id ? res.contract_id : 'No contract';
-
       document.getElementById('authorized_accounts').textContent = res.accounts.authorized;
-
-      document.getElementById('balances_authorized').textContent = res.balances.authorized;
-
-      document.getElementById('archived_contracts_amount').textContent = res.archived_contracts_amount;
-      document.getElementById('num_archived_contracts').textContent = res.num_archived_contracts;
       document.getElementById('num_contracts').textContent = res.num_contracts;
 
     })
@@ -333,7 +327,7 @@ export default class extends Controller {
     <td>${baseAmount}</td>
     <td>${counterAmount}</td>
     <td>${price}</td>
-    <td>${this.timeAgo(ledgerCloseTime)}</td>
+    <td class="text-muted">${this.timeAgo(ledgerCloseTime)}</td>
   `;
 
     // Append the trade row (<tr>) to the <tbody> of trades table

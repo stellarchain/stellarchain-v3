@@ -77,6 +77,14 @@
     .border-light {
         border-color: var(--bs-black) !important;
     }
+
+    .ts-dropdown,
+    .ts-control,
+    .ts-control input {
+        color: #FFF !important;
+        background-color: var(--bs-dark) !important;
+        border-color: var(--bs-dark) !important;
+    }
 }
 
 [data-bs-theme=light] {
@@ -188,13 +196,7 @@ canvas {
     /* High value to ensure it appears on top */
 }
 
-.ts-dropdown,
-.ts-control,
-.ts-control input {
-    color: #a7acb1 !important;
-    background-color: var(--bs-dark) !important;
-    border-color: var(--bs-dark) !important;
-}
+
 
 :root {
     --bs-list-group-action-hover-color: #0d6efd;
@@ -384,7 +386,6 @@ canvas#race {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     padding: 20px;
-    margin-top: 30px;
 }
 
 .icon-container {
