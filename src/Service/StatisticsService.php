@@ -220,7 +220,7 @@ class StatisticsService
                 'zoom' => [
                     'zoom' => [
                         'wheel' => [
-                            'enabled' => true
+                            'enabled' => false
                         ],
                         'drag' => [
                             'enabled' => false
