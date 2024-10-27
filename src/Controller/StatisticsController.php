@@ -17,7 +17,7 @@ class StatisticsController extends AbstractController
     {
         $cache = new FilesystemAdapter();
         $statisticsCharts = $cache->get('statistics_chart', function (ItemInterface $item) use ($statisticsService): array {
-            $item->expiresAfter(3600);
+            $item->expiresAfter(21600);
             return $statisticsService->buildStatisticsCharts();
         });
         return $this->render('statistics/index.html.twig', [
