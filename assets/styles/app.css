@@ -11,7 +11,8 @@
     color: #0d6efd;
     cursor: pointer;
 }
-
+.tableFixHead          { overflow: auto; height: 100px; }
+.tableFixHead thead th { position: sticky; top: -16px; z-index: 1; }
 [data-bs-theme=dark] {
     --bs-black: #000;
     --bs-white: #fff;
@@ -385,7 +386,7 @@ canvas#race {
 }
 
 .bg-black {
-    background-color: #00000040 !important;
+    background-color: #00000095 !important;
 }
 
 .asset-header {

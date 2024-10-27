@@ -259,14 +259,14 @@
                 <div class="card-title mt-3">Live Trades</div>
                 <div class="card-body trades-card  overflow-auto">
                     <table id="trades"
-                        class="table table-responsive table-striped table-hover table-trades table-borderless" {{
+                        class="table table-responsive table-striped table-hover table-trades table-borderless tableFixHead" {{
                         stimulus_target('horizon', 'trades' ) }}>
                         <thead>
                             <tr>
-                                <th scope="col" class="small text-secondary"> Amount {{asset.assetCode}} </th>
-                                <th scope="col" class="small text-secondary"> Amount XLM </th>
-                                <th scope="col" class="small text-secondary"> Price XLM </th>
-                                <th scope="col" class="small text-secondary"> Time </th>
+                                <th scope="col" class="small text-secondary bg-black"> Amount {{asset.assetCode}} </th>
+                                <th scope="col" class="small text-secondary bg-black"> Amount XLM </th>
+                                <th scope="col" class="small text-secondary bg-black"> Price XLM </th>
+                                <th scope="col" class="small text-secondary bg-black"> Time </th>
                             </tr>
                         </thead>
                         <tbody>
