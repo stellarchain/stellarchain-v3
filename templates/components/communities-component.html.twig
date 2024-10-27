@@ -2,17 +2,17 @@
 
     <div class="py-1 px-2 menu sticky-top border rounded mb-2">
         <ul class="nav nav-pills nav-justified">
-            <li class="nav-item py-0">
+            <li class="nav-item py-0 hover">
                 <a class="nav-link py-1 tabs fw-bolder {{ order == 'followers' ? 'active' : '' }}" aria-current="page"
                     href="{{path('app_communities')}}">
                     Followers
                 </a>
             </li>
-            <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder {{ order == 'posts' ? 'active' : '' }}"
+            <li class="nav-item py-0 hover"><a class="nav-link py-1 tabs fw-bolder {{ order == 'posts' ? 'active' : '' }}"
                     href="{{path('app_communities', {order: 'posts'})}}">Posts</a></li>
-            <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder {{ order == 'oldest' ? 'active' : '' }}"
+            <li class="nav-item py-0 hover"><a class="nav-link py-1 tabs fw-bolder {{ order == 'oldest' ? 'active' : '' }}"
                     href="{{path('app_communities', {order: 'oldest'})}}">Oldest</a></li>
-            <li class="nav-item py-0"><a class="nav-link py-1 tabs fw-bolder {{ order == 'newest' ? 'active' : '' }}"
+            <li class="nav-item py-0 hover"><a class="nav-link py-1 tabs fw-bolder {{ order == 'newest' ? 'active' : '' }}"
                     href="{{path('app_communities', {order: 'newest'})}}">Newest</a></li>
         </ul>
     </div>

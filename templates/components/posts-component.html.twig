@@ -1,7 +1,7 @@
 <div {{ attributes.defaults(stimulus_controller('appear')) }}>
     <div class="py-1 px-2 menu sticky-top border rounded mb-2">
         <ul class="nav nav-pills nav-justified" role="tablist" id="pills-tab" data-controller="tab">
-            <li class="nav-item py-0" role="presentation">
+            <li class="nav-item py-0 hover" role="presentation">
                 <a class="nav-link py-1 tabs fw-bolder {{ type == 'hot' ? 'active' : '' }}"
                     href="{{path('app_home', {type: 'hot'})}}">
                     <i class="bi bi-lightning-fill me-2"></i>
@@ -9,7 +9,7 @@
                 </a>
             </li>
 
-            <li class="nav-item py-0" role="presentation">
+            <li class="nav-item py-0 hover" role="presentation">
                 <a class="nav-link py-1 tabs fw-bolder {{ type == 'new' ? 'active' : '' }}"
                     href="{{path('app_home', {type: 'new'})}}">
                     <i class="bi bi-check-circle-fill me-2"></i>
@@ -17,7 +17,7 @@
                 </a>
             </li>
 
-            <li class="nav-item py-0" role="presentation">
+            <li class="nav-item py-0 hover" role="presentation">
                 <a class="nav-link py-1 tabs fw-bolder {{ type == 'top' ? 'active' : '' }}" id="pills-top-tab"
                     href="{{path('app_home', {type: 'top'})}}">
                     <i class="bi bi-arrow-up-circle-fill me-2"></i>
@@ -35,7 +35,7 @@
     {% for post in this.posts %}
     <div class="list-group mb-2" id="item--{{ page }}-{{ loop.index }}" data-live-ignore {{
         stimulus_controller('like')}}>
-        <div class="list-group-item list-group-item-action d-flex align-items-center p-2">
+        <div class="list-group-item hover list-group-item-action d-flex align-items-center p-2">
             <span class="flex-shrink-0 text-decoration-none">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
