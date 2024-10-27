@@ -126,6 +126,11 @@ services:
 
   redis:
     image: redis:latest
+    command: >
+      redis-server --bind 0.0.0.0
+      --appendonly no
+      --save ""
+      --protected-mode no
     restart: always
     environment:
       - REDIS_PASSWORD=stellar
