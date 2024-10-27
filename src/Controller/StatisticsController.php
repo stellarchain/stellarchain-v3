@@ -30,6 +30,7 @@ class StatisticsController extends AbstractController
     {
         return $this->render('statistics/show.html.twig', [
             'chart_name' => $translator->trans($stat . '.' . $chart . '.title'),
+            'chart_desc' => $translator->trans($stat . '.' . $chart . '.desc'),
             'stat' => $stat
         ]);
     }

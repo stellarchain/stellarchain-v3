@@ -14,13 +14,12 @@
             </div>
             <div class="p-2 m-2">
                 <div class="d-flex gap-1 justify-content-end">
-                    <button class="btn btn-black btn-sm active">10M</button>
-                    <button class="btn btn-black btn-sm">1D</button>
-                    <button class="btn btn-black btn-sm">1W</button>
+                    <span class="p-1 bg-black rounded small hover active m-1">10m</span>
                 </div>
             </div>
         </div>
         <div id="stat-chart" class="m-2" style="height:600px"></div>
+        <div class="fs-4 p-2">{{chart_desc}}</div>
         <div class="spinner-border ml-auto absolute position-absolute top-50 start-50 d-none" id="loading-chart"
             role="status" aria-hidden="true"></div>
     </div>

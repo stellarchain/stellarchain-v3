@@ -3,19 +3,19 @@ price_charts:
     desc: Price charts desc
     price_usd: 
         title: Market Price
-        desc: Market price description
+        desc:  Tracks the price of XLM in US dollars over time
     market_cap:
         title: Market Capitalization
-        desc: Market capitalization desc
+        desc: Displays the total market capitalization of the asset, calculated as the asset's price multiplied by the circulating supply.
     volume_24h:
         title: Volume
-        desc: Payments volume
+        desc: Shows the trading volume of the asset in the past 24 hours, reflecting market activity.
     circulating_supply:
         title: Circulating Supply
-        desc: Circulating supply desc
+        desc: Represents the number of asset units currently in circulation and available for trading.
     market_cap_dominance:
         title: Market Cap Dominance
-        desc: Market cap dominance desc
+        desc: Indicates the percentage of the asset’s market capitalization relative to the entire market’s value
     trades_volume:
         title: Trades volume 
         desc: Trades volume desc
@@ -34,31 +34,31 @@ blockchain_charts:
         desc: Ledger per day desc
     transactions_per_ledger:
         title: Transactions per ledger
-        desc: Transactions per ledger desc
+        desc: Tracks the average number of transactions included in each ledger.
     successful_transactions:
         title: Success transactions
-        desc: Success transactions desc
+        desc: Displays the total number of transactions successfully completed within the blockchain.
     failed_transactions:
         title: Failed transactions
-        desc: Failed transactions desc
+        desc: Shows the number of transactions that were unsuccessful or rejected by the blockchain network.
     transactions_per_second:
         title: Transactions per second
-        desc: Transactions per second desc
+        desc: Measures the average number of transactions processed per second.
     operations_per_ledger:
         title: Operations per ledger
-        desc: Operations per ledger
+        desc: Displays the average number of operations recorded per ledger.
     number_of_transactions:
         title: Number of transactions
-        desc: Number of transactions desc
+        desc: Total number of transactions that have occurred on the blockchain to date.
     blockchain_charts:
         title: Average ledger time
-        desc: Average ledger time desc
+        desc: Indicates the average time taken to process each ledger.
     contract_invocations:
         title: Contract invocations
-        desc: Contract Invocations desc
+        desc: Shows the number of times smart contracts have been called or executed.
     created_contracts:
         title: Created contracts
-        desc: Created contracts desc
+        desc:  Represents the total number of smart contracts that have been created on the blockchain.
 
 
 network_charts:
@@ -66,4 +66,4 @@ network_charts:
     desc: Network charts desc
     total_assets:
         title: Total assets
-        desc: Total assets desc
+        desc: Tracks the total number or value of assets available on the network, representing the diversity and size of assets within the ecosystem.
