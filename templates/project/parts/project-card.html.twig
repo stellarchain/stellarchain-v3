@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="flex-grow-1 ms-2 d-flex flex-column lh-1 small">
-                <b class="mb-1">{{project.name}}</b>
+                <b class="mb-1">{{project.name | striptags}}</b>
                 <div class="small text-secondary">
                     <div class="small ellipsed-content">{{project.content | striptags}}</div>
                 </div>
