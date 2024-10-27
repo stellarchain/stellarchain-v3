@@ -1,6 +1,6 @@
 <div{{ attributes.defaults(stimulus_controller('projects')|stimulus_controller('appear')) }}>
     <div class="row g-2 mb-3">
-        <div class="col-3 col-sm-3">
+        <div class="col-sm-3 col-md-3">
             <select class="form-select bg-white" data-model="category">
                 <option value="0">🔍 Any Category</option>
                 {% for category in this.categories %}
@@ -8,7 +8,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="col-3 col-sm-3">
+        <div class="col-sm-3 col-md-3">
             <select class="form-select bg-white" data-model="type"
                 data-action="live#action"
                 data-live-action-param="resetPage"
@@ -19,7 +19,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="col-2 col-sm-2">
+        <div class="col-sm-2 col-md-2">
             <select class="form-select bg-white" data-model="round"
                 data-action="live#action"
                 data-live-action-param="resetPage"
@@ -31,7 +31,7 @@
             </select>
         </div>
 
-        <div class="col-2 col-sm-2">
+        <div class="col-sm-2">
             <select class="form-select bg-white" data-model="award"
                 data-action="live#action"
                 data-live-action-param="resetPage"
@@ -42,7 +42,7 @@
             </select>
         </div>
 
-        <div class="col-2 col-sm-2">
+        <div class="col-sm-2">
             <select class="form-select bg-white" data-model="sort"
                 data-action="live#action"
                 data-live-action-param="resetPage"
