@@ -119,7 +119,7 @@ class StatisticsService
     {
         $endDate = new \DateTimeImmutable();
         $startDate = $endDate->sub(new \DateInterval('PT12H'));
-        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate, 1, 200);
+        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate, 1, 100);
 
         $labels = [];
         $data = [];
@@ -148,7 +148,7 @@ class StatisticsService
 
     public function getPriceMetrics(string $key): array
     {
-        $pageData = $this->coinStatRepository->getStatsByName($key, 0, 200);
+        $pageData = $this->coinStatRepository->getStatsByName($key, 0, 100);
         $priceData = array_reverse($pageData);
         $labels = [];
         $data = [];
