@@ -64,34 +64,33 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card card-body mb-2">
-                <div class="card-title">Team</div>
-                <div class="team d-flex">
-                    {% for member in project.projectMembers %}
-                        <div class="m-2">
-                            <span>
-                                <img class="rounded img-thumbnail"
-                                    style="width: 60px; height: 50px"
-                                    src="/assets-custom/event.png"">
-                                {{member.name}}
-                            </span>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="card card-body mb-2">
                 {{project.content | raw}}
             </div>
-            <div class="text-center mb-2 mt-2">
+            <div class="text-center mb-2 mt-2 bg-secondary p-2 rounded">
                 {% if project.image.name and false %}
                 <img src="{{vich_uploader_asset(project)}}" class="img-fluid rounded mb-1">
                 {% else %}
                 <img src="/assets-custom/event.png" class="img-fluid rounded mb-1">
                 {% endif %}
             </div>
+           <div class="card card-body mb-2">
+                <div class="card-title fs-3">Team</div>
+                <div class="team d-flex">
+                    {% for member in project.projectMembers %}
+                        <div class="m-2">
+                            <div class="text-center">
+                                <i class="bi bi-person-circle text-primary fs-2"></i>
+                                <p>
+                                    {{member.name}}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             {% for briefSection in project.projectBriefs %}
             <div class="card card-body mb-2">
-                <strong>{{briefSection.label | raw}} </strong>
-                <small class=""> {{briefSection.description | raw}} </small>
+                <h3>{{briefSection.label | striptags}} </h3>
                 <div>{{briefSection.content | raw}} </div>
             </div>
             {% endfor %}
