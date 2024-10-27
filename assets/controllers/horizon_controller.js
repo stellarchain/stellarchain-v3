@@ -73,10 +73,13 @@ export default class extends Controller {
   initChart() {
     this.chartContainer = document.getElementById('trades-chart');
     this.chart = createChart(this.chartContainer, {
-      layout: {textColor: 'white', background: {type: 'solid', color: 'transparent'}, fontFamily: "'Roboto', sans-serif"},
+      layout: {
+        background: {color: "#222"},
+        textColor: "#C3BCDB",
+      },
       grid: {
-        vertLines: {color: '#2b2b2b'},
-        horzLines: {color: '#2b2b2b'},
+        vertLines: {color: "#444"},
+        horzLines: {color: "#444"},
       },
       crosshair: {
         // Change mode from default 'magnet' to 'normal'.
@@ -132,7 +135,7 @@ export default class extends Controller {
     });
 
     this.toolTip = document.createElement('div');
-    this.toolTip.style = `width: 120px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+    this.toolTip.style = `width: 160px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
     this.toolTip.style.background = 'black';
     this.toolTip.style.color = 'white';
     this.toolTip.style.borderColor = 'transparent';
@@ -148,15 +151,17 @@ export default class extends Controller {
       ) {
         this.toolTip.style.display = 'none';
       } else {
-        let date = new Date(param.time*1000);
-        const dateStr = date.toDateString();
+        let date = new Date(param.time * 1000);
+        const dateStr = date.toLocaleDateString(); // This gets the date in a localized format
+        const timeStr = date.toLocaleTimeString(); // This gets the time in a localized format
+        const dateTimeStr = `${dateStr} ${timeStr}`;
         this.toolTip.style.display = 'block';
         const data = param.seriesData.get(this.candlestickSeries);
         const price = data.value !== undefined ? data.value : data.close;
         this.toolTip.innerHTML = `<div style="color: ${'rgba( 38, 166, 154, 1)'}"></div><div style="font-size: 24px; margin: 4px 0px; color: ${'white'}">
             ${Math.round(100 * price) / 100}
             </div><div style="color: ${'white'}">
-            ${dateStr}
+            ${dateTimeStr}
             </div>`;
         const toolTipWidth = 120;
         const toolTipHeight = 80;

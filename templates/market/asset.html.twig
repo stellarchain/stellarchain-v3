@@ -126,17 +126,17 @@
                         <span class="p-1 bg-black rounded small hover m-1">5m</span>
                         <span class="p-1 bg-black rounded small hover m-1">15m</span>
                         <span class="p-1 bg-black rounded small hover m-1">1h</span>
-                        <span class="p-1 bg-black rounded small hover m-1">1d</span>
+                        <span class="p-1 rounded small hover m-1 bg-primary">1d</span>
                         <span class="p-1 bg-black rounded small hover m-1">1w</span>
                     </div>
                 </div>
             </div>
 
             <div class="card text-center">
-                <div class="card-body">
-                    <div id="trades-chart" style="height:390px" {{ stimulus_target('horizon', 'chart' ) }}>
+                <div class="card-body rounded">
+                    <div id="trades-chart" class="rounded" style="height:390px" {{ stimulus_target('horizon', 'chart' ) }}>
                     </div>
-                    <div class="spinner-border font-black ml-auto absolute position-absolute top-50 start-50 d-none"
+                    <div class="spinner-border text-primary z-1 ml-auto absolute position-absolute top-50 start-50 d-none"
                         id="loading-chart" role="status" aria-hidden="true"></div>
                 </div>
             </div>

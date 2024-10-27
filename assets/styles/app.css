@@ -436,3 +436,7 @@ table {
     max-height: 1230px;
     overflow-y: auto;
 }
+
+.tv-lightweight-charts {
+    border-radius: var(--bs-border-radius) !important;
+}
