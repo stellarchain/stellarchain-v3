@@ -17,8 +17,8 @@
     <div class="text-nowrap px-3 mb-3" style="position: relative;">
         <form action="{{path('app_search')}}" type="GET">
             <div class="input-group">
-                <span class="input-group-text border-end-0" id="basic-addon1"><i class="bi bi-search"></i></span>
-                <input type="search" class="form-control border-start-0 rounded-end" name="q" placeholder="Search" aria-label="Search">
+                <span class="input-group-text border-0 bg-black" id="basic-addon1"><i class="bi bi-search"></i></span>
+                <input type="search" class="form-control border-0 rounded-end" name="q" placeholder="Search" value="{{app.request.get('q')}}" aria-label="Search">
                 <input type="submit" hidden />
             </div>
         </form>
