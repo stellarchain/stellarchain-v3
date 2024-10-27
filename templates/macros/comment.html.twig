@@ -16,7 +16,7 @@
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Verified User"><i
                             class="bi bi-patch-check-fill text-primary text-primary"></i></span></b>
                 <div class="small text-secondary fw-bold">
-                    <span class="small"><a class="text-decoration-none"
+                    <span class="small"><a class="text-decoration-none hover"
                             href="{{path('app_profile_show', {id: comment.user.id})}}">@{{
                             comment.user.username }}</a></span>
                     ·
@@ -25,17 +25,17 @@
             </div>
             <div class="flex-shrink-0 gap-2 d-flex">
                 <a role="button" data-bs-target="#shareModalComment" data-bs-toggle="modal"
-                    data-share-url="{{ url('app_post_show', { id: comment.post.id }) }}#comment_{{comment.id}}" class="bg-white rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;"
+                    data-share-url="{{ url('app_post_show', { id: comment.post.id }) }}#comment_{{comment.id}}" class="bg-white hover rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;"
                 >
                     <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Share"class="rounded-circle align-self-center mx-auto fw-bold"><i
                             class="bi bi-box-arrow-up"></i></span>
                 </a>
                 <a role="button" data-action="live#action" data-live-action-param="vote"
-                    data-live-comment-id-param="{{ comment.id }}" class="bg-white rounded d-flex flex-shrink-0 text-decoration-none d-flex flex-column align-items-center" style="height: 36px; width: 36px;"
+                    data-live-comment-id-param="{{ comment.id }}" class="bg-white hover rounded d-flex flex-shrink-0 text-decoration-none d-flex align-items-center" style="height: 36px; width: 36px;"
                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Upvote">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-5"><i
                         class="bi bi-caret-up{%if comment.userHasVoted %}-fill{% endif %}"></i></span>
-                    <span class="small">{{comment.votesCount}}</span>
+                    <span>{{comment.votesCount}}</span>
                 </a>
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="d-flex justify-content-between gap-2">
             <div class="d-flex gap-2">
                 {% if root_comment and root_comment.id %}
-                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="top-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0 hover" {{stimulus_action('comment', 'scrollToComment')}} id="top-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ root_comment.id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Top">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
@@ -52,7 +52,7 @@
                 {% endif %}
 
                 {% if comment.parent %}
-                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="parrent-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0 hover" {{stimulus_action('comment', 'scrollToComment')}} id="parrent-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ comment.parent.id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Parent">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
@@ -61,7 +61,7 @@
                 {% endif %}
 
                 {% if prev_comment_id %}
-                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="previous-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0 hover" {{stimulus_action('comment', 'scrollToComment')}} id="previous-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ prev_comment_id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Previous">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
@@ -70,7 +70,7 @@
                 {% endif %}
 
                 {% if next_comment_id %}
-                <a class="bg-white rounded d-flex flex-shrink-0" {{stimulus_action('comment', 'scrollToComment')}} id="next-comment" style="height: 36px; width: 36px;"
+                <a class="bg-white rounded d-flex flex-shrink-0 hover" {{stimulus_action('comment', 'scrollToComment')}} id="next-comment" style="height: 36px; width: 36px;"
                     href="{{ '#comment_' ~ next_comment_id }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Next">
                     <span class="rounded-circle align-self-center mx-auto fw-bold fs-6"><i
@@ -80,7 +80,7 @@
             </div>
             <div class="d-flex gap-2">
                 <a type="button" data-action="live#action" data-live-action-param="reply"
-                    data-live-parent-id-param="{{ comment.id }}" class="bg-white rounded d-flex flex-shrink-0"
+                    data-live-parent-id-param="{{ comment.id }}" class="bg-white hover rounded d-flex flex-shrink-0"
                     style="height: 36px; width: 36px;" data-bs-toggle="modal" data-bs-target="#commentModal">
                     <span class="rounded-circle align-self-center mx-auto fw-bold"><i class="bi bi-chat"></i></span>
                 </a>
