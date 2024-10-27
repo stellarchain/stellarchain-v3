@@ -2,14 +2,14 @@
     <div {{ stimulus_controller('post')|stimulus_controller('like') }}>
         <div class="d-flex align-items-center small py-2 justify-content-between">
             <div class="d-flex grid gap-2">
-                <a class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;" href="/">
-                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6 hover">
+                <a class="bg-white border rounded d-flex flex-shrink-0 hover" style="height: 36px; width: 36px;" href="/">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
                         <i class="bi bi-arrow-left"></i>
                     </span>
                 </a>
-                <a class="bg-white border rounded d-flex flex-shrink-0 text-decoration-none"
+                <a class="bg-white border rounded d-flex flex-shrink-0 text-decoration-none hover"
                     style="height: 36px; width: 36px;">
-                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6 d-flex gap-1 hover">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6 d-flex gap-1">
                         <i {{ stimulus_target('like', 'heartIcon' ) }}
                             class="bi bi-caret-up{{ liked ? '-fill' : '' }} fs-6" role="button" aria-label="Like post"
                             data-like-liked-param="{{ liked ? 'true' : 'false' }}" {{ stimulus_action('like', 'like'
@@ -20,14 +20,14 @@
                 </a>
             </div>
             <div class="d-flex grid gap-2">
-                <a role="button" class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;"
+                <a role="button" class="bg-white border rounded d-flex flex-shrink-0 hover" style="height: 36px; width: 36px;"
                     data-bs-toggle="modal" data-bs-target="#shareModal">
-                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6 hover">
+                    <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
                         <i class="bi bi-box-arrow-up"></i>
                     </span>
                 </a>
                 <div class="dropdown show ">
-                    <a class="bg-white rounded border dropdown-toggle-comment d-flex flex-shrink-0"
+                    <a class="bg-white rounded border dropdown-toggle-comment d-flex flex-shrink-0 hover"
                         style="height: 36px; width: 36px;" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="rounded-circle align-self-center mx-auto fw-bold fs-6">
@@ -46,10 +46,10 @@
                         </a>
                     </div>
                 </div>
-                <a type="button" class="bg-white border rounded d-flex flex-shrink-0" style="height: 36px; width: 36px;"
+                <a type="button" class="bg-white border rounded d-flex flex-shrink-0 hover" style="height: 36px; width: 36px;"
                     data-bs-toggle="modal" data-bs-target="#commentModal" data-action="live#action"
                     data-live-action-param="updateParentComment" data-live-component="comments-component">
-                    <span class="rounded-circle align-self-center mx-auto fw-bold hover"><i class="bi bi-chat"></i></span>
+                    <span class="rounded-circle align-self-center mx-auto fw-bold"><i class="bi bi-chat"></i></span>
                 </a>
             </div>
         </div>
