@@ -426,6 +426,6 @@ table {
 }
 
 .trades-card {
-    min-height: 500px;
-    max-height: 825px;
+    max-height: 1230px;
+    overflow-y: auto;
 }
