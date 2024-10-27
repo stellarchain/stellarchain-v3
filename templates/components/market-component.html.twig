@@ -63,19 +63,21 @@
         {% set asset = assetData.asset %}
         {% set latestMetric = assetData.latestMetric %}
         {% set assetChart = assetData.chart %}
-            <div class=" d-flex border-5 border-light bg-dark mb-2 font-monospace list-item" style="font-size:14px"
+            <div class="d-flex border-5 border-light mb-2 font-monospace list-item rounded bg-white" style="font-size:14px"
             id="item--{{ page }}-{{ loop.index }}" data-live-ignore="true">
 
-            <div class="border-0 bg-white p-2 rank-col">
+            <div class="border-0 p-2 rank-col">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
                     <span class="rounded-circle align-self-center mx-auto fw-bold">{{asset.rank | number_format}}</span>
                 </div>
             </div>
 
-            <div class="border-0 bg-white pb-2 pt-2 market-col">
+            <div class="border-0 pb-2 pt-2 market-col">
                 <div class="d-flex flex-column lh-1 align-self-center mt-1">
-                    <span class="fw-bold mb-1"><a class="text-decoration-none text-white text-reset" href="{{path('app_markets_show_asset', {assetCode: asset.assetCode, assetIssuer: asset.assetIssuer})}}">{{ asset.assetCode }}</a></span>
+                    <span class="fw-bold mb-1">
+                        <a class="text-decoration-none text-reset" href="{{path('app_markets_show_asset', {assetCode: asset.assetCode, assetIssuer: asset.assetIssuer})}}">{{ asset.assetCode }}</a>
+                    </span>
                     <div class="small text-secondary">
                         <span class="small">
                             ${{ (
@@ -87,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="border-0 bg-white p-2 price-col">
+            <div class="border-0 p-2 price-col">
                 <div class="font-monospace align-self-center mt-1 text-end lh-1">
                     <span class="small">
                         <strong>
@@ -104,36 +106,36 @@
             </div>
 
             {% set change1hClass = latestMetric.priceChange1h < 0 ? 'text-danger' : (latestMetric.priceChange1h==0.0 ? 'text-secondary' : 'text-success' ) %}
-            <div class="bg-white small {{ change1hClass }} p-2 h1-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+            <div class="small {{ change1hClass }} p-2 h1-col d-flex align-items-center justify-content-end d-none d-lg-flex">
                 <i class="bi {{ latestMetric.priceChange1h < 0 ? 'bi-caret-down-fill' : (latestMetric.priceChange1h == 0.0 ? 'bi-caret-right-fill' : 'bi-caret-up-fill') }}"></i>
                 {{ latestMetric.priceChange1h }}%
             </div>
 
             {% set change24hClass = latestMetric.priceChange24h < 0 ? 'text-danger' : (latestMetric.priceChange24h==0.0 ? 'text-secondary' : 'text-success' ) %}
 
-            <div class="bg-white small {{ change24hClass }} p-2 h24-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+            <div class="small {{ change24hClass }} p-2 h24-col d-flex align-items-center justify-content-end d-none d-lg-flex">
                 <i class="bi {{ latestMetric.priceChange24h < 0 ? 'bi-caret-down-fill' : 'bi-caret-up-fill' }}"></i>
                 {{ latestMetric.priceChange24h }}%
             </div>
 
             {% set change7dClass = latestMetric.priceChange7d < 0 ? 'text-danger' : (latestMetric.priceChange7d==0.0 ? 'text-secondary' : 'text-success' ) %}
-            <div class="bg-white small {{ change7dClass }} p-2 d7-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+            <div class="small {{ change7dClass }} p-2 d7-col d-flex align-items-center justify-content-end d-none d-lg-flex">
                 <i class="bi {{ latestMetric.priceChange7d < 0 ? 'bi-caret-down-fill' : 'bi-caret-up-fill' }}"></i>
                 {{ latestMetric.priceChange7d }}%
             </div>
 
-            <div class="bg-white small p-2 vol-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+            <div class="small p-2 vol-col d-flex align-items-center justify-content-end d-none d-lg-flex">
                 ${{ (latestMetric.volume24h * latestMetric.price * globalValues.price) | number_format(2, '.', ',') | split('.')[0] }}
                 <span class="text-secondary">.{{ (latestMetric.volume24h * latestMetric.price * globalValues.price) | number_format(2, '.', ',') | split('.')[1] }}</span>
             </div>
 
-            <div class="bg-white small text-nowrap p-2 circulating-col d-flex align-items-center justify-content-end d-none d-lg-flex">
+            <div class="small text-nowrap p-2 circulating-col d-flex align-items-center justify-content-end d-none d-lg-flex">
                 {{ (asset.claimableBalancesAmount + asset.liquidityPoolsAmount + asset.contractsAmount +
                 (asset.balances is not empty ? asset.balances.authorized : 0)) | number_format() }} {{
                 asset.assetCode }}
             </div>
 
-            <div class="border-0 bg-white p-2 chart-col position-relative" >
+            <div class="border-0 p-2 chart-col position-relative" >
                 <div class="small font-monospace">
                     <div class="sm-chart">
                        {{ render_chart(assetChart, {class: asset.assetCode}) }}
