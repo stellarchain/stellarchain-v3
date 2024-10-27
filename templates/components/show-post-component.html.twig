@@ -57,12 +57,19 @@
             <div class="card-body rounded py-2">
                 <div class="d-flex align-items-center">
                     <div class="d-flex flex-column justify-content-center">
-                        <p class="fw-bold mb-0">{{post.title}}</p>
-                        <p class="small mb-0">{{post.body}}</p>
+                        <p class="fw-bold mb-1">{{post.title}}</p>
+                        <p class="small mb-1">{{post.body}}</p>
+                        <div class="d-flex flex-row justify-content-between">
+
                         <div class="small text-secondary fw-bold">
-                            <span class="small">{{post.rank}} points by <a class="text-decoration-none"
+                            <span class="small">{{post.rank}} points | <a class="text-decoration-none"
                                     href="{{path('app_profile_show', {id: post.user.id})}}">@{{post.user.username}}</a></span>
-                            <span class="small">{{ post.createdAt | time_diff }}</span>
+                        </div>
+
+                        <div class="small text-secondary fw-bold">
+                            <span class="small">posted {{ post.createdAt | time_diff }}</span>
+                        </div>
+
                         </div>
                     </div>
                 </div>
