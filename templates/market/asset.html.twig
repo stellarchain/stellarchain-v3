@@ -8,7 +8,7 @@
     <div class="card mt-2">
         <div class="asset-header row">
             <div class="col-md-2 d-flex justify-content-center">
-                <div class="icon-container">
+                <div class="icon-container mb-2">
                     {% if toml is defined %}
                     <img src="{{toml.image}}" height="75px" class="rounded-circle" />
                     {% else%}
@@ -17,17 +17,17 @@
                 </div>
             </div>
             <div class="col-md-10">
-                <div class="info-section">
+                <div class="info-section mt-2">
                     {% if toml is defined and toml.name is defined %}
-                    <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
+                        <h2 class="mb-2">{{toml.name}}<span> {{asset.assetCode}} </span></h2>
                     {% else %}
-                    <h2 class="mb-2"><span> {{asset.assetCode}} </span></h2>
+                        <h2 class="mb-2"><span> {{asset.assetCode}} </span></h2>
                     {% endif %}
 
                     {% if toml is defined %}
                     <p>
                         {% if toml.url is defined %}
-                        <span class="small"> <a href="{{ toml.url}}">{{toml.url}}</a> </span>
+                            <span class="small"> <a href="{{ toml.url}}">{{toml.url}}</a> </span>
                         {% endif %}
                     </p>
                     <p>
@@ -37,8 +37,8 @@
                     </p>
 
                     {% endif %}
-                    <p class="small">Issuer: <span><a
-                                href="https://stellarchain.io/accounts/{{asset.assetIssuer}}">{{asset.assetIssuer}}</a></span>
+                    <p class="small">Issuer:
+                        <a href="https://stellarchain.io/accounts/{{asset.assetIssuer}}">{{asset.assetIssuer}}</a>
                     </p>
                     <p class="small">Contract: <span id="contractId"></span></p>
                 </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-3">
-            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+            <div class="card text-center d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
                     <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-currency-dollar text-primary fs-5"></i></div>
                 </span>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+            <div class="card text-center d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
                     <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi  bi-graph-up-arrow text-primary fs-5"></i></div>
                 </span>
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+            <div class="card text-center d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
                     <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-percent text-primary fs-5"></i></div>
                 </span>
@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+            <div class="card text-center d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
                     <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-database text-primary fs-5"></i></div>
                 </span>
@@ -100,7 +100,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-center d-flex flex-row justify-content-center p-2 gap-2">
+            <div class="card text-center d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
                     <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
                 </span>
@@ -114,10 +114,10 @@
         </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-body d-flex flex-row justify-content-between">
+                <div class="card-body d-flex flex-row justify-content-between rounded-top">
                     <div class="chart-tick">
                         <h5 class="card-title">{{asset.assetCode}}/XLM</h5>
                     </div>
@@ -133,20 +133,19 @@
             </div>
 
             <div class="card text-center">
-                <div class="card-body rounded">
-                    <div id="trades-chart" class="rounded" style="height:390px" {{ stimulus_target('horizon', 'chart' ) }}>
-                    </div>
+                <div class="card-body rounded-bottom">
+                    <div id="trades-chart" class="rounded" style="height:390px" {{ stimulus_target('horizon', 'chart' ) }}></div>
                     <div class="spinner-border text-primary z-1 ml-auto absolute position-absolute top-50 start-50 d-none"
                         id="loading-chart" role="status" aria-hidden="true"></div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-4">
+    <div class="row mt-2">
         <div class="col-md-4">
-                <div class="card d-flex flex-row p-2 gap-2 mb-1">
+                <div class="card d-flex flex-row p-2 gap-2 mb-2">
                     <span class="p-1">
-                        <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                        <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-wallet text-primary fs-5"></i></div>
                     </span>
                     <div class="rounded">
                         <h5 class="card-title">Total amount</h5>
@@ -157,9 +156,9 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card d-flex flex-row p-2 gap-2">
+            <div class="card d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
-                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-cash text-primary fs-5"></i></div>
                 </span>
                 <div class="rounded">
                     <h5 class="card-title">Claimable Balances</h5>
@@ -168,9 +167,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card d-flex flex-row p-2 gap-2">
+            <div class="card d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
-                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-activity text-primary fs-5"></i></div>
                 </span>
                 <div class="rounded">
                     <h5 class="card-title">Liquidity Pools</h5>
@@ -179,9 +178,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card d-flex flex-row p-2 gap-2">
+            <div class="card d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
-                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-journal-text text-primary fs-5"></i></div>
                 </span>
                 <div class="rounded">
                     <h5 class="card-title">Contracts</h5>
@@ -190,9 +189,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card d-flex flex-row p-2 gap-2">
+            <div class="card d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
-                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
+                    <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-bar-chart-line text-primary fs-5"></i></div>
                 </span>
                 <div class="rounded">
                     <h5 class="card-title">Contracts amount</h5>
@@ -202,7 +201,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card d-flex flex-row p-2 gap-2">
+            <div class="card d-flex flex-row p-2 gap-2 mb-2">
                 <span class="p-1">
                     <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded" style="height: 44px; width: 44px;"><i class="bi bi-hdd-rack text-primary fs-5"></i></div>
                 </span>
@@ -215,7 +214,7 @@
     </div>
 
     <div class="row mt-4 d-flex">
-        <div class="col-md-7">
+        <div class="col-md-7 mb-2">
             <div class="flex-fill">
                 <div class="chart card p-3">
                     <span class="text-center">Price {{asset.assetCode}}/XLM</span>
