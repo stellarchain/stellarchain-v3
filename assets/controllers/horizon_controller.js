@@ -74,7 +74,7 @@ export default class extends Controller {
     this.chartContainer = document.getElementById('trades-chart');
     this.chart = createChart(this.chartContainer, {
       layout: {
-        background: {color: "#222"},
+        background: {color: "#111112"},
         textColor: "#C3BCDB",
       },
       grid: {
@@ -156,6 +156,7 @@ export default class extends Controller {
         const timeStr = date.toLocaleTimeString(); // This gets the time in a localized format
         const dateTimeStr = `${dateStr} ${timeStr}`;
         this.toolTip.style.display = 'block';
+
         const data = param.seriesData.get(this.candlestickSeries);
         const price = data.value !== undefined ? data.value : data.close;
         this.toolTip.innerHTML = `<div style="color: ${'rgba( 38, 166, 154, 1)'}"></div><div style="font-size: 24px; margin: 4px 0px; color: ${'white'}">
@@ -178,6 +179,7 @@ export default class extends Controller {
         }
         this.toolTip.style.left = left + 'px';
         this.toolTip.style.top = top + 'px';
+        this.initTickData(param)
       }
     });
 
@@ -201,6 +203,39 @@ export default class extends Controller {
       }
     });
     window.addEventListener("resize", this.resizeHandler);
+  }
+
+  initTickData(param) {
+    const data = param.seriesData.get(this.candlestickSeries);
+    const dataVolume = param.seriesData.get(this.volumeSeries);
+    const dataMa = param.seriesData.get(this.maSeries);
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        if (key != 'time') {
+          const elementId = 'stat-' + key;
+          const spanElement = document.getElementById(elementId);
+          if (spanElement) {
+            if (typeof data[key] === 'number') {
+              spanElement.innerText = data[key].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
+            } else {
+              spanElement.innerText = data[key];
+            }
+          } else {
+            console.warn(`Element with ID '${elementId}' not found.`);
+          }
+        }
+      }
+    }
+
+    if(dataVolume){
+      let volumeEle = document.getElementById('stat-volume')
+      volumeEle.innerText = dataVolume.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
+    }
+
+    if (dataMa) {
+      let maEl = document.getElementById('stat-ma')
+      maEl.innerText = dataMa.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
+    }
   }
 
   loadAggregatedTradesChart() {
@@ -263,6 +298,35 @@ export default class extends Controller {
 
     this.loadingTrades = false;
     document.getElementById('loading-chart').classList.toggle('d-none');
+
+    const data = this.candlestickSeries.data()[0];
+    const dataVolume = this.volumeSeries.data()[0];
+    const dataMa = this.maSeries.data()[0];
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        if (key != 'time') {
+          const elementId = 'stat-' + key;
+          const spanElement = document.getElementById(elementId);
+          if (spanElement) {
+            if (typeof data[key] === 'number') {
+              spanElement.innerText = data[key].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
+            } else {
+              spanElement.innerText = data[key];
+            }
+          } else {
+            console.warn(`Element with ID '${elementId}' not found.`);
+          }
+        }
+      }
+    }
+
+    let volumeEle = document.getElementById('stat-volume')
+    volumeEle.innerText = dataVolume.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
+
+    let maEl = document.getElementById('stat-ma')
+    maEl.innerText = dataMa.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
+    document.getElementById('chart-tick').classList.remove('d-none')
   }
 
   resizeHandler() {

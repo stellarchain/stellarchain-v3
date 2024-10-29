@@ -127,9 +127,10 @@
         <div class="col-md-12">
             <div class="card text-center">
                 <div class="rounded p-2">
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-2 align-items-start align-items-sm-center gap-2">
-                        <div class="chart-tick">
-                            <div class="card d-flex flex-row gap-2">
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-between mb-2 align-items-start align-items-sm-center gap-2">
+                        <div class="card d-flex flex-row gap-2">
+                            <div class="d-flex flex-row gap-2">
                                 <span class="p-1">
                                     <div class="icon d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded"
                                         style="height: 44px; width: 44px;"><i
@@ -138,18 +139,65 @@
                                 <div class="d-flex align-items-start flex-column">
                                     <h5 class="card-title m-0">{{asset.assetCode}}/XLM</h5>
                                     <p class="card-text">
-                                        <span class="text-success">${{priceMarket | number_format(5)}}</span>
+                                        <span class="text-success stat-price">${{priceMarket | number_format(5)}}</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div id="chart-tick" class="d-flex align-items-end d-none">
+                                <div class="bg-black d-flex gap-2 p-1 rounded tick-data">
+                                <div class="d-flex align-items-start small">
+                                    <span class="card-title m-0 text-muted">Open: </span>
+                                    <p class="card-text">
+                                        <span id="stat-open"></span>
+                                    </p>
+                                </div>
+                                <div class="d-flex align-items-start small">
+                                    <span class="card-title m-0 text-muted">Close: </span>
+                                    <p class="card-text">
+                                        <span id="stat-close"></span>
+                                    </p>
+                                </div>
+                                <div class="d-flex align-items-start small">
+                                    <span class="card-title m-0 text-muted">High: </span>
+                                    <p class="card-text">
+                                        <span id="stat-high"></span>
+                                    </p>
+                                </div>
+                                <div class="d-flex align-items-start small">
+                                    <span class="card-title m-0 text-muted">Low: </span>
+                                    <p class="card-text">
+                                        <span id="stat-low"></span>
+                                    </p>
+                                </div>
+                                <div class="d-flex align-items-start small">
+                                    <span class="card-title m-0 text-muted">Volume: </span>
+                                    <p class="card-text">
+                                        <span id="stat-volume"></span>
+                                    </p>
+                                </div>
+                                <div class="d-flex align-items-start small">
+                                    <span class="card-title m-0 text-muted">MA: </span>
+                                    <p class="card-text">
+                                        <span id="stat-ma"></span>
                                     </p>
                                 </div>
                             </div>
                         </div>
+                        </div>
                         <div class="d-flex gap-1 small timeframes">
-                            <span class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">1m</span>
-                            <span class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">5m</span>
-                            <span class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">15m</span>
-                            <span class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">1h</span>
-                            <span class="d-flex justify-content-center align-items-center rounded small hover mb-0 bg-primary">1d</span>
-                            <span class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">1w</span>
+                            <span
+                                class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">1m</span>
+                            <span
+                                class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">5m</span>
+                            <span
+                                class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">15m</span>
+                            <span
+                                class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">1h</span>
+                            <span
+                                class="d-flex justify-content-center align-items-center rounded small hover mb-0 bg-primary">1d</span>
+                            <span
+                                class="d-flex justify-content-center align-items-center bg-black rounded small hover mb-0">1w</span>
                         </div>
                     </div>
                     <div id="trades-chart" class="rounded" style="height:390px" {{ stimulus_target('horizon', 'chart' )
@@ -164,19 +212,23 @@
     <div class="d-flex mt-2 bg-white p-1 rounded">
         <div class="col-md-4">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item text-muted">Total amount: <p class="card-text text-white fw-bold" id="total_amount"></p>
+                <li class="list-group-item text-muted">Total amount: <p class="card-text text-white fw-bold"
+                        id="total_amount"></p>
                 </li>
-                <li class="list-group-item text-muted">Claimable Balances <p class="card-text text-white fw-bold" id="claimable_balances">
+                <li class="list-group-item text-muted">Claimable Balances <p class="card-text text-white fw-bold"
+                        id="claimable_balances">
                     </p>
                 </li>
             </ul>
         </div>
         <div class="col-md-4">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item text-muted">Contracts: <p class="card-text text-white fw-bold"><span id="num_contracts"></span>
+                <li class="list-group-item text-muted">Contracts: <p class="card-text text-white fw-bold"><span
+                            id="num_contracts"></span>
                     </p>
                 </li>
-                <li class="list-group-item text-muted">Contracts amount <p class="card-text text-white fw-bold" id="contracts_amount"></p>
+                <li class="list-group-item text-muted">Contracts amount <p class="card-text text-white fw-bold"
+                        id="contracts_amount"></p>
                 </li>
             </ul>
         </div>
