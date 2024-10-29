@@ -118,7 +118,7 @@ class StatisticsService
     public function getBlockchainMetrics($key)
     {
         $endDate = new \DateTimeImmutable();
-        $startDate = $endDate->sub(new \DateInterval('PT8H'));
+        $startDate = $endDate->sub(new \DateInterval('PT5H'));
         $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate, 1, 100);
 
         $labels = [];
