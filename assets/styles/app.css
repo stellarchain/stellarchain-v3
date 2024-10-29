@@ -452,3 +452,7 @@ table {
   height: 32px;
   text-align: center
 }
+
+#filtersModal .modal-body a {
+    margin-bottom: 5px;
+}
