@@ -19,6 +19,9 @@ price_charts:
     trades_volume:
         title: Trades volume 
         desc: Trades volume desc
+    rank:
+        title: Market Rank 
+        desc: Daily ranking on entire crypto market 
 
 blockchain_charts:
     title: Blockchain Charts

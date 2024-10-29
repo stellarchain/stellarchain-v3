@@ -16,7 +16,7 @@ class StatisticsController extends AbstractController
     public function index(StatisticsService $statisticsService): Response
     {
         $cache = new FilesystemAdapter();
-        $statisticsCharts = $cache->get('statistics_chart', function (ItemInterface $item) use ($statisticsService): array {
+        $statisticsCharts = $cache->get('statistics_chart_3', function (ItemInterface $item) use ($statisticsService): array {
             $item->expiresAfter(21600);
             return $statisticsService->buildStatisticsCharts();
         });

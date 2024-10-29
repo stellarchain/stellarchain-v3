@@ -23,6 +23,7 @@ class StatisticsService
         return [
             'price_charts' => [
                 'price_usd' => [],
+                'rank' => [],
                 'market_cap' => [],
                 'volume_24h' => [],
                 'circulating_supply' => [],

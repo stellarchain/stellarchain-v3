@@ -17,12 +17,12 @@ export default class extends Controller {
     this.chartContainer = document.getElementById('stat-chart');
     const chartOptions = {
       layout: {
-        background: {color: "#222"},
+        background: {color: "#111112"},
         textColor: "#C3BCDB",
       },
       grid: {
-        vertLines: {color: "#444"},
-        horzLines: {color: "#444"},
+        vertLines: {color: "transparent"},
+        horzLines: {color: "transparent"},
       },
       crosshair: {
         // Change mode from default 'magnet' to 'normal'.
@@ -31,15 +31,14 @@ export default class extends Controller {
 
         // Vertical crosshair line (showing Date in Label)
         vertLine: {
-          width: 8,
-          color: '#C3BCDB44',
+          width: 2,
+          color: '#C3BCDB',
           style: LineStyle.Solid,
           labelBackgroundColor: '#9B7DFF',
         },
 
-        // Horizontal crosshair line (showing Price in Label)
         horzLine: {
-          color: '#9B7DFF',
+          color: 'green',
           labelBackgroundColor: '#9B7DFF',
         },
       }
@@ -52,7 +51,7 @@ export default class extends Controller {
     this.chart.timeScale().applyOptions({
       borderColor: "#71649C",
     });
-    this.areaSeries = this.chart.addAreaSeries({lineColor: '#ad3333', topColor: '#ad3333', bottomColor: 'rgba(240,128, 128, 0.28)'});
+    this.areaSeries = this.chart.addAreaSeries({lineColor: '#F23645', topColor: '#8c1d27', bottomColor: 'rgba(20, 20, 20, 0.1)'});
 
     this.toolTip = document.createElement('div');
     this.toolTip.style = `width: 220px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
