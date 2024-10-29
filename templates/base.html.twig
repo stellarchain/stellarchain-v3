@@ -161,13 +161,12 @@
                         <i class="bi bi-bar-chart me-2"></i>
                         <p class="mb-0">Statistics</p>
                     </a>
-
-                    <a href="https://stellarchain.io" target="_blank"
-                        class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover">
-                        <i class="bi bi-search me-2"></i>
-                        <p class="mb-0">Explorer</p>
-                    </a>
-
+                    <a href=" {{path('app_community_fund')}} " class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                        {% if app.request.get('_route') == 'app_community_fund' %} bg-primary bg-opacity-25 text-primary {% endif %}
+                    ">
+                        <i class="bi bi-award me-2"></i>
+                        <p class="mb-0">Community Fund</p>
+                     </a>
                 </div>
             </div>
         </div>
