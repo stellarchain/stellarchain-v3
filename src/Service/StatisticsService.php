@@ -148,7 +148,7 @@ class StatisticsService
 
     public function getPriceMetrics(string $key): array
     {
-        $pageData = $this->coinStatRepository->getStatsByName($key, 0, 50);
+        $pageData = $this->coinStatRepository->getStatsByName($key, 0, 30);
         $priceData = array_reverse($pageData);
         $labels = [];
         $data = [];
