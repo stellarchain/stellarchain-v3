@@ -62,10 +62,10 @@
                 <div class="bg-primary bg-opacity-10 d-flex rounded" style="height: 48px; width: 48px;">
                     <i class="bi bi-search align-self-center fs-4 text-primary rounded-circle mx-auto"></i>
                 </div>
-                <div class="flex-grow-1 align-items-center small ms-2">
+                <a href="/" class="flex-grow-1 align-items-center small ms-2 text-decoration-none">
                     <b class="h5 text-primary fw-bold">StellarChain</b>
                     <p class="small text-muted text-uppercase fw-bold mb-0 text-nowrap">Blockchain Explorer</p>
-                </div>
+                </a>
             </div>
 
             <div class="container-fluid d-flex justify-content-end">
@@ -103,7 +103,7 @@
                     <span style="font-size:12px;">Markets</span>
                 </a>
                 <a data-bs-target="#filtersModal" data-bs-toggle="modal"
-                    class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_account' %} text-primary {% else %} text-secondary {% endif %} me-2">
+                    class="nav-link py-0 d-flex flex-column text-center lh-1 text-secondary me-2">
                     <i class="bi bi-grid fs-4 mb-2"></i>
                     <span style="font-size:12px;">More</span>
                 </a>
