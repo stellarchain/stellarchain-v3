@@ -23,7 +23,7 @@
                 <a class="list-group-item list-group-item-action p-2"
                     href="{{path('app_statistics_show', {stat: key, chart: key_chart})}}" style="width: 250px;">
                     <div class="d-flex bg-light rounded align-items-center" style="height: 168px;">
-                        {{ render_chart(chart.chart) }}
+                    {{ render_chart(chart.chart, {style: 'padding:10px'}) }}
                     </div>
                     <div class="d-flex align-items-center pt-2">
                         <div class="flex-grow-1 d-flex flex-column lh-1 small">

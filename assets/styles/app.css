@@ -8,6 +8,7 @@
 
 .hover:hover {
     background-color: rgba(223, 225, 229, .5) !important;
+    color: #0d6efd;
     cursor: pointer;
 }
 .tableFixHead          { overflow: auto; height: 100px; }
@@ -437,4 +438,9 @@ table {
 
 .tv-lightweight-charts {
     border-radius: var(--bs-border-radius) !important;
+}
+
+.timeframes span {
+  width: 40px;
+  text-align: center
 }

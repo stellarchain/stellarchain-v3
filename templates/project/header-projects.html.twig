@@ -13,7 +13,7 @@
                 <p class="fw-bold mb-0">Building on Stellar?</p>
                 <p class="small mb-0">Get $15-150k to build your idea!</p>
             </div>
-            <a class="btn btn-primary ms-auto" href="https://communityfund.stellar.org/" target="_blank" role="button">Join Now</a>
+            <a class="btn btn-primary ms-auto text-nowrap" href="https://communityfund.stellar.org/" target="_blank" role="button">Join Now</a>
         </div>
     </div>
 </div>
@@ -21,17 +21,17 @@
 <div class="bg-black sticky-top pb-2">
     <div class="py-1 px-2 menu border rounded">
         <ul class="nav nav-pills nav-justified ">
-            <li class="nav-item py-0 hover">
+            <li class="nav-item py-0 hover rounded">
                 <a class="nav-link py-1 tabs fw-bolder {{ app.request.get('_route') == 'app_projects' ? 'active' : '' }}" href="{{path('app_projects')}}">
                     Discover
                 </a>
             </li>
-            <li class="nav-item py-0 hover">
+            <li class="nav-item py-0 hover rounded">
                 <a class="nav-link py-1 tabs fw-bolder {{ app.request.get('_route') == 'app_projects_timeline' ? 'active' : '' }}" href="{{path('app_projects_timeline')}}">
                     Timeline
                 </a>
             </li>
-            <li class="nav-item py-0 hover">
+            <li class="nav-item py-0 hover rounded">
                 <a class="nav-link py-1 tabs fw-bolder {{ app.request.get('_route') == 'app_projects_list' ? 'active' : '' }}" href="{{path('app_projects_list')}}">
                     List
                 </a>
