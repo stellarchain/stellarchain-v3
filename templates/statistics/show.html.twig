@@ -5,7 +5,7 @@
 {% set content_title = chart_name%}
 
 {% block body %}
-<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar" {{ stimulus_controller('statistics', { 'stat': app.request.attributes.get('stat'), 'chart': app.request.attributes.get('chart') }) }}>
+<div class="overflow-y-scroll overflow-x-hidden hide-scrollbar" {{ stimulus_controller('statistics', { 'stat': app.request.attributes.get('stat'), 'chart': app.request.attributes.get('chart') }) }}>
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': true} %}
     <div class="card border-0">
         <div class="d-flex justify-content-between flex-md-row">

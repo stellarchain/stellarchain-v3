@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - StellarChain Community</title>
@@ -26,7 +25,7 @@
     {% block javascripts %}
     {% endblock %}
     {% block importmap %}
-    {{ importmap('app') }}
+        {{ importmap('app') }}
     {% endblock %}
 </head>
 
@@ -35,12 +34,13 @@
         {% block sidebar %}
         {{ include('sidebar.html.twig') }}
         {% endblock %}
-        <div class="container main-container">
+        <div class="container">
             {% for type, messages in app.session.flashbag.all() %}
             {% for message in messages %}
             <div class="toast-container position-fixed top-0 end-0 p-3">
-                <div id="liveToastAuth" class="toast bg-{{ type }} show" role="alert" aria-live="assertive"
-                    data-bs-autohide="true" aria-atomic="true">
+                    <div id="liveToastAuth" class="toast bg-{{ type }} show" role="alert" aria-live="assertive"
+                        data-bs-autohide="true"
+                    aria-atomic="true">
                     <div class="toast-header">
                         <strong class="me-auto">Message</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -55,26 +55,6 @@
 
             {% block body %}{% endblock %}
         </div>
-    </div>
-    <div class="container d-block d-lg-none">
-        <nav class="navbar navbar-expand fixed-top menu">
-            <div class="d-flex align-items-center hover rounded-1 p-1">
-                <div class="bg-primary bg-opacity-10 d-flex rounded" style="height: 48px; width: 48px;">
-                    <i class="bi bi-search align-self-center fs-4 text-primary rounded-circle mx-auto"></i>
-                </div>
-                <a href="/" class="flex-grow-1 align-items-center small ms-2 text-decoration-none">
-                    <b class="h5 text-primary fw-bold">StellarChain</b>
-                    <p class="small text-muted text-uppercase fw-bold mb-0 text-nowrap">Blockchain Explorer</p>
-                </a>
-            </div>
-
-            <div class="container-fluid d-flex justify-content-end">
-                <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_account' %} text-primary {% else %} text-secondary {% endif %} me-2"
-                    href="{{path('app_account')}}">
-                    <i class="bi bi-person-circle fs-1"></i>
-                </a>
-            </div>
-        </nav>
     </div>
 
     <div class="container d-block d-lg-none">
@@ -102,75 +82,15 @@
                     <i class="bi bi-graph-up-arrow fs-4 mb-2"></i>
                     <span style="font-size:12px;">Markets</span>
                 </a>
-                <a data-bs-target="#filtersModal" data-bs-toggle="modal"
-                    class="nav-link py-0 d-flex flex-column text-center lh-1 text-secondary me-2">
-                    <i class="bi bi-grid fs-4 mb-2"></i>
-                    <span style="font-size:12px;">More</span>
+                <a class="nav-link py-0 d-flex flex-column text-center lh-1 {% if app.request.get('_route') == 'app_account' %} text-primary {% else %} text-secondary {% endif %} me-2"
+                    href="{{path('app_account')}}">
+                    <i class="bi bi-person-circle fs-4 mb-2"></i>
+                    <span style="font-size:12px;">Account</span>
                 </a>
             </div>
         </nav>
     </div>
-    <!-- MODAL - Filters -->
-    <div class="modal modal-sm fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModal" id="filters"
-        tabindex="-1" aria-labelledby="filters" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen-sm-down layout-bottom-sheet modal-dialog-centered">
-            <div class="modal-content bg-white modal-bottom-sheet rounded-bottom-sheet h-auto h-sm-100 mt-auto mt-sm-0">
-                <div class="modal-header border-bottom-0">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Menu</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex flex-column py-0">
-                    <a href="{{path('app_projects')}}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                        {% if app.request.get('_route') in ['app_projects', 'app_project_add', 'app_project_show', 'app_projects_list', 'app_projects_timeline'] %} %} bg-primary bg-opacity-25 text-primary {% endif %}
-                    ">
-                        <i class="bi bi-list-ul me-2"></i>
-                        <p class="mb-0">Projects</p>
-                        <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
-                            style="width: 48px;">{{globalValues.projects}}</span>
-                    </a>
 
-                    <a href="{{ path('app_communities') }}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                        {% if app.request.get('_route') == 'app_communities' %} bg-primary bg-opacity-25 text-primary {% endif %}
-                    ">
-                        <i class="bi bi-people me-2"></i>
-                        <p class="mb-0">Communities</p>
-                        <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
-                            style="width: 48px;">{{globalValues.communities}}</span>
-                    </a>
-                    <a href="{{ path('app_jobs') }}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                        {% if app.request.get('_route') == 'app_jobs' %} bg-primary bg-opacity-25 text-primary {% endif %}
-                    ">
-                        <i class="bi bi-briefcase me-2"></i>
-                        <p class="mb-0">Jobs</p>
-                        <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
-                            style="width: 48px;">{{globalValues.jobs}}</span>
-                    </a>
-
-                    <a href="{{ path('app_events') }}" class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                        {% if app.request.get('_route') == 'app_events' %} bg-primary bg-opacity-25 text-primary {% endif %}
-                    ">
-                        <i class="bi bi-bookmark-star me-2"></i>
-                        <p class="mb-0">Events</p>
-                        <span class="badge text-bg-light border ms-auto fw-bold align-self-center p-1"
-                            style="width: 48px;">{{globalValues.events}}</span>
-                    </a>
-
-                    <a href="{{path('app_statistics')}}"
-                        class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                    {% if app.request.get('_route') == 'app_statistics' %} bg-primary bg-opacity-25 text-primary {% endif %}">
-                        <i class="bi bi-bar-chart me-2"></i>
-                        <p class="mb-0">Statistics</p>
-                    </a>
-                    <a href=" {{path('app_community_fund')}} " class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
-                        {% if app.request.get('_route') == 'app_community_fund' %} bg-primary bg-opacity-25 text-primary {% endif %}
-                    ">
-                        <i class="bi bi-award me-2"></i>
-                        <p class="mb-0">Community Fund</p>
-                     </a>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div id="liveToastAuth" class="toast bg-secondary" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -182,6 +102,5 @@
             </div>
         </div>
     </div>
-</body>
-
+   </body>
 </html>

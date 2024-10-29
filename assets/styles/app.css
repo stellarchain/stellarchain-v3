@@ -12,12 +12,6 @@
     cursor: pointer;
 }
 
-@media only screen and (max-width: 996px) {
-    .main-container {
-        margin-top: 50px;
-    }
-}
-
 .tableFixHead          { overflow: auto; height: 100px; }
 .tableFixHead thead th { position: sticky; top: -16px; z-index: 1; }
 [data-bs-theme=dark] {
@@ -439,7 +433,7 @@ table {
 }
 
 .trades-card {
-    max-height: 1230px;
+    max-height: 770px;
     overflow-y: auto;
 }
 
