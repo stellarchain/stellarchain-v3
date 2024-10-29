@@ -12,7 +12,7 @@
 
     <div class="list-group mb-2 list-group-flush">
         {% for key, stat in this.stats %}
-        <a href="{{path('app_statistics_show', {stat:key , chart: 'price_chart'})}}" class="list-group-item list-group-item-action d-flex align-items-center py-1 border-0 rounded-0 market-info-{{ key }} hover">
+        <a href="{{path('app_statistics_show', {stat: 'price_charts', chart: key})}}" class="list-group-item list-group-item-action d-flex align-items-center py-1 border-0 rounded-0 market-info-{{ key }} hover">
             <div class="flex-shrink-0 text-decoration-none">
                 <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary"
                     style="height: 36px; width: 36px;">
