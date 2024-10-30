@@ -234,7 +234,7 @@ export default class extends Controller {
 
     if (dataMa) {
       let maEl = document.getElementById('stat-ma')
-      maEl.innerText = dataMa.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
+      maEl.innerText = dataMa.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
     }
   }
 
