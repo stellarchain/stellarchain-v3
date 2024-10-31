@@ -32,6 +32,9 @@ blockchain_charts:
     average_ledger_size:
         title: Average Ledger Size
         desc: Average ledger size desc
+    average_ledger_time:
+        title: Average Ledger Time 
+        desc: Average ledger closing time
     ledger_per_day:
         title: Ledger per day
         desc: Ledger per day desc

@@ -1,6 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
 import StellarSdk from '@stellar/stellar-sdk';
-const {Horizon, Asset} = StellarSdk;
+const {Horizon, Asset, Address, StrKey} = StellarSdk;
 import {createChart, CrosshairMode, LineStyle} from 'lightweight-charts';
 
 
@@ -24,6 +24,7 @@ export default class extends Controller {
   chartContainer = null;
 
   async initialize() {
+    console.log(StellarSdk)
     this.asset = new Asset(this.element.dataset.horizonAssetCodeValue, this.element.dataset.horizonAssetIssuerValue);
     this.server = new Horizon.Server("https://horizon.stellar.org");
     this.initChart();
@@ -343,7 +344,12 @@ export default class extends Controller {
       document.getElementById('claimable_balances').textContent = Number(res.claimable_balances_amount).toLocaleString();
       document.getElementById('liquidity_pools').textContent = Number(res.liquidity_pools_amount).toLocaleString();
       document.getElementById('contracts_amount').textContent = res.contracts_amount;
+      const hexString = Array.from(new Address(res.contract_id).toBuffer())
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');
       document.getElementById('contractId').textContent = res.contract_id ? res.contract_id : 'No contract';
+      const contractLink = document.querySelector('.contract-link a');
+      contractLink.href = `https://stellarchain.io/contracts/${hexString}`;
       document.getElementById('authorized_accounts').textContent = res.accounts.authorized;
       document.getElementById('num_contracts').textContent = res.num_contracts;
 

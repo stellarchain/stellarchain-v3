@@ -15,6 +15,7 @@ class StatisticsService
         private LedgerMetricsService $ledgerMetricsService,
     ) {
     }
+
     /**
      * @return array<string,mixed>
      */
@@ -37,21 +38,21 @@ class StatisticsService
                 'average_ledger_size' => false,
                 'ledger_per_day' => false,
                 'transactions_per_ledger' => [],
-                'successful_transactions' => [],
-                'failed_transactions' => [],
-                'transactions_per_second' => [],
                 'operations_per_ledger' => [],
                 'number_of_transactions' => [],
+                'number_of_operations' => [],
                 'average_ledger_time' => [],
                 'contract_invocations' => [],
                 'created_contracts' => [],
             ],
-            //todo
             'network_charts' => [
                 'total_assets' => [],
+                'successful_transactions' => [],
+                'failed_transactions' => [],
                 /*     'active_addresses' => [], */
                 /*     'inactive_addresses' => [], */
                 /*     'top_100_active_addresses' => [], */
+                /*     'transactions_per_second' => [], */
                 /*     'output_value_per_day' => [], */
                 /*     'transactions_value' => [], */
             ],
@@ -63,7 +64,6 @@ class StatisticsService
             /*     'community_award_count' => [], */
             /*     'community_awarded' => [], */
             /*     'voters' => [], */
-
             /* ], */
             /* 'stellarchain' => [ */
             /*     'total_users' => [], */

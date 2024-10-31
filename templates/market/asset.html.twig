@@ -26,7 +26,7 @@
                     {% if toml is defined %}
                     <p>
                         {% if toml.url is defined %}
-                        <span class="small"> <a href="{{ toml.url}}">{{toml.url}}</a> </span>
+                        <span class="small"> <a class="text-decoration-none" href="{{ toml.url}}">{{toml.url}}</a> </span>
                         {% endif %}
                     </p>
                 </div>
@@ -41,9 +41,11 @@
 
                     {% endif %}
                     <p class="small">Issuer:
-                        <a href="https://stellarchain.io/accounts/{{asset.assetIssuer}}">{{asset.assetIssuer}}</a>
+                        <a href="https://stellarchain.io/accounts/{{asset.assetIssuer}}" class="text-decoration-none"><span>{{asset.assetIssuer}}</span></a>
                     </p>
-                    <p class="small">Contract: <span id="contractId"></span></p>
+                    <p class="small contract-link">Contract:
+                        <a href="https://stellarchain.io/contracts/" class="text-decoration-none"><span id="contractId"></span></a>
+                    </p>
                 </div>
             </div>
         </div>
