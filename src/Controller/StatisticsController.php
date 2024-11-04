@@ -7,19 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class StatisticsController extends AbstractController
 {
     #[Route('/statistics', name: 'app_statistics')]
     public function index(StatisticsService $statisticsService): Response
     {
-        $cache = new FilesystemAdapter();
-        $statisticsCharts = $cache->get('statistics_chart_6', function (ItemInterface $item) use ($statisticsService): array {
-            $item->expiresAfter(21600);
-            return $statisticsService->buildStatisticsCharts();
-        });
+        $statisticsCharts = $statisticsService->buildStatisticsCharts();
         return $this->render('statistics/index.html.twig', [
             'statistics_charts' => $statisticsCharts
         ]);
