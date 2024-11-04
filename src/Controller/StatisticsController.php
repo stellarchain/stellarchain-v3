@@ -13,9 +13,8 @@ class StatisticsController extends AbstractController
     #[Route('/statistics', name: 'app_statistics')]
     public function index(StatisticsService $statisticsService): Response
     {
-        $statisticsCharts = $statisticsService->buildStatisticsCharts();
         return $this->render('statistics/index.html.twig', [
-            'statistics_charts' => $statisticsCharts
+            'statistics_charts' => $statisticsService->buildStatisticsCharts()
         ]);
     }
 
