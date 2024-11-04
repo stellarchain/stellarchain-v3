@@ -45,17 +45,22 @@ class StatisticsService
                 'contract_invocations' => [],
                 'created_contracts' => [],
             ],
-            'network_charts' => [
-                'total_assets' => [],
-                'successful_transactions' => [],
-                'failed_transactions' => [],
-                /*     'active_addresses' => [], */
-                /*     'inactive_addresses' => [], */
-                /*     'top_100_active_addresses' => [], */
+            /* 'network_charts' => [ */
+            /*     'total_accounts' => [], */
+            /*     'total_assets' => [], */
+            /*     'successful_transactions' => [], */
+            /*     'failed_transactions' => [], */
+            /*     'active_addresses' => [], */
+            /*     'inactive_addresses' => [], */
+            /*     'top_100_active_addresses' => [], */
                 /*     'transactions_per_second' => [], */
                 /*     'output_value_per_day' => [], */
                 /*     'transactions_value' => [], */
-            ],
+            /* ], */
+            /* 'ledger_charts' => [ */
+            /*     'transactions' => [], */
+            /*     'operations' => [], */
+            /* ] */
             /* 'community_fund' => [ */
             /*     'total_submissions' => [], */
             /*     'total_awarded' => [], */
