@@ -16,6 +16,7 @@
         "doctrine/orm": "^3.1",
         "dragonmantank/cron-expression": "^3.3",
         "easycorp/easyadmin-bundle": "^4.10",
+        "google/cloud-bigquery": "^1.31",
         "knplabs/knp-time-bundle": "^2.2",
         "nelmio/cors-bundle": "^2.5",
         "phpdocumentor/reflection-docblock": "^5.4",

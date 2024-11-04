@@ -56,6 +56,9 @@ blockchain_charts:
     number_of_transactions:
         title: Number of transactions
         desc: Total number of transactions that have occurred on the blockchain to date.
+    number_of_operations:
+        title: Number of operations 
+        desc: Total number of operations that have occurred on the blockchain to date.
     blockchain_charts:
         title: Average ledger time
         desc: Indicates the average time taken to process each ledger.

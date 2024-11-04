@@ -53,4 +53,9 @@ class Helper
 
         return $query_params;
     }
+
+    public function stellar_price(string $amount): string
+    {
+        return number_format($amount / 10000000, 7, '.', '');
+    }
 }

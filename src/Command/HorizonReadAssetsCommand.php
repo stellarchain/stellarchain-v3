@@ -46,9 +46,12 @@ class HorizonReadAssetsCommand extends Command
                 break;
             }
 
-
             $io->success(sprintf('Counted total of %s assets', $totalAssets));
         }
+
+        $statistic = new Statistic();
+        $statistic->total_assets = $totalAssets;
+
 
         return Command::SUCCESS;
     }
