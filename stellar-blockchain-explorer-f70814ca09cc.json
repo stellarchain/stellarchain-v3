@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "stellar-blockchain-explorer",
+  "private_key_id": "f70814ca09cc50a574263a230f15293bddf39dc6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCUabW13Yye0BvH\n1ksAODwiIsReNU1pt75dRCDIRbbG03+sr/qYBH5SnnvJEnfrRtUsH59yErnmg0zu\nc/24k1wQAo2cbXbACYCjt8PVrmKvgRIUwm4C6A+nDlujCmhvFS2iA8duAaZRbw1+\nj1pXXuzTlAMT/+NxfXWuUItKkc5VnWpLti5X+sepM8pgLuEuMs3Em0J94+UO18JO\nXXoh3GjhKUtwudMUAFbXD4sgfcrDQrVdpUEhIeF4bYDAINtMrtWfniU2xlRzDP7N\nJl6nTjgvxqRB5C1zC8hHcyIePbZx0J/6RPCCyqbxceV+TSOzK9lnlpOji9AUth5B\nnJV6p9R7AgMBAAECggEABMxyMqIqNMxXyZtVK3mmABiNrtocWam2Pv+/65nNchpO\ni3/ZI2cpynQTXon5VKMiq12OYzrVxe1C5IbdkkU5ec8LUx5683SbMy/y5grQaApN\nUlyDABcOwoEFV30zqTvPEOj8XsMw5HspvYjXC/ImyCSGAPSKHxZGYs954XxbZos2\nz4Q5x+4XZW2dQseLttbHwoG1cLYmu66MCPR1feK13mvMjcE5jf9Qsl1VmIdIIeon\nIeFwJzOAlFWIV07f4EHVYgrSkxXGQegLWehPpWTDCXkEkpCReH9DiR3sR4Jn2wMk\nTuHKP4gQLv4Mk9MHqtJG3j9Up9/oppgbjp4NnoJSoQKBgQDOZOhHUwqygBHObvCG\nzEqUOqqbRWng7diYkrsFmkFLz/FcLAFxe5tVyehvcsQNk2uCxxFXtuoTYVIYg6sz\nFsshuJSvy9Sw1sS10QyX3RlnF2XfMkOxsRW4BHXjOle+9BzssLIE/Gq0ZiRHJx46\n7GMi4n51u1WoVxj5oH8t2LcoqwKBgQC4FU/7DiKK46otL5sTqT9B9gKKLM6mwvis\nY/yG2fmeMvcP0hjAZ9gNxnliu4NLPNqTHNn6fjGMoU1XdmxVE35DrvSawn1/Z9BJ\ntyhy3IU5sJgYl6TUECiPEWaqmh7TMm/D9N9/uNYivcY9le6T/BGZlSNdMAa7y4lP\nyteMDL6jcQKBgEnhzVRa4aVsOvOOuwNF9hyBs7jJbFFcUwCq5c/nnCArW9cG2a1p\n9f0LvezHRG8nqoCyCf9ANyKg3+Zum8Y6DpUPogocCRMUjm4XW06xkvpYYds3/wuI\nvKGW1yx0Ihz0/bWsus0WHoxdU/c0hZnKLOK7+VDjspIEO6iAT4Z14XrpAoGBALFj\nyEkT2/GfZjRY9cXCiLTVjqj8eL92jxAA4i5JCySJ1E8olLWE3EyaAAtGy0TLhY3S\ndbPPu4vbPJ6V/dsWB8zNYeVommsV7T+8Anx9SNzI8ihwqWO5lnwXtqmcDyxSJCXf\naSi5Q5EC83ARdXChrYwkjYmVaEe74bxEqeXJukPhAoGAUuWgq8XwIh51AZnhUrDB\n5yzl2Sx1gP+y0AEuGQQsf1ufmL/3u0X506p1CM1sH3g0oSsF48lMA0fTOHRZDWrg\ncqLW7N4tdwOCxrDSTKl+2tOtkj4fh0kxLlJPhJ8fBQapMgOoTBwAtcfjY/xMgBiL\nK72y5snqbnhdA/R/gEhpYfg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "cont-secundar@stellar-blockchain-explorer.iam.gserviceaccount.com",
+  "client_id": "113050165508693163025",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cont-secundar%40stellar-blockchain-explorer.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

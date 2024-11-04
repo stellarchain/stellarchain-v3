@@ -10,7 +10,7 @@ class LedgerMetricsService
     {
     }
 
-    public function getDailyMetrics(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
+    public function getMetrics(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
     {
         $ledgers = $this->ledgerRepository->getBetweenDates($startDate, $endDate);
 
@@ -41,7 +41,7 @@ class LedgerMetricsService
         $transactionsPerSecond = $totalTime > 0 ? $numberOfTransactions / $totalTime : 0;
 
         return [
-            'ledgers_per_day' => $ledgersPerDay,
+            'total_ledgers' => $ledgersPerDay,
             'transactions_per_ledger' => $ledgersPerDay > 0 ? $transactionsPerLedger / $ledgersPerDay : 0,
             'operations_per_ledger' => $ledgersPerDay > 0 ? $operationsPerLedger / $ledgersPerDay : 0,
             'number_of_transactions' => $numberOfTransactions,

@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Config\Timeframes;
 use App\Repository\CoinStatRepository;
+use App\Repository\MetricRepository;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -10,6 +12,7 @@ class StatisticsService
 {
     public function __construct(
         private CoinStatRepository $coinStatRepository,
+        private MetricRepository $metricsRepository,
         private NumberFormatter $numberFormatter,
         private ChartBuilderInterface $chartBuilder,
         private LedgerMetricsService $ledgerMetricsService,
@@ -22,45 +25,42 @@ class StatisticsService
     public function getKeys(): array
     {
         return [
-            'price_charts' => [
-                'price_usd' => [],
+            'market-charts' => [
+                'price-usd' => [],
                 'rank' => [],
-                'market_cap' => [],
-                'volume_24h' => [],
-                'circulating_supply' => [],
-                'market_cap_dominance' => [],
-                'trades_volume' => false,
-                'transactions_volume' => false,
-                'cex_trade_volume' => false,
+                'market-cap' => [],
+                'volume-24h' => [],
+                'circulating-supply' => [],
+                'market-cap-dominance' => [],
+                'total-trades' => [],
+                'trades-volume' => false,
+                'transactions-volume' => false,
+                'cex-trade-volume' => false,
             ],
-            'blockchain_charts' => [
-                'blockchain_size' => false,
-                'average_ledger_size' => false,
-                'ledger_per_day' => false,
-                'transactions_per_ledger' => [],
-                'operations_per_ledger' => [],
-                'number_of_transactions' => [],
-                'number_of_operations' => [],
-                'average_ledger_time' => [],
-                'contract_invocations' => [],
-                'created_contracts' => [],
+            'blockchain-charts' => [
+                'blockchain-size' => [],
+                'average-ledger-size' => false,
+                'total-ledgers' => [],
+                'transactions-per-ledger' => [],
+                'operations-per-ledger' => [],
+                'number-of-transactions' => [],
+                'number-of-operations' => [],
+                'average-ledger-time' => [],
+                'contract-invocations' => [],
+                'created-contracts' => [],
             ],
-            /* 'network_charts' => [ */
-            /*     'total_accounts' => [], */
-            /*     'total_assets' => [], */
-            /*     'successful_transactions' => [], */
-            /*     'failed_transactions' => [], */
-            /*     'active_addresses' => [], */
-            /*     'inactive_addresses' => [], */
-            /*     'top_100_active_addresses' => [], */
-                /*     'transactions_per_second' => [], */
-                /*     'output_value_per_day' => [], */
-                /*     'transactions_value' => [], */
-            /* ], */
-            /* 'ledger_charts' => [ */
-            /*     'transactions' => [], */
-            /*     'operations' => [], */
-            /* ] */
+            'network-charts' => [
+                'total-accounts' => [],
+                'total-assets' => [],
+                'successful-transactions' => [],
+                'failed-transactions' => [],
+                'active-addresses' => [],
+                'inactive-addresses' => [],
+                'top-100-active-addresses' => [],
+                'transactions-per-second' => [],
+                'output-value-per-day' => false,
+                'transactions-value' => false,
+            ],
             /* 'community_fund' => [ */
             /*     'total_submissions' => [], */
             /*     'total_awarded' => [], */
@@ -83,22 +83,19 @@ class StatisticsService
         ];
     }
 
-    public function getMetricsData($type, $stat)
+    public function getMetricsData(string $key, string $timeframe): array
     {
-        $metrics = [
-            'label' => [],
-            'data' => [],
-            'change' => 0
+        $metrics = $this->metricsRepository->findBy(['timeframe' => Timeframes::fromString($timeframe), 'metric' => $key]);
+        $labels = [];
+        $data = [];
+        foreach ($metrics as $metric) {
+            $labels[] = $metric->getTimestamp()->getTimestamp();
+            $data[] = (float) $metric->getValue();
+        }
+        return [
+            'labels' => $labels,
+            'data' => $data
         ];
-        if ($type == 'price_charts') {
-            $metrics = $this->getPriceMetrics($stat);
-        }
-
-        if ($type == 'blockchain_charts') {
-            $metrics = $this->getBlockchainMetrics($stat);
-        }
-
-        return $metrics;
     }
 
     /**
@@ -110,76 +107,24 @@ class StatisticsService
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
                 if (is_array($chart)) {
-                    $metrics = $this->getMetricsData($typeKey, $key);
+                    $metrics = $this->getMetricsData($key, '10m');
+                    $change = 0;
+                    $dataCount = count($metrics['data']);
+                    if ($dataCount > 1) {
+                        $latestValue = $metrics['data'][$dataCount - 1];
+                        $previousValue = $metrics['data'][$dataCount - 2];
+                        if ($previousValue != 0) {
+                            $change = (($latestValue - $previousValue) / $previousValue) * 100;
+                        }
+                    }
                     $statistics[$typeKey][$key] = [
-                        'chart' => $this->buildChart($metrics['label'], $metrics['data']),
-                        'change' => $metrics['change']
+                        'chart' => $this->buildChart($metrics['labels'], $metrics['data']),
+                        'change' => $change
                     ];
                 }
             }
         }
         return $statistics;
-    }
-
-    public function getBlockchainMetrics($key)
-    {
-        $endDate = new \DateTimeImmutable();
-        $startDate = $endDate->sub(new \DateInterval('PT5H'));
-        $ledgerMetrics = $this->ledgerMetricsService->getMetricsForTimeIntervals($startDate, $endDate, 1, 50);
-
-        $labels = [];
-        $data = [];
-        foreach ($ledgerMetrics as $entry) {
-            $labels[] = $entry['time_start'];
-            $data[] = $entry[$key];
-        }
-        $change = 0;
-        $dataCount = count($data);
-
-        if ($dataCount > 1) {
-            $latestValue = $data[$dataCount - 1];
-            $previousValue = $data[$dataCount - 2];
-
-            if ($previousValue != 0) {
-                $change = (($latestValue - $previousValue) / $previousValue) * 100;
-            }
-        }
-
-        return [
-            'change' => $change,
-            'label' => $labels,
-            'data' => $data
-        ];
-    }
-
-    public function getPriceMetrics(string $key): array
-    {
-        $pageData = $this->coinStatRepository->getStatsByName($key, 0, 30);
-        $priceData = array_reverse($pageData);
-        $labels = [];
-        $data = [];
-        foreach ($priceData as $entry) {
-            $labels[] = \DateTime::createFromFormat('Y-m-d H:i:s', $entry['created_at'])->format('m-d-Y H:i');
-            $data[] = (float) $entry['value'];
-        }
-
-        $change = 0;
-        $dataCount = count($data);
-
-        if ($dataCount > 1) {
-            $latestValue = $data[$dataCount - 1];
-            $previousValue = $data[$dataCount - 2];
-
-            if ($previousValue != 0) {
-                $change = (($latestValue - $previousValue) / $previousValue) * 100;
-            }
-        }
-
-        return [
-            'change' => $change,
-            'label' => $labels,
-            'data' => $data
-        ];
     }
 
     private function buildChart(array $labels, array $data): Chart

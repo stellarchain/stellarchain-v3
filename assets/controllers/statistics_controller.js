@@ -9,7 +9,6 @@ export default class extends Controller {
 
   async initialize() {
     this.initChart();
-    this.getStatistics();
   }
 
   initChart() {
@@ -41,7 +40,7 @@ export default class extends Controller {
           color: 'green',
           labelBackgroundColor: '#9B7DFF',
         },
-      }
+      },
     };
 
     this.chart = createChart(this.chartContainer, chartOptions);
@@ -69,13 +68,14 @@ export default class extends Controller {
       ) {
         this.toolTip.style.display = 'none';
       } else {
-        let date = new Date(param.time * 1000);
+        this.toolTip.style.display = 'block';
+        const data = param.seriesData.get(this.areaSeries);
+
+        let date = new Date(data.time * 1000);
         const dateStr = date.toLocaleDateString(); // This gets the date in a localized format
         const timeStr = date.toLocaleTimeString(); // This gets the time in a localized format
         const dateTimeStr = `${dateStr} ${timeStr}`;
-        this.toolTip.style.display = 'block';
-        const data = param.seriesData.get(this.areaSeries);
-        const price = data.value !== undefined ? data.value : data.close;
+        const price = data.value
         this.toolTip.innerHTML = `<div style="color: ${'rgba( 38, 166, 154, 1)'}"></div><div style="font-size: 24px; margin: 4px 0px; color: ${'white'}">
             ${price}
             </div><div style="color: ${'white'}">
@@ -99,8 +99,7 @@ export default class extends Controller {
       }
     });
 
-
-
+    this.getStatistics();
   }
 
   async getStatistics() {
@@ -115,9 +114,12 @@ export default class extends Controller {
       },
     })
     const data = await response.json();
-
-    this.areaSeries.setData(data);
-    this.chart.timeScale().fitContent();
+    console.log(response)
+    if (response.status == 200) {
+      this.areaSeries.setData(data);
+      this.chart.timeScale().fitContent();
+    }
+    console.log(data);
   }
 
   connect() {

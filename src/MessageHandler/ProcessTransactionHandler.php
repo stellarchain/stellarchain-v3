@@ -94,6 +94,8 @@ class ProcessTransactionHandler
                     $paymentOp = $operationBody->getPaymentOp();
                     $amount = $paymentOp->getAmount();
                     break;
+                default:
+                    break;
             }
         }
     }

@@ -6,13 +6,12 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-
-#[AsCronTask('0 0 * * *')]
-class CountTotalAssets
+#[AsCronTask('*/10 * * * *')]
+class BuildStatistics
 {
     public function __invoke(): void
     {
-        $process = new Process(['bin/console', 'horizon:read-assets', '--no-debug'], timeout: null);
+        $process = new Process(['bin/console', 'statistics:build', '10m', '--no-debug'], timeout: 120);
         try {
             $process->mustRun();
             echo $process->getOutput();

@@ -2,12 +2,15 @@
 
 namespace App\Command;
 
+use App\Config\Timeframes;
 use App\Entity\Coin;
 use App\Entity\CoinStat;
+use App\Entity\Metric;
 use App\Integrations\CoinMarketCap\CoinMarketCapConnectorV1;
 use App\Integrations\CoinMarketCap\GetStellarRealTimeDataRequest;
 use App\Repository\CoinStatRepository;
 use App\Service\MarketDataService;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -49,11 +52,11 @@ class FetchLatestStellarMarketDataCommand extends Command
 
         if ($stellarData) {
             $coinStats = [
-                'price_usd' => round($stellarData['quote']['USD']['price'], 5),
-                'volume_24h' => round($stellarData['quote']['USD']['volume_24h'], 4),
-                'market_cap_dominance' => round($stellarData['quote']['USD']['market_cap_dominance'], 4),
-                'market_cap'  => round($stellarData['quote']['USD']['market_cap'], 4),
-                'circulating_supply' => round($stellarData['circulating_supply'], 4),
+                'price-usd' => round($stellarData['quote']['USD']['price'], 5),
+                'volume-24h' => round($stellarData['quote']['USD']['volume_24h'], 4),
+                'market-cap_dominance' => round($stellarData['quote']['USD']['market_cap_dominance'], 4),
+                'market-cap'  => round($stellarData['quote']['USD']['market_cap'], 4),
+                'circulating-supply' => round($stellarData['circulating_supply'], 4),
                 'rank' => $stellarData['cmc_rank'],
             ];
 
@@ -64,7 +67,15 @@ class FetchLatestStellarMarketDataCommand extends Command
                 $stellarCoinStat->updateTimestamps();
                 $stellar->addCoinStat($stellarCoinStat);
 
+                $metric = new Metric();
+                $metric->setChartType('market-charts')
+                    ->setValue($value)
+                    ->setTimeframe(Timeframes::fromString('10m'))
+                    ->setMetric($name)
+                    ->setTimestamp(new DateTimeImmutable());
+
                 $this->entityManager->persist($stellarCoinStat);
+                $this->entityManager->persist($metric);
             }
 
             $this->entityManager->persist($stellar);

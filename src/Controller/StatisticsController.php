@@ -29,15 +29,15 @@ class StatisticsController extends AbstractController
         ]);
     }
 
-    #[Route('/statistics/{stat}/{chart}', name: 'app_statistics_get', methods: ['POST'])]
+    #[Route('/statistics/{chart}/{stat}', name: 'app_statistics_get', methods: ['POST'])]
     public function charts_data(StatisticsService $statisticsService, string $stat, string $chart): Response
     {
-        $chartData = $statisticsService->getMetricsData($stat, $chart);
+        $chartData = $statisticsService->getMetricsData($stat, '10m');
         $areaSeries = [];
-        foreach ($chartData['label'] as $k => $time) {
+        foreach ($chartData['labels'] as $k => $time) {
             $areaSeries[] = [
                 'value' => $chartData['data'][$k],
-                'time' => \DateTime::createFromFormat('m-d-Y H:i', $time)->getTimestamp()
+                'time' => $time
             ];
         }
         return $this->json($areaSeries);

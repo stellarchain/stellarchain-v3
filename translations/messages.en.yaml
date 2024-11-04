@@ -1,78 +1,100 @@
-price_charts: 
+market-charts: 
     title: Price Charts
-    desc: Price charts desc
-    price_usd: 
+    desc: Price charts 
+    price-usd: 
         title: Market Price
-        desc:  Tracks the price of XLM in US dollars over time
-    market_cap:
+        desc: Tracks the price of XLM in US dollars over time
+    market-cap:
         title: Market Capitalization
         desc: Displays the total market capitalization of the asset, calculated as the asset's price multiplied by the circulating supply.
-    volume_24h:
+    volume-24h:
         title: Volume
         desc: Shows the trading volume of the asset in the past 24 hours, reflecting market activity.
-    circulating_supply:
+    circulating-supply:
         title: Circulating Supply
         desc: Represents the number of asset units currently in circulation and available for trading.
-    market_cap_dominance:
+    market-cap-dominance:
         title: Market Cap Dominance
         desc: Indicates the percentage of the asset’s market capitalization relative to the entire market’s value
-    trades_volume:
-        title: Trades volume 
+    trades-volume:
+        title: Trades Volume 
         desc: Trades volume desc
     rank:
         title: Market Rank 
         desc: Daily ranking on entire crypto market 
+    total-trades:
+        title: Total trades 
+        desc: Total trades per timeframe 
 
-blockchain_charts:
+
+blockchain-charts:
     title: Blockchain Charts
-    desc: Blockchain charts desc
-    blockchain_size:
-        title: Blockchain Charts
-        desc: Blockchain charts desc
-    average_ledger_size:
+    desc: Blockchain charts 
+    blockchain-size:
+        title: Blockchain Size
+        desc: Blockchain size database, extracted archives
+    average-ledger-size:
         title: Average Ledger Size
         desc: Average ledger size desc
-    average_ledger_time:
+    average-ledger-time:
         title: Average Ledger Time 
         desc: Average ledger closing time
-    ledger_per_day:
-        title: Ledger per day
+    total-ledgers:
+        title: Ledger per Day
         desc: Ledger per day desc
-    transactions_per_ledger:
-        title: Transactions per ledger
+    transactions-per-ledger:
+        title: Transactions per Ledger
         desc: Tracks the average number of transactions included in each ledger.
-    successful_transactions:
-        title: Success transactions
-        desc: Displays the total number of transactions successfully completed within the blockchain.
-    failed_transactions:
-        title: Failed transactions
-        desc: Shows the number of transactions that were unsuccessful or rejected by the blockchain network.
-    transactions_per_second:
-        title: Transactions per second
+    transactions-per-second:
+        title: Transactions per Second
         desc: Measures the average number of transactions processed per second.
-    operations_per_ledger:
-        title: Operations per ledger
+    operations-per-ledger:
+        title: Operations per Ledger
         desc: Displays the average number of operations recorded per ledger.
-    number_of_transactions:
-        title: Number of transactions
+    number-of-transactions:
+        title: Number of Transactions
         desc: Total number of transactions that have occurred on the blockchain to date.
-    number_of_operations:
-        title: Number of operations 
+    number-of-operations:
+        title: Number of Operations 
         desc: Total number of operations that have occurred on the blockchain to date.
-    blockchain_charts:
-        title: Average ledger time
+    blockchain-charts:
+        title: Average Ledger Time
         desc: Indicates the average time taken to process each ledger.
-    contract_invocations:
-        title: Contract invocations
+    contract-invocations:
+        title: Contract Invocations
         desc: Shows the number of times smart contracts have been called or executed.
-    created_contracts:
-        title: Created contracts
-        desc:  Represents the total number of smart contracts that have been created on the blockchain.
+    created-contracts:
+        title: Created Contracts
+        desc: Represents the total number of smart contracts that have been created on the blockchain.
 
-
-network_charts:
+network-charts:
     title: Network Charts
-    desc: Network charts desc
-    total_assets:
-        title: Total assets
+    desc: Network charts
+    total-accounts:
+        title: Total Accounts
+        desc: Tracks the total accounts available on the network, representing the diversity and size of accounts within the ecosystem.
+    total-assets:
+        title: Total Assets
         desc: Tracks the total number or value of assets available on the network, representing the diversity and size of assets within the ecosystem.
+    successful-transactions:
+        title: Successful Transactions
+        desc: Displays the total number of transactions successfully completed within the blockchain.
+    failed-transactions:
+        title: Failed Transactions
+        desc: Shows the number of transactions that were unsuccessful or rejected by the blockchain network.
+
+    active-addresses:
+        title: Active Addresses
+        desc: Shows the number of unique active addresses interacting within the blockchain ecosystem.
+
+    inactive-addresses:
+        title: Inactive Addresses
+        desc: Shows the number of addresses that have not interacted with the blockchain network over a specified period.
+
+    top-100-active-addresses:
+        title: Top 100 Active Addresses
+        desc: Shows the list of the top 100 most active addresses, ranked by the number of transactions.
+
+    transactions-per-second:
+        title: Transactions Per Second (TPS)
+        desc: Measures the rate of transactions being processed by the blockchain per second.
