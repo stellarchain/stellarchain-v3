@@ -35,7 +35,7 @@ class StatisticsController extends AbstractController
         $areaSeries = [];
         foreach ($chartData['labels'] as $k => $time) {
             $areaSeries[] = [
-                'value' => $chartData['data'][$k],
+                'value' => (float)$chartData['data'][$k],
                 'time' => $time
             ];
         }
