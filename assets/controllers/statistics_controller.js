@@ -114,7 +114,6 @@ export default class extends Controller {
       },
     })
     const data = await response.json();
-    console.log(response)
     if (response.status == 200) {
       this.areaSeries.setData(data);
       this.chart.timeScale().fitContent();

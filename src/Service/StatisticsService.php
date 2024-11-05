@@ -85,7 +85,7 @@ class StatisticsService
 
     public function getMetricsData(string $key, string $timeframe): array
     {
-        $metrics = $this->metricsRepository->findBy(['timeframe' => Timeframes::fromString($timeframe), 'metric' => $key]);
+        $metrics = $this->metricsRepository->findBy(['timeframe' => Timeframes::fromString($timeframe), 'metric' => $key], ['timestamp' => 'desc'], 30);
         $labels = [];
         $data = [];
         foreach ($metrics as $metric) {
