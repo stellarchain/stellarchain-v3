@@ -59,7 +59,7 @@ class AssetsBuildMetricsCommand extends Command
     private function processAsset(Asset $asset, Asset $nativeAsset): void
     {
         $currentDateTime = new \DateTime();
-        $interval = new \DateInterval('PT3H');
+        $interval = new \DateInterval('PT12H');
         $cutoffTime = (clone $currentDateTime)->sub($interval);
         $latestPriceResult = $this->tradeRepository->findOneBy(['base_asset' => $nativeAsset, 'counter_asset' => $asset, 'trade_type' => 'orderbook'], ['ledger_close_time' => 'DESC']);
         $roundedDateTime = (clone $currentDateTime)->modify('-1 hour');
