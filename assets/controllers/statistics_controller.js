@@ -59,7 +59,7 @@ export default class extends Controller {
     this.areaSeries = this.chart.addAreaSeries({lineColor: '#F23645', topColor: '#8c1d27', bottomColor: 'rgba(20, 20, 20, 0.1)'});
 
     this.toolTip = document.createElement('div');
-    this.toolTip.style = `width: 220px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+    this.toolTip.style = `width: 250px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
     this.toolTip.style.background = 'black';
     this.toolTip.style.color = 'white';
 
@@ -81,7 +81,7 @@ export default class extends Controller {
         const dateStr = date.toLocaleDateString(); // This gets the date in a localized format
         const timeStr = date.toLocaleTimeString(); // This gets the time in a localized format
         const dateTimeStr = `${dateStr} ${timeStr}`;
-        const price = data.value
+        const price = data.value.toLocaleString()
         this.toolTip.innerHTML = `<div style="color: ${'rgba( 38, 166, 154, 1)'}"></div><div style="font-size: 24px; margin: 4px 0px; color: ${'white'}">
             ${price}
             </div><div style="color: ${'white'}">

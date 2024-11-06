@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use App\Config\Timeframes;
-use App\Repository\CoinStatRepository;
 use App\Repository\MetricRepository;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -11,11 +9,8 @@ use Symfony\UX\Chartjs\Model\Chart;
 class StatisticsService
 {
     public function __construct(
-        private CoinStatRepository $coinStatRepository,
         private MetricRepository $metricsRepository,
-        private NumberFormatter $numberFormatter,
         private ChartBuilderInterface $chartBuilder,
-        private LedgerMetricsService $ledgerMetricsService,
     ) {
     }
 
@@ -26,39 +21,39 @@ class StatisticsService
     {
         return [
             'market-charts' => [
-                'price-usd' => [],
-                'rank' => [],
-                'market-cap' => [],
-                'volume-24h' => [],
-                'circulating-supply' => [],
-                'market-cap-dominance' => [],
-                'total-trades' => [],
+                'price-usd' => true,
+                'rank' => true,
+                'market-cap' => true,
+                'volume-24h' => true,
+                'circulating-supply' => true,
+                'market-cap-dominance' => true,
+                'total-trades' => false,
                 'trades-volume' => false,
                 'transactions-volume' => false,
                 'cex-trade-volume' => false,
             ],
             'blockchain-charts' => [
-                'blockchain-size' => [],
+                'blockchain-size' => true,
                 'average-ledger-size' => false,
-                'total-ledgers' => [],
-                'failed-transactions' => [],
-                'transactions-per-second' => [],
-                'transactions-per-ledger' => [],
-                'operations-per-ledger' => [],
-                'number-of-transactions' => [],
-                'number-of-operations' => [],
-                'average-ledger-time' => [],
-                'contract-invocations' => [],
-                'created-contracts' => [],
+                'total-ledgers' => true,
+                'failed-transactions' => true,
+                'transactions-per-second' => true,
+                'transactions-per-ledger' => true,
+                'operations-per-ledger' => true,
+                'number-of-transactions' => true,
+                'number-of-operations' => true,
+                'average-ledger-time' => true,
+                'contract-invocations' => true,
+                'created-contracts' => true,
 
             ],
             'network-charts' => [
-                'total-accounts' => [],
-                'total-assets' => [],
-                'successful-transactions' => [],
-                'active-addresses' => [],
-                'inactive-addresses' => [],
-                'top-100-active-addresses' => [],
+                'total-accounts' => true,
+                'total-assets' => true,
+                'successful-transactions' => true,
+                'active-addresses' => true,
+                'inactive-addresses' => true,
+                'top-100-active-addresses' => true,
                 'output-value-per-day' => false,
                 'transactions-value' => false,
             ],
@@ -72,27 +67,26 @@ class StatisticsService
             /*     'voters' => [], */
             /* ], */
             /* 'stellarchain' => [ */
-            /*     'total_users' => [], */
+            /*     'total-users' => [], */
             /*     'communities' => [], */
             /*     'posts' => [], */
             /*     'likes' => [], */
             /*     'jobs' => [], */
             /*     'projects' => [], */
             /*     'visitors' => [], */
-            /*     'page_views' => [], */
+            /*     'page-views' => [], */
             /* ] */
         ];
     }
 
+    /**
+     * @return array<string,array>
+     */
     public function getMetricsData(string $key, string $chartType,  string $timeframe, int $startTime): array
     {
         $metrics = $this->metricsRepository->findMetricsAfterTimestamp($key, $chartType, $timeframe, $startTime, 50);
-        $labels = [];
-        $data = [];
-        foreach ($metrics as $metric) {
-            $labels[] = $metric->getTimestamp();
-            $data[] = round((float) $metric->getValue(), 5);
-        }
+        $labels = array_map(fn ($metric) => $metric->getTimestamp(), $metrics);
+        $data = array_map(fn ($metric) => round((float) $metric->getValue(), 5), $metrics);
         return [
             'labels' => array_reverse($labels),
             'data' => array_reverse($data)
@@ -107,7 +101,7 @@ class StatisticsService
         $statistics = $this->getKeys();
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
-                if (is_array($chart)) {
+                if ($chart) {
                     $metrics = $this->getMetricsData($key, $typeKey, '10m', time());
                     $change = 0;
                     $dataCount = count($metrics['data']);
@@ -125,15 +119,17 @@ class StatisticsService
                 }
             }
         }
+
         return $statistics;
     }
 
+    /**
+     * @param array<int,mixed> $labels
+     * @param array<int,mixed> $data
+     */
     private function buildChart(array $labels, array $data): Chart
     {
-        foreach($labels as $k => $label){
-            $labels[$k] = $label->format('d-m-Y H:i');
-        }
-
+        $labels = array_map(fn($label) => $label->format('d M Y H:i'), $labels);
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
             'labels' => $labels,

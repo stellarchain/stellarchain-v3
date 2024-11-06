@@ -94,7 +94,7 @@ network-charts:
 
     top-100-active-addresses:
         title: Top 100 Active Addresses
-        desc: Shows the list of the top 100 most active addresses, ranked by the number of transactions.
+        desc: Shows the total amount in XLM of the top 100 most active addresses balance.
 
     transactions-per-second:
         title: Transactions Per Second (TPS)
