@@ -196,7 +196,7 @@ export default class extends Controller {
         let startTime = this.candlestickSeries.data()[0].time
         if (!this.loadingTrades) {
           this.loadingTrades = true;
-          document.getElementById('loading-chart').classList.toggle('d-none');
+          document.getElementById('loading-chart').classList.remove('d-none');
           this.server.tradeAggregation(this.asset, Asset.native(), 0, startTime * 1000, this.resolution, 0)
             .order('desc').limit(200)
             .call().then((message) => this.addChartData(message))
@@ -217,9 +217,9 @@ export default class extends Controller {
           const spanElement = document.getElementById(elementId);
           if (spanElement) {
             if (typeof data[key] === 'number') {
-              spanElement.innerText = data[key].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
+              spanElement.innerText = ' ' + data[key].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
             } else {
-              spanElement.innerText = data[key];
+              spanElement.innerText = ' ' + data[key];
             }
           } else {
             console.warn(`Element with ID '${elementId}' not found.`);
@@ -228,7 +228,7 @@ export default class extends Controller {
       }
     }
 
-    if(dataVolume){
+    if (dataVolume) {
       let volumeEle = document.getElementById('stat-volume')
       volumeEle.innerText = dataVolume.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' ' + this.asset.getCode()
     }
@@ -242,10 +242,14 @@ export default class extends Controller {
   loadAggregatedTradesChart() {
     if (!this.loadingTrades) {
       this.loadingTrades = true;
-      document.getElementById('loading-chart').classList.toggle('d-none');
+      document.getElementById('loading-chart').classList.remove('d-none');
       this.server.tradeAggregation(this.asset, Asset.native(), 0, 0, this.resolution, 0).order('desc').limit(200).cursor('now').call().then(
         (message) => this.addChartData(message)
-      );
+      ).catch((res) => {
+        document.getElementById('loading-chart').classList.add('d-none')
+        document.getElementById('error-chart').classList.remove('d-none')
+        console.log(res)
+      });
     }
   }
 
@@ -276,29 +280,22 @@ export default class extends Controller {
       return a.time - b.time;
     });
 
-    // Retrieve the existing data
     const currentCandleData = this.candlestickSeries.data() || [];
     const currentVolumeData = this.volumeSeries.data() || [];
 
-    // Prepend the new data to the existing data
     const updatedCandleData = [...transformedData, ...currentCandleData];
     const updatedVolumeData = [...volumeData, ...currentVolumeData];
-
-    // Update the chart with the combined data
     this.candlestickSeries.setData(updatedCandleData);
     this.volumeSeries.setData(updatedVolumeData);
     const lineData = this.candlestickSeries.data().map(datapoint => ({
       time: datapoint.time,
       value: (datapoint.close + datapoint.open) / 2,
     }));
-
     this.areaSeries.setData(lineData)
-
     const maData = this.calculateMovingAverageSeriesData(this.candlestickSeries.data(), 20);
     this.maSeries.setData(maData);
-
     this.loadingTrades = false;
-    document.getElementById('loading-chart').classList.toggle('d-none');
+    document.getElementById('loading-chart').classList.add('d-none');
 
     const data = this.candlestickSeries.data()[0];
     const dataVolume = this.volumeSeries.data()[0];
@@ -340,17 +337,19 @@ export default class extends Controller {
   getAsset(assetCode, assetIssuer) {
     this.server.assets().forCode(assetCode).forIssuer(assetIssuer).call().then(res => {
       res = res.records[0]
-      document.getElementById('total_amount').textContent = Number(res.amount).toLocaleString();
+      document.getElementById('total_amount').textContent = Number(res.balances.authorized).toLocaleString();
       document.getElementById('claimable_balances').textContent = Number(res.claimable_balances_amount).toLocaleString();
       document.getElementById('liquidity_pools').textContent = Number(res.liquidity_pools_amount).toLocaleString();
-      document.getElementById('contracts_amount').textContent = res.contracts_amount;
-      const hexString = Array.from(new Address(res.contract_id).toBuffer())
-        .map(byte => byte.toString(16).padStart(2, '0'))
-        .join('');
-      document.getElementById('contractId').textContent = res.contract_id ? res.contract_id : 'No contract';
-      const contractLink = document.querySelector('.contract-link a');
-      contractLink.href = `https://stellarchain.io/contracts/${hexString}`;
-      document.getElementById('authorized_accounts').textContent = res.accounts.authorized;
+      document.getElementById('contracts_amount').textContent = Number(res.contracts_amount).toLocaleString();
+      if (res.contract_id) {
+        const hexString = Array.from(new Address(res.contract_id).toBuffer())
+          .map(byte => byte.toString(16).padStart(2, '0'))
+          .join('');
+        document.getElementById('contractId').textContent = res.contract_id ? res.contract_id : 'No contract';
+        const contractLink = document.querySelector('.contract-link a');
+        contractLink.href = `https://stellarchain.io/contracts/${hexString}`;
+      }
+      document.getElementById('authorized_accounts').textContent = Number(res.accounts.authorized).toLocaleString();
       document.getElementById('num_contracts').textContent = res.num_contracts;
 
     })
@@ -390,13 +389,10 @@ export default class extends Controller {
     tradeElement.classList.add('small');
 
     // Extracting necessary fields from the message object
-    const baseAmount = message.base_amount;
-    const baseAssetCode = message.base_asset_code || 'N/A';
-    const counterAmount = message.counter_amount;
-    const counterAssetType = message.counter_asset_type;
-    const price = (message.price.n / message.price.d).toFixed(7); // Calculating price
+    const baseAmount = Number(message.base_amount).toLocaleString();
+    const counterAmount = Number(message.counter_amount).toLocaleString();
+    const price = (message.price.n / message.price.d).toFixed(7).toLocaleString(); // Calculating price
     const ledgerCloseTime = new Date(message.ledger_close_time).toLocaleString();
-    const tradeType = message.trade_type;
 
     tradeElement.innerHTML = `
     <td>${baseAmount}</td>
@@ -429,8 +425,8 @@ export default class extends Controller {
       const bidRow = document.createElement('tr');
       bidRow.classList.add('bid-item', 'small');
 
-      const amount = parseFloat(bid.amount);
-      const price = bid.price;
+      const amount = parseFloat(bid.amount).toLocaleString();
+      const price = parseFloat(bid.price).toLocaleString();
 
       // Calculate percentage for background width based on the amount
       const percentage = (amount / maxBidAmount) * 100;
@@ -451,8 +447,8 @@ export default class extends Controller {
       const askRow = document.createElement('tr');
       askRow.classList.add('ask-item', 'small');
 
-      const amount = parseFloat(ask.amount);
-      const price = ask.price;
+      const amount = parseFloat(ask.amount).toLocaleString();
+      const price = parseFloat(ask.price).toLocaleString();
 
       // Calculate percentage for background width based on the amount
       const percentage = (amount / maxAskAmount) * 100;

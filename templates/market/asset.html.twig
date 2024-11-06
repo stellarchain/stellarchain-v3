@@ -148,41 +148,23 @@
 
                             <div id="chart-tick" class="d-flex align-items-center d-none">
                                 <div class="bg-black d-flex gap-2 p-1 rounded tick-data">
-                                <div class="d-flex align-items-start small">
-                                    <span class="card-title m-0 text-muted">Open: </span>
-                                    <p class="card-text">
-                                        <span id="stat-open"></span>
-                                    </p>
+                                <div class="d-flex align-items-start small text-white">
+                                    <span class="m-0 text-muted">Open: </span>&nbsp;<span id="stat-open"></span>
                                 </div>
                                 <div class="d-flex align-items-start small">
-                                    <span class="card-title m-0 text-muted">Close: </span>
-                                    <p class="card-text">
-                                        <span id="stat-close"></span>
-                                    </p>
+                                    <span class="card-title m-0 text-muted">Close: </span>&nbsp;<span id="stat-close"></span>
                                 </div>
                                 <div class="d-flex align-items-start small">
-                                    <span class="card-title m-0 text-muted">High: </span>
-                                    <p class="card-text">
-                                        <span id="stat-high"></span>
-                                    </p>
+                                        <span class="card-title m-0 text-muted">High: </span>&nbsp;<span id="stat-high"></span>
                                 </div>
                                 <div class="d-flex align-items-start small">
-                                    <span class="card-title m-0 text-muted">Low: </span>
-                                    <p class="card-text">
-                                        <span id="stat-low"></span>
-                                    </p>
+                                    <span class="card-title m-0 text-muted">Low: </span>&nbsp;<span id="stat-low"></span>
                                 </div>
                                 <div class="d-flex align-items-start small">
-                                    <span class="card-title m-0 text-muted">Volume: </span>
-                                    <p class="card-text">
-                                        <span id="stat-volume"></span>
-                                    </p>
+                                    <span class="card-title m-0 text-muted">Volume: </span>&nbsp;<span id="stat-volume"></span>
                                 </div>
                                 <div class="d-flex align-items-start small">
-                                    <span class="card-title m-0 text-muted">MA: </span>
-                                    <p class="card-text">
-                                        <span id="stat-ma"></span>
-                                    </p>
+                                    <span class="card-title m-0 text-muted">MA: </span>&nbsp;<span id="stat-ma"></span>
                                 </div>
                             </div>
                         </div>
@@ -206,6 +188,8 @@
                         }}></div>
                     <div class="spinner-border text-primary z-1 ml-auto absolute position-absolute top-50 start-50 d-none"
                         id="loading-chart" role="status" aria-hidden="true"></div>
+                    <div class="text-warning z-1 ml-auto absolute position-absolute top-50 start-50 d-none"
+                        id="error-chart" role="status" aria-hidden="true">Service to busy.</div>
                 </div>
             </div>
         </div>
@@ -214,7 +198,7 @@
     <div class="d-flex mt-2 bg-white p-1 rounded">
         <div class="col-md-4">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item text-muted">Total amount: <p class="card-text text-white fw-bold"
+                <li class="list-group-item text-muted">Balance: <p class="card-text text-white fw-bold"
                         id="total_amount"></p>
                 </li>
                 <li class="list-group-item text-muted">Claimable Balances <p class="card-text text-white fw-bold"
