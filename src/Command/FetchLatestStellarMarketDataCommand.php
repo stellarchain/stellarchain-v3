@@ -54,7 +54,7 @@ class FetchLatestStellarMarketDataCommand extends Command
             $coinStats = [
                 'price-usd' => round($stellarData['quote']['USD']['price'], 5),
                 'volume-24h' => round($stellarData['quote']['USD']['volume_24h'], 4),
-                'market-cap_dominance' => round($stellarData['quote']['USD']['market_cap_dominance'], 4),
+                'market-cap-dominance' => round($stellarData['quote']['USD']['market_cap_dominance'], 4),
                 'market-cap'  => round($stellarData['quote']['USD']['market_cap'], 4),
                 'circulating-supply' => round($stellarData['circulating_supply'], 4),
                 'rank' => $stellarData['cmc_rank'],

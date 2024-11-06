@@ -32,16 +32,16 @@ blockchain-charts:
     desc: Blockchain charts 
     blockchain-size:
         title: Blockchain Size
-        desc: Blockchain size database, extracted archives
+        desc: Blockchain size in terabytes, extracted archive (Horizon full archive)
     average-ledger-size:
         title: Average Ledger Size
-        desc: Average ledger size desc
+        desc: Average ledger size
     average-ledger-time:
         title: Average Ledger Time 
         desc: Average ledger closing time
     total-ledgers:
-        title: Ledger per Day
-        desc: Ledger per day desc
+        title: Total ledgers 
+        desc: Ledger per timeframes
     transactions-per-ledger:
         title: Transactions per Ledger
         desc: Tracks the average number of transactions included in each ledger.
