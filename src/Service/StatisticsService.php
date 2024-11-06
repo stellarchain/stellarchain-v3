@@ -97,7 +97,7 @@ class StatisticsService
         $data = [];
         foreach ($metrics as $metric) {
             $labels[] = $metric->getTimestamp();
-            $data[] = round((float) $metric->getValue(), 2);
+            $data[] = round((float) $metric->getValue(), 4);
         }
         return [
             'labels' => array_reverse($labels),
