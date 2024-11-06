@@ -33,53 +33,53 @@ return [
         'type' => 'css',
     ],
     '@hotwired/turbo' => [
-        'version' => '8.0.5',
+        'version' => '8.0.12',
     ],
     'tom-select/dist/css/tom-select.bootstrap5.css' => [
         'version' => '2.3.1',
         'type' => 'css',
     ],
     'chart.js' => [
-        'version' => '4.4.1',
+        'version' => '4.4.6',
     ],
     '@swup/fade-theme' => [
-        'version' => '1.0.5',
-    ],
-    '@swup/slide-theme' => [
-        'version' => '1.0.5',
-    ],
-    '@swup/forms-plugin' => [
         'version' => '2.0.1',
     ],
+    '@swup/slide-theme' => [
+        'version' => '2.0.1',
+    ],
+    '@swup/forms-plugin' => [
+        'version' => '3.6.0',
+    ],
     '@swup/plugin' => [
-        'version' => '2.0.3',
+        'version' => '4.0.0',
     ],
     'swup' => [
-        'version' => '3.1.1',
+        'version' => '4.8.1',
     ],
     'delegate-it' => [
-        'version' => '6.0.1',
+        'version' => '6.2.1',
     ],
     '@swup/debug-plugin' => [
-        'version' => '3.0.0',
+        'version' => '4.1.0',
     ],
     'typed.js' => [
         'version' => '2.1.0',
     ],
     'axios' => [
-        'version' => '1.7.4',
+        'version' => '1.7.7',
     ],
     'swiper/bundle' => [
-        'version' => '11.1.9',
+        'version' => '11.1.14',
     ],
     'swiper/css/bundle' => [
-        'version' => '11.1.9',
+        'version' => '11.1.14',
     ],
     'swiper/modules' => [
-        'version' => '11.1.9',
+        'version' => '11.1.14',
     ],
     'add-to-calendar-button' => [
-        'version' => '2.6.18',
+        'version' => '2.7.3',
     ],
     'timezones-ical-library' => [
         'version' => '1.8.3',
@@ -91,7 +91,7 @@ return [
         'version' => '2.0.8',
     ],
     'chart.js/helpers' => [
-        'version' => '4.4.3',
+        'version' => '4.4.6',
     ],
     '@kurkle/color' => [
         'version' => '0.3.2',
@@ -103,7 +103,7 @@ return [
         'version' => '2.1.0',
     ],
     'path-to-regexp' => [
-        'version' => '6.2.2',
+        'version' => '8.2.0',
     ],
     'bootstrap' => [
         'version' => '5.3.3',

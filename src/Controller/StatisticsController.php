@@ -36,7 +36,7 @@ class StatisticsController extends AbstractController
         foreach ($chartData['labels'] as $k => $time) {
             $areaSeries[] = [
                 'value' => $chartData['data'][$k],
-                'time' => $time
+                'time' => $time->getTimestamp()
             ];
         }
         return $this->json($areaSeries);

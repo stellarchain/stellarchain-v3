@@ -85,16 +85,23 @@ class StatisticsService
 
     public function getMetricsData(string $key, string $timeframe): array
     {
-        $metrics = $this->metricsRepository->findBy(['timeframe' => Timeframes::fromString($timeframe), 'metric' => $key], ['timestamp' => 'desc'], 30);
+        $metrics = $this->metricsRepository->findBy(
+            [
+                'timeframe' => Timeframes::fromString($timeframe),
+                'metric' => $key
+            ],
+            ['timestamp' => 'desc'],
+            30
+        );
         $labels = [];
         $data = [];
         foreach ($metrics as $metric) {
-            $labels[] = $metric->getTimestamp()->getTimestamp();
-            $data[] = (float) $metric->getValue();
+            $labels[] = $metric->getTimestamp();
+            $data[] = round((float) $metric->getValue(), 2);
         }
         return [
-            'labels' => $labels,
-            'data' => $data
+            'labels' => array_reverse($labels),
+            'data' => array_reverse($data)
         ];
     }
 
@@ -129,6 +136,10 @@ class StatisticsService
 
     private function buildChart(array $labels, array $data): Chart
     {
+        foreach($labels as $k => $label){
+            $labels[$k] = $label->format('d-m-Y H:i');
+        }
+
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
             'labels' => $labels,
