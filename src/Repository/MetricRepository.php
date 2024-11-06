@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Config\Timeframes;
 use App\Entity\Metric;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +17,22 @@ class MetricRepository extends ServiceEntityRepository
         parent::__construct($registry, Metric::class);
     }
 
-    //    /**
-    //     * @return Metric[] Returns an array of Metric objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('m.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findMetricsAfterTimestamp(string $key, string $chartType, string $timeframe, int $startTime, int $limit = 50): array
+    {
+        $timeframe = Timeframes::fromString($timeframe)->value;
+        $startDateTime = (new \DateTimeImmutable())->setTimestamp($startTime);
+        $qb = $this->createQueryBuilder('m')
+            ->where('m.metric = :key')
+            ->andWhere('m.timeframe = :timeframe')
+            ->andWhere('m.timestamp <= :startTime')
+            ->andWhere('m.chart_type >= :chartType')
+            ->setParameter('key', $key)
+            ->setParameter('timeframe', $timeframe)
+            ->setParameter('chartType', $chartType)
+            ->setParameter('startTime', $startDateTime)
+            ->orderBy('m.timestamp', 'DESC')
+            ->setMaxResults($limit);
 
-    //    public function findOneBySomeField($value): ?Metric
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $qb->getQuery()->getResult();
+    }
 }

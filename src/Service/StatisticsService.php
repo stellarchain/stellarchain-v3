@@ -83,16 +83,9 @@ class StatisticsService
         ];
     }
 
-    public function getMetricsData(string $key, string $timeframe): array
+    public function getMetricsData(string $key, string $chartType,  string $timeframe, int $startTime): array
     {
-        $metrics = $this->metricsRepository->findBy(
-            [
-                'timeframe' => Timeframes::fromString($timeframe),
-                'metric' => $key
-            ],
-            ['timestamp' => 'desc'],
-            50
-        );
+        $metrics = $this->metricsRepository->findMetricsAfterTimestamp($key, $chartType, $timeframe, $startTime, 50);
         $labels = [];
         $data = [];
         foreach ($metrics as $metric) {
@@ -114,7 +107,7 @@ class StatisticsService
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
                 if (is_array($chart)) {
-                    $metrics = $this->getMetricsData($key, '10m');
+                    $metrics = $this->getMetricsData($key, $typeKey, '10m', time());
                     $change = 0;
                     $dataCount = count($metrics['data']);
                     if ($dataCount > 1) {

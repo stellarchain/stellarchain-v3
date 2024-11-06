@@ -6,6 +6,8 @@ export default class extends Controller {
   areaSeries = null;
   chartContainer = null;
   toolTip = null;
+  loadingStatistics = null;
+  currentStartTime = null;
 
   async initialize() {
     this.initChart();
@@ -103,26 +105,52 @@ export default class extends Controller {
       }
     });
 
-    this.getStatistics();
+    this.chart.timeScale().subscribeVisibleLogicalRangeChange((logicalRange) => {
+      if (logicalRange.from < 0 && this.areaSeries.data()) {
+        let startTime = this.areaSeries.data()[0].time
+        if (!this.loadingStatistics && startTime !== this.currentStartTime) {
+          this.getStatistics(startTime);
+          this.currentStartTime = startTime;
+        }
+      }
+    });
+    const timestampInSeconds = Math.floor(Date.now() / 1000);
+    this.getStatistics(timestampInSeconds);
   }
 
-  async getStatistics() {
+  async getStatistics(startTime) {
     const stat = this.element.dataset.statisticsStatValue;
     const chart = this.element.dataset.statisticsChartValue;
 
+    document.getElementById('loading-statistics').classList.remove('d-none');
+    this.loadingStatistics = true;
     const response = await fetch(`/statistics/` + stat + `/` + chart, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json', // Ensure the content type is JSON
         'X-Requested-With': 'XMLHttpRequest'
       },
+      body: JSON.stringify({
+        startTime: startTime
+      })
     })
-    const data = await response.json();
+    const newData = await response.json();
     if (response.status == 200) {
-      this.areaSeries.setData(data);
+      const existingData = this.areaSeries.data();
+      const mergedData = [...existingData, ...newData].reduce((acc, item) => {
+        if (!acc.find(d => d.time === item.time)) {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+
+      mergedData.sort((a, b) => a.time - b.time);
+      this.areaSeries.setData(mergedData);
       this.chart.timeScale().fitContent();
     }
-    console.log(data);
+
+    this.loadingStatistics = false;
+    document.getElementById('loading-statistics').classList.add('d-none');
   }
 
   connect() {

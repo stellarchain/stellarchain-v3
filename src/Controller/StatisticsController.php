@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\StatisticsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,9 +30,13 @@ class StatisticsController extends AbstractController
     }
 
     #[Route('/statistics/{chart}/{stat}', name: 'app_statistics_get', methods: ['POST'])]
-    public function charts_data(StatisticsService $statisticsService, string $stat, string $chart): Response
+    public function charts_data(StatisticsService $statisticsService, string $stat, string $chart, Request $request): Response
     {
-        $chartData = $statisticsService->getMetricsData($stat, '10m');
+        $requestData = $request->toArray();
+        if (!$requestData['startTime']) {
+            return $this->json(['error' => 'Invalid start time provided'], Response::HTTP_BAD_REQUEST);
+        }
+        $chartData = $statisticsService->getMetricsData($stat, $chart, '10m', $requestData['startTime']);
         $areaSeries = [];
         foreach ($chartData['labels'] as $k => $time) {
             $areaSeries[] = [
