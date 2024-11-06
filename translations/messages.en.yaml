@@ -66,6 +66,11 @@ blockchain-charts:
     created-contracts:
         title: Created Contracts
         desc: Represents the total number of smart contracts that have been created on the blockchain.
+    failed-transactions:
+        title: Failed Transactions
+        desc: Shows the number of transactions that were unsuccessful or rejected by the blockchain network.
+
+
 
 network-charts:
     title: Network Charts
@@ -79,10 +84,6 @@ network-charts:
     successful-transactions:
         title: Successful Transactions
         desc: Displays the total number of transactions successfully completed within the blockchain.
-    failed-transactions:
-        title: Failed Transactions
-        desc: Shows the number of transactions that were unsuccessful or rejected by the blockchain network.
-
     active-addresses:
         title: Active Addresses
         desc: Shows the number of unique active addresses interacting within the blockchain ecosystem.
