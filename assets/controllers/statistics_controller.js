@@ -12,6 +12,7 @@ export default class extends Controller {
   }
 
   initChart() {
+    const currentLocale = window.navigator.languages[0];
     this.chartContainer = document.getElementById('stat-chart');
     const chartOptions = {
       layout: {
@@ -22,14 +23,86 @@ export default class extends Controller {
         vertLines: {color: "transparent"},
         horzLines: {color: "transparent"},
       },
+      crosshair: {
+        // Change mode from default 'magnet' to 'normal'.
+        // Allows the crosshair to move freely without snapping to datapoints
+        mode: CrosshairMode.Normal,
+
+        // Vertical crosshair line (showing Date in Label)
+        vertLine: {
+          width: 2,
+          color: '#C3BCDB',
+          style: LineStyle.Solid,
+          labelBackgroundColor: '#9B7DFF',
+        },
+
+        horzLine: {
+          color: 'green',
+          labelBackgroundColor: '#9B7DFF',
+        },
+      },
       timeScale: {
-        timeVisible: true,
-        secondsVisible: true,
-      }
+        timeVisible: true,      // Ensures time is shown
+        secondsVisible: true,   // Ensures seconds are shown if desired
+      },
     };
 
     this.chart = createChart(this.chartContainer, chartOptions);
+    this.chart.priceScale().applyOptions({
+      borderColor: "#71649C",
+    });
+    this.chart.timeScale().applyOptions({
+      borderColor: "#71649C",
+    });
     this.areaSeries = this.chart.addAreaSeries({lineColor: '#F23645', topColor: '#8c1d27', bottomColor: 'rgba(20, 20, 20, 0.1)'});
+
+    this.toolTip = document.createElement('div');
+    this.toolTip.style = `width: 220px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+    this.toolTip.style.background = 'black';
+    this.toolTip.style.color = 'white';
+
+    this.chartContainer.appendChild(this.toolTip);
+
+    this.chart.subscribeCrosshairMove(param => {
+      if (
+        param.point === undefined ||
+        !param.time ||
+        param.point.x < 0 ||
+        param.point.y < 0
+      ) {
+        this.toolTip.style.display = 'none';
+      } else {
+        this.toolTip.style.display = 'block';
+        const data = param.seriesData.get(this.areaSeries);
+
+        let date = new Date(data.time * 1000);
+        const dateStr = date.toLocaleDateString(); // This gets the date in a localized format
+        const timeStr = date.toLocaleTimeString(); // This gets the time in a localized format
+        const dateTimeStr = `${dateStr} ${timeStr}`;
+        const price = data.value
+        this.toolTip.innerHTML = `<div style="color: ${'rgba( 38, 166, 154, 1)'}"></div><div style="font-size: 24px; margin: 4px 0px; color: ${'white'}">
+            ${price}
+            </div><div style="color: ${'white'}">
+            ${dateTimeStr}
+            </div>`;
+        const toolTipWidth = 150;
+        const toolTipHeight = 80;
+        const toolTipMargin = 15;
+        const y = param.point.y;
+        let left = param.point.x + toolTipMargin;
+        if (left > this.chartContainer.clientWidth - toolTipWidth) {
+          left = param.point.x - toolTipMargin - toolTipWidth;
+        }
+
+        let top = y + toolTipMargin;
+        if (top > this.chartContainer.clientHeight - toolTipHeight) {
+          top = y - toolTipHeight - toolTipMargin;
+        }
+        this.toolTip.style.left = left + 'px';
+        this.toolTip.style.top = top + 'px';
+      }
+    });
+
     this.getStatistics();
   }
 
@@ -45,7 +118,7 @@ export default class extends Controller {
       },
     })
     const data = await response.json();
-    if (response.status == 200 && data) {
+    if (response.status == 200) {
       this.areaSeries.setData(data);
       this.chart.timeScale().fitContent();
     }

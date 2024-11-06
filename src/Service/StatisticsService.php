@@ -91,7 +91,7 @@ class StatisticsService
                 'metric' => $key
             ],
             ['timestamp' => 'desc'],
-            30
+            50
         );
         $labels = [];
         $data = [];
