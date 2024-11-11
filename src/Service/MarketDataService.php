@@ -17,7 +17,7 @@ class MarketDataService
 
     public function buildMarketOverview(): array
     {
-        $requiredStats = ['rank', 'market_cap', 'volume_24h', 'price_usd', 'circulating_supply', 'market_cap_dominance'];
+        $requiredStats = ['rank', 'market-cap', 'volume-24h', 'price-usd', 'circulating-supply', 'market-cap-dominance'];
         $stellarCoinStats = $this->coinStatRepository->findLatestAndPreviousBySymbol('XLM', $requiredStats);
         $formattedStats = [];
 

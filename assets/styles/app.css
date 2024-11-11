@@ -450,3 +450,29 @@ table {
 #filtersModal .modal-body a {
     margin-bottom: 5px;
 }
+
+.nav-item .submenu {
+    display: none;
+    top: 100%; /* Position below the main item */
+    left: 0;
+    min-width: 150px; /* Optional: set width for submenu */
+    z-index: 1000;
+}
+
+/* Show submenu on hover */
+.nav-item:hover .submenu {
+    display: block;
+}
+
+/* Style for submenu items */
+.submenu .dropdown-item {
+    padding: 8px 16px;
+    color: #333;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.submenu .dropdown-item:hover {
+    background-color: #f0f0f0; /* Change to preferred hover color */
+}

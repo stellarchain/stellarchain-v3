@@ -58,7 +58,7 @@ class GlobalValueService
      * @return mixed|bool
      */
     public function getPrice(): float {
-        $requiredStats = ['price_usd'];
+        $requiredStats = ['price-usd'];
         $stellarCoinStats = $this->coinStatRepository->findLatestAndPreviousBySymbol('XLM', $requiredStats);
 
         if (count($stellarCoinStats)){

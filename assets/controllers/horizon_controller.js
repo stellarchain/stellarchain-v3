@@ -2,7 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 import StellarSdk from '@stellar/stellar-sdk';
 const {Horizon, Asset, Address, StrKey} = StellarSdk;
 import {createChart, CrosshairMode, LineStyle} from 'lightweight-charts';
-
+import {timeAgo} from 'app';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
@@ -398,7 +398,7 @@ export default class extends Controller {
     <td>${baseAmount}</td>
     <td>${counterAmount}</td>
     <td>${price}</td>
-    <td class="text-muted">${this.timeAgo(ledgerCloseTime)}</td>
+    <td class="text-muted">${timeAgo(ledgerCloseTime)}</td>
   `;
 
     // Append the trade row (<tr>) to the <tbody> of trades table
@@ -463,33 +463,5 @@ export default class extends Controller {
 
       askTableBody.appendChild(askRow);
     });
-  }
-
-  timeAgo(ledgerCloseTime) {
-    const now = new Date();
-    const closeTime = new Date(ledgerCloseTime);
-    const diffInSeconds = Math.floor((now - closeTime) / 1000);
-
-    let interval = Math.floor(diffInSeconds / 31536000);
-    if (interval >= 1) return interval + (interval === 1 ? " year ago" : " years ago");
-
-    interval = Math.floor(diffInSeconds / 2592000);
-    if (interval >= 1) return interval + (interval === 1 ? " month ago" : " months ago");
-
-    interval = Math.floor(diffInSeconds / 604800);
-    if (interval >= 1) return interval + (interval === 1 ? " week ago" : " weeks ago");
-
-    interval = Math.floor(diffInSeconds / 86400);
-    if (interval >= 1) return interval + (interval === 1 ? " day ago" : " days ago");
-
-    interval = Math.floor(diffInSeconds / 3600);
-    if (interval >= 1) return interval + (interval === 1 ? " hour ago" : " hours ago");
-
-    interval = Math.floor(diffInSeconds / 60);
-    if (interval >= 1) return interval + (interval === 1 ? " minute ago" : " minutes ago");
-
-    if (diffInSeconds >= 1) return diffInSeconds + (diffInSeconds === 1 ? " second ago" : " seconds ago");
-
-    return "just now";
   }
 }

@@ -18,7 +18,8 @@
         <form action="{{path('app_search')}}" type="GET">
             <div class="input-group">
                 <span class="input-group-text border-0 bg-black" id="basic-addon1"><i class="bi bi-search"></i></span>
-                <input type="search" class="form-control border-0 rounded-end" name="q" placeholder="Search" value="{{app.request.get('q')}}" aria-label="Search">
+                <input type="search" class="form-control border-0 rounded-end" name="q" placeholder="Search"
+                    value="{{app.request.get('q')}}" aria-label="Search">
                 <input type="submit" hidden />
             </div>
         </form>
@@ -100,12 +101,15 @@
                     <p class="mb-0">Community Fund</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="https://stellarchain.io" target="_blank"
+            <li class="nav-item position-relative">
+                <a
                     class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover">
                     <i class="bi bi-search me-2"></i>
-                    <p class="mb-0">Explorer</p>
+                    <p class="mb-0">Explorer <i class="bi bi-arrow-down-short"></i></p>
                 </a>
+                <ul class="submenu list-unstyled rounded-1 ms-4">
+                    <li><a href="{{path('app_explorer_ledgers')}}" class="dropdown-item text-reset hover rounded">Ledgers</a></li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a href="{{path('app_statistics')}}"
@@ -120,8 +124,7 @@
 
     <ul class="nav flex-column mt-auto mb-0 px-3 pt-3" {{stimulus_controller('settings')}}>
         <li class="nav-item hover rounded-1 d-flex justify-content-between">
-            <a class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center"
-                role="button"
+            <a class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center" role="button"
                 {{stimulus_action('settings', 'showModal' , 'click' )}}>
                 <i class="bi bi-life-preserver me-2"></i>
                 <p class="mb-0">Feedback</p>
@@ -135,28 +138,31 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form action="{{ path('app_feedback_submit') }}" method="post">
-                        <input type="hidden" name="token" value="{{ csrf_token('feedback') }}">
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <textarea name="feedback_message" required class="form-control" id="feedbackMessage" placeholder="Tell us your opinion"></textarea>
+                            <input type="hidden" name="token" value="{{ csrf_token('feedback') }}">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <textarea name="feedback_message" required class="form-control" id="feedbackMessage"
+                                        placeholder="Tell us your opinion"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <a {{stimulus_action('settings', 'closeModal' , 'click' )}}
-                                class="btn btn-secondary">Close</a>
-                            <button type="submit" class="btn btn-primary">Send</button>
-                        </div>
+                            <div class="modal-footer">
+                                <a {{stimulus_action('settings', 'closeModal' , 'click' )}}
+                                    class="btn btn-secondary">Close</a>
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </li>
         <li class="nav-item" {{stimulus_controller('account')}}>
-            <a role="button" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center pe-1" {{ stimulus_action('account', 'toggle', 'click') }}>
+            <a role="button" class="nav-link list-group-item-action hover rounded-1 d-flex align-items-center pe-1" {{
+                stimulus_action('account', 'toggle' , 'click' ) }}>
                 <i class="bi bi-front me-2"></i>
                 <p class="mb-0">Dark Mode</p>
                 <div class="form-check form-switch ms-auto align-self-center p-1">
-                    <input class="form-check-input p-0 m-0" {{ stimulus_target('account', 'darkMode') }} type="checkbox" id="darkModeSwitch" checked="">
+                    <input class="form-check-input p-0 m-0" {{ stimulus_target('account', 'darkMode' ) }}
+                        type="checkbox" id="darkModeSwitch" checked="">
                 </div>
             </a>
         </li>
@@ -165,7 +171,8 @@
             <a href="{{path('app_account', {id: app.user.id})}}" class="nav-link">
                 <i class="bi bi-person-circle me-2"></i>{{app.user.firstName}} {{ app.user.lastName}}
             </a>
-            <a href="{{path('app_logout')}}" class="float-end mt-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout">
+            <a href="{{path('app_logout')}}" class="float-end mt-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="Logout">
                 <i class="bi bi-power text-danger me-2"></i>
             </a>
             {% else %}

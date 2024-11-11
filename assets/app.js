@@ -71,9 +71,9 @@ document.addEventListener('chartjs:init', function (event) {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const htmlElement = document.documentElement;
-    const currentTheme = localStorage.getItem('bsTheme') || 'dark';
-    htmlElement.setAttribute('data-bs-theme', currentTheme);
+  const htmlElement = document.documentElement;
+  const currentTheme = localStorage.getItem('bsTheme') || 'dark';
+  htmlElement.setAttribute('data-bs-theme', currentTheme);
 });
 
 export function showToastAuth(title = 'Login', message = 'You need to authenticate.') {
@@ -115,5 +115,31 @@ document.addEventListener('turbo:before-stream-render', function (event) {
   }
 });
 
+export function timeAgo(ledgerCloseTime) {
+  const now = new Date();
+  const closeTime = new Date(ledgerCloseTime);
+  const diffInSeconds = Math.floor((now - closeTime) / 1000);
 
+  let interval = Math.floor(diffInSeconds / 31536000);
+  if (interval >= 1) return interval + (interval === 1 ? " year ago" : " years ago");
+
+  interval = Math.floor(diffInSeconds / 2592000);
+  if (interval >= 1) return interval + (interval === 1 ? " month ago" : " months ago");
+
+  interval = Math.floor(diffInSeconds / 604800);
+  if (interval >= 1) return interval + (interval === 1 ? " week ago" : " weeks ago");
+
+  interval = Math.floor(diffInSeconds / 86400);
+  if (interval >= 1) return interval + (interval === 1 ? " day ago" : " days ago");
+
+  interval = Math.floor(diffInSeconds / 3600);
+  if (interval >= 1) return interval + (interval === 1 ? " hour ago" : " hours ago");
+
+  interval = Math.floor(diffInSeconds / 60);
+  if (interval >= 1) return interval + (interval === 1 ? " minute ago" : " minutes ago");
+
+  if (diffInSeconds >= 1) return diffInSeconds + (diffInSeconds === 1 ? " second ago" : " seconds ago");
+
+  return "just now";
+}
 

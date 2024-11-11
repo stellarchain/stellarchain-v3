@@ -18,15 +18,15 @@
                     style="height: 36px; width: 36px;">
                     {% if key == 'rank' %}
                         <i class="bi bi-hash align-self-center mx-auto fs-5 fw-bold"></i>
-                    {% elseif key == 'price_usd' %}
+                    {% elseif key == 'price-usd' %}
                         <i class="bi bi-currency-dollar align-self-center mx-auto fs-5 fw-bold"></i>
-                    {% elseif key == 'market_cap' %}
+                    {% elseif key == 'market-cap' %}
                         <i class="bi bi-bank2 align-self-center mx-auto fs-5 fw-bold"></i>
-                    {% elseif key == 'volume_24h' %}
+                    {% elseif key == 'volume-24h' %}
                         <i class="bi bi-currency-exchange align-self-center mx-auto fs-5 fw-bold"></i>
-                    {% elseif key == 'circulating_supply' %}
+                    {% elseif key == 'circulating-supply' %}
                         <i class="bi bi-bar-chart align-self-center mx-auto fs-5 fw-bold"></i>
-                    {% elseif key == 'market_cap_dominance' %}
+                    {% elseif key == 'market-cap-dominance' %}
                         <i class="bi bi-pie-chart align-self-center mx-auto fs-5 fw-bold"></i>
                     {% endif %}
                 </div>
@@ -35,11 +35,11 @@
                 <b class="mb-1" data-stat="{{ key }}">
                     {% if key == 'rank' %}
                         {{ stat.value }}
-                    {% elseif key == 'circulating_supply' %}
+                    {% elseif key == 'circulating-supply' %}
                         XLM {{ stat.value  }}
-                    {% elseif key == 'market_cap_dominance' %}
+                    {% elseif key == 'market-cap-dominance' %}
                         {{ stat.value }}%
-                    {% elseif key == 'price_usd' %}
+                    {% elseif key == 'price-usd' %}
                         ${{ stat.value }}
                     {% else %}
                         ${{ stat.value }}
@@ -49,15 +49,15 @@
                     <span class="small mb-0">
                         {% if key == 'rank' %}
                             Rank
-                        {% elseif key == 'price_usd' %}
+                        {% elseif key == 'price-usd' %}
                             Price
-                        {% elseif key == 'market_cap' %}
+                        {% elseif key == 'market-cap' %}
                             Market Cap.
-                        {% elseif key == 'volume_24h' %}
+                        {% elseif key == 'volume-24h' %}
                             24h DEX Volume
-                        {% elseif key == 'circulating_supply' %}
+                        {% elseif key == 'circulating-supply' %}
                             Circulating Supply
-                        {% elseif key == 'market_cap_dominance' %}
+                        {% elseif key == 'market-cap-dominance' %}
                             Market Cap Dominance
                         {% endif %}
                     </span>

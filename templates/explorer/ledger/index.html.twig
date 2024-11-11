@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ledgers{% endblock %}
+
+{% set content_title = 'Latest ledgers' %}
+
+
+{% block body %}
+<div class="row g-2">
+    <div class="col-12">
+        {% include 'content-header.html.twig' with {'right_block': true} %}
+    </div>
+</div>
+
+<div id="ledgerDetails" class="d-flex border-5 border-light mb-2 font-monospace list-item rounded bg-white"
+    {{stimulus_controller('explorer/ledgers')}}>
+
+    <div class="p-2 w-100">
+        <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary h-100 p-1">
+            <span class="rounded-circle align-self-center mx-auto fw-bold" id="sequence">#</span>
+        </div>
+    </div>
+
+    <div class="p-2 w-100">
+        <span id="total_coins"></span>
+    </div>
+
+    <div class="p-2 w-100">
+        <span id="base_fee_in_stroops"></span>
+    </div>
+
+    <div class="p-2 w-100">
+        <span id="fee_pool"></span>
+    </div>
+
+    <div class="p-2 w-100">
+        <span id="successful_transaction_count"></span>
+    </div>
+
+    <div class="p-2 w-100">
+        <span id="failed_transaction_count"></span>
+    </div>
+
+    <div class="p-2 w-100">
+        <span id="operation_count"></span>
+    </div>
+
+    <div class="p-2 w-100">
+        <span id="closed_at" class="ms-1"></span>
+    </div>
+</div>
+{% endblock %}
