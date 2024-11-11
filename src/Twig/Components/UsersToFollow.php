@@ -30,7 +30,7 @@ final class UsersToFollow
     public function getUsers(): array
     {
         $currentUser = $this->security->getUser();
-        $users = $this->userRepository->findBy([]);
+        $users = $this->userRepository->findBy(['isVerified' => true]);
 
         $usersWithFollowStatus = [];
 
