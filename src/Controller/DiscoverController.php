@@ -21,9 +21,9 @@ class DiscoverController extends AbstractController
     ): Response {
 
         $projects = $projectRepository->findBy([], [], 5);
-        $events = $eventRepository->findBy([], [], 20);
+        $events = $eventRepository->findBy([], ['start_date' => 'desc'], 20);
         $communities = $communityRepository->findBy([], [], 20);
-        $jobs = $jobRepository->findBy([], [], 20);
+        $jobs = $jobRepository->findBy([], ['created_at' => 'desc'], 20);
 
         return $this->render('discover/index.html.twig', [
             'projects' => $projects,
