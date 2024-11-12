@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Constraints as Assert;
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 
 class RegistrationFormType extends AbstractType
 {
@@ -87,7 +89,13 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Please enter your email',
                     ]),
                 ],
-            ]);
+            ])
+            ->add('captcha', Recaptcha3Type::class, [
+                'constraints' => new Recaptcha3(),
+                'action_name' => 'register',
+                'locale' => 'en',
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
