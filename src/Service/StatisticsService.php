@@ -82,9 +82,9 @@ class StatisticsService
     /**
      * @return array<string,array>
      */
-    public function getMetricsData(string $key, string $chartType,  string $timeframe, int $startTime): array
+    public function getMetricsData(string $key, string $chartType,  string $timeframe, int $startTime, int $limit = 50): array
     {
-        $metrics = $this->metricsRepository->findMetricsAfterTimestamp($key, $chartType, $timeframe, $startTime, 50);
+        $metrics = $this->metricsRepository->findMetricsAfterTimestamp($key, $chartType, $timeframe, $startTime, $limit);
         $labels = array_map(fn ($metric) => $metric->getTimestamp(), $metrics);
         $data = array_map(fn ($metric) => round((float) $metric->getValue(), 5), $metrics);
         return [
@@ -102,7 +102,7 @@ class StatisticsService
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
                 if ($chart) {
-                    $metrics = $this->getMetricsData($key, $typeKey, '10m', time());
+                    $metrics = $this->getMetricsData($key, $typeKey, '10m', time(), 100);
                     $change = 0;
                     $dataCount = count($metrics['data']);
                     if ($dataCount > 1) {
