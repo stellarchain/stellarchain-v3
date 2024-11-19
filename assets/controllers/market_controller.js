@@ -4,13 +4,15 @@ export default class extends Controller {
   static values = {
     url: String
   }
+  eventSource = null;
+  countdownTimer = null;
 
   connect() {
-    this.element.addEventListener('chartjs:pre-connect', this._onPreConnect);
-    this.element.addEventListener('chartjs:connect', this._onConnect.bind(this)); // Bind the context here
 
-    const eventSource = new EventSource(this.urlValue);
-    eventSource.onmessage = event => {
+    this.startCountdown();
+
+    this.eventSource = new EventSource(this.urlValue);
+    this.eventSource.onmessage = event => {
       const data = JSON.parse(event.data);
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
@@ -40,31 +42,41 @@ export default class extends Controller {
     }
   }
 
+  startCountdown() {
+    const countdownElement = document.getElementById("countdown");
+    const intervalDuration = 10 * 60 * 1000;
+
+    const now = new Date();
+    const currentTime = now.getTime();
+    const timeSinceLastInterval = currentTime % intervalDuration;
+    const nextInterval = currentTime - timeSinceLastInterval + intervalDuration;
+
+    localStorage.setItem("nextUpdateTime", nextInterval);
+
+    function updateCountdown() {
+      const currentTime = new Date().getTime();
+      const remainingTime = Math.max(0, nextInterval - currentTime);
+
+      const remainingSeconds = Math.floor(remainingTime / 1000);
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+
+      countdownElement.textContent = `${minutes}m ${seconds}s`;
+
+      if (remainingTime <= 0) {
+        clearInterval(timer);
+        this.startCountdown();
+      }
+    }
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+  }
 
   disconnect() {
-    this.element.removeEventListener('chartjs:pre-connect', this._onPreConnect);
-    this.element.removeEventListener('chartjs:connect', this._onConnect.bind(this));
+    if (this.eventSource) {
+      this.eventSource.close();
+      this.eventSource = null;
+      console.log("EventSource disconnected.");
+    }
   }
-
-  _onPreConnect(event) {
-  }
-
-  _onConnect(event) {
-    event.detail.chart.options.plugins.tooltip = {
-      enabled: false,
-      callbacks: {
-        label: function (tooltipItem) {
-          return tooltipItem.raw.toFixed(6);
-        },
-      },
-    };
-
-    event.detail.chart.options.plugins.tooltips = {
-      enabled: false,
-      custom: function (tooltipModel) {
-      },
-    };
-
-  }
-
 }

@@ -20,6 +20,9 @@ class HorizonConnector extends Connector
     public function resolveBaseUrl(): string
     {
         switch($this->instance) {
+            case 'history':
+                $baseUrl = 'http://192.168.3.200:8088/';
+                break;
             case 'testnet':
                 $baseUrl = 'https://horizon-testnet.stellar.org/';
                 break;

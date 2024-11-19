@@ -36,7 +36,7 @@ class StatisticsBuildCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('timeframe', InputArgument::REQUIRED, 'Timeframe statistics.10m');
+            ->addArgument('timeframe', InputArgument::REQUIRED, 'Timeframe statistics.(10m)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

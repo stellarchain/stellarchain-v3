@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ledgers{% endblock %}
+
+{% set content_title = 'Stellar Explorer' %}
+
+
+{% block body %}
+<div class="row g-2">
+    <div class="col-12">
+        {% include 'content-header.html.twig' with {'right_block': true} %}
+    </div>
+</div>
+<div class="row g-2">
+    <div class="col-md-12 col-xs-12">
+        <div
+            class="ts-wrapper form-select bg-white asset-input multi plugin-remove_button plugin-virtual_scroll has-options">
+            <span class="position-absolute end-0 small text-secondary mb-0 text-decoration-none" style="top:-30px"><span class="small">Protocol 22</span></span>
+            <div class="ts-control">
+                <input type="text" autocomplete="off" size="1" tabindex="0" role="combobox" aria-haspopup="listbox"
+                    aria-expanded="false" aria-controls="tomselect-1-ts-dropdown" id="tomselect-1-ts-control"
+                    placeholder="Search transaction, account">
+            </div>
+            <div class="ts-dropdown multi plugin-remove_button plugin-virtual_scroll" style="display: none;">
+                <div role="listbox" tabindex="-1" class="ts-dropdown-content" id="tomselect-1-ts-dropdown"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row g-2">
+    <div class="col-md-12 col-xs-12">
+        <div class="latest-contracts">
+            Latest tokens
+        </div>
+    </div>
+</div>
+
+<div class="row g-2">
+    <div class="col-md-12 col-xs-12">
+        <div class="latest-contracts">
+            Latest assets
+        </div>
+    </div>
+</div>
+
+<div class="row g-2">
+    <div class="col-md-12 col-xs-12">
+        <div class="latest-contracts">
+            Latest liquidity pools
+        </div>
+    </div>
+</div>
+
+<div class="row g-2">
+    <div class="col-md-12 col-xs-12">
+        <div class="latest-ledger">
+            Latest ledgers
+            <div id="ledgerDetails"
+                class="border-5 gap-1 d-flex border-light mb-2 mt-2 font-monospace list-item rounded"
+                {{stimulus_controller('explorer/ledgers')}}>
+
+                <div class="ledger-box bg-white">
+
+                    <div class="p-2 w-100">
+                        <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary h-100 p-1">
+                            <span class="rounded-circle align-self-center mx-auto fw-bold" id="sequence">#</span>
+                        </div>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="total_coins"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="base_fee_in_stroops"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="fee_pool"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="successful_transaction_count"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="failed_transaction_count"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="operation_count"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="closed_at" class="ms-1"></span>
+                    </div>
+
+                </div>
+
+                <div class="ledger-box bg-white">
+
+                    <div class="p-2 w-100">
+                        <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary h-100 p-1">
+                            <span class="rounded-circle align-self-center mx-auto fw-bold" id="sequence">#</span>
+                        </div>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="total_coins"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="base_fee_in_stroops"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="fee_pool"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="successful_transaction_count"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="failed_transaction_count"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="operation_count"></span>
+                    </div>
+
+                    <div class="p-2 w-100">
+                        <span id="closed_at" class="ms-1"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

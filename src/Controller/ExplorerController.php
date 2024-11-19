@@ -8,10 +8,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ExplorerController extends AbstractController
 {
-    #[Route('/explorer/ledgers', name: 'app_explorer_ledgers')]
+    #[Route('/explorer', name: 'app_explorer')]
     public function index(): Response
     {
-        return $this->render('explorer/ledger/index.html.twig', [
+        return $this->render('explorer/index.html.twig', [
             'controller_name' => 'ExplorerController',
         ]);
     }

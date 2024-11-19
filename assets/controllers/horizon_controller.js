@@ -24,7 +24,6 @@ export default class extends Controller {
   chartContainer = null;
 
   async initialize() {
-    console.log(StellarSdk)
     this.asset = new Asset(this.element.dataset.horizonAssetCodeValue, this.element.dataset.horizonAssetIssuerValue);
     this.server = new Horizon.Server("https://horizon.stellar.org");
     this.initChart();
@@ -245,10 +244,9 @@ export default class extends Controller {
       document.getElementById('loading-chart').classList.remove('d-none');
       this.server.tradeAggregation(this.asset, Asset.native(), 0, 0, this.resolution, 0).order('desc').limit(200).cursor('now').call().then(
         (message) => this.addChartData(message)
-      ).catch((res) => {
+      ).catch(() => {
         document.getElementById('loading-chart').classList.add('d-none')
         document.getElementById('error-chart').classList.remove('d-none')
-        console.log(res)
       });
     }
   }

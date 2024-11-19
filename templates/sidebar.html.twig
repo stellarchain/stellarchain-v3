@@ -101,15 +101,13 @@
                     <p class="mb-0">Community Fund</p>
                 </a>
             </li>
-            <li class="nav-item position-relative">
-                <a
-                    class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover">
+            <li class="nav-item">
+                <a href="{{path('app_explorer')}}"
+                    class="nav-link list-group-item-action rounded-1 d-flex align-items-center hover
+                    {% if app.request.get('_route') == 'app_explorer' %} bg-primary bg-opacity-25 text-primary {% endif %}">
                     <i class="bi bi-search me-2"></i>
-                    <p class="mb-0">Explorer <i class="bi bi-arrow-down-short"></i></p>
+                    <p class="mb-0">Explorer</p>
                 </a>
-                <ul class="submenu list-unstyled rounded-1 ms-4">
-                    <li><a href="{{path('app_explorer_ledgers')}}" class="dropdown-item text-reset hover rounded">Ledgers</a></li>
-                </ul>
             </li>
             <li class="nav-item">
                 <a href="{{path('app_statistics')}}"
