@@ -80,6 +80,20 @@ class StatisticsBuildCommand extends Command
             );
         }
 
+        $this->buildMetric(
+            $timeframe,
+            'networks-charts',
+            'successful-transactions',
+            $blockchainMetrics['successful_transactions']
+        );
+
+        $this->buildMetric(
+            $timeframe,
+            'networks-charts',
+            'successful-transactions',
+            $blockchainMetrics['failed_transactions']
+        );
+
         /* $this->buildMetric( */
         /*     $timeframe, */
         /*     'market-charts', */
@@ -129,19 +143,6 @@ class StatisticsBuildCommand extends Command
         /*     $this->stellarBigQuery->top100ActiveAddressesAvgBalance() */
         /* ); */
 
-        /* $this->buildMetric( */
-        /*     $timeframe, */
-        /*     'networks-charts', */
-        /*     'successful-transactions', */
-        /*     $blockchainMetrics['successful_transactions'] */
-        /* ); */
-
-        /* $this->buildMetric( */
-        /*     $timeframe, */
-        /*     'networks-charts', */
-        /*     'successful-transactions', */
-        /*     $blockchainMetrics['failed_transactions'] */
-        /* ); */
 
         /* $this->buildMetric( */
         /*     $timeframe, */
