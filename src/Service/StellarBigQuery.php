@@ -12,7 +12,7 @@ class StellarBigQuery
 
     public function __construct(string $googleCloudKeyFile)
     {
-        $keyFileContent = json_decode(file_get_contents($googleCloudKeyFile), true);
+        $keyFileContent = '';
         $this->bigQuery = new BigQueryClient(['keyFile' => $keyFileContent]);
     }
 

@@ -7,7 +7,6 @@ use App\Entity\Metric;
 use App\Repository\CoinStatRepository;
 use App\Service\StatisticsService;
 use App\Service\LedgerMetricsService;
-use App\Service\StellarBigQuery;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -26,7 +25,6 @@ class StatisticsBuildCommand extends Command
     public function __construct(
         private CoinStatRepository $coinStatRepository,
         private StatisticsService $statisticsService,
-        private StellarBigQuery $stellarBigQuery,
         private LedgerMetricsService $ledgerMetricsService,
         private EntityManagerInterface $entityManager
     ) {
@@ -82,68 +80,68 @@ class StatisticsBuildCommand extends Command
             );
         }
 
-        $this->buildMetric(
-            $timeframe,
-            'market-charts',
-            'total-trades',
-            $this->stellarBigQuery->dexTrades()
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'market-charts', */
+        /*     'total-trades', */
+        /*     $this->stellarBigQuery->dexTrades() */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'blockchain-charts',
-            'blockchain-size',
-            $this->stellarBigQuery->getBlockchainSize()
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'blockchain-charts', */
+        /*     'blockchain-size', */
+        /*     $this->stellarBigQuery->getBlockchainSize() */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'networks-charts',
-            'total-assets',
-            $this->stellarBigQuery->totalAssets()
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'networks-charts', */
+        /*     'total-assets', */
+        /*     $this->stellarBigQuery->totalAssets() */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'networks-charts',
-            'total-accounts',
-            $this->stellarBigQuery->totalAccounts()
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'networks-charts', */
+        /*     'total-accounts', */
+        /*     $this->stellarBigQuery->totalAccounts() */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'networks-charts',
-            'active-addresses',
-            $this->stellarBigQuery->activeAddressesCount()
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'networks-charts', */
+        /*     'active-addresses', */
+        /*     $this->stellarBigQuery->activeAddressesCount() */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'networks-charts',
-            'inactive-addresses',
-            $this->stellarBigQuery->inactiveAddressesCount()
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'networks-charts', */
+        /*     'inactive-addresses', */
+        /*     $this->stellarBigQuery->inactiveAddressesCount() */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'networks-charts',
-            'top-100-active-addresses',
-            $this->stellarBigQuery->top100ActiveAddressesAvgBalance()
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'networks-charts', */
+        /*     'top-100-active-addresses', */
+        /*     $this->stellarBigQuery->top100ActiveAddressesAvgBalance() */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'networks-charts',
-            'successful-transactions',
-            $blockchainMetrics['successful_transactions']
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'networks-charts', */
+        /*     'successful-transactions', */
+        /*     $blockchainMetrics['successful_transactions'] */
+        /* ); */
 
-        $this->buildMetric(
-            $timeframe,
-            'networks-charts',
-            'successful-transactions',
-            $blockchainMetrics['failed_transactions']
-        );
+        /* $this->buildMetric( */
+        /*     $timeframe, */
+        /*     'networks-charts', */
+        /*     'successful-transactions', */
+        /*     $blockchainMetrics['failed_transactions'] */
+        /* ); */
 
         /* $this->buildMetric( */
         /*     $timeframe, */

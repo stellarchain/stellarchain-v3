@@ -41,6 +41,7 @@ class SorobanCtGetContractCodeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+
         $io = new SymfonyStyle($input, $output);
         $contractId = $input->getArgument('contractId');
 

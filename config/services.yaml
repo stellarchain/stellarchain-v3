@@ -20,8 +20,8 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    App\Service\StellarBigQuery:
-        arguments:
-            $googleCloudKeyFile: '%env(GOOGLE_CLOUD_KEY_FILE)%'
+    # App\Service\StellarBigQuery:
+    #     arguments:
+    #         $googleCloudKeyFile: '%env(GOOGLE_CLOUD_KEY_FILE)%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
