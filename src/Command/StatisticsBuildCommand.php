@@ -3,8 +3,10 @@
 namespace App\Command;
 
 use App\Config\Timeframes;
+use App\Entity\Horizon\HistoryTransactions;
 use App\Entity\Metric;
 use App\Repository\CoinStatRepository;
+use App\Repository\Horizon\HistoryTransactionsRepository;
 use App\Service\StatisticsService;
 use App\Service\LedgerMetricsService;
 use DateTimeImmutable;
@@ -15,6 +17,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[AsCommand(
     name: 'statistics:build',
@@ -24,6 +27,7 @@ class StatisticsBuildCommand extends Command
 {
     public function __construct(
         private CoinStatRepository $coinStatRepository,
+        private ManagerRegistry $doctrine,
         private StatisticsService $statisticsService,
         private LedgerMetricsService $ledgerMetricsService,
         private EntityManagerInterface $entityManager
@@ -51,6 +55,11 @@ class StatisticsBuildCommand extends Command
             $io->error('Timeframe not supported');
             return Command::FAILURE;
         }
+
+        $customers = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon');
+
+        $history = $customers->findOneBy(['id' => 164908000931225600]);
+        dd($history);
 
         $io->info($timeframe->name . " => " . $timeframe->label() .'('.$interval.')');
 
