@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'horizonct:list-transactions',
+    name: 'history:list-transactions',
     description: 'Add a short description for your command',
 )]
 class HorizonctListTransactionsCommand extends Command
@@ -38,7 +38,7 @@ class HorizonctListTransactionsCommand extends Command
             $io->note(sprintf('You passed an argument: %s', $arg1));
         }
 
-        $transactions = $this->importTransactions('now');
+        $transactions = $this->importTransactions();
 
         dump($transactions);
 
@@ -47,7 +47,7 @@ class HorizonctListTransactionsCommand extends Command
         return Command::SUCCESS;
     }
 
-    public function importTransactions(string $cursor): array
+    public function importTransactions(string $cursor = 'now'): array
     {
         $connector = new HorizonConnector('history');
         $listTransactionsRequest = new ListTransactions($cursor);

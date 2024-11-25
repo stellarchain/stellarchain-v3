@@ -20,10 +20,6 @@ class ListTransactions extends Request
     protected function defaultQuery(): array
     {
         return [
-            'limit' => 200,
-            'order' => 'asc',
-            'include_failed' => true,
-            'cursor' => $this->cursor
         ];
     }
 }

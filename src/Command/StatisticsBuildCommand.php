@@ -56,11 +56,10 @@ class StatisticsBuildCommand extends Command
             return Command::FAILURE;
         }
 
-        $customers = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon');
-
-        $history = $customers->findOneBy(['id' => 164908000931225600]);
-        dd($history);
-
+        /* $conn = $this->doctrine->getConnection(); */
+        /* dd($conn); */
+        /* $customers = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon'); */
+        /* $history = $customers->findOneBy(['id' => 164908000931225600]); */
         $io->info($timeframe->name . " => " . $timeframe->label() .'('.$interval.')');
 
         $this->buildStatistics($timeframe->label(), $interval);
