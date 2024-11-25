@@ -56,17 +56,77 @@ class StatisticsBuildCommand extends Command
             return Command::FAILURE;
         }
 
-        /* $conn = $this->doctrine->getConnection(); */
-        /* dd($conn); */
-        /* $customers = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon'); */
-        /* $history = $customers->findOneBy(['id' => 164908000931225600]); */
-        $io->info($timeframe->name . " => " . $timeframe->label() .'('.$interval.')');
+        $io->info($timeframe->name . " => " . $timeframe->label() . '(' . $interval . ')');
 
         $this->buildStatistics($timeframe->label(), $interval);
 
         $io->success('Statistics builded.');
 
         return Command::SUCCESS;
+    }
+
+    private function getTotalOutput()
+    {
+        /* $customers = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon'); */
+        /* $history = $customers->findOneBy(['id' => 164908000931225600]); */
+        $startDate = $this->getFirstLedgerTimestamp();
+        $endDate = new \DateTime();
+        $interval = new \DateInterval('PT15M');
+
+        $currentBatchStart = clone $startDate;
+        while ($currentBatchStart < $endDate) {
+            $batchEnd = (clone $currentBatchStart)->add($interval);
+
+            $this->processBatch($currentBatchStart, $batchEnd);
+            $currentBatchStart = $this->getNextBatchStart($batchEnd);
+
+            if (!$currentBatchStart) {
+                break;
+            }
+        }
+
+        return Command::SUCCESS;
+    }
+
+    private function getFirstLedgerTimestamp()
+    {
+        $sql = "SELECT MIN(closed_at) AS first_timestamp FROM public.history_ledgers";
+        $conn = $this->doctrine->getConnection('horizon');
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->executeQuery();
+
+        return new \DateTime($result->fetchOne());
+    }
+
+    private function getNextBatchStart(\DateTime $after): ?\DateTime
+    {
+        $sql = "SELECT MIN(closed_at) AS next_timestamp
+                FROM public.history_ledgers
+        WHERE closed_at > :after_time";
+
+        $result = $this->doctrine->getConnection('horizon')
+            ->fetchOne($sql, ['after_time' => $after->format('Y-m-d H:i:s')]);
+
+        return $result ? new \DateTime($result) : null;
+    }
+
+    private function processBatch(\DateTime $start, \DateTime $end): void
+    {
+        $sql = "
+            SELECT id FROM public.history_transactions
+            WHERE public.history_transactions.ledger_sequence
+            IN (
+                SELECT sequence
+                FROM public.history_ledgers
+                WHERE public.history_ledgers.closed_at >= :start_time
+                    AND public.history_ledgers.closed_at < :end_time
+            )
+        ";
+        $params = [
+            'start_time' => $start->format('Y-m-d H:i:s'),
+            'end_time' => $end->format('Y-m-d H:i:s'),
+        ];
+        $result = $this->doctrine->getConnection('horizon')->fetchAllAssociative($sql, $params);
     }
 
     /**
