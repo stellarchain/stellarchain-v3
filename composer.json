@@ -26,6 +26,7 @@
         "runtime/frankenphp-symfony": "^0.2.0",
         "saloonphp/saloon": "^3.0",
         "soneso/stellar-php-sdk": "1.5.4",
+        "symfony/amqp-messenger": "7.0.*",
         "symfony/asset": "7.0.*",
         "symfony/asset-mapper": "7.0.*",
         "symfony/cache": "7.0.*",

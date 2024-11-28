@@ -124,16 +124,22 @@ services:
       - php
       - database
 
-  redis:
-    image: redis:latest
-    command: >
-      redis-server --bind 0.0.0.0
-      --appendonly no
-      --save ""
-      --protected-mode no
-    restart: always
-    environment:
-      - REDIS_PASSWORD=stellar
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+
+  # redis:
+  #   image: redis:latest
+  #   command: >
+  #     redis-server --bind 0.0.0.0
+  #     --appendonly no
+  #     --save ""
+  #     --protected-mode no
+  #   restart: always
+  #   environment:
+  #     - REDIS_PASSWORD=stellar
 
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###

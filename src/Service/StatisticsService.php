@@ -31,6 +31,7 @@ class StatisticsService
                 'trades-volume' => false,
                 'transactions-volume' => false,
                 'cex-trade-volume' => false,
+                'xml-payments' => false,
             ],
             'blockchain-charts' => [
                 'blockchain-size' => true,
@@ -50,7 +51,9 @@ class StatisticsService
             'network-charts' => [
                 'total-accounts' => true,
                 'total-assets' => true,
+                'total-output' => false,
                 'successful-transactions' => true,
+                'operations-per-second' => false,
                 'active-addresses' => true,
                 'inactive-addresses' => true,
                 'top-100-active-addresses' => true,

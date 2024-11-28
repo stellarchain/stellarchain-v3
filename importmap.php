@@ -26,17 +26,17 @@ return [
         'version' => '3.2.2',
     ],
     'tom-select' => [
-        'version' => '2.3.1',
+        'version' => '2.4.1',
     ],
     'tom-select/dist/css/tom-select.default.css' => [
-        'version' => '2.3.1',
+        'version' => '2.4.1',
         'type' => 'css',
     ],
     '@hotwired/turbo' => [
         'version' => '8.0.12',
     ],
     'tom-select/dist/css/tom-select.bootstrap5.css' => [
-        'version' => '2.3.1',
+        'version' => '2.4.1',
         'type' => 'css',
     ],
     'chart.js' => [
@@ -67,16 +67,16 @@ return [
         'version' => '2.1.0',
     ],
     'axios' => [
-        'version' => '1.7.7',
+        'version' => '1.7.8',
     ],
     'swiper/bundle' => [
-        'version' => '11.1.14',
+        'version' => '11.1.15',
     ],
     'swiper/css/bundle' => [
-        'version' => '11.1.14',
+        'version' => '11.1.15',
     ],
     'swiper/modules' => [
-        'version' => '11.1.14',
+        'version' => '11.1.15',
     ],
     'add-to-calendar-button' => [
         'version' => '2.7.3',
@@ -85,7 +85,7 @@ return [
         'version' => '1.8.3',
     ],
     'chartjs-plugin-zoom' => [
-        'version' => '2.0.1',
+        'version' => '2.2.0',
     ],
     'hammerjs' => [
         'version' => '2.0.8',
@@ -94,7 +94,7 @@ return [
         'version' => '4.4.6',
     ],
     '@kurkle/color' => [
-        'version' => '0.3.2',
+        'version' => '0.3.4',
     ],
     'chartjs-plugin-crosshair' => [
         'version' => '2.0.0',
@@ -125,12 +125,22 @@ return [
         'version' => '3.0.0',
     ],
     '@stellar/stellar-sdk' => [
-        'version' => '12.3.0',
+        'version' => '13.0.0',
     ],
     'lightweight-charts' => [
         'version' => '4.2.1',
     ],
     'fancy-canvas' => [
         'version' => '2.1.0',
+    ],
+    '@orchidjs/sifter' => [
+        'version' => '1.1.0',
+    ],
+    '@orchidjs/unicode-variants' => [
+        'version' => '1.1.2',
+    ],
+    'tom-select/dist/css/tom-select.default.min.css' => [
+        'version' => '2.4.1',
+        'type' => 'css',
     ],
 ];
