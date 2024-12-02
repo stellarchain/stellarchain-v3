@@ -48,7 +48,7 @@ class UpdateAssetHandler
             'auth_immutable' => $assetDto->getFlags()->isAuthImmutable(),
             'auth_clawback_enabled' => $assetDto->getFlags()->isAuthClawbackEnabled(),
         ])
-          ->setAmount($assetDto->getAmount())
+          ->setAmount("0")
           ->setNumAccounts($assetDto->getNumAccounts())
           ->setLiquidityPoolsAmount($assetDto->getLiquidityPoolsAmount())
           ->setNumLiquidityPools($assetDto->getNumLiquidityPools())
