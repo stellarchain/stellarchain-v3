@@ -9,7 +9,8 @@ class ListTransactions extends Request
 {
     protected Method $method = Method::GET;
 
-    public function __construct(protected string $cursor) {
+    public function __construct(protected string $cursor)
+    {
     }
 
     public function resolveEndpoint(): string
@@ -20,6 +21,10 @@ class ListTransactions extends Request
     protected function defaultQuery(): array
     {
         return [
+            'limit' => 200,
+            'order' => 'asc',
+            'include_failed' => true,
+            'cursor' => $this->cursor
         ];
     }
 }

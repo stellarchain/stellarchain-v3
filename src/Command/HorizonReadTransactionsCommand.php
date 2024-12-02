@@ -40,7 +40,6 @@ class HorizonReadTransactionsCommand extends Command
             foreach ($transactions as $transaction) {
                 $this->dispatchTransaction($transaction);
             }
-
             $cursor = $this->helper->getUrlParams($transactionsResponse['_links']['next']['href'])['cursor'];
         }
         return Command::SUCCESS;
