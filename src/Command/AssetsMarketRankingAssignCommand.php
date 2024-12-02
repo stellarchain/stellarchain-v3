@@ -2,17 +2,12 @@
 
 namespace App\Command;
 
-use App\Entity\StellarHorizon\Asset;
 use App\Repository\StellarHorizon\AssetRepository;
-use App\Repository\StellarHorizon\TradeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\GlobalValueService;
-use App\Repository\StellarHorizon\AssetMetricRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
@@ -22,12 +17,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class AssetsMarketRankingAssignCommand extends Command
 {
     public function __construct(
-        private AssetMetricRepository $assetMetricRepository,
         private AssetRepository $assetRepository,
-        private TradeRepository $tradeRepository,
         private EntityManagerInterface $entityManager,
-        private GlobalValueService $globalValueService,
-        private MessageBusInterface $bus
     ) {
         parent::__construct();
     }
