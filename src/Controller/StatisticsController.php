@@ -36,7 +36,10 @@ class StatisticsController extends AbstractController
         if (!$requestData['startTime']) {
             return $this->json(['error' => 'Invalid start time provided'], Response::HTTP_BAD_REQUEST);
         }
-        $chartData = $statisticsService->getMetricsData($stat, $chart, '10m', $requestData['startTime'], 200);
+        if (!$requestData['timeFrame']) {
+            return $this->json(['error' => 'Invalid time frame provided'], Response::HTTP_BAD_REQUEST);
+        }
+        $chartData = $statisticsService->getMetricsData($stat, $chart, $requestData['timeFrame'], $requestData['startTime'], 200);
         $areaSeries = [];
         foreach ($chartData['labels'] as $k => $time) {
             $areaSeries[] = [

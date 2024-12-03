@@ -8,9 +8,34 @@ export default class extends Controller {
   toolTip = null;
   loadingStatistics = null;
   currentStartTime = null;
+  timeFrame = '10m';
 
   async initialize() {
     this.initChart();
+  }
+
+
+  setTimeFrame(event) {
+    const selectedTimeFrame = event.target.textContent.trim();
+    this.timeFrame = selectedTimeFrame;
+
+    console.log(`Timeframe changed to: ${this.timeFrame}`);
+
+    const timestampInSeconds = Math.floor(Date.now() / 1000);
+
+    this.chart.remove();
+    this.initChart();
+
+    this.getStatistics(timestampInSeconds);
+
+    const buttons = event.currentTarget.parentElement.children;
+    Array.from(buttons).forEach(button => {
+      button.classList.remove('bg-primary');
+      button.classList.add('bg-black');
+    });
+
+    event.target.classList.add('bg-primary');
+    event.target.classList.remove('bg-black');
   }
 
   initChart() {
@@ -131,7 +156,8 @@ export default class extends Controller {
         'X-Requested-With': 'XMLHttpRequest'
       },
       body: JSON.stringify({
-        startTime: startTime
+        startTime: startTime,
+        timeFrame: this.timeFrame,
       })
     })
     const newData = await response.json();
