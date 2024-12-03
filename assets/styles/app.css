@@ -476,3 +476,11 @@ table {
 .submenu .dropdown-item:hover {
     background-color: #f0f0f0; /* Change to preferred hover color */
 }
+
+
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Adjust based on layout */
+}

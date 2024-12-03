@@ -11,131 +11,222 @@
         {% include 'content-header.html.twig' with {'right_block': true} %}
     </div>
 </div>
-<div class="row g-2">
-    <div class="col-md-12 col-xs-12">
-        <div
-            class="ts-wrapper form-select bg-white asset-input multi plugin-remove_button plugin-virtual_scroll has-options">
-            <span class="position-absolute end-0 small text-secondary mb-0 text-decoration-none" style="top:-30px"><span class="small">Protocol 22</span></span>
-            <div class="ts-control">
-                <input type="text" autocomplete="off" size="1" tabindex="0" role="combobox" aria-haspopup="listbox"
-                    aria-expanded="false" aria-controls="tomselect-1-ts-dropdown" id="tomselect-1-ts-control"
-                    placeholder="Search transaction, account">
-            </div>
-            <div class="ts-dropdown multi plugin-remove_button plugin-virtual_scroll" style="display: none;">
-                <div role="listbox" tabindex="-1" class="ts-dropdown-content" id="tomselect-1-ts-dropdown"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row g-2">
-    <div class="col-md-12 col-xs-12">
-        <div class="latest-contracts">
-            Latest tokens
-        </div>
-    </div>
-</div>
 
-<div class="row g-2">
-    <div class="col-md-12 col-xs-12">
-        <div class="latest-contracts">
-            Latest assets
-        </div>
-    </div>
-</div>
+<div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
 
-<div class="row g-2">
-    <div class="col-md-12 col-xs-12">
-        <div class="latest-contracts">
-            Latest liquidity pools
-        </div>
-    </div>
-</div>
-
-<div class="row g-2">
-    <div class="col-md-12 col-xs-12">
-        <div class="latest-ledger">
-            Latest ledgers
-            <div id="ledgerDetails"
-                class="border-5 gap-1 d-flex border-light mb-2 mt-2 font-monospace list-item rounded"
-                {{stimulus_controller('explorer/ledgers')}}>
-
-                <div class="ledger-box bg-white">
-
-                    <div class="p-2 w-100">
-                        <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary h-100 p-1">
-                            <span class="rounded-circle align-self-center mx-auto fw-bold" id="sequence">#</span>
-                        </div>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="total_coins"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="base_fee_in_stroops"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="fee_pool"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="successful_transaction_count"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="failed_transaction_count"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="operation_count"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="closed_at" class="ms-1"></span>
-                    </div>
-
+    <div class="row g-2">
+        <div class="col-md-12 col-xs-12">
+            <div
+                class="ts-wrapper form-select bg-white asset-input multi plugin-remove_button plugin-virtual_scroll has-options">
+                <span class="position-absolute end-0 small text-secondary mb-0 text-decoration-none" style="top:-30px"><span class="small">Protocol 22</span></span>
+                <div class="ts-control">
+                    <input type="text" autocomplete="off" size="1" tabindex="0" role="combobox" aria-haspopup="listbox"
+                        aria-expanded="false" aria-controls="tomselect-1-ts-dropdown" id="tomselect-1-ts-control"
+                        placeholder="Search transaction, account">
                 </div>
-
-                <div class="ledger-box bg-white">
-
-                    <div class="p-2 w-100">
-                        <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary h-100 p-1">
-                            <span class="rounded-circle align-self-center mx-auto fw-bold" id="sequence">#</span>
-                        </div>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="total_coins"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="base_fee_in_stroops"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="fee_pool"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="successful_transaction_count"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="failed_transaction_count"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="operation_count"></span>
-                    </div>
-
-                    <div class="p-2 w-100">
-                        <span id="closed_at" class="ms-1"></span>
-                    </div>
-
+                <div class="ts-dropdown multi plugin-remove_button plugin-virtual_scroll" style="display: none;">
+                    <div role="listbox" tabindex="-1" class="ts-dropdown-content" id="tomselect-1-ts-dropdown"></div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="col-md-12 col-lg-12">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-primary">Transaction hash</span>
+              <span class="badge bg-primary rounded-pill">3</span>
+            </h4>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex flex-column flex-sm-row justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">Account</h6>
+                  <small class="text-body-secondary">Account address who initiated transaction</small>
+                </div>
+                <span class="text-body-secondary truncate-text">GDUY7J7A33TQWOSOQGDO776GGLM3UQERL4J3SPT56F6YS4ID7MLDERI4</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">Type Operations</h6>
+                  <small class="text-body-secondary">Brief description</small>
+                </div>
+                <span class="text-body-secondary">$8</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0">Third item</h6>
+                  <small class="text-body-secondary">Brief description</small>
+                </div>
+                <span class="text-body-secondary">$5</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                <div class="text-success">
+                  <h6 class="my-0">Status</h6>
+                  <small>Transaction successful</small>
+                </div>
+                <span class="text-success">Success</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Total (USD)</span>
+                <strong>$20</strong>
+              </li>
+            </ul>
+          </div>
+    </div>
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Recent updates</h6>
+        <div class="d-flex text-muted pt-3">
+          <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+
+          <p class="pb-3 mb-0 small lh-sm border-bottom">
+            <strong class="d-block text-gray-dark">@username</strong>
+            Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
+          </p>
+        </div>
+        <div class="d-flex text-muted pt-3">
+          <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"></rect><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text></svg>
+
+          <p class="pb-3 mb-0 small lh-sm border-bottom">
+            <strong class="d-block text-gray-dark">@username</strong>
+            Some more representative placeholder content, related to this other user. Another status update, perhaps.
+          </p>
+        </div>
+        <div class="d-flex text-muted pt-3">
+          <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#6f42c1"></rect><text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text></svg>
+
+          <p class="pb-3 mb-0 small lh-sm border-bottom">
+            <strong class="d-block text-gray-dark">@username</strong>
+            This user also gets some representative placeholder content. Maybe they did something interesting, and you really want to highlight this in the recent updates.
+          </p>
+        </div>
+        <small class="d-block text-end mt-3">
+          <a href="#">All updates</a>
+        </small>
+      </div>
+
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+          <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+              <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"></use></svg>
+            </div>
+            <h3 class="fs-2 text-body-emphasis">Top Tokens</h3>
+            <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+            <a href="#" class="icon-link">
+              Call to action
+              <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+            </a>
+          </div>
+          <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+              <svg class="bi" width="1em" height="1em"><use xlink:href="#people-circle"></use></svg>
+            </div>
+            <h3 class="fs-2 text-body-emphasis">Top Payments</h3>
+            <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+            <a href="#" class="icon-link">
+              Call to action
+              <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+            </a>
+          </div>
+          <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+              <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"></use></svg>
+            </div>
+            <h3 class="fs-2 text-body-emphasis">Top Accounts</h3>
+            <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+            <a href="#" class="icon-link">
+              Call to action
+              <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+            </a>
+          </div>
+        </div>
+
+    <div class="row g-2">
+        <div class="col-md-12 col-xs-12">
+            <div class="latest-ledger">
+                Latest ledgers
+                <div id="ledgerDetails"
+                    class="border-5 gap-1 d-flex border-light mb-2 mt-2 font-monospace list-item rounded"
+                    {{stimulus_controller('explorer/ledgers')}}>
+
+                    <div class="ledger-box bg-white">
+
+                        <div class="p-2 w-100">
+                            <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary h-100 p-1">
+                                <span class="rounded-circle align-self-center mx-auto fw-bold" id="sequence">#</span>
+                            </div>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="total_coins"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="base_fee_in_stroops"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="fee_pool"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="successful_transaction_count"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="failed_transaction_count"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="operation_count"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="closed_at" class="ms-1"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="ledger-box bg-white">
+
+                        <div class="p-2 w-100">
+                            <div class="bg-primary bg-opacity-10 rounded d-flex flex-shrink-0 text-primary h-100 p-1">
+                                <span class="rounded-circle align-self-center mx-auto fw-bold" id="sequence">#</span>
+                            </div>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="total_coins"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="base_fee_in_stroops"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="fee_pool"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="successful_transaction_count"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="failed_transaction_count"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="operation_count"></span>
+                        </div>
+
+                        <div class="p-2 w-100">
+                            <span id="closed_at" class="ms-1"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
