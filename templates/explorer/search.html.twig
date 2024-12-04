@@ -4,10 +4,10 @@
             <div
                 class="ts-wrapper form-select bg-white asset-input multi plugin-remove_button plugin-virtual_scroll has-options">
                 <span class="position-absolute end-0 small text-secondary mb-0 text-decoration-none text-success"
-                    style="top:-30px"><span class="small">Mainnet</span></span>
+                    style="top:-30px"><span class="small">Mainnet (protocol 22)</span></span>
 
                 <div class="ts-control">
-                    <input type="text" autocomplete="off" size="1" value="{{app.request.get('hash')}}" tabindex="0" name="hash" role="combobox" aria-haspopup="listbox"
+                    <input type="text" autocomplete="off" size="1" value="{{app.request.get('hash', 'a535309ba68afe8fa9eaa3344df5bac7cbb019bba59f855be10de609bb7d5697')}}" tabindex="0" name="hash" role="combobox" aria-haspopup="listbox"
                         aria-expanded="false" aria-controls="tomselect-1-ts-dropdown" id="tomselect-1-ts-control" class="text-truncate"
                         placeholder="Search transaction, account">
                 </div>

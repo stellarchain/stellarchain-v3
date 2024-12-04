@@ -4,15 +4,9 @@
 
 {% set content_title = 'Stellar Explorer' %}
 
-
 {% block body %}
-<div class="row g-2">
-    <div class="col-12">
-        {% include 'content-header.html.twig' with {'right_block': true} %}
-    </div>
-</div>
 
-{{ include('explorer/search.html.twig') }}
+{% include 'explorer/header.html.twig' %}
 
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     <div class="my-3 p-3 bg-body rounded shadow-sm">

@@ -18,6 +18,31 @@ window.addEventListener('auth:false', (event) => {
   showToastAuth(title, message)
 })
 
+export function truncateMiddle(text, maxLength) {
+    if (text.length <= maxLength) return text;
+
+    const halfLength = Math.floor((maxLength - 3) / 2); // Adjust for '...'
+    const start = text.slice(0, halfLength);
+    const end = text.slice(-halfLength);
+
+    return `${start}...${end}`;
+}
+
+function applyTruncateMiddleResponsive() {
+    const elements = document.querySelectorAll('.truncate-text');
+    elements.forEach(element => {
+        const originalText = element.getAttribute('data-full-text') || element.textContent.trim();
+        const elementWidth = element.offsetWidth;
+
+        // Dynamically calculate maxLength based on element width (e.g., 1 character per 10px width)
+        const maxLength = Math.floor(elementWidth / 13);
+
+        element.setAttribute('data-full-text', originalText);
+        element.textContent = truncateMiddle(originalText, maxLength);
+    });
+}
+window.addEventListener('resize', applyTruncateMiddleResponsive);
+
 document.addEventListener('turbo:load', () => {
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
@@ -60,6 +85,8 @@ document.addEventListener('turbo:load', () => {
       }
     });
   });
+
+
 });
 
 document.addEventListener('chartjs:init', function (event) {
@@ -74,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const htmlElement = document.documentElement;
   const currentTheme = localStorage.getItem('bsTheme') || 'dark';
   htmlElement.setAttribute('data-bs-theme', currentTheme);
+  applyTruncateMiddleResponsive()
 });
 
 export function showToastAuth(title = 'Login', message = 'You need to authenticate.') {
@@ -142,4 +170,3 @@ export function timeAgo(ledgerCloseTime) {
 
   return "just now";
 }
-

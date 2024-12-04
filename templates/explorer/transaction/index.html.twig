@@ -1,61 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ledgers{% endblock %}
+{% block title %}Transaction{% endblock %}
 
 {% set content_title = 'Stellar Explorer' %}
 
 
 {% block body %}
-<div class="row g-2">
-    <div class="col-12">
-        {% include 'content-header.html.twig' with {'right_block': true} %}
-    </div>
-</div>
 
-{{ include('explorer/search.html.twig') }}
+{% include 'explorer/header.html.twig' %}
 
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 rounded shadow-sm">
         <div class="col-md-12 col-lg-12">
-            <div class="d-flex flex-column justify-content-between flex-md-row mb-3">
-                <div class="truncate-text ">
-                   <span class="text-success">
-                        <i class="bi bi-check-circle fs-4"></i>
-                    </span>
-                    <span class="text-primary fs-4">{{hash}}</span>
+            <div class="card mb-2 p-3">
+                <span class="fs-4"><i class="bi bi-check-circle-fill text-success"></i> Transaction</span>
+                <div class="d-flex flex-column justify-content-between flex-xl-row align-items-baseline">
+                    <span class="text-primary truncate-text fs-4">{{hash}}</span>
+                    <span class="small text-secondary fst-italic">Created on 11 Dec 2024 at 18:20</span>
                 </div>
-                <span class="small text-secondary">Created 11/11/2024 11:20</span>
             </div>
-            <ul class="list-group mb-3">
+
+            <ul class="list-group mb-3 bg-secondary">
                 <li class="list-group-item d-flex flex-column flex-sm-row justify-content-between lh-sm">
                     <div>
-                        <h6 class="my-0">Account</h6>
-                        <small class="text-body-secondary">Account address who initiated transaction</small>
+                        <h6 class="my-0 text-body-secondary">Account</h6>
+                        <small class="text-secondary">Account address who paid the fee transaction</small>
                     </div>
-                    <span class="text-body-secondary truncate-text">
-                        GDUY7J7A33TQWOSOQGDO776GGLM3UQERL4J3SPT56F6YS4ID7MLDERI4
+                    <span class="truncate-text">
+                        GDJQA7VCMFUZPKHVGL5IWGJ7SXA75A3N76EUEPJTPLPXSZCVG6JV47KU
                     </span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                        <h6 class="my-0">Type Operations</h6>
-                        <small class="text-body-secondary">Brief description</small>
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0 text-body-secondary">Operations</h6>
+                            <small class="text-secondary">Total of <strong class="text-body">30</strong> operations
+                                executed in transaction</small>
+                        </div>
+                        <span class="text-body-secondary">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button text-primary small" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                        Expand <i class="bi bi-chevron-down small"></i>
+                                    </button>
+                                </h2>
+
+                            </div>
+                        </span>
                     </div>
-                    <span class="text-body-secondary">$8</span>
+                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <strong>This is the first item's accordion body.</strong> It is shown by default,
+                            until the collapse plugin adds the appropriate classes that we use to style each
+                            element. These classes control the overall appearance, as well as the showing and
+                            hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+                            our default variables. It's also worth noting that just about any HTML can go within
+                            the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                    </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                        <h6 class="my-0">Third item</h6>
-                        <small class="text-body-secondary">Brief description</small>
+                        <h6 class="my-0 text-body-secondary">Fee charged</h6>
+                        <small class="text-secondary">Total fee paid for transaction</small>
                     </div>
-                    <span class="text-body-secondary">$5</span>
+                    <span class="text-body-secondary"> 100 XLM ($5)</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-                    <div class="text-success">
-                        <h6 class="my-0">Status</h6>
-                        <small>Transaction successful</small>
+                    <div>
+                        <div class="text-success">
+                            <h6 class="my-0 text-body-secondary">Status</h6>
+                            <small class="text-secondary">Transaction successful</small>
+                        </div>
                     </div>
-                    <span class="text-success">Success</span>
+                    <div>
+                        <span class="badge bg-success">Success</span>
+                    </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (USD)</span>
