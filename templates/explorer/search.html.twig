@@ -1,0 +1,21 @@
+<div class="row g-2">
+    <div class="col-md-12 col-xs-12">
+        <form action="{{path('app_explorer_transaction')}}" method="GET">
+            <div
+                class="ts-wrapper form-select bg-white asset-input multi plugin-remove_button plugin-virtual_scroll has-options">
+                <span class="position-absolute end-0 small text-secondary mb-0 text-decoration-none text-success"
+                    style="top:-30px"><span class="small">Mainnet</span></span>
+
+                <div class="ts-control">
+                    <input type="text" autocomplete="off" size="1" value="{{app.request.get('hash')}}" tabindex="0" name="hash" role="combobox" aria-haspopup="listbox"
+                        aria-expanded="false" aria-controls="tomselect-1-ts-dropdown" id="tomselect-1-ts-control" class="text-truncate"
+                        placeholder="Search transaction, account">
+                </div>
+                <div class="ts-dropdown multi plugin-remove_button plugin-virtual_scroll" style="display: none;">
+                    <div role="listbox" tabindex="-1" class="ts-dropdown-content" id="tomselect-1-ts-dropdown"></div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
