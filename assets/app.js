@@ -86,6 +86,7 @@ document.addEventListener('turbo:load', () => {
     });
   });
 
+  applyTruncateMiddleResponsive()
 
 });
 
@@ -101,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const htmlElement = document.documentElement;
   const currentTheme = localStorage.getItem('bsTheme') || 'dark';
   htmlElement.setAttribute('data-bs-theme', currentTheme);
-  applyTruncateMiddleResponsive()
 });
 
 export function showToastAuth(title = 'Login', message = 'You need to authenticate.') {
