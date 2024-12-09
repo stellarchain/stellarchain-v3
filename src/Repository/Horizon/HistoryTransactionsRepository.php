@@ -2,9 +2,7 @@
 
 namespace App\Repository\Horizon;
 
-use App\Entity\Horizon\HistoryTransactions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,29 +10,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class HistoryTransactionsRepository extends EntityRepository
 {
-
-    //    /**
-    //     * @return HistoryTransaction[] Returns an array of HistoryTransaction objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('h.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?HistoryTransaction
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findByLedgerIds(array $ledgerIds): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.id')
+            ->where('t.ledger_sequence IN (:ledgerIds)')
+            ->setParameter('ledgerIds', $ledgerIds)
+            ->getQuery()
+            ->getResult();
+    }
 }

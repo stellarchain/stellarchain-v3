@@ -46,7 +46,6 @@ class StatisticsService
                 'average-ledger-time' => true,
                 'contract-invocations' => true,
                 'created-contracts' => true,
-
             ],
             'network-charts' => [
                 'total-accounts' => true,

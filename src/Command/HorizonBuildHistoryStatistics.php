@@ -2,10 +2,7 @@
 
 namespace App\Command;
 
-use App\Integrations\StellarHorizon\HorizonConnector;
-use App\Integrations\StellarHorizon\ListTransactions;
 use App\Message\ProcessInterval;
-use App\Message\StoringTrade;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -20,7 +17,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
     name: 'history:build-statistics',
     description: 'Add a short description for your command',
 )]
-class HorizonctListTransactionsCommand extends Command
+class HorizonBuildHistoryStatistics extends Command
 {
     public function __construct(
         private ManagerRegistry $doctrine,
@@ -33,20 +30,16 @@ class HorizonctListTransactionsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('date', InputArgument::OPTIONAL, 'Argument description');
+            ->addArgument('start_date', InputArgument::OPTIONAL, 'Argument description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        $startDate = $input->getArgument('start_date');
+        if ($startDate) {
+            $io->note(sprintf('You passed an argument: %s', $startDate));
         }
-
-        /* $customers = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon'); */
-        /* $history = $customers->findOneBy(['id' => 164908000931225600]); */
 
         $endDate = $this->getLastLedgerTimestamp();
         $startDate = $this->getFirstLedgerTimestamp();
@@ -63,24 +56,21 @@ class HorizonctListTransactionsCommand extends Command
 
             $this->bus->dispatch(new ProcessInterval($batchStart, $currentBatchEnd));
 
-            $time_elapsed_secs = microtime(true) - $start;
-            dump('Time elapsed: ' . $time_elapsed_secs . ' - ' . $batchStart->format('Y-m-d H:i:s') . ' - ' . $currentBatchEnd->format('Y-m-d H:i:s'));
+            dump('Time elapsed: ' . microtime(true) - $start . ' - ' . $batchStart->format('Y-m-d H:i:s') . ' - ' . $currentBatchEnd->format('Y-m-d H:i:s'));
 
-            $currentBatchEnd = $this->getPreviousBatchStart($batchStart); // Move to the previous batch
+            $currentBatchEnd = $this->getPreviousBatchStart($batchStart);
 
             if (!$currentBatchEnd) {
-                break; // End processing if there are no more batches
+                break;
             }
         }
-
-        return Command::SUCCESS;
 
         $io->success('Statistics builded for interval of 10minutes');
 
         return Command::SUCCESS;
     }
 
-    private function getLastLedgerTimestamp()
+    private function getLastLedgerTimestamp(): \DateTime
     {
         $sql = "SELECT MAX(closed_at) AS last_timestamp FROM public.history_ledgers";
         $conn = $this->doctrine->getConnection('horizon');
@@ -102,7 +92,7 @@ class HorizonctListTransactionsCommand extends Command
         return $result ? new \DateTime($result) : null;
     }
 
-    private function getFirstLedgerTimestamp()
+    private function getFirstLedgerTimestamp(): \DateTime
     {
         $sql = "SELECT MIN(closed_at) AS first_timestamp FROM public.history_ledgers";
         $conn = $this->doctrine->getConnection('horizon');
@@ -110,25 +100,5 @@ class HorizonctListTransactionsCommand extends Command
         $result = $stmt->executeQuery();
 
         return new \DateTime($result->fetchOne());
-    }
-
-    private function getNextBatchStart(\DateTime $after): ?\DateTime
-    {
-        $sql = "SELECT MIN(closed_at) AS next_timestamp
-                FROM public.history_ledgers
-        WHERE closed_at > :after_time";
-
-        $result = $this->doctrine->getConnection('horizon')
-            ->fetchOne($sql, ['after_time' => $after->format('Y-m-d H:i:s')]);
-
-        return $result ? new \DateTime($result) : null;
-    }
-
-    public function importTransactions(string $cursor = 'now'): array
-    {
-        $connector = new HorizonConnector('history');
-        $listTransactionsRequest = new ListTransactions($cursor);
-
-        return $connector->send($listTransactionsRequest)->json();
     }
 }
