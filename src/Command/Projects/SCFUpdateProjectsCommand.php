@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Projects;
 
 use App\Config\AwardType;
 use App\Config\ProjectStatus;
@@ -25,7 +25,7 @@ use Vich\UploaderBundle\FileAbstraction\ReplacingFile;
 
 
 #[AsCommand(
-    name: 'scf:update-projects',
+    name: 'projects:scf-update-projects',
     description: 'Retrieve and update Stellar Community Fund projects',
 )]
 class SCFUpdateProjectsCommand extends Command

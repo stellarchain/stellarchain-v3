@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Statistics;
 
 use App\Message\ProcessInterval;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,8 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'history:build-statistics',
-    description: 'Add a short description for your command',
+    name: 'statistics:build-history',
+    description: 'Build history statistics.',
 )]
 class HorizonBuildHistoryStatistics extends Command
 {

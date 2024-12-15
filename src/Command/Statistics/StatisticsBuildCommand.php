@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Statistics;
 
 use App\Config\Timeframes;
 use App\Entity\Metric;
@@ -15,10 +15,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
+use App\Message\ProcessInterval;
 
 #[AsCommand(
     name: 'statistics:build',
-    description: 'Add a short description for your command',
+    description: 'Build blockchain statistics.',
 )]
 class StatisticsBuildCommand extends Command
 {
@@ -26,7 +28,8 @@ class StatisticsBuildCommand extends Command
         private CoinStatRepository $coinStatRepository,
         private StatisticsService $statisticsService,
         private LedgerMetricsService $ledgerMetricsService,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private MessageBusInterface $bus,
     ) {
         parent::__construct();
     }
@@ -54,20 +57,23 @@ class StatisticsBuildCommand extends Command
 
         $io->info($timeframe->name . " => " . $timeframe->label() . '(' . $interval . ')');
 
-        $this->buildStatistics($timeframe->label(), $interval);
+        $batchEndDate = new \DateTime();
+        $batchStartDate = $batchEndDate->sub(new \DateInterval($interval));
+
+        $this->bus->dispatch(new ProcessInterval($batchStartDate, $batchEndDate));
+
+        /* $this->buildStatistics($timeframe->label(), $interval); */
 
         $io->success('Statistics builded.');
 
         return Command::SUCCESS;
     }
+
     /**
      * @return void
      */
     public function buildStatistics($timeframe, $interval): void
     {
-        $endDate = new \DateTimeImmutable();
-        $startDate = $endDate->sub(new \DateInterval($interval));
-
         $blockchainMetrics  = $this->ledgerMetricsService->getMetrics($startDate, $endDate);
 
         foreach ($blockchainMetrics as $bMetric => $bMetricValue) {

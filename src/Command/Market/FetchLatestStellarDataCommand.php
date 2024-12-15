@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Market;
 
 use App\Config\Timeframes;
 use App\Entity\Coin;
@@ -25,7 +25,7 @@ use Symfony\Component\Mercure\Update;
     name: 'market:fetch-stellar-real-time-data',
     description: 'We fetch real-time data about Stellar cryptocurrency.',
 )]
-class FetchLatestStellarMarketDataCommand extends Command
+class FetchLatestStellarDataCommand extends Command
 {
 
     public function __construct(

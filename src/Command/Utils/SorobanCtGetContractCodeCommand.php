@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Utils;
 
 use Soneso\StellarSDK\Soroban\Address;
 use Soneso\StellarSDK\Soroban\Responses\LedgerEntry;
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'soroban-ct:get-contract-code',
+    name: 'utils:get-contract-code',
     description: 'Add a short description for your command',
 )]
 class SorobanCtGetContractCodeCommand extends Command

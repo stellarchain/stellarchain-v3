@@ -9,7 +9,7 @@ use App\Repository\StellarHorizon\AssetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
+#[AsMessageHandler(fromTransport: 'async')]
 class SaveTradeHandler
 {
     public function __construct(

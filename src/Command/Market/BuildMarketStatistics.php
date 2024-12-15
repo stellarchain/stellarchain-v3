@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Market;
 
 use App\Entity\StellarHorizon\Asset;
 use App\Entity\StellarHorizon\AssetMetric;
@@ -9,7 +9,6 @@ use App\Integrations\StellarHorizon\SingleAsset;
 use App\Message\UpdateAsset;
 use App\Repository\StellarHorizon\AssetMetricRepository;
 use App\Repository\StellarHorizon\AssetRepository;
-use App\Repository\StellarHorizon\TradeRepository;
 use App\Service\GlobalValueService;
 use Doctrine\ORM\EntityManagerInterface;
 use Soneso\StellarSDK\Responses\Asset\AssetResponse;
@@ -21,15 +20,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'market:build-asset-metrics',
+    name: 'market:build-statistics',
     description: 'Build asset metrics.(we run this command hourly as cron)',
 )]
-class AssetsBuildMetricsCommand extends Command
+class BuildMarketStatistics extends Command
 {
     public function __construct(
         private AssetMetricRepository $assetMetricRepository,
         private AssetRepository $assetRepository,
-        private TradeRepository $tradeRepository,
         private EntityManagerInterface $entityManager,
         private GlobalValueService $globalValueService,
         private MessageBusInterface $bus
@@ -61,6 +59,12 @@ class AssetsBuildMetricsCommand extends Command
         $currentDateTime = new \DateTime();
         $interval = new \DateInterval('PT12H');
         $cutoffTime = (clone $currentDateTime)->sub($interval);
+
+        $horizonTradeRepository = $horizonTradeRepository;
+        $horizonAssetRepository = $horizonAssetRepository;
+        $horizonNativeAsset = $horizonAssetRepository->findOneBy(['asset_type' => 'native']);
+        $horizonAsset = $horizonAssetRepository->findOneBy(['asset_code' => $asset->getAssetCode(), 'asset_issuer' => $asset->getAssetIssuer()]);
+
         $latestPriceResult = $this->tradeRepository->findOneBy(['base_asset' => $nativeAsset, 'counter_asset' => $asset, 'trade_type' => 'orderbook'], ['ledger_close_time' => 'DESC']);
         $roundedDateTime = (clone $currentDateTime)->modify('-1 hour');
         $roundedDateTime7dAgo = (clone $currentDateTime)->modify('-7 days');

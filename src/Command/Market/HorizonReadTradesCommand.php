@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Market;
 
 use App\Integrations\StellarHorizon\HorizonConnector;
 use App\Integrations\StellarHorizon\ListHorizonTrades;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'horizon:read-trades',
+    name: 'market:read-trades',
     description: 'Listen Liquidity Pools and OrderBook trades on Stellar blockchain.',
 )]
 class HorizonReadTradesCommand extends Command
