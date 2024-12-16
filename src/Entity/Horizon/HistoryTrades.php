@@ -19,6 +19,9 @@ class HistoryTrades
     private ?\DateTimeImmutable $ledger_closed_at = null;
 
     #[ORM\Column(type: 'integer')]
+    private int $order;
+
+    #[ORM\Column(type: 'integer')]
     private int $base_asset_id;
 
     #[ORM\Column(type: 'integer')]
@@ -33,7 +36,7 @@ class HistoryTrades
     #[ORM\Column(type: 'integer')]
     private int $counter_amount;
 
-    #[ORM\Column(type: 'bool')]
+    #[ORM\Column(type: 'boolean')]
     private int $base_is_seller;
 
     #[ORM\Column(type: 'integer')]

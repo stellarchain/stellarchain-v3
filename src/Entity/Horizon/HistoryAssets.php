@@ -17,17 +17,17 @@ class HistoryAssets
     private string $asset_type;
 
     #[ORM\Column(type: 'string')]
-    private int $asset_code;
+    private string $asset_code;
 
     #[ORM\Column(type: 'string')]
-    private int $asset_issuer;
+    private string $asset_issuer;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAssetType(): int
+    public function getAssetType(): string
     {
         return $this->asset_type;
     }

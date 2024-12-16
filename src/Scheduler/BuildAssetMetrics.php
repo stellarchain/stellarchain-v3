@@ -11,7 +11,7 @@ class BuildAssetMetrics
 {
     public function __invoke(): void
     {
-        $process = new Process(['bin/console', 'market:build-asset-metrics', '--no-debug'], timeout: 900);
+        $process = new Process(['bin/console', 'market:build-statistics', '--no-debug'], timeout: 900);
         try {
             $process->mustRun();
             echo $process->getOutput();

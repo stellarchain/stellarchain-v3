@@ -2,6 +2,7 @@
 
 namespace App\Repository\Horizon;
 
+use App\Entity\Horizon\HistoryAssets;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityRepository;
 
@@ -17,10 +18,12 @@ class HistoryTradesRepository extends EntityRepository
             ->where('ht.ledger_closed_at >= :start_time')
             ->andWhere('ht.ledger_closed_at < :end_time')
             ->setParameter(
-                'start_time', $start,
+                'start_time',
+                $start,
             )
             ->setParameter(
-                'end_time', $end,
+                'end_time',
+                $end,
             );
 
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
@@ -38,5 +41,55 @@ class HistoryTradesRepository extends EntityRepository
             ->setParameter('end_time', $end);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findSumByAssets(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval): ?array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('SUM(t.base_amount) as counterAmount', 'SUM(t.counter_amount) as baseAmount')
+            ->where('t.base_asset_id = :baseAsset')
+            ->andWhere('t.counter_asset_id = :counterAsset')
+            ->andWhere('t.ledger_closed_at >= :timeLimit')
+            ->setParameter('timeLimit', $interval)
+            ->setParameter('baseAsset', $baseAsset->getId())
+            ->setParameter('counterAsset', $counterAsset->getId())
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    public function countTotalTrades(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval): int
+    {
+        return (int) $this->createQueryBuilder('t')
+            ->select('COUNT(t.history_operation_id) as totalTrades')
+            ->where('t.base_asset_id = :baseAsset')
+            ->andWhere('t.counter_asset_id = :counterAsset')
+            ->andWhere('t.ledger_closed_at >= :timeLimit')
+            ->setParameter('timeLimit', $interval)
+            ->setParameter('baseAsset', $baseAsset->getId())
+            ->setParameter('counterAsset', $counterAsset->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function getPriceAt(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval): ?float
+    {
+        $result = $this->createQueryBuilder('t')
+            ->select('t.price_n', 't.price_d', 't.ledger_closed_at')
+            ->where('t.base_asset_id = :baseAsset')
+            ->andWhere('t.counter_asset_id = :counterAsset')
+            ->andWhere('t.ledger_closed_at >= :timeLimit')
+            ->setParameter('timeLimit', $interval)
+            ->setParameter('baseAsset', $baseAsset->getId())
+            ->setParameter('counterAsset', $counterAsset->getId())
+            ->orderBy('t.ledger_closed_at', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (!$result) {
+            return null;
+        }
+
+        return $result['price_n'] / $result['price_d'];
     }
 }

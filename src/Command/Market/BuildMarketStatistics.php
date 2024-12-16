@@ -2,6 +2,8 @@
 
 namespace App\Command\Market;
 
+use App\Entity\Horizon\HistoryAssets;
+use App\Entity\Horizon\HistoryTrades;
 use App\Entity\StellarHorizon\Asset;
 use App\Entity\StellarHorizon\AssetMetric;
 use App\Integrations\StellarHorizon\HorizonConnector;
@@ -18,6 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[AsCommand(
     name: 'market:build-statistics',
@@ -30,7 +33,8 @@ class BuildMarketStatistics extends Command
         private AssetRepository $assetRepository,
         private EntityManagerInterface $entityManager,
         private GlobalValueService $globalValueService,
-        private MessageBusInterface $bus
+        private MessageBusInterface $bus,
+        private ManagerRegistry $doctrine,
     ) {
         parent::__construct();
     }
@@ -56,36 +60,38 @@ class BuildMarketStatistics extends Command
 
     private function processAsset(Asset $asset, Asset $nativeAsset): void
     {
-        $currentDateTime = new \DateTime();
+        $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
         $interval = new \DateInterval('PT12H');
         $cutoffTime = (clone $currentDateTime)->sub($interval);
 
-        $horizonTradeRepository = $horizonTradeRepository;
-        $horizonAssetRepository = $horizonAssetRepository;
+        $usdXlmPrice = $this->globalValueService->getPrice();
+
+        $horizonTradeRepository = $this->doctrine->getRepository(HistoryTrades::class, 'horizon');
+        $horizonAssetRepository = $this->doctrine->getRepository(HistoryAssets::class, 'horizon');
+
         $horizonNativeAsset = $horizonAssetRepository->findOneBy(['asset_type' => 'native']);
         $horizonAsset = $horizonAssetRepository->findOneBy(['asset_code' => $asset->getAssetCode(), 'asset_issuer' => $asset->getAssetIssuer()]);
 
-        $latestPriceResult = $this->tradeRepository->findOneBy(['base_asset' => $nativeAsset, 'counter_asset' => $asset, 'trade_type' => 'orderbook'], ['ledger_close_time' => 'DESC']);
+        $latestPriceResult = $horizonTradeRepository->findOneBy(['counter_asset_id' => $horizonNativeAsset->getId(), 'base_asset_id' => $horizonAsset->getId()], ['ledger_closed_at' => 'DESC']);
         $roundedDateTime = (clone $currentDateTime)->modify('-1 hour');
         $roundedDateTime7dAgo = (clone $currentDateTime)->modify('-7 days');
         $roundedDateTime24hAgo = (clone $currentDateTime)->modify('-24 hours');
-        $usdXlmPrice = $this->globalValueService->getPrice();
 
-        if ($latestPriceResult && !empty($asset->getAssetCode())) {
-            $latestPrice = (float)$latestPriceResult->getPrice();
-            $price1hAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime);
+        if ($latestPriceResult && !empty($horizonAsset->getAssetCode())) {
+            $latestPrice = $latestPriceResult->getPriceN() / $latestPriceResult->getPriceD();
+            $price1hAgo = $horizonTradeRepository->getPriceAt($horizonAsset, $horizonNativeAsset, $roundedDateTime);
 
             if ($price1hAgo) {
-                $price24hAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime24hAgo);
-                $price7dAgo = $this->tradeRepository->getPriceAt($asset, $nativeAsset, $roundedDateTime7dAgo);
+                $price24hAgo = $horizonTradeRepository->getPriceAt($horizonAsset, $horizonNativeAsset, $roundedDateTime24hAgo);
+                $price7dAgo = $horizonTradeRepository->getPriceAt($horizonAsset, $horizonNativeAsset, $roundedDateTime7dAgo);
 
                 $priceChange1h = $this->calculatePriceChange($latestPrice, $price1hAgo);
                 $priceChange24h = $this->calculatePriceChange($latestPrice, $price24hAgo);
                 $priceChange7d = $this->calculatePriceChange($latestPrice, $price7dAgo);
 
-                $volume24h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime24hAgo);
-                $volume1h = $this->tradeRepository->findSumByAssets($asset, $nativeAsset, $roundedDateTime);
-                $totalTrades = $this->tradeRepository->countTotalTrades($asset, $nativeAsset, $roundedDateTime24hAgo);
+                $volume24h = $horizonTradeRepository->findSumByAssets($horizonAsset, $horizonNativeAsset, $roundedDateTime24hAgo);
+                $volume1h = $horizonTradeRepository->findSumByAssets($horizonAsset, $horizonNativeAsset, $roundedDateTime);
+                $totalTrades = $horizonTradeRepository->countTotalTrades($horizonAsset, $horizonNativeAsset, $roundedDateTime24hAgo);
 
                 if ($volume24h['baseAmount']) {
                     $priceInUsd = (1 / $latestPrice) * $usdXlmPrice;
@@ -100,10 +106,6 @@ class BuildMarketStatistics extends Command
                         ->setTotalTrades($totalTrades)
                         ->setPriceChange7d($priceChange7d);
 
-                    $isInMarket = ($priceInUsd * $volume1h['baseAmount']) > 10;
-                    if ($isInMarket && false) {
-                        $asset->setInMarket($isInMarket);
-                    }
                     $rankScore = $this->calculateAssetRank(
                         $priceInUsd,
                         $volume24h['baseAmount'] * $priceInUsd,
@@ -132,7 +134,6 @@ class BuildMarketStatistics extends Command
                     );
 
                     $asset->setRankRaw($rankScore);
-                    $this->entityManager->persist($asset);
                     $this->entityManager->persist($assetMetric);
                     $this->entityManager->flush();
                 }
