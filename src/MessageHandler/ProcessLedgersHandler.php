@@ -101,40 +101,53 @@ class ProcessLedgersHandler
             }
         }
 
-        $metrics = [
-            'closed_at' => date('Y-m-d H:i:s', $currentClosedAt),
-            /* 'total-accounts' => $accountsRepository->totalAccounts(), */
-            /* 'total-assets' => $expAssetStatsRepository->totalAssets(), */
-            /* 'average-balance-accounts' => $accountsRepository->averageBalanceAccounts(), */
-            /* 'active-addresses' => $accountsRepository->activeAddressesCount(), */
-            /* 'inactive-addresses' => $accountsRepository->inactiveAddressesCount(), */
-            'total-trades' => $tradesRepository->totalTrades($start, $end),
-            'dex-volume' => round($volumeXlm * $usdXlmPrice, 0),
-            'total-output' => $operationsRepository->getTotalOutput($transactions),
-            'xml-total-payments' => $operationsRepository->getXmlPayments($transactions),
-            'total-transaction-count' => $totalTransactionCount,
-            'total-operation-count' => $totalOperationCount,
-            'total-successful-transaction-count' => $totalSuccessfulTransactionCount,
-            'total-failed-transaction-count' => $totalFailedTransactionCount,
-            'total-ledgers' => count($ledgerSequences),
-            'average-closing-time' => $averageClosingTime,
-            'transactions-per-second' => $totalTransactionCount / $averageClosingTime,
-            'transactions-per-ledger' => $totalTransactionCount / count($ledgerSequences),
-        ];
-
-
-        dump($metrics);
-
         $timeFrame = Timeframes::fromString('10m');
 
-        /* foreach ($metrics as $key => $value) { */
-        /*     $this->buildMetric($timeFrame, 'blockchain-charts', $key, $value, $end); */
-        /* } */
+        $networkCharts = [
+            /* 'total-accounts' => $accountsRepository->totalAccounts(), */
+            'total-trades' => $tradesRepository->totalTrades($start, $end),
+            'output-value' => $operationsRepository->getTotalOutput($transactions),
+            'successful-transactions' => $totalSuccessfulTransactionCount,
+            'operations-per-second' => $totalOperationCount / $averageClosingTime,
+            /* 'transactions-value' => false, */
+            'xml-total-payments' => $operationsRepository->getXmlPayments($transactions),
+            'dex-volume' => round($volumeXlm * $usdXlmPrice, 0),
+        ];
+
+        $interval = $start->diff($end);
+        $totalMinutes = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
+
+        if ($timeFrame->label() === '1d') {
+            $networkCharts['total-assets'] = $expAssetStatsRepository->totalAssets();
+            $networkCharts['total-accounts'] = $accountsRepository->totalAccounts();
+        }
+
+        foreach ($networkCharts as $metric => $value) {
+            $this->buildMetric($timeFrame, 'network-charts', $metric, $value, $end);
+        }
+
+        $blockchainCharts = [
+            'total-ledgers' => count($ledgerSequences),
+            'failed-transactions' => $totalFailedTransactionCount,
+            'transactions-per-second' => $totalTransactionCount / $averageClosingTime,
+            'transactions-per-ledger' => $totalTransactionCount / count($ledgerSequences),
+            'operations-per-ledger' => $totalOperationCount / count($ledgerSequences),
+            'number-of-transactions' => $totalTransactionCount,
+            'number-of-operations' => $totalOperationCount,
+            'average-ledger-time' => $averageClosingTime,
+            /* 'contract-invocations' => true, */
+            /* 'created-contracts' => true, */
+        ];
+
+        foreach ($blockchainCharts as $metric => $value) {
+            $this->buildMetric($timeFrame, 'blockchain-charts', $metric, $value, $end);
+        }
     }
 
     public function buildMetric($timeframe, $chartType, $key, $value, $timestamp): void
     {
         $metric = new Metric();
+        dump($timeframe, $chartType, $key, $value, $timestamp);
         $metric->setChartType($chartType)
             ->setTimeframe($timeframe)
             ->setValue($value)

@@ -3,11 +3,9 @@
 namespace App\Command\Statistics;
 
 use App\Config\Timeframes;
-use App\Entity\Metric;
 use App\Repository\CoinStatRepository;
 use App\Service\StatisticsService;
 use App\Service\LedgerMetricsService;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -57,8 +55,8 @@ class StatisticsBuildCommand extends Command
 
         $io->info($timeframe->name . " => " . $timeframe->label() . '(' . $interval . ')');
 
-        $batchEndDate = new \DateTime();
-        $batchStartDate = $batchEndDate->sub(new \DateInterval($interval));
+        $batchEndDate = new \DateTime(); // Create the end date
+        $batchStartDate = (clone $batchEndDate)->sub(new \DateInterval($interval)); // Clone and subtract the interval
 
         $this->bus->dispatch(new ProcessInterval($batchStartDate, $batchEndDate));
 
