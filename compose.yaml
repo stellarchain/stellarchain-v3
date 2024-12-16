@@ -52,7 +52,6 @@ services:
       RUN_MIGRATIONS: false
     depends_on:
       - php
-      - database
       - rabbitmq
 
   rabbitmq:
