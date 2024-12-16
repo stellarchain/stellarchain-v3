@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\CoinStatRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: CoinStatRepository::class)]
 class CoinStat

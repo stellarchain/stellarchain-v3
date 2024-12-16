@@ -65,7 +65,8 @@ class FetchLatestStellarDataCommand extends Command
                 $stellarCoinStat->setName($name);
                 $stellarCoinStat->setValue($value);
                 $stellarCoinStat->updateTimestamps();
-                $stellar->addCoinStat($stellarCoinStat);
+                $stellarCoinStat->setCoin($stellar);
+                $this->entityManager->persist($stellarCoinStat);
 
                 $metric = new Metric();
                 $metric->setChartType('market-charts')
@@ -74,11 +75,9 @@ class FetchLatestStellarDataCommand extends Command
                     ->setMetric($name)
                     ->setTimestamp(new DateTimeImmutable());
 
-                $this->entityManager->persist($stellarCoinStat);
                 $this->entityManager->persist($metric);
             }
 
-            $this->entityManager->persist($stellar);
             $this->entityManager->flush();
 
             $this->hub->publish(
