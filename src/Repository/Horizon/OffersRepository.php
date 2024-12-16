@@ -4,7 +4,6 @@ namespace App\Repository\Horizon;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\DBAL\Connection;
 
 /**
  * @extends ServiceEntityRepository<Offers>

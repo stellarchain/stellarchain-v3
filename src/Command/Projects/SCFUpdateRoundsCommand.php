@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Projects;
 
 use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
@@ -18,7 +18,7 @@ use App\Repository\RoundRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 #[AsCommand(
-    name: 'scf:update-rounds',
+    name: 'projects:scf-update-rounds',
     description: 'Update SCF rounds.',
 )]
 class SCFUpdateRoundsCommand extends Command

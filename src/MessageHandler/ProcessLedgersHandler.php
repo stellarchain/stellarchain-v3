@@ -18,7 +18,7 @@ use App\Entity\Horizon\HistoryLedgers;
 use App\Entity\Horizon\HistoryOperations;
 use App\Entity\Horizon\HistoryTransactions;
 
-#[AsMessageHandler]
+#[AsMessageHandler(fromTransport: 'horizon')]
 class ProcessLedgersHandler
 {
     public function __construct(
@@ -102,15 +102,16 @@ class ProcessLedgersHandler
         }
 
         $metrics = [
-            'total-accounts' => $accountsRepository->totalAccounts(),
-            'total-assets' => $expAssetStatsRepository->totalAssets(),
+            'closed_at' => date('Y-m-d H:i:s', $currentClosedAt),
+            /* 'total-accounts' => $accountsRepository->totalAccounts(), */
+            /* 'total-assets' => $expAssetStatsRepository->totalAssets(), */
+            /* 'average-balance-accounts' => $accountsRepository->averageBalanceAccounts(), */
+            /* 'active-addresses' => $accountsRepository->activeAddressesCount(), */
+            /* 'inactive-addresses' => $accountsRepository->inactiveAddressesCount(), */
             'total-trades' => $tradesRepository->totalTrades($start, $end),
             'dex-volume' => round($volumeXlm * $usdXlmPrice, 0),
             'total-output' => $operationsRepository->getTotalOutput($transactions),
             'xml-total-payments' => $operationsRepository->getXmlPayments($transactions),
-            'average-balance-accounts' => $accountsRepository->averageBalanceAccounts(),
-            'active-addresses' => $accountsRepository->activeAddressesCount(),
-            'inactive-addresses' => $accountsRepository->inactiveAddressesCount(),
             'total-transaction-count' => $totalTransactionCount,
             'total-operation-count' => $totalOperationCount,
             'total-successful-transaction-count' => $totalSuccessfulTransactionCount,
@@ -122,13 +123,13 @@ class ProcessLedgersHandler
         ];
 
 
-        dd($metrics);
+        dump($metrics);
 
         $timeFrame = Timeframes::fromString('10m');
 
-        foreach ($metrics as $key => $value) {
-            $this->buildMetric($timeFrame, 'blockchain-charts', $key, $value, $end);
-        }
+        /* foreach ($metrics as $key => $value) { */
+        /*     $this->buildMetric($timeFrame, 'blockchain-charts', $key, $value, $end); */
+        /* } */
     }
 
     public function buildMetric($timeframe, $chartType, $key, $value, $timestamp): void

@@ -5,7 +5,20 @@ framework:
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: 'async'
+                    queues:
+                        async: ~
+            horizon:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: 'horizon'
+                    queues:
+                        horizon: ~
             failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
@@ -15,6 +28,7 @@ framework:
             'App\Message\StoringTrade': async
             'App\Message\UpdateAsset': async
             'App\Message\ProcessTransaction': async
+            'App\Message\ProcessInterval': horizon
 
 # when@test:
 #    framework:

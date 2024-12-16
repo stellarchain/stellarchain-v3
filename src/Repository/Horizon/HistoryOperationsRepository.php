@@ -23,7 +23,7 @@ class HistoryOperationsRepository extends EntityRepository
         $ids = implode(',', $transactionIds);
 
         $sql = "
-            SELECT CAST(SUM(CAST(public.history_operations.details->>'amount' AS DOUBLE PRECISION)) AS NUMERIC(20, 8)) AS output_value
+            SELECT SUM(CAST(public.history_operations.details->>'amount' AS DOUBLE PRECISION)) AS output_value
             FROM public.history_operations
             WHERE public.history_operations.type IN (1, 2, 13)
             AND public.history_operations.transaction_id IN ($ids)
@@ -40,7 +40,7 @@ class HistoryOperationsRepository extends EntityRepository
         $ids = implode(',', $transactionIds);
 
         $sql = "
-            SELECT CAST(SUM(CAST(public.history_operations.details->>'amount' AS DOUBLE PRECISION)) AS NUMERIC(20,8)) AS output_value
+            SELECT SUM(CAST(public.history_operations.details->>'amount' AS DOUBLE PRECISION)) AS output_value
             FROM public.history_operations
             WHERE public.history_operations.type IN (1, 2, 13)
             AND public.history_operations.transaction_id IN ($ids)
@@ -58,7 +58,7 @@ class HistoryOperationsRepository extends EntityRepository
         $ids = implode(',', $transactionIds);
 
         $sql = "
-            SELECT CAST(SUM(CAST(public.history_operations.details->>'amount' AS DOUBLE PRECISION)) AS NUMERIC(20,8)) AS output_value
+            SELECT SUM(CAST(public.history_operations.details->>'amount' AS DOUBLE PRECISION)) AS output_value
             FROM public.history_operations
             WHERE public.history_operations.type IN (0, 1, 2, 8, 13)
             AND public.history_operations.transaction_id IN ($ids)

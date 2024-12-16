@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Market;
 
 use App\Repository\StellarHorizon\AssetRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'market:assets-assign-ranks',
     description: 'Take each asset and give it a rank.',
 )]
-class AssetsMarketRankingAssignCommand extends Command
+class AssetsRankingAssignCommand extends Command
 {
     public function __construct(
         private AssetRepository $assetRepository,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Utils;
 
 use App\Config\Timeframes;
 use App\Entity\Metric;
@@ -13,8 +13,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use League\Csv\Reader;
 
 #[AsCommand(
-    name: 'market:import-xlm-price',
-    description: 'Add a short description for your command',
+    name: 'utils:market-import-xlm-price',
+    description: 'Import XLM price from csv file.',
 )]
 class ImportHistoryPriceCommand extends Command
 {

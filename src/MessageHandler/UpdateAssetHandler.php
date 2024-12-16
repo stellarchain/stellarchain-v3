@@ -8,7 +8,7 @@ use App\Repository\StellarHorizon\AssetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
+#[AsMessageHandler(fromTransport: 'async')]
 class UpdateAssetHandler
 {
     public function __construct(

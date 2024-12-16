@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Statistics;
 
 use App\Integrations\StellarHorizon\HorizonConnector;
 use App\Integrations\StellarHorizon\ListTransactions;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'horizon:read-transactions',
+    name: 'statistics:read-transactions',
     description: 'Listen transactions on Stellar blockchain.',
 )]
 class HorizonReadTransactionsCommand extends Command

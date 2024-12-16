@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Projects;
 
 
 use App\Entity\ProjectMember;
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'scf:update-single-project',
+    name: 'projects:scf-update-single-project',
     description: 'Save all data for every project.',
 )]
 class SCFUpdateSingleProjectCommand extends Command
