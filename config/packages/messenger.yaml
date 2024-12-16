@@ -23,11 +23,7 @@ framework:
             # sync: 'sync://'
 
         routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
-            'App\Message\StoringTrade': async
             'App\Message\UpdateAsset': async
-            'App\Message\ProcessTransaction': async
             'App\Message\ProcessInterval': horizon
 
 # when@test:

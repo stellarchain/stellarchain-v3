@@ -6,7 +6,6 @@ namespace App\Service;
 
 use App\Integrations\StellarHorizon\HorizonConnector;
 use App\Integrations\StellarHorizon\StreamTrades;
-use App\Message\StoringTrade;
 use Soneso\StellarSDK\Responses\Trades\TradeResponse;
 
 
@@ -41,7 +40,6 @@ class HorizonStreamEvents
                     $tradeResponse = TradeResponse::fromJson($decoded);
                     if ($tradeResponse instanceof TradeResponse) {
                         $cursor = $tradeResponse->getPagingToken();
-                        $job = new StoringTrade($tradeResponse);
                     }
                 }
             }
