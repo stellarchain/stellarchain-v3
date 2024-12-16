@@ -50,9 +50,6 @@ services:
       SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}
       RUN_MIGRATIONS: false
-    depends_on:
-      - php
-      - rabbitmq
 
   rabbitmq:
     image: rabbitmq:4-management

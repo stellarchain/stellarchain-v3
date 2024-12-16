@@ -98,7 +98,6 @@ RUN set -eux; \
 ENTRYPOINT [ "supervisord", "--nodaemon", "--configuration", "/etc/supervisor/supervisord.conf" ]
 
 
-
 # Prod FrankenPHP image
 FROM frankenphp_base AS frankenphp_prod
 

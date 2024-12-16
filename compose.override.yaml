@@ -20,20 +20,13 @@ services:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
     tty: true
-    depends_on:
-      - database
 
   supervisor:
-    depends_on:
-      - database
-      - php
-      - rabbitmq
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-15}&charset=${POSTGRES_CHARSET:-utf8}
     volumes:
       - ./:/app
       - ./frankenphp/supervisor/dev/:/etc/supervisor/conf.d/
-
 
   mailer:
     image: axllent/mailpit
@@ -44,7 +37,6 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
   
-
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     restart: unless-stopped
