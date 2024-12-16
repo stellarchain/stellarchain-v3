@@ -2,7 +2,6 @@
 
 namespace App\MessageHandler;
 
-use App\Message\ProcessTransaction;
 use App\Service\TransactionBatchService;
 use Doctrine\ORM\EntityManagerInterface;
 use Soneso\StellarSDK\Xdr\XdrEnvelopeType;
@@ -19,7 +18,7 @@ class ProcessTransactionHandler
     ) {
     }
 
-    public function __invoke(ProcessTransaction $transactionResponse): void
+    public function __invoke(): void
     {
         $transaction = $transactionResponse->getTransactionResponse();
         if ($this->transactionBatchService->getLedgerId() === 0) {
