@@ -9,7 +9,6 @@ use App\Entity\Event;
 use App\Entity\Feedback;
 use App\Entity\Job;
 use App\Entity\JobCategory;
-use App\Entity\LedgerStat;
 use App\Entity\Location;
 use App\Entity\Post;
 use App\Entity\Project;
@@ -75,10 +74,6 @@ class DashboardAdminController extends AbstractDashboardController
             MenuItem::linkToCrud('Assets', 'fas fa-list', Asset::class),
             MenuItem::linkToCrud('Assets Metrics', 'fas fa-list', AssetMetric::class),
             MenuItem::linkToCrud('Trades', 'fas fa-list', Trade::class),
-        ]);
-
-        yield MenuItem::subMenu('Statistics', 'fas fa-list')->setSubItems([
-            MenuItem::linkToCrud('Ledger Stats', 'fas fa-list', LedgerStat::class),
         ]);
 
         yield MenuItem::linkToCrud('Feedbacks & Reports', 'fas fa-list', Feedback::class);

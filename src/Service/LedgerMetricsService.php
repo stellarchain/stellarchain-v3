@@ -2,14 +2,9 @@
 
 namespace App\Service;
 
-use App\Repository\LedgerStatRepository;
 
 class LedgerMetricsService
 {
-    public function __construct(public LedgerStatRepository $ledgerRepository)
-    {
-    }
-
     public function getMetrics(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
     {
         $ledgers = $this->ledgerRepository->getBetweenDates($startDate, $endDate);
