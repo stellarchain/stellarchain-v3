@@ -4,7 +4,6 @@ namespace App\Command\Market;
 
 use App\Integrations\StellarHorizon\HorizonConnector;
 use App\Integrations\StellarHorizon\ListHorizonTrades;
-use App\Message\StoringTrade;
 use App\Utils\Helper;
 use Soneso\StellarSDK\Responses\Trades\TradeResponse;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -64,7 +63,7 @@ class HorizonReadTradesCommand extends Command
     {
         $tradeResponse = TradeResponse::fromJson($trade);
         if ($tradeResponse instanceof TradeResponse) {
-            $this->bus->dispatch(new StoringTrade($tradeResponse));
+            //handle trade
         }
     }
 }

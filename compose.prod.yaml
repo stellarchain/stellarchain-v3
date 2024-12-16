@@ -10,6 +10,8 @@ services:
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
 
   supervisor:
+    volumes:
+      - ./frankenphp/supervisor/prod/:/etc/supervisor/conf.d/
     build:
       context: .
       target: supervisor_prod

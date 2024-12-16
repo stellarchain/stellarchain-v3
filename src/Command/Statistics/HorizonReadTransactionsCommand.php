@@ -4,7 +4,6 @@ namespace App\Command\Statistics;
 
 use App\Integrations\StellarHorizon\HorizonConnector;
 use App\Integrations\StellarHorizon\ListTransactions;
-use App\Message\ProcessTransaction;
 use App\Utils\Helper;
 use Soneso\StellarSDK\Responses\Transaction\TransactionResponse;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -63,7 +62,7 @@ class HorizonReadTransactionsCommand extends Command
     {
         $transactionResponse = TransactionResponse::fromJson($transaction);
         if ($transactionResponse instanceof TransactionResponse) {
-            $this->bus->dispatch(new ProcessTransaction($transactionResponse));
+            //handle transaction
         }
     }
 }

@@ -44,21 +44,22 @@ class BuildMarketStatistics extends Command
         $io = new SymfonyStyle($input, $output);
         $offset = 0;
         $batchSize = 20;
-        $nativeAsset = $this->assetRepository->findOneBy(['asset_type' => 'native']);
+
         do {
             $assets = $this->assetRepository->findBy(['in_market' => true], null, $batchSize, $offset);
             foreach ($assets as $asset) {
-                $this->processAsset($asset, $nativeAsset);
+                $this->processAsset($asset);
             }
             $offset += $batchSize;
             $this->entityManager->clear();
         } while (count($assets) > 0);
 
         $io->success('Build assets metrics successfully.');
+
         return Command::SUCCESS;
     }
 
-    private function processAsset(Asset $asset, Asset $nativeAsset): void
+    private function processAsset(Asset $asset): void
     {
         $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
         $interval = new \DateInterval('PT12H');
