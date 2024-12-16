@@ -78,17 +78,6 @@ class Asset
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
-    /**
-     * @var Collection<int, Trade>
-     */
-    #[ORM\OneToMany(targetEntity: Trade::class, mappedBy: 'base_asset')]
-    private Collection $baseTrades;
-
-    /**
-     * @var Collection<int, Trade>
-     */
-    #[ORM\OneToMany(targetEntity: Trade::class, mappedBy: 'counter_asset')]
-    private Collection $counterTrades;
 
     #[ORM\Column(nullable: true)]
     private ?bool $in_market = false;
@@ -113,8 +102,6 @@ class Asset
     {
         $this->updated_at = new \DateTimeImmutable();
         $this->created_at = new \DateTimeImmutable();
-        $this->baseTrades = new ArrayCollection();
-        $this->counterTrades = new ArrayCollection();
         $this->assetMetrics = new ArrayCollection();
     }
 
@@ -369,66 +356,6 @@ class Asset
     public function setUpdatedAtValue(): void
     {
         $this->updated_at = new \DateTime();
-    }
-
-    /**
-     * @return Collection<int, Trade>
-     */
-    public function getBaseTrades(): Collection
-    {
-        return $this->baseTrades;
-    }
-
-    public function addBaseTrade(Trade $trade): static
-    {
-        if (!$this->baseTrades->contains($trade)) {
-            $this->baseTrades->add($trade);
-            $trade->setBaseAsset($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBaseTrade(Trade $trade): static
-    {
-        if ($this->baseTrades->removeElement($trade)) {
-            // set the owning side to null (unless already changed)
-            if ($trade->getBaseAsset() === $this) {
-                $trade->setBaseAsset(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Trade>
-     */
-    public function getCounterTrades(): Collection
-    {
-        return $this->counterTrades;
-    }
-
-    public function addCounterTrade(Trade $trade): static
-    {
-        if (!$this->counterTrades->contains($trade)) {
-            $this->counterTrades->add($trade);
-            $trade->setCounterAsset($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCounterTrade(Trade $trade): static
-    {
-        if ($this->counterTrades->removeElement($trade)) {
-            // set the owning side to null (unless already changed)
-            if ($trade->getCounterAsset() === $this) {
-                $trade->setCounterAsset(null);
-            }
-        }
-
-        return $this;
     }
 
     public function isInMarket(): ?bool

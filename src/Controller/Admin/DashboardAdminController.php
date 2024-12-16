@@ -21,7 +21,6 @@ use App\Entity\SCF\Round;
 use App\Entity\SCF\RoundPhase;
 use App\Entity\StellarHorizon\Asset;
 use App\Entity\StellarHorizon\AssetMetric;
-use App\Entity\StellarHorizon\Trade;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
