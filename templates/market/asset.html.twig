@@ -103,8 +103,7 @@
                 <div class="rounded">
                     <h5 class="card-title m-0">Volume 24h</h5>
                     <p class="card-text">
-                        <span class="text-warning">{{latestMetric.volume24h | number_format}}
-                            {{asset.assetCode}}</span>
+                        <span class="text-warning">{{(latestMetric.volume24h * priceMarket * globalValues.price) | number_format}} $</span>
                     </p>
                 </div>
             </div>

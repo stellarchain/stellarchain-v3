@@ -70,35 +70,53 @@ class BuildMarketStatistics extends Command
         $horizonTradeRepository = $this->doctrine->getRepository(HistoryTrades::class, 'horizon');
         $horizonAssetRepository = $this->doctrine->getRepository(HistoryAssets::class, 'horizon');
 
-        $horizonNativeAsset = $horizonAssetRepository->findOneBy(['asset_type' => 'native']);
-        $horizonAsset = $horizonAssetRepository->findOneBy(['asset_code' => $asset->getAssetCode(), 'asset_issuer' => $asset->getAssetIssuer()]);
+        $baseAssetNative = $horizonAssetRepository->findOneBy(['asset_type' => 'native']);
+        $counterAsset = $horizonAssetRepository->findOneBy(['asset_code' => $asset->getAssetCode(), 'asset_issuer' => $asset->getAssetIssuer()]);
 
-        $latestPriceResult = $horizonTradeRepository->findOneBy(['counter_asset_id' => $horizonNativeAsset->getId(), 'base_asset_id' => $horizonAsset->getId()], ['ledger_closed_at' => 'DESC']);
+
+        if ($baseAssetNative->getId() < $counterAsset->getId()) {
+            $baseAsset = $baseAssetNative;
+            $reversed = true;
+        } else {
+            $baseAsset = $counterAsset;
+            $counterAsset = $baseAssetNative;
+            $reversed = false;
+        }
+
+        $latestPriceResult = $horizonTradeRepository->findOneBy(
+            [
+                'counter_asset_id' => $counterAsset->getId(),
+                'base_asset_id' => $baseAsset->getId(),
+            ],
+            ['ledger_closed_at' => 'DESC']
+        );
+
         $roundedDateTime = (clone $currentDateTime)->modify('-1 hour');
         $roundedDateTime7dAgo = (clone $currentDateTime)->modify('-7 days');
         $roundedDateTime24hAgo = (clone $currentDateTime)->modify('-24 hours');
 
-        if ($latestPriceResult && !empty($horizonAsset->getAssetCode())) {
-            $latestPrice = $latestPriceResult->getPriceN() / $latestPriceResult->getPriceD();
-            $price1hAgo = $horizonTradeRepository->getPriceAt($horizonAsset, $horizonNativeAsset, $roundedDateTime);
+        if ($latestPriceResult) {
+            $latestPrice = ($reversed) ? $latestPriceResult->getPriceD() / $latestPriceResult->getPriceN() : $latestPriceResult->getPriceN() / $latestPriceResult->getPriceD();
+            $price1hAgo = $horizonTradeRepository->getPriceAt($baseAsset, $counterAsset, $roundedDateTime, $reversed);
 
             if ($price1hAgo) {
-                $price24hAgo = $horizonTradeRepository->getPriceAt($horizonAsset, $horizonNativeAsset, $roundedDateTime24hAgo);
-                $price7dAgo = $horizonTradeRepository->getPriceAt($horizonAsset, $horizonNativeAsset, $roundedDateTime7dAgo);
+
+                $price24hAgo = $horizonTradeRepository->getPriceAt($baseAsset, $counterAsset, $roundedDateTime24hAgo, $reversed);
+                $price7dAgo = $horizonTradeRepository->getPriceAt($baseAsset, $counterAsset, $roundedDateTime7dAgo, $reversed);
 
                 $priceChange1h = $this->calculatePriceChange($latestPrice, $price1hAgo);
                 $priceChange24h = $this->calculatePriceChange($latestPrice, $price24hAgo);
                 $priceChange7d = $this->calculatePriceChange($latestPrice, $price7dAgo);
 
-                $volume24h = $horizonTradeRepository->findSumByAssets($horizonAsset, $horizonNativeAsset, $roundedDateTime24hAgo);
-                $volume1h = $horizonTradeRepository->findSumByAssets($horizonAsset, $horizonNativeAsset, $roundedDateTime);
-                $totalTrades = $horizonTradeRepository->countTotalTrades($horizonAsset, $horizonNativeAsset, $roundedDateTime24hAgo);
+                $volume24h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime24hAgo);
+                $volume1h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime);
+                $totalTrades = $horizonTradeRepository->countTotalTrades($baseAsset, $counterAsset, $roundedDateTime24hAgo);
 
                 if ($volume24h['baseAmount']) {
-                    $priceInUsd = (1 / $latestPrice) * $usdXlmPrice;
+                    $priceInUsd = ($latestPrice) * $usdXlmPrice;
                     $assetMetric = new AssetMetric();
                     $assetMetric->setAsset($asset)
-                        ->setPrice(1 / $latestPrice)
+                        ->setPrice($latestPrice)
                         ->setVolume24h($volume24h['baseAmount'])
                         ->setCirculatingSupply(0)
                         ->setPriceChange1h($priceChange1h)
@@ -118,12 +136,11 @@ class BuildMarketStatistics extends Command
 
                     dump(
                         'Asset: ' . $asset->getAssetCode(),
-                        'Price: ' . $latestPrice,
-                        'XLM Price: ' . 1 / $latestPrice,
+                        'XLM Price: ' . $latestPrice,
                         'USD Price: ' . $priceInUsd,
-                        'Price 1h ago: ' . 1 / $price1hAgo,
-                        'Price 24h ago: ' . 1 / $price24hAgo,
-                        'Price 7d ago: ' . 1 / $price7dAgo,
+                        'Price 1h ago: ' . $price1hAgo,
+                        'Price 24h ago: ' . $price24hAgo,
+                        'Price 7d ago: ' . $price7dAgo,
                         'Price % 1h ago: ' . $priceChange1h,
                         'Price % 24h ago: ' . $priceChange24h,
                         'Price % 7d ago: ' . $priceChange7d,
@@ -174,7 +191,7 @@ class BuildMarketStatistics extends Command
         $wTrades = 0.8; // 10% weight for total trades
 
         // Raw values (Price is inverted to match the previous logic)
-        $priceScore = 1/$latestPrice;
+        $priceScore = 1 / $latestPrice;
         $totalTradesScore = $totalTrades;
 
         // Final rank score calculation using the weighted sum of the raw values

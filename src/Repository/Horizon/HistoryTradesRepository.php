@@ -71,7 +71,7 @@ class HistoryTradesRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function getPriceAt(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval): ?float
+    public function getPriceAt(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval, $reversed = false): ?float
     {
         $result = $this->createQueryBuilder('t')
             ->select('t.price_n', 't.price_d', 't.ledger_closed_at')
@@ -90,6 +90,47 @@ class HistoryTradesRepository extends EntityRepository
             return null;
         }
 
+        if ($reversed) {
+            return $result['price_d'] / $result['price_n'];
+        }
+
         return $result['price_n'] / $result['price_d'];
+    }
+
+
+    public function getLatestPrice($baseAsset, $counterAsset, $baseIsSeller)
+    {
+        $queryBuilder = $this->createQueryBuilder('ht');
+
+        $queryBuilder->where(
+            $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('ht.base_asset_id', ':baseAsset'),
+                    $queryBuilder->expr()->eq('ht.counter_asset_id', ':counterAsset'),
+                    $queryBuilder->expr()->eq('ht.base_is_seller', ':baseIsSeller'),
+                    $queryBuilder->expr()->eq('ht.trade_type', ':tradeType'),
+                    $queryBuilder->expr()->eq('ht.base_is_exact', ':baseIsExact'),
+                    $queryBuilder->expr()->eq('ht.order', ':order')
+                ),
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('ht.base_asset_id', ':counterAsset'),
+                    $queryBuilder->expr()->eq('ht.counter_asset_id', ':baseAsset'),
+                    $queryBuilder->expr()->eq('ht.trade_type', ':tradeType'),
+                    $queryBuilder->expr()->eq('ht.base_is_exact', ':baseIsExact'),
+                    $queryBuilder->expr()->eq('ht.base_is_seller', ':baseIsSeller'),
+                    $queryBuilder->expr()->eq('ht.order', ':order')
+                )
+            )
+            )
+            ->setParameter('counterAsset', $counterAsset->getId())
+            ->setParameter('baseAsset', $baseAsset->getId())
+            ->setParameter('baseIsExact', true)
+            ->setParameter('tradeType', 1)
+            ->setParameter('order', 1)
+            ->setParameter('baseIsSeller', $baseIsSeller)
+            ->orderBy('ht.ledger_closed_at', 'DESC')
+            ->setMaxResults(1);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }
