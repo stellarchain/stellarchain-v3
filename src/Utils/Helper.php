@@ -58,4 +58,26 @@ class Helper
     {
         return number_format($amount / 10000000, 7, '.', '');
     }
+
+    public function takeInterval(string $label): string
+    {
+        $interval = strtoupper($label);
+        if (strpos($interval, 'Y') !== false) {
+            $interval = 'P' . str_replace('Y', 'Y', $interval);
+        } elseif (strpos($interval, 'M') !== false && strpos($interval, 'PT') === false) {
+            $interval = 'P' . str_replace('M', 'M', $interval);
+        } elseif (strpos($interval, 'W') !== false) {
+            $interval = 'P' . str_replace('W', 'W', $interval);
+        } elseif (strpos($interval, 'D') !== false) {
+            $interval = 'P' . str_replace('D', 'D', $interval);
+        } elseif (strpos($interval, 'H') !== false) {
+            $interval = 'PT' . str_replace('H', 'H', $interval);
+        } elseif (strpos($interval, 'M') !== false) {
+            $interval = 'PT' . str_replace('M', 'M', $interval);
+        } else {
+            return false;
+        }
+
+        return $interval;
+    }
 }

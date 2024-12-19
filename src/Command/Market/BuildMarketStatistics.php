@@ -108,9 +108,9 @@ class BuildMarketStatistics extends Command
                 $priceChange24h = $this->calculatePriceChange($latestPrice, $price24hAgo);
                 $priceChange7d = $this->calculatePriceChange($latestPrice, $price7dAgo);
 
-                $volume24h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime24hAgo);
-                $volume1h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime);
-                $totalTrades = $horizonTradeRepository->countTotalTrades($baseAsset, $counterAsset, $roundedDateTime24hAgo);
+                $volume24h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime24hAgo, $reversed);
+                $volume1h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime, $reversed);
+                $totalTrades = $horizonTradeRepository->countTotalTrades($baseAsset, $counterAsset, $roundedDateTime24hAgo, $reversed);
 
                 if ($volume24h['baseAmount']) {
                     $priceInUsd = ($latestPrice) * $usdXlmPrice;

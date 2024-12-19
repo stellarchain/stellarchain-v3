@@ -3,10 +3,11 @@
 namespace App\MessageHandler;
 
 use App\Config\Timeframes;
+use App\Config\Metric as MetricEnum;
+use App\Entity\AggregatedMetrics;
 use App\Entity\Horizon\ExpAssetStats;
 use App\Entity\Horizon\HistoryTrades;
 use App\Entity\Horizon\Offers;
-use App\Entity\Metric;
 use App\Message\ProcessInterval;
 use App\Service\GlobalValueService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -91,7 +92,6 @@ class ProcessLedgersHandler
         foreach ($tradeStats as $stat) {
             if ($stat['asset_type'] === Asset::TYPE_NATIVE) {
                 $volumeXlm += $stat['volume'];
-
                 continue;
             }
             $asset = Asset::create($stat['asset_type'], $stat['asset_code'], $stat['asset_issuer']);
@@ -101,58 +101,44 @@ class ProcessLedgersHandler
             }
         }
 
-        $timeFrame = Timeframes::fromString('10m');
 
         $networkCharts = [
-            /* 'total-accounts' => $accountsRepository->totalAccounts(), */
-            'total-trades' => $tradesRepository->totalTrades($start, $end),
-            'output-value' => $operationsRepository->getTotalOutput($transactions),
-            'successful-transactions' => $totalSuccessfulTransactionCount,
-            'operations-per-second' => $totalOperationCount / $averageClosingTime,
-            /* 'transactions-value' => false, */
-            'xml-total-payments' => $operationsRepository->getXmlPayments($transactions),
-            'dex-volume' => round($volumeXlm * $usdXlmPrice, 0),
-        ];
-
-        $interval = $start->diff($end);
-        $totalMinutes = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
-
-        if ($timeFrame->label() === '1d') {
-            $networkCharts['total-assets'] = $expAssetStatsRepository->totalAssets();
-            $networkCharts['total-accounts'] = $accountsRepository->totalAccounts();
-        }
-
-        foreach ($networkCharts as $metric => $value) {
-            $this->buildMetric($timeFrame, 'network-charts', $metric, $value, $end);
-        }
-
-        $blockchainCharts = [
             'total-ledgers' => count($ledgerSequences),
-            'failed-transactions' => $totalFailedTransactionCount,
             'transactions-per-second' => $totalTransactionCount / $averageClosingTime,
             'transactions-per-ledger' => $totalTransactionCount / count($ledgerSequences),
             'operations-per-ledger' => $totalOperationCount / count($ledgerSequences),
             'number-of-transactions' => $totalTransactionCount,
             'number-of-operations' => $totalOperationCount,
             'average-ledger-time' => $averageClosingTime,
+            'total-trades' => $tradesRepository->totalTrades($start, $end),
+            'total-accounts' => $accountsRepository->totalAccounts(),
+            'output-value' => $operationsRepository->getTotalOutput($transactions),
+            'successful-transactions' => $totalSuccessfulTransactionCount,
+            'failed-transactions' => $totalFailedTransactionCount,
+            'total_assets' => $expAssetStatsRepository->totalAssets(),
+            'operations-per-second' => $totalOperationCount / $averageClosingTime,
+            /* 'transactions-value' => false, */
+            'xml-total-payments' => $operationsRepository->getXmlPayments($transactions),
+            'dex-volume' => round($volumeXlm * $usdXlmPrice, 0),
             /* 'contract-invocations' => true, */
             /* 'created-contracts' => true, */
         ];
 
-        foreach ($blockchainCharts as $metric => $value) {
-            $this->buildMetric($timeFrame, 'blockchain-charts', $metric, $value, $end);
+        foreach ($networkCharts as $metric => $value) {
+            $metricEnum = MetricEnum::fromString($metric);
+            $this->buildMetric($metricEnum, $value, $end);
         }
     }
 
-    public function buildMetric($timeframe, $chartType, $key, $value, $timestamp): void
+    public function buildMetric($metricEnum, $value, $timestamp): void
     {
-        $metric = new Metric();
-        dump($timeframe, $chartType, $key, $value, $timestamp);
-        $metric->setChartType($chartType)
-            ->setTimeframe($timeframe)
+        $metric = new AggregatedMetrics();
+        $timeFrame = Timeframes::fromString('10m');
+        $metric
+            ->setTimeframe($timeFrame)
             ->setValue($value)
             ->setTimestamp($timestamp)
-            ->setMetric($key);
+            ->setMetric($metricEnum);
 
         $this->entityManager->persist($metric);
         $this->entityManager->flush();

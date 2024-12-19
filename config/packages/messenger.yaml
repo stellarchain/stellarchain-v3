@@ -24,6 +24,7 @@ framework:
 
         routing:
             'App\Message\UpdateAsset': async
+            'App\Message\ProcessInterval': horizon
 
 # when@test:
 #    framework:

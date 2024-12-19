@@ -31,7 +31,7 @@ class Offers
     #[ORM\Column(type: 'integer')]
     private int $priced;
 
-    #[ORM\Column(type: 'numeric')]
+    #[ORM\Column(type: 'decimal')]
     private int $price;
 
     #[ORM\Column(type: 'integer')]

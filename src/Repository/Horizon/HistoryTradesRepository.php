@@ -43,18 +43,22 @@ class HistoryTradesRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findSumByAssets(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval): ?array
+    public function findSumByAssets(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval, $reversed = false): ?array
     {
-        return $this->createQueryBuilder('t')
-            ->select('SUM(t.base_amount) as counterAmount', 'SUM(t.counter_amount) as baseAmount')
-            ->where('t.base_asset_id = :baseAsset')
+        $qb = $this->createQueryBuilder('t');
+
+        $qb->select('SUM(t.counter_amount) as baseAmount', 'SUM(t.base_amount) as counterAmount');
+
+        $qb->where('t.base_asset_id = :baseAsset')
             ->andWhere('t.counter_asset_id = :counterAsset')
             ->andWhere('t.ledger_closed_at >= :timeLimit')
             ->setParameter('timeLimit', $interval)
             ->setParameter('baseAsset', $baseAsset->getId())
-            ->setParameter('counterAsset', $counterAsset->getId())
-            ->getQuery()
-            ->getSingleResult();
+            ->setParameter('counterAsset', $counterAsset->getId());
+
+        $result = $qb->getQuery()->getSingleResult();
+
+        return $result;
     }
 
     public function countTotalTrades(HistoryAssets $baseAsset, HistoryAssets $counterAsset, \DateTime $interval): int
@@ -121,7 +125,7 @@ class HistoryTradesRepository extends EntityRepository
                     $queryBuilder->expr()->eq('ht.order', ':order')
                 )
             )
-            )
+        )
             ->setParameter('counterAsset', $counterAsset->getId())
             ->setParameter('baseAsset', $baseAsset->getId())
             ->setParameter('baseIsExact', true)

@@ -17,7 +17,7 @@ enum Timeframes: int
             self::OneHour => '1h',
             self::OneDay => '1d',
             self::OneWeek => '1w',
-            self::OneMonth => '1Mon',
+            self::OneMonth => '1m',
             self::OneYear => '1y',
         };
     }
@@ -29,8 +29,8 @@ enum Timeframes: int
             '1h' => self::OneHour,
             '1d' => self::OneDay,
             '1w' => self::OneWeek,
-            '1month' => self::OneMonth,
-            '1year' => self::OneWeek,
+            '1m' => self::OneMonth,
+            '1y' => self::OneYear,
             default => null,
         };
     }

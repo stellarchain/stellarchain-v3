@@ -22,7 +22,7 @@ class HistoryOperations
     #[ORM\Column(type: 'json')]
     private array $details;
 
-    #[ORM\Column(type: 'bool')]
+    #[ORM\Column(type: 'boolean')]
     private array $is_payment;
 
     public function getId(): int
