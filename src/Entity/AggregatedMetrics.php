@@ -21,17 +21,17 @@ class AggregatedMetrics
     #[ORM\Column(nullable: true)]
     private ?int $total_entries = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 100)]
     private ?string $total_value = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 100)]
     private ?string $avg_value = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 100)]
     private ?string $max_value = null;
 
-    #[ORM\Column(length: 50)]
-    private ?int $min_value = null;
+    #[ORM\Column(length: 100)]
+    private ?string $min_value = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;

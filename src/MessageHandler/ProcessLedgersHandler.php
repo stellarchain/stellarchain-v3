@@ -101,27 +101,26 @@ class ProcessLedgersHandler
             }
         }
 
-
         $networkCharts = [
-            'total-ledgers' => count($ledgerSequences),
-            'transactions-per-second' => $totalTransactionCount / $averageClosingTime,
-            'transactions-per-ledger' => $totalTransactionCount / count($ledgerSequences),
-            'operations-per-ledger' => $totalOperationCount / count($ledgerSequences),
-            'number-of-transactions' => $totalTransactionCount,
-            'number-of-operations' => $totalOperationCount,
-            'average-ledger-time' => $averageClosingTime,
-            'total-trades' => $tradesRepository->totalTrades($start, $end),
-            'total-accounts' => $accountsRepository->totalAccounts(),
+            'ledgers' => count($ledgerSequences),
+            'tps' => $totalTransactionCount / $averageClosingTime,
+            'ops' => $totalOperationCount / $averageClosingTime,
+            'tx-ledger' => $totalTransactionCount / count($ledgerSequences),
+            'tx-success' => $totalSuccessfulTransactionCount,
+            'tx-failed' => $totalFailedTransactionCount,
+            'ops-ledger' => $totalOperationCount / count($ledgerSequences),
+            'transactions' => $totalTransactionCount,
+            'operations' => $totalOperationCount,
+            'avg-ledger-sec' => $averageClosingTime,
+            'trades' => $tradesRepository->totalTrades($start, $end),
+            /* 'accounts' => $accountsRepository->totalAccounts(), */
             'output-value' => $operationsRepository->getTotalOutput($transactions),
-            'successful-transactions' => $totalSuccessfulTransactionCount,
-            'failed-transactions' => $totalFailedTransactionCount,
-            'total_assets' => $expAssetStatsRepository->totalAssets(),
-            'operations-per-second' => $totalOperationCount / $averageClosingTime,
-            /* 'transactions-value' => false, */
-            'xml-total-payments' => $operationsRepository->getXmlPayments($transactions),
-            'dex-volume' => round($volumeXlm * $usdXlmPrice, 0),
-            /* 'contract-invocations' => true, */
-            /* 'created-contracts' => true, */
+            /* 'assets' => $expAssetStatsRepository->totalAssets(), */
+            'xml-total-pay' => $operationsRepository->getXmlPayments($transactions),
+            'dex-vol' => round($volumeXlm * $usdXlmPrice, 0),
+            /* 'invocations' => true, */
+            /* 'tx-value' => false, */
+            /* 'contracts' => true, */
         ];
 
         foreach ($networkCharts as $metric => $value) {
@@ -132,15 +131,19 @@ class ProcessLedgersHandler
 
     public function buildMetric($metricEnum, $value, $timestamp): void
     {
-        $metric = new AggregatedMetrics();
-        $timeFrame = Timeframes::fromString('10m');
-        $metric
-            ->setTimeframe($timeFrame)
-            ->setValue($value)
-            ->setTimestamp($timestamp)
-            ->setMetric($metricEnum);
+        $batchStartDateImmutable = \DateTimeImmutable::createFromMutable($timestamp);
+        $aggregateMetric = new AggregatedMetrics();
+        $aggregateMetric
+            ->setTotalEntries(1)
+            ->setMetricId($metricEnum)
+            ->setTotalValue($value)
+            ->setAvgValue($value)
+            ->setMaxValue($value)
+            ->setMinValue($value)
+            ->setCreatedAt($batchStartDateImmutable)
+            ->setTimeframe(Timeframes::fromString('10m'));
 
-        $this->entityManager->persist($metric);
+        $this->entityManager->persist($aggregateMetric);
         $this->entityManager->flush();
     }
 
