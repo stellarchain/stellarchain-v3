@@ -93,13 +93,31 @@ class StatisticsService
         $metrics = $this->aggregatedMetricsRepository->findMetricsAfterTimestamp($key, $timeframe, $startTime, $limit);
         $labels = array_map(fn ($metric) => $metric->getCreatedAt(), $metrics);
 
-        $data = array_map(function($metric) use ($key) {
-            if ($key == 'rank') {
-                $val = (int) $metric->getMaxValue();
-            } elseif ($key == 'price-usd') {
-                $val = round((float) $metric->getMaxValue(), 4);
-            }  elseif ($key == 'avg-ledger-sec') {
+        $avgKeys = [
+            'avg-ledger-sec',
+            'market-cap',
+            'circulating-supply',
+            'market-cap-dominance',
+            'tps',
+            'ops',
+            'top-accounts',
+            'tx-ledger',
+            'tx-success',
+            'tx-failed',
+            'ops-ledger',
+            'active-addresses',
+            'inactive-addresses'
+        ];
+
+        $maxKeys = [
+            'price-usd',
+            'rank'
+        ];
+        $data = array_map(function ($metric) use ($key, $avgKeys, $maxKeys) {
+            if (in_array($key, $avgKeys)) {
                 $val = round((float) $metric->getAvgValue(), 4);
+            } elseif (in_array($key, $maxKeys)) {
+                $val = round((float) $metric->getMaxValue(), 4);
             } else {
                 $val = round((float) $metric->getTotalValue(), 4);
             }
@@ -191,7 +209,7 @@ class StatisticsService
      */
     private function buildChart(array $labels, array $data): Chart
     {
-        $labels = array_map(fn($label) => $label->format('d M Y H:i'), $labels);
+        $labels = array_map(fn ($label) => $label->format('d M Y H:i'), $labels);
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
             'labels' => $labels,
