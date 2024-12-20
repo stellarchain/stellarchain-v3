@@ -106,7 +106,9 @@ class StatisticsService
             'tx-failed',
             'ops-ledger',
             'active-addresses',
-            'inactive-addresses'
+            'inactive-addresses',
+            'assets',
+            'accounts',
         ];
 
         $maxKeys = [
