@@ -140,10 +140,9 @@ export default class extends Controller {
       }
     });
     const timestampInSeconds = Math.floor(Date.now() / 1000);
-    this.getStatistics(timestampInSeconds);
-    setTimeout(() => {
+    this.getStatistics(timestampInSeconds).then(() => {
       this.chart.timeScale().fitContent();
-    }, 100);
+    });
   }
 
   async getStatistics(startTime) {

@@ -95,9 +95,11 @@ class StatisticsService
 
         $data = array_map(function($metric) use ($key) {
             if ($key == 'rank') {
-                $val = (int) $metric->getAvgValue();
+                $val = (int) $metric->getMaxValue();
             } elseif ($key == 'price-usd') {
                 $val = round((float) $metric->getMaxValue(), 4);
+            }  elseif ($key == 'avg-ledger-sec') {
+                $val = round((float) $metric->getAvgValue(), 4);
             } else {
                 $val = round((float) $metric->getTotalValue(), 4);
             }
