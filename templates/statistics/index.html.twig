@@ -8,45 +8,47 @@
 <div class="vh-100 overflow-y-scroll overflow-x-hidden hide-scrollbar">
     {% include 'content-header.html.twig' with {'right_block': false , 'center_title': false} %}
     {% for key, statsChart in statistics_charts %}
-    <div class="d-flex align-items-center border-0 py-2">
-        <div class="flex-grow-1 d-flex flex-column lh-1">
-            <span class="fw-bold mb-1">{{ (key ~ '.title') |trans }}</span>
-            <div class="small">
-                <span class="text-secondary small mb-0">{{(key ~ '.desc') | trans}}</span>
+    <div class="mb-4">
+        <div class="d-flex align-items-center border-0 py-2">
+            <div class="flex-grow-1 d-flex flex-column lh-1">
+                <span class="fw-bold mb-1">{{ (key ~ '.title') |trans }}</span>
+                <div class="small">
+                    <span class="text-secondary small mb-0">{{(key ~ '.desc') | trans}}</span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2">
-        {% for key_chart, chart in statsChart %}
-            {% if chart %}
-            <div class="list-group me-2">
-                <a class="list-group-item list-group-item-action p-2"
-                    href="{{path('app_statistics_show', {stat: key_chart})}}" style="width: 250px;">
-                    <div class="d-flex bg-light rounded align-items-center" style="height: 168px;">
-                    {{ render_chart(chart.chart, {style: 'padding:10px'}) }}
-                    </div>
-                    <div class="d-flex align-items-center pt-2">
-                        <div class="flex-grow-1 d-flex flex-column lh-1 small">
-                            <b class="mb-1">{{(key_chart ~ ".title") | trans}}</b>
-                            <div class="small text-secondary">
-                                <div class="small ellipsed-content">{{(key_chart ~ ".desc") | trans}}</div>
+        <div class="d-flex overflow-x-scroll overflow-y-hidden pb-2">
+            {% for key_chart, chart in statsChart %}
+                {% if chart %}
+                <div class="list-group me-2">
+                    <a class="list-group-item list-group-item-action p-2"
+                        href="{{path('app_statistics_show', {stat: key_chart})}}" style="width: 250px;">
+                        <div class="d-flex bg-light rounded align-items-center" style="height: 168px;">
+                        {{ render_chart(chart.chart, {style: 'padding:10px'}) }}
+                        </div>
+                        <div class="d-flex align-items-center pt-2">
+                            <div class="flex-grow-1 d-flex flex-column lh-1 small">
+                                <b class="mb-1">{{(key_chart ~ ".title") | trans}}</b>
+                                <div class="small text-secondary">
+                                    <div class="small ellipsed-content">{{(key_chart ~ ".desc") | trans}}</div>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 d-flex">
+                                {% set chart_change = chart.change | number_format(2) %}
+                                <span
+                                    class="badge bg-opacity-25 align-self-center px-1
+                                    text-{{ chart_change < 0.00 ? 'danger' : (chart_change > 0 ? 'success' : 'secondary') }}
+                                    bg-{{ chart_change < 0.00 ? 'danger' : (chart_change > 0 ? 'success' : 'secondary') }} small">
+                                    <i class="bi bi-caret-{{ chart_change < 0.00 ? 'down' : (chart_change > 0.00 ? 'up' : 'right') }}-fill"></i>
+                                    {{ chart_change }}
+                                </span>
                             </div>
                         </div>
-                        <div class="flex-shrink-0 d-flex">
-                            {% set chart_change = chart.change | number_format(2) %}
-                            <span
-                                class="badge bg-opacity-25 align-self-center px-1
-                                text-{{ chart_change < 0.00 ? 'danger' : (chart_change > 0 ? 'success' : 'secondary') }}
-                                bg-{{ chart_change < 0.00 ? 'danger' : (chart_change > 0 ? 'success' : 'secondary') }} small">
-                                <i class="bi bi-caret-{{ chart_change < 0.00 ? 'down' : (chart_change > 0.00 ? 'up' : 'right') }}-fill"></i>
-                                {{ chart_change }}
-                            </span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% endif%}
-        {% endfor %}
+                    </a>
+                </div>
+                {% endif%}
+            {% endfor %}
+        </div>
     </div>
     {% endfor %}
     <div class="mb-5 pb-3">

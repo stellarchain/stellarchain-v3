@@ -92,7 +92,18 @@ class StatisticsService
     {
         $metrics = $this->aggregatedMetricsRepository->findMetricsAfterTimestamp($key, $timeframe, $startTime, $limit);
         $labels = array_map(fn ($metric) => $metric->getCreatedAt(), $metrics);
-        $data = array_map(fn ($metric) => round((float) $metric->getMaxValue(), 5), $metrics);
+
+        $data = array_map(function($metric) use ($key) {
+            if ($key == 'rank') {
+                $val = (int) $metric->getAvgValue();
+            } elseif ($key == 'price-usd') {
+                $val = round((float) $metric->getMaxValue(), 4);
+            } else {
+                $val = round((float) $metric->getTotalValue(), 4);
+            }
+            return $val;
+        }, $metrics);
+
         return [
             'labels' => array_reverse($labels),
             'data' => array_reverse($data)
@@ -105,7 +116,7 @@ class StatisticsService
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
                 if ($chart) {
-                    $metrics = $this->getMetricsData($key, '10m', time(), 100);
+                    $metrics = $this->getMetricsData($key, '10m', time(), 60);
                     $change = 0;
                     $dataCount = count($metrics['data']);
                     if ($dataCount > 1) {

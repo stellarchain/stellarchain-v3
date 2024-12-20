@@ -1,5 +1,5 @@
 market-charts: 
-    title: Price Charts
+    title: PRICE
     desc: Showing historical price and trends.
 price-usd: 
     title: Market Price
@@ -26,7 +26,7 @@ trades:
     title: Total trades 
     desc: Total trades per timeframe 
 blockchain-charts:
-    title: Blockchain Charts
+    title: BLOCKCHAIN
     desc: Charts showing blockchain data.
 blockchain-size:
     title: Blockchain Size
@@ -68,7 +68,7 @@ tx-failed:
     title: Failed Transactions
     desc: Shows the number of transactions that were unsuccessful or rejected by the blockchain network.
 network-charts:
-    title: Network Charts
+    title: NETWORK
     desc: Charts showing network data.
 accounts:
     title: Total Accounts
