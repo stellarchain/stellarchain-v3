@@ -33,12 +33,13 @@
                             </div>
                         </div>
                         <div class="flex-shrink-0 d-flex">
+                            {% set chart_change = chart.change | number_format(2) %}
                             <span
                                 class="badge bg-opacity-25 align-self-center px-1
-                                text-{{ chart.change < 0 ? 'danger' : (chart.change > 0 ? 'success' : 'secondary') }}
-                                bg-{{ chart.change < 0 ? 'danger' : (chart.change > 0 ? 'success' : 'secondary') }} small">
-                                <i class="bi bi-caret-{{ chart.change < 0 ? 'down' : (chart.change > 0 ? 'up' : 'right') }}-fill"></i>
-                                {{ chart.change | number_format(2) }}
+                                text-{{ chart_change < 0.00 ? 'danger' : (chart_change > 0 ? 'success' : 'secondary') }}
+                                bg-{{ chart_change < 0.00 ? 'danger' : (chart_change > 0 ? 'success' : 'secondary') }} small">
+                                <i class="bi bi-caret-{{ chart_change < 0.00 ? 'down' : (chart_change > 0.00 ? 'up' : 'right') }}-fill"></i>
+                                {{ chart_change }}
                             </span>
                         </div>
                     </div>

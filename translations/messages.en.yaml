@@ -50,10 +50,10 @@ ops:
     title: OPS
     desc: Displays the average number of operations recorded per second.
 transactions:
-    title: Number of Transactions
-    desc: Total number of transactions that have occurred on the blockchain to date.
+    title: Total Transactions
+    desc: Total transactions that have occurred on the blockchain.
 operations:
-    title: Number of Operations 
+    title: Total Operations 
     desc: Total number of operations that have occurred on the blockchain to date.
 avg-ledger-sec:
     title: Average Ledger Time
@@ -62,7 +62,7 @@ invocations:
     title: Contract Invocations
     desc: Shows the number of times smart contracts have been called or executed.
 contracts:
-    title: Created Contracts
+    title: New Contracts
     desc: Represents the total number of smart contracts that have been created on the blockchain.
 tx-failed:
     title: Failed Transactions

@@ -67,7 +67,6 @@ class IntervalLedgersHandler
             $averageClosingTime = array_sum($timeDifferences) / count($timeDifferences);
         }
 
-
         $transactions = $this->getTransactions($ledgerSequences);
         $operationsRepository = $this->doctrine->getRepository(HistoryOperations::class, 'horizon');
         $transactionsRepository = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon');

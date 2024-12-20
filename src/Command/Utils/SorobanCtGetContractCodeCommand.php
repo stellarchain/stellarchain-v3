@@ -49,7 +49,7 @@ class SorobanCtGetContractCodeCommand extends Command
             $io->note(sprintf('You passed an argument: %s', $contractId));
         }
 
-        $server = new SorobanServer('http://192.168.3.200:8001');
+        $server = new SorobanServer('http://192.168.3.15:8001');
         $ledgerKey = new XdrLedgerKey(XdrLedgerEntryType::CONTRACT_DATA());
         $ledgerKey->contractData = new XdrLedgerKeyContractData(
             Address::fromContractId($contractId)->toXdr(),
@@ -95,11 +95,12 @@ class SorobanCtGetContractCodeCommand extends Command
                             $contract['wasm_id'] = $wasmId;
                             $contract['code_xdr'] = $ledgerEntry->getXdr();
                             $contract['env'] = $this->contractDataExtract($codeLoaded->getCode()->getValue());
+
+                            $contractTransformed = [$contract, $codeLoaded->getCode()->getValue()];
                         }
                     }
                 }
 
-                $contractTransformed = [$contract, $codeLoaded->getCode()->getValue()];
             }
         }
 
