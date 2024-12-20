@@ -145,11 +145,9 @@ export default class extends Controller {
 
   async getStatistics(startTime) {
     const stat = this.element.dataset.statisticsStatValue;
-    const chart = this.element.dataset.statisticsChartValue;
-
     document.getElementById('loading-statistics').classList.remove('d-none');
     this.loadingStatistics = true;
-    const response = await fetch(`/statistics/` + stat + `/` + chart, {
+    const response = await fetch(`/statistics/` + stat, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Ensure the content type is JSON

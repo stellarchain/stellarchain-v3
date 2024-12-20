@@ -19,18 +19,17 @@ class StatisticsController extends AbstractController
         ]);
     }
 
-    #[Route('/statistics/{stat}/{chart}', name: 'app_statistics_show', methods: ['GET'])]
-    public function charts(TranslatorInterface $translator, string $stat, string $chart): Response
+    #[Route('/statistics/{stat}', name: 'app_statistics_show', methods: ['GET'])]
+    public function charts(TranslatorInterface $translator, string $stat): Response
     {
         return $this->render('statistics/show.html.twig', [
-            'chart_name' => $translator->trans($stat . '.' . $chart . '.title'),
-            'chart_desc' => $translator->trans($stat . '.' . $chart . '.desc'),
+
             'stat' => $stat
         ]);
     }
 
-    #[Route('/statistics/{chart}/{stat}', name: 'app_statistics_get', methods: ['POST'])]
-    public function charts_data(StatisticsService $statisticsService, string $stat, string $chart, Request $request): Response
+    #[Route('/statistics/{stat}', name: 'app_statistics_get', methods: ['POST'])]
+    public function charts_data(StatisticsService $statisticsService, string $stat, Request $request): Response
     {
         $requestData = $request->toArray();
         if (!$requestData['startTime']) {
@@ -39,7 +38,7 @@ class StatisticsController extends AbstractController
         if (!$requestData['timeFrame']) {
             return $this->json(['error' => 'Invalid time frame provided'], Response::HTTP_BAD_REQUEST);
         }
-        $chartData = $statisticsService->getMetricsData($stat, $chart, $requestData['timeFrame'], $requestData['startTime'], 200);
+        $chartData = $statisticsService->getMetricsData($stat, $requestData['timeFrame'], $requestData['startTime'], 200);
         $areaSeries = [];
         foreach ($chartData['labels'] as $k => $time) {
             $areaSeries[] = [

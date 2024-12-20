@@ -12,17 +12,16 @@ use App\Utils\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'statistics:aggregate-timeframes',
-    description: 'Build blockchain full statistics for each timeframe.',
+    name: 'statistics:aggregate-daily',
+    description: 'Build blockchain full statistics for 1 day timeframe.',
 )]
-class AggregateStatisticsCommand extends Command
+class AggregateDailyStatisticsCommand extends Command
 {
     public function __construct(
         private CoinStatRepository $coinStatRepository,
@@ -36,47 +35,26 @@ class AggregateStatisticsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('timeframe', InputArgument::REQUIRED, 'Timeframe statistics.(1d)');
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $timeframe = Timeframes::fromString($input->getArgument('timeframe'));
-        if (!$timeframe) {
-            $io->error('Timeframe not supported');
-            return Command::FAILURE;
-        }
-
+        $timeframe = Timeframes::fromString('1d');
         $interval = $this->helper->takeInterval($timeframe->label());
-        if (!$interval) {
-            $io->error('Timeframe not supported');
-            return Command::FAILURE;
-        }
         $io->info($timeframe->name . " => " . $timeframe->label() . '(' . $interval . ')');
 
         $metricsEnum = Metric::cases();
         $batchStartDate = new \DateTime();
+        $batchEndDate = (clone $batchStartDate)->sub(new \DateInterval($interval));
 
         foreach ($metricsEnum as $metricEnum) {
-            $firstMetricTimestamp = $this->aggregatedMetricsRepository->findFirstMetricTimestamp($metricEnum->value);
-            if (!$firstMetricTimestamp) {
-                continue;
-            }
-            while ($batchStartDate >= $firstMetricTimestamp) {
-
-                $batchEndDate = (clone $batchStartDate)->sub(new \DateInterval($interval));
-
-                $metrics = $this->aggregatedMetricsRepository->findMetricsBetweenTimestamp($metricEnum->value, $batchStartDate, $batchEndDate);
-
-                $this->statisticsService->aggregateMetric($metrics, $timeframe, $metricEnum, $batchStartDate);
-                $batchStartDate = $batchEndDate;
-            }
+            $metrics = $this->aggregatedMetricsRepository->findMetricsBetweenTimestamp(
+                $metricEnum->value,
+                $batchStartDate,
+                $batchEndDate
+            );
+            $this->statisticsService->aggregateMetric($metrics, $timeframe, $metricEnum, $batchStartDate);
         }
-        $io->success('Statistics builded.');
+        $io->success('Daily statistics builded.');
 
         return Command::SUCCESS;
     }

@@ -55,8 +55,8 @@ class StatisticsBuildCommand extends Command
 
         $io->info($timeframe->name . " => " . $timeframe->label() . '(' . $interval . ')');
 
-        $batchEndDate = new \DateTime(); // Create the end date
-        $batchStartDate = (clone $batchEndDate)->sub(new \DateInterval($interval)); // Clone and subtract the interval
+        $batchEndDate = new \DateTime();
+        $batchStartDate = (clone $batchEndDate)->sub(new \DateInterval($interval));
 
         $this->bus->dispatch(new ProcessInterval($batchStartDate, $batchEndDate));
 

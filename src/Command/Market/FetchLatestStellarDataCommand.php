@@ -3,9 +3,10 @@
 namespace App\Command\Market;
 
 use App\Config\Timeframes;
+use App\Entity\AggregatedMetrics;
 use App\Entity\Coin;
 use App\Entity\CoinStat;
-use App\Entity\Metric;
+use App\Config\Metric as MetricEnum;
 use App\Integrations\CoinMarketCap\CoinMarketCapConnectorV1;
 use App\Integrations\CoinMarketCap\GetStellarRealTimeDataRequest;
 use App\Repository\CoinStatRepository;
@@ -68,14 +69,20 @@ class FetchLatestStellarDataCommand extends Command
                 $stellarCoinStat->setCoin($stellar);
                 $this->entityManager->persist($stellarCoinStat);
 
-                $metric = new Metric();
-                $metric->setChartType('market-charts')
-                    ->setValue($value)
-                    ->setTimeframe(Timeframes::fromString('10m'))
-                    ->setMetric($name)
-                    ->setTimestamp(new DateTimeImmutable());
+                $metricEnum = MetricEnum::fromString($name);
+                $aggregateMetric = new AggregatedMetrics();
+                $aggregateMetric
+                    ->setTotalEntries(1)
+                    ->setMetricId($metricEnum)
+                    ->setTotalValue($value)
+                    ->setAvgValue($value)
+                    ->setMaxValue($value)
+                    ->setMinValue($value)
+                    ->setCreatedAt(new DateTimeImmutable())
+                    ->setTimeframe(Timeframes::fromString('10m'));
 
-                $this->entityManager->persist($metric);
+                $this->entityManager->persist($aggregateMetric);
+                $this->entityManager->flush();
             }
 
             $this->entityManager->flush();

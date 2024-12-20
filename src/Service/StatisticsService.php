@@ -2,7 +2,11 @@
 
 namespace App\Service;
 
+use App\Config\Metric;
+use App\Entity\AggregatedMetrics;
+use App\Repository\AggregatedMetricsRepository;
 use App\Repository\MetricRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -10,54 +14,54 @@ class StatisticsService
 {
     public function __construct(
         private MetricRepository $metricsRepository,
+        private AggregatedMetricsRepository $aggregatedMetricsRepository,
         private ChartBuilderInterface $chartBuilder,
+        private EntityManagerInterface $entityManager
     ) {
     }
 
     /**
      * @return array<string,mixed>
      */
-    public function getKeys(): array
+    public function chartsGrid(): array
     {
         return [
             'market-charts' => [
-                'price-usd' => true,
-                'rank' => true,
-                'market-cap' => true,
-                'volume-24h' => true,
-                'circulating-supply' => true,
-                'market-cap-dominance' => true,
-                'total-trades' => false,
+                Metric::PriceUsd->label() => true,
+                Metric::Rank->label() => true,
+                Metric::MarketCap->label() => true,
+                Metric::Volume24h->label() => true,
+                Metric::CirculatingSupply->label() => true,
+                Metric::MarketCapDominance->label() => true,
+                Metric::Trades->label() => true,
+                Metric::DexVol->label() => true,
+                Metric::XmlTotalPay->label() => true,
+                Metric::Trades->label() => true,
                 'trades-volume' => false,
-                'transactions-volume' => false,
-                'cex-trade-volume' => false,
-                'xml-payments' => false,
             ],
             'blockchain-charts' => [
-                'blockchain-size' => true,
-                'average-ledger-size' => false,
-                'total-ledgers' => true,
-                'failed-transactions' => true,
-                'transactions-per-second' => true,
-                'transactions-per-ledger' => true,
-                'operations-per-ledger' => true,
-                'number-of-transactions' => true,
-                'number-of-operations' => true,
-                'average-ledger-time' => true,
-                'contract-invocations' => true,
-                'created-contracts' => true,
+                Metric::Ledgers->label() => true,
+                Metric::Tps->label() => true,
+                Metric::Ops->label() => true,
+                Metric::TxLedger->label() => true,
+                Metric::TxSuccess->label() => true,
+                Metric::TxFailed->label() => true,
+                Metric::OpsLedger->label() => true,
+                Metric::Transactions->label() => true,
+                Metric::Operations->label() => true,
+                Metric::AvgLedgerSec->label() => true,
             ],
             'network-charts' => [
-                'total-accounts' => true,
-                'total-assets' => true,
-                'total-output' => false,
-                'successful-transactions' => true,
-                'operations-per-second' => false,
-                'active-addresses' => true,
-                'inactive-addresses' => true,
-                'top-100-active-addresses' => true,
-                'output-value-per-day' => false,
-                'transactions-value' => false,
+                Metric::Accounts->label() => true,
+                Metric::Assets->label() => true,
+                Metric::OutputValue->label() => true,
+                Metric::TopAccounts->label() => true,
+                Metric::Invocations->label() => true,
+                Metric::Contracts->label() => true,
+                Metric::FeeCharged->label() => true,
+                Metric::MaxFee->label() => true,
+                Metric::ActiveAddresses->label() => true,
+                Metric::InactiveAddresses->label() => true,
             ],
             /* 'community_fund' => [ */
             /*     'total_submissions' => [], */
@@ -84,27 +88,24 @@ class StatisticsService
     /**
      * @return array<string,array>
      */
-    public function getMetricsData(string $key, string $chartType,  string $timeframe, int $startTime, int $limit = 50): array
+    public function getMetricsData(string $key, string $timeframe, int $startTime, int $limit = 50): array
     {
-        $metrics = $this->metricsRepository->findMetricsAfterTimestamp($key, $chartType, $timeframe, $startTime, $limit);
-        $labels = array_map(fn ($metric) => $metric->getTimestamp(), $metrics);
-        $data = array_map(fn ($metric) => round((float) $metric->getValue(), 5), $metrics);
+        $metrics = $this->aggregatedMetricsRepository->findMetricsAfterTimestamp($key, $timeframe, $startTime, $limit);
+        $labels = array_map(fn ($metric) => $metric->getCreatedAt(), $metrics);
+        $data = array_map(fn ($metric) => round((float) $metric->getMaxValue(), 5), $metrics);
         return [
             'labels' => array_reverse($labels),
             'data' => array_reverse($data)
         ];
     }
 
-    /**
-     * @return array<int,array>|array
-     */
     public function buildStatisticsCharts(): array
     {
-        $statistics = $this->getKeys();
+        $statistics = $this->chartsGrid();
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
                 if ($chart) {
-                    $metrics = $this->getMetricsData($key, $typeKey, '10m', time(), 100);
+                    $metrics = $this->getMetricsData($key, '10m', time(), 100);
                     $change = 0;
                     $dataCount = count($metrics['data']);
                     if ($dataCount > 1) {
@@ -121,9 +122,55 @@ class StatisticsService
                 }
             }
         }
-
         return $statistics;
     }
+
+    public function aggregateMetric($metrics, $timeframe, $metricEnum, \DateTime $batchStartDate)
+    {
+        if (empty($metrics)) {
+            return;
+        }
+
+        $totalEntries = 0;
+        $totalValue = 0;
+        $minValue = PHP_INT_MAX;
+        $maxValue = -PHP_INT_MAX;
+        $sumValue = 0;
+
+        foreach ($metrics as $metric) {
+            $totalEntries++;
+            $metricValue = (float) $metric->getTotalValue();
+
+            $totalValue += $metricValue;
+            $sumValue += $metricValue;
+
+            if ($metricValue < $minValue) {
+                $minValue = $metricValue;
+            }
+
+            if ($metricValue > $maxValue) {
+                $maxValue = $metricValue;
+            }
+        }
+
+        $avgValue = $totalEntries > 0 ? $sumValue / $totalEntries : 0;
+
+        $batchStartDateImmutable = \DateTimeImmutable::createFromMutable($batchStartDate);
+        $aggregateMetric = new AggregatedMetrics();
+        $aggregateMetric
+            ->setTotalEntries($totalEntries)
+            ->setMetricId($metricEnum)
+            ->setTotalValue($totalValue)
+            ->setAvgValue($avgValue)
+            ->setMaxValue($maxValue)
+            ->setMinValue($minValue)
+            ->setCreatedAt($batchStartDateImmutable)
+            ->setTimeframe($timeframe);
+
+        $this->entityManager->persist($aggregateMetric);
+        $this->entityManager->flush();
+    }
+
 
     /**
      * @param array<int,mixed> $labels

@@ -104,12 +104,12 @@ class AggregatedMetrics
         return $this;
     }
 
-    public function getMinValue(): ?int
+    public function getMinValue(): ?string
     {
         return $this->min_value;
     }
 
-    public function setMinValue(?int $min_value): static
+    public function setMinValue(?string $min_value): static
     {
         $this->min_value = $min_value;
 

@@ -19,4 +19,25 @@ class HistoryTransactionsRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getTotalFees(array $ledgerIds): array
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $ids = implode(',', $ledgerIds);
+
+        $sql = "
+            SELECT SUM(public.history_transactions.fee_charged) AS total_fee_charged,
+            SUM(public.history_transactions.max_fee) AS total_max_fee
+            FROM public.history_transactions
+            WHERE public.history_transactions.ledger_sequence IN ($ids)
+        ";
+
+        $result = $connection->executeQuery($sql)->fetchAssociative();
+
+        return [
+            'total_fee_charged' => isset($result['total_fee_charged']) ? (float)$result['total_fee_charged'] : 0.0,
+            'total_max_fee' => isset($result['total_max_fee']) ? (float)$result['total_max_fee'] : 0.0,
+        ];
+    }
+
 }

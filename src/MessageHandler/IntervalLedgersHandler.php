@@ -20,7 +20,7 @@ use App\Entity\Horizon\HistoryOperations;
 use App\Entity\Horizon\HistoryTransactions;
 
 #[AsMessageHandler(fromTransport: 'horizon')]
-class ProcessLedgersHandler
+class IntervalLedgersHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -69,7 +69,7 @@ class ProcessLedgersHandler
 
         $transactions = $this->getTransactions($ledgerSequences);
         $operationsRepository = $this->doctrine->getRepository(HistoryOperations::class, 'horizon');
-
+        $transactionsRepository = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon');
         $accountsRepository = $this->doctrine->getRepository(Accounts::class, 'horizon');
         $expAssetStatsRepository = $this->doctrine->getRepository(ExpAssetStats::class, 'horizon');
         $tradesRepository = $this->doctrine->getRepository(HistoryTrades::class, 'horizon');
@@ -101,6 +101,9 @@ class ProcessLedgersHandler
             }
         }
 
+        $invocations = $operationsRepository->getTotalContractInvocations($transactions);
+        $fees = $transactionsRepository->getTotalFees($ledgerSequences);
+
         $networkCharts = [
             'ledgers' => count($ledgerSequences),
             'tps' => $totalTransactionCount / $averageClosingTime,
@@ -114,13 +117,17 @@ class ProcessLedgersHandler
             'avg-ledger-sec' => $averageClosingTime,
             'trades' => $tradesRepository->totalTrades($start, $end),
             /* 'accounts' => $accountsRepository->totalAccounts(), */
+            /* 'top-accounts' => $accountsRepository->averageBalanceAccounts(100), */
+            /* 'active-addresses' => $accountsRepository->activeAddressesCount(), */
+            /* 'inactive-addresses' => $accountsRepository->inactiveAddressesCount(), */
             'output-value' => $operationsRepository->getTotalOutput($transactions),
             /* 'assets' => $expAssetStatsRepository->totalAssets(), */
             'xml-total-pay' => $operationsRepository->getXmlPayments($transactions),
             'dex-vol' => round($volumeXlm * $usdXlmPrice, 0),
-            /* 'invocations' => true, */
-            /* 'tx-value' => false, */
-            /* 'contracts' => true, */
+            'invocations' => $invocations['invoke_contract'],
+            'contracts' => $invocations['create_contract'],
+            'fee-charged' => $fees['total_fee_charged'],
+            'max-fee' => $fees['total_max_fee'],
         ];
 
         foreach ($networkCharts as $metric => $value) {
@@ -151,6 +158,7 @@ class ProcessLedgersHandler
     {
         $transactionRepository = $this->doctrine->getRepository(HistoryTransactions::class, 'horizon');
         $transactions = $transactionRepository->findByLedgerIds($ledgerIds);
+
         $ids = array_column($transactions, 'id');
         $ids = array_map('intval', $ids);
 
