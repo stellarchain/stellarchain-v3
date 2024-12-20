@@ -127,11 +127,11 @@ class IntervalLedgersHandler
         ];
 
         $dailyMetrics = [
-            /* 'assets' => $expAssetStatsRepository->totalAssets(), */
-            /* 'accounts' => $accountsRepository->totalAccounts(), */
-            /* 'top-accounts' => $accountsRepository->averageBalanceAccounts(100), */
-            /* 'active-addresses' => $accountsRepository->activeAddressesCount(), */
-            /* 'inactive-addresses' => $accountsRepository->inactiveAddressesCount(), */
+            'assets' => $expAssetStatsRepository->totalAssets(),
+            'accounts' => $accountsRepository->totalAccounts(),
+            'top-accounts' => $accountsRepository->averageBalanceAccounts(100),
+            'active-addresses' => $accountsRepository->activeAddressesCount(),
+            'inactive-addresses' => $accountsRepository->inactiveAddressesCount(),
         ];
 
         $metricsValues = array_merge($metricsValues, $dailyMetrics);

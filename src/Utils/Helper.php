@@ -64,9 +64,7 @@ class Helper
         $interval = strtoupper($label);
         if (strpos($interval, 'Y') !== false) {
             $interval = 'P' . str_replace('Y', 'Y', $interval);
-        } elseif (strpos($interval, 'M') !== false && strpos($interval, 'PT') === false) {
-            $interval = 'P' . str_replace('M', 'M', $interval);
-        } elseif (strpos($interval, 'W') !== false) {
+        }elseif (strpos($interval, 'W') !== false) {
             $interval = 'P' . str_replace('W', 'W', $interval);
         } elseif (strpos($interval, 'D') !== false) {
             $interval = 'P' . str_replace('D', 'D', $interval);
