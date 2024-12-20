@@ -79,7 +79,7 @@ class ImportHistoryPriceCommand extends Command
             ->setMaxValue($value)
             ->setMinValue($value)
             ->setCreatedAt($timestamp)
-            ->setTimeframe(Timeframes::fromString('10m'));
+            ->setTimeframe(Timeframes::fromString('1d'));
 
         $this->entityManager->persist($aggregateMetric);
         $this->entityManager->flush();
