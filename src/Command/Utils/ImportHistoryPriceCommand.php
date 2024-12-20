@@ -3,7 +3,8 @@
 namespace App\Command\Utils;
 
 use App\Config\Timeframes;
-use App\Entity\Metric;
+use App\Entity\AggregatedMetrics;
+use App\Config\Metric;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -36,29 +37,27 @@ class ImportHistoryPriceCommand extends Command
         $csv->setHeaderOffset(0);
 
         foreach ($csv->getRecords() as $record) {
-            $dateTime = new \DateTime($record['snapped_at']);
+            $dateTime = new \DateTimeImmutable($record['snapped_at']);
+            $name = '';
+            $value = 0;
+            if (isset($record['market_cap'])) {
+                $name = 'market-cap';
+                $value = $record['market_cap'];
+            }
+
+            if (isset($record['price'])) {
+                $name = 'price-usd';
+                $value = $record['price'];
+            }
+
+            if (isset($record['total_volume'])) {
+                $name = 'volume-24h';
+                $value = $record['total_volume'];
+            }
 
             $this->buildMetric(
-                Timeframes::fromString('1d'),
-                'market-charts',
-                'price-usd',
-                $record['price'],
-                $dateTime
-            );
-
-            $this->buildMetric(
-                Timeframes::fromString('1d'),
-                'market-charts',
-                'market-cap',
-                $record['market_cap'],
-                $dateTime
-            );
-
-            $this->buildMetric(
-                Timeframes::fromString('1d'),
-                'market-charts',
-                'volume-24h',
-                $record['total_volume'],
+                $name,
+                $value,
                 $dateTime
             );
         }
@@ -68,16 +67,21 @@ class ImportHistoryPriceCommand extends Command
         return Command::SUCCESS;
     }
 
-    public function buildMetric($timeframe, $chartType, $key, $value, $timestamp): void
+    public function buildMetric($key, $value, $timestamp): void
     {
-        $metric = new Metric();
-        $metric->setChartType($chartType)
-            ->setTimeframe($timeframe)
-            ->setValue($value)
-            ->setTimestamp($timestamp)
-            ->setMetric($key);
+        $metricEnum = Metric::fromString($key);
+        $aggregateMetric = new AggregatedMetrics();
+        $aggregateMetric
+            ->setTotalEntries(1)
+            ->setMetricId($metricEnum)
+            ->setTotalValue($value)
+            ->setAvgValue($value)
+            ->setMaxValue($value)
+            ->setMinValue($value)
+            ->setCreatedAt($timestamp)
+            ->setTimeframe(Timeframes::fromString('10m'));
 
-        $this->entityManager->persist($metric);
+        $this->entityManager->persist($aggregateMetric);
         $this->entityManager->flush();
     }
 }
