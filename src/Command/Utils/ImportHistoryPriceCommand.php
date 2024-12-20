@@ -37,29 +37,43 @@ class ImportHistoryPriceCommand extends Command
         $csv->setHeaderOffset(0);
 
         foreach ($csv->getRecords() as $record) {
+            dump($record);
             $dateTime = new \DateTimeImmutable($record['snapped_at']);
             $name = '';
             $value = 0;
+
             if (isset($record['market_cap'])) {
                 $name = 'market-cap';
                 $value = $record['market_cap'];
+
+                $this->buildMetric(
+                    $name,
+                    $value,
+                    $dateTime
+                );
             }
 
             if (isset($record['price'])) {
                 $name = 'price-usd';
                 $value = $record['price'];
+
+                $this->buildMetric(
+                    $name,
+                    $value,
+                    $dateTime
+                );
             }
 
             if (isset($record['total_volume'])) {
                 $name = 'volume-24h';
                 $value = $record['total_volume'];
-            }
 
-            $this->buildMetric(
-                $name,
-                $value,
-                $dateTime
-            );
+                $this->buildMetric(
+                    $name,
+                    $value,
+                    $dateTime
+                );
+            }
         }
 
         $io->success('We added all daily prices for XLM');
