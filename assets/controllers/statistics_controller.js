@@ -81,7 +81,7 @@ export default class extends Controller {
     this.chart.timeScale().applyOptions({
       borderColor: "#71649C",
     });
-    this.areaSeries = this.chart.addAreaSeries({lineColor: '#F23645', topColor: '#8c1d27', bottomColor: 'rgba(20, 20, 20, 0.1)'});
+    this.areaSeries = this.chart.addAreaSeries({lineColor: '#F23645', topColor: '#8c1d27', bottomColor: 'rgba(20, 20, 20, 0.8)'});
 
     this.toolTip = document.createElement('div');
     this.toolTip.style = `width: 250px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
