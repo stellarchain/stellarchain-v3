@@ -34,7 +34,7 @@ class IntervalLedgersHandler
         $this->dispatchProcessLedgers($interval->getStart(), $interval->getEnd());
     }
 
-    public function dispatchProcessLedgers($start, $end)
+    public function dispatchProcessLedgers(\DateTime $start, \DateTime $end): void
     {
         $usdXlmPrice = $this->globalValueService->getPrice();
         $ledgersRepository = $this->doctrine->getRepository(HistoryLedgers::class, 'horizon');
@@ -66,6 +66,7 @@ class IntervalLedgersHandler
         if (count($timeDifferences) > 0) {
             $averageClosingTime = array_sum($timeDifferences) / count($timeDifferences);
         }
+
 
         $transactions = $this->getTransactions($ledgerSequences);
         $operationsRepository = $this->doctrine->getRepository(HistoryOperations::class, 'horizon');
@@ -104,7 +105,7 @@ class IntervalLedgersHandler
         $invocations = $operationsRepository->getTotalContractInvocations($transactions);
         $fees = $transactionsRepository->getTotalFees($ledgerSequences);
 
-        $networkCharts = [
+        $metricsValues = [
             'ledgers' => count($ledgerSequences),
             'tps' => $totalTransactionCount / $averageClosingTime,
             'ops' => $totalOperationCount / $averageClosingTime,
@@ -116,12 +117,7 @@ class IntervalLedgersHandler
             'operations' => $totalOperationCount,
             'avg-ledger-sec' => $averageClosingTime,
             'trades' => $tradesRepository->totalTrades($start, $end),
-            /* 'accounts' => $accountsRepository->totalAccounts(), */
-            /* 'top-accounts' => $accountsRepository->averageBalanceAccounts(100), */
-            /* 'active-addresses' => $accountsRepository->activeAddressesCount(), */
-            /* 'inactive-addresses' => $accountsRepository->inactiveAddressesCount(), */
             'output-value' => $operationsRepository->getTotalOutput($transactions),
-            /* 'assets' => $expAssetStatsRepository->totalAssets(), */
             'xml-total-pay' => $operationsRepository->getXmlPayments($transactions),
             'dex-vol' => round($volumeXlm * $usdXlmPrice, 0),
             'invocations' => $invocations['invoke_contract'],
@@ -130,7 +126,17 @@ class IntervalLedgersHandler
             'max-fee' => $fees['total_max_fee'],
         ];
 
-        foreach ($networkCharts as $metric => $value) {
+        $dailyMetrics = [
+            /* 'assets' => $expAssetStatsRepository->totalAssets(), */
+            /* 'accounts' => $accountsRepository->totalAccounts(), */
+            /* 'top-accounts' => $accountsRepository->averageBalanceAccounts(100), */
+            /* 'active-addresses' => $accountsRepository->activeAddressesCount(), */
+            /* 'inactive-addresses' => $accountsRepository->inactiveAddressesCount(), */
+        ];
+
+        $metricsValues = array_merge($metricsValues, $dailyMetrics);
+
+        foreach ($metricsValues as $metric => $value) {
             $metricEnum = MetricEnum::fromString($metric);
             $this->buildMetric($metricEnum, $value, $end);
         }

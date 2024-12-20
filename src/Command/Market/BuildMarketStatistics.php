@@ -12,6 +12,7 @@ use App\Message\UpdateAsset;
 use App\Repository\StellarHorizon\AssetMetricRepository;
 use App\Repository\StellarHorizon\AssetRepository;
 use App\Service\GlobalValueService;
+use App\Service\MarketDataService;
 use Doctrine\ORM\EntityManagerInterface;
 use Soneso\StellarSDK\Responses\Asset\AssetResponse;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -35,6 +36,7 @@ class BuildMarketStatistics extends Command
         private GlobalValueService $globalValueService,
         private MessageBusInterface $bus,
         private ManagerRegistry $doctrine,
+        private MarketDataService $marketDataService,
     ) {
         parent::__construct();
     }
@@ -96,17 +98,19 @@ class BuildMarketStatistics extends Command
         $roundedDateTime24hAgo = (clone $currentDateTime)->modify('-24 hours');
 
         if ($latestPriceResult) {
-            $latestPrice = ($reversed) ? $latestPriceResult->getPriceD() / $latestPriceResult->getPriceN() : $latestPriceResult->getPriceN() / $latestPriceResult->getPriceD();
+            $latestPrice = ($reversed) ?
+                $latestPriceResult->getPriceD() / $latestPriceResult->getPriceN()
+                : $latestPriceResult->getPriceN() / $latestPriceResult->getPriceD();
+
             $price1hAgo = $horizonTradeRepository->getPriceAt($baseAsset, $counterAsset, $roundedDateTime, $reversed);
 
             if ($price1hAgo) {
-
                 $price24hAgo = $horizonTradeRepository->getPriceAt($baseAsset, $counterAsset, $roundedDateTime24hAgo, $reversed);
                 $price7dAgo = $horizonTradeRepository->getPriceAt($baseAsset, $counterAsset, $roundedDateTime7dAgo, $reversed);
 
-                $priceChange1h = $this->calculatePriceChange($latestPrice, $price1hAgo);
-                $priceChange24h = $this->calculatePriceChange($latestPrice, $price24hAgo);
-                $priceChange7d = $this->calculatePriceChange($latestPrice, $price7dAgo);
+                $priceChange1h = $this->marketDataService->calculatePriceChange($latestPrice, $price1hAgo);
+                $priceChange24h = $this->marketDataService->calculatePriceChange($latestPrice, $price24hAgo);
+                $priceChange7d = $this->marketDataService->calculatePriceChange($latestPrice, $price7dAgo);
 
                 $volume24h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime24hAgo, $reversed);
                 $volume1h = $horizonTradeRepository->findSumByAssets($baseAsset, $counterAsset, $roundedDateTime, $reversed);
@@ -125,7 +129,7 @@ class BuildMarketStatistics extends Command
                         ->setTotalTrades($totalTrades)
                         ->setPriceChange7d($priceChange7d);
 
-                    $rankScore = $this->calculateAssetRank(
+                    $rankScore = $this->marketDataService->calculateAssetRank(
                         $priceInUsd,
                         $volume24h['baseAmount'] * $priceInUsd,
                         $totalTrades,
@@ -167,38 +171,11 @@ class BuildMarketStatistics extends Command
         }
     }
 
-    private function calculatePriceChange(float $latestPrice, ?float $previousPrice): ?float
-    {
-        if ($previousPrice === null || $previousPrice == 0) {
-            return null;
-        }
-        $change = (($latestPrice - $previousPrice) / $previousPrice) * 100;
-        return round($change, 2);
-    }
-
     public function importAsset(string $assetCode, string $assetIssuer): array
     {
         $connector = new HorizonConnector();
         $listAssetRequest = new SingleAsset($assetCode, $assetIssuer);
 
         return $connector->send($listAssetRequest)->json();
-    }
-
-    function calculateAssetRank($latestPrice, $volume24hInUsd, $totalTrades)
-    {
-        $wPrice = 0.01;  // 10% weight for price
-        $wVolume = 0.1; // 20% weight for volume
-        $wTrades = 0.8; // 10% weight for total trades
-
-        // Raw values (Price is inverted to match the previous logic)
-        $priceScore = 1 / $latestPrice;
-        $totalTradesScore = $totalTrades;
-
-        // Final rank score calculation using the weighted sum of the raw values
-        $rankScore = ($wPrice * $priceScore) +
-            ($wVolume * $volume24hInUsd) +
-            ($wTrades * $totalTradesScore);
-
-        return number_format($rankScore, 5, '.', '');
     }
 }

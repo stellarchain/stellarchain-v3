@@ -6,6 +6,7 @@ use App\Config\Timeframes;
 use App\Repository\CoinStatRepository;
 use App\Service\StatisticsService;
 use App\Service\LedgerMetricsService;
+use App\Utils\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -28,6 +29,7 @@ class StatisticsBuildCommand extends Command
         private LedgerMetricsService $ledgerMetricsService,
         private EntityManagerInterface $entityManager,
         private MessageBusInterface $bus,
+        private Helper $helper
     ) {
         parent::__construct();
     }
@@ -47,7 +49,7 @@ class StatisticsBuildCommand extends Command
             return Command::FAILURE;
         }
 
-        $interval = $this->takeInterval($timeframe->label());
+        $interval = $this->helper->takeInterval($timeframe->label());
         if (!$interval) {
             $io->error('Timeframe not supported');
             return Command::FAILURE;
@@ -63,21 +65,5 @@ class StatisticsBuildCommand extends Command
         $io->success('Statistics builded.');
 
         return Command::SUCCESS;
-    }
-
-    public function takeInterval(string $label): string
-    {
-        $interval = strtoupper($label);
-        if (strpos($interval, 'D') !== false) {
-            $interval = 'P' . str_replace('D', 'D', $interval);
-        } elseif (strpos($interval, 'H') !== false) {
-            $interval = 'PT' . str_replace('H', 'H', $interval);
-        } elseif (strpos($interval, 'M') !== false) {
-            $interval = 'PT' . str_replace('M', 'M', $interval);
-        } else {
-            return false;
-        }
-
-        return $interval;
     }
 }

@@ -47,12 +47,14 @@ class AggregateDailyStatisticsCommand extends Command
         $batchEndDate = (clone $batchStartDate)->sub(new \DateInterval($interval));
 
         foreach ($metricsEnum as $metricEnum) {
+            $io->info('Aggregating ' . $metricEnum->label() . '...');
             $metrics = $this->aggregatedMetricsRepository->findMetricsBetweenTimestamp(
                 $metricEnum->value,
                 $batchStartDate,
                 $batchEndDate
             );
             $this->statisticsService->aggregateMetric($metrics, $timeframe, $metricEnum, $batchStartDate);
+            $this->entityManager->clear();
         }
         $io->success('Daily statistics builded.');
 

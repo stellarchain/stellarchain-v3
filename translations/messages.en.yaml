@@ -1,6 +1,6 @@
 market-charts: 
     title: Price Charts
-    desc: Price charts 
+    desc: Showing historical price and trends.
 price-usd: 
     title: Market Price
     desc: Tracks the price of XLM in US dollars over time
@@ -27,7 +27,7 @@ trades:
     desc: Total trades per timeframe 
 blockchain-charts:
     title: Blockchain Charts
-    desc: Blockchain charts 
+    desc: Charts showing blockchain data.
 blockchain-size:
     title: Blockchain Size
     desc: Blockchain size in terabytes, extracted archive (Horizon full archive)
@@ -47,7 +47,7 @@ ops-ledger:
     title: Operations per Ledger
     desc: Displays the average number of operations recorded per ledger.
 ops:
-    title: Operations per Second
+    title: OPS
     desc: Displays the average number of operations recorded per second.
 transactions:
     title: Number of Transactions
@@ -69,7 +69,7 @@ tx-failed:
     desc: Shows the number of transactions that were unsuccessful or rejected by the blockchain network.
 network-charts:
     title: Network Charts
-    desc: Network charts
+    desc: Charts showing network data.
 accounts:
     title: Total Accounts
     desc: Tracks the total accounts available on the network, representing the diversity and size of accounts within the ecosystem.

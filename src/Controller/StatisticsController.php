@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StatisticsController extends AbstractController
 {
@@ -20,10 +19,9 @@ class StatisticsController extends AbstractController
     }
 
     #[Route('/statistics/{stat}', name: 'app_statistics_show', methods: ['GET'])]
-    public function charts(TranslatorInterface $translator, string $stat): Response
+    public function charts(string $stat): Response
     {
         return $this->render('statistics/show.html.twig', [
-
             'stat' => $stat
         ]);
     }

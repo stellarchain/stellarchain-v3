@@ -170,7 +170,6 @@ export default class extends Controller {
 
       mergedData.sort((a, b) => a.time - b.time);
       this.areaSeries.setData(mergedData);
-      this.chart.timeScale().fitContent();
     }
 
     this.loadingStatistics = false;

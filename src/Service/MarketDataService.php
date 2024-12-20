@@ -51,4 +51,31 @@ class MarketDataService
 
         return $formattedStats;
     }
+
+    public function calculatePriceChange(float $latestPrice, ?float $previousPrice): ?float
+    {
+        if ($previousPrice === null || $previousPrice == 0) {
+            return null;
+        }
+        $change = (($latestPrice - $previousPrice) / $previousPrice) * 100;
+        return round($change, 2);
+    }
+
+    public function calculateAssetRank($latestPrice, $volume24hInUsd, $totalTrades)
+    {
+        $wPrice = 0.01;  // 10% weight for price
+        $wVolume = 0.1; // 20% weight for volume
+        $wTrades = 0.8; // 10% weight for total trades
+
+        // Raw values (Price is inverted to match the previous logic)
+        $priceScore = 1 / $latestPrice;
+        $totalTradesScore = $totalTrades;
+
+        // Final rank score calculation using the weighted sum of the raw values
+        $rankScore = ($wPrice * $priceScore) +
+            ($wVolume * $volume24hInUsd) +
+            ($wTrades * $totalTradesScore);
+
+        return number_format($rankScore, 5, '.', '');
+    }
 }

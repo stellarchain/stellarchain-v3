@@ -58,10 +58,9 @@ class AggregateStatisticsCommand extends Command
         }
         $io->info($timeframe->name . " => " . $timeframe->label() . '(' . $interval . ')');
 
-        $metricsEnum = Metric::cases();
-        $batchStartDate = new \DateTime();
-
-        foreach ($metricsEnum as $metricEnum) {
+        foreach (Metric::cases() as $metricEnum) {
+            $io->info('Processing ' . $metricEnum->label());
+            $batchStartDate = new \DateTime();
             $firstMetricTimestamp = $this->aggregatedMetricsRepository->findFirstMetricTimestamp($metricEnum->value);
             if (!$firstMetricTimestamp) {
                 continue;
@@ -73,6 +72,8 @@ class AggregateStatisticsCommand extends Command
                 $metrics = $this->aggregatedMetricsRepository->findMetricsBetweenTimestamp($metricEnum->value, $batchStartDate, $batchEndDate);
 
                 $this->statisticsService->aggregateMetric($metrics, $timeframe, $metricEnum, $batchStartDate);
+                $this->entityManager->clear();
+
                 $batchStartDate = $batchEndDate;
             }
         }
