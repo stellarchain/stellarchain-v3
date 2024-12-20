@@ -141,6 +141,9 @@ export default class extends Controller {
     });
     const timestampInSeconds = Math.floor(Date.now() / 1000);
     this.getStatistics(timestampInSeconds);
+    setTimeout(() => {
+      this.chart.timeScale().fitContent();
+    }, 100);
   }
 
   async getStatistics(startTime) {
@@ -170,6 +173,7 @@ export default class extends Controller {
 
       mergedData.sort((a, b) => a.time - b.time);
       this.areaSeries.setData(mergedData);
+
     }
 
     this.loadingStatistics = false;

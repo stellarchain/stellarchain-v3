@@ -1,5 +1,5 @@
 market-charts: 
-    title: PRICE
+    title: MARKET
     desc: Showing historical price and trends.
 price-usd: 
     title: Market Price

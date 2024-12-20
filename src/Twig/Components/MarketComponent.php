@@ -31,7 +31,7 @@ final class MarketComponent
     #[LiveProp(writable: true)]
     public int $page = 1;
 
-    private const PER_PAGE = 20;
+    private const PER_PAGE = 10;
 
     public function __construct(
         public AssetRepository $assetRepository,
@@ -90,7 +90,7 @@ final class MarketComponent
                 $recentMetrics = $this->assetMetricRepository->findBy(
                     ['asset' => $asset],
                     ['created_at' => 'DESC'],
-                   20
+                    15
                 );
                 $metricsForChart = array_reverse($recentMetrics);
 
