@@ -8,7 +8,7 @@ export default class extends Controller {
   toolTip = null;
   loadingStatistics = null;
   currentStartTime = null;
-  timeFrame = '10m';
+  timeFrame = '1d';
 
   async initialize() {
     this.initChart();
