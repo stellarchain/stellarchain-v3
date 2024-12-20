@@ -104,7 +104,7 @@ export default class extends Controller {
 
         let date = new Date(data.time * 1000);
         const dateStr = date.toLocaleDateString(); // This gets the date in a localized format
-        const timeStr = date.toLocaleTimeString(); // This gets the time in a localized format
+        const timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
         const dateTimeStr = `${dateStr} ${timeStr}`;
         const price = data.value.toLocaleString()
         this.toolTip.innerHTML = `<div style="color: ${'rgba( 38, 166, 154, 1)'}"></div><div style="font-size: 24px; margin: 4px 0px; color: ${'white'}">
