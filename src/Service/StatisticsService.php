@@ -118,7 +118,7 @@ class StatisticsService
         foreach ($statistics as $typeKey => $statisticKey) {
             foreach ($statisticKey as $key => $chart) {
                 if ($chart) {
-                    $metrics = $this->getMetricsData($key, '10m', time(), 60);
+                    $metrics = $this->getMetricsData($key, '1d', time(), 60);
                     $change = 0;
                     $dataCount = count($metrics['data']);
                     if ($dataCount > 1) {
