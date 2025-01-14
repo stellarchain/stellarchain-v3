@@ -109,6 +109,7 @@ class StatisticsService
             'inactive-addresses',
             'assets',
             'accounts',
+            'max-fee',
         ];
 
         $maxKeys = [
@@ -117,9 +118,9 @@ class StatisticsService
         ];
         $data = array_map(function ($metric) use ($key, $avgKeys, $maxKeys) {
             if (in_array($key, $avgKeys)) {
-                $val = round((float) $metric->getAvgValue(), 4);
+                $val = round((float) $metric->getAvgValue());
             } elseif (in_array($key, $maxKeys)) {
-                $val = round((float) $metric->getMaxValue(), 4);
+                $val = round((float) $metric->getMaxValue());
             } else {
                 $val = round((float) $metric->getTotalValue(), 4);
             }

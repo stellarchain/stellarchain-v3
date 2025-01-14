@@ -14,10 +14,13 @@
         <div class="col-md-12 col-lg-12">
             <div class="card mb-2 p-2">
                 <span class="fs-4 text-secondary"><i class="bi bi-check-circle-fill text-success"></i>
-                    Transaction</span>
+                    Transaction
+                </span>
                 <span class="truncate-text fs-4">{{hash}}</span>
-                <span class="small text-secondary fst-italic">Created on ledger <a href="233222">523333333</a>, at 4 Dec
-                    2024 18:20</span>
+                <span class="small text-secondary fst-italic">
+                    Created on ledger <strong>523333333</strong>, at 4 Dec
+                    2024 18:20
+                </span>
             </div>
 
             <ul class="list-group mb-3 bg-secondary">
@@ -26,7 +29,7 @@
                         <h6 class="my-0 text-body-secondary">Account</h6>
                         <small class="text-secondary">Account address who paid the fee transaction</small>
                     </div>
-                    <a href="" class="text-decoration-none">
+                    <a href="{{path('app_explorer_account', {hash : 'GDJQA7VCMFUZPKHVGL5IWGJ7SXA75A3N76EUEPJTPLPXSZCVG6JV47KU'})}}" class="text-decoration-none">
                         <span class="truncate-text">
                             GDJQA7VCMFUZPKHVGL5IWGJ7SXA75A3N76EUEPJTPLPXSZCVG6JV47KU
                         </span>

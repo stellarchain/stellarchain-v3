@@ -18,10 +18,18 @@ class ExplorerController extends AbstractController
     }
 
     #[Route('/transactions/{hash}', name: 'app_explorer_transaction')]
-    public function transaction(Request $request): Response
+    public function transaction(string $hash): Response
     {
         return $this->render('explorer/transaction/index.html.twig', [
-            'hash' => $request->query->get('hash'),
+            'hash' => $hash,
+        ]);
+    }
+
+    #[Route('/accounts/{hash}', name: 'app_explorer_account')]
+    public function account(string $hash): Response
+    {
+        return $this->render('explorer/accounts/index.html.twig', [
+            'hash' => $hash,
         ]);
     }
 }

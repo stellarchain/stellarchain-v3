@@ -38,7 +38,7 @@ class MarketController extends AbstractController
         }
         $latestMetric = $asset->getAssetMetrics()->first();
 
-        $assetData = [ 'asset' => $asset];
+        $assetData = ['asset' => $asset];
         if ($latestMetric) {
             $recentMetrics = $assetMetricRepository->findBy(['asset' => $asset],['created_at' => 'DESC'],50);
             $metricsForChart = array_reverse($recentMetrics);
